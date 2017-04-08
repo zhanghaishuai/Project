@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="GBK" ?>
+<!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-config.dtd">
+
+<configuration>
+
+	<typeAliases>
+	
+		<typeAlias type="com.beio.base.entity.SysRegex" alias="SysRegex"/>
+		<typeAlias type="com.beio.base.entity.SysSmsLog" alias="SysSmsLog"/>
+		<typeAlias type="com.beio.base.entity.SysTipMsg" alias="SysTipMsg"/>
+		<typeAlias type="com.beio.base.entity.SysVisitLog" alias="SysVisitLog"/>
+		<typeAlias type="com.beio.base.entity.SysMember" alias="SysMember"/>
+		<typeAlias type="com.beio.base.vo.Member" alias="Member"/>
+		
+	</typeAliases>
+	
+	<mappers>
+		
+		<mapper resource="ibatis/base/sys.xml"/>
+		
+	</mappers>
+</configuration> 
+

@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8"/>
+    <title>找回密码</title>
+    <link rel="icon" href="#"/>
+	<link type="text/css" rel="stylesheet" href="css/htmlbuild.css"/>
+	<link type="text/css" rel="stylesheet" href="css/login.css"/>  
+    <link rel="stylesheet" type="text/css" href="css/myhome_menu.css"/>
+	<link rel="stylesheet" type="text/css" href="css/myhome_main.css"/>
+	<script type="text/javascript" src="js/jquery/jquery.js"></script>
+	<script type="text/javascript" src="js/birthday.js"></script>
+	<script type="text/javascript" src="js/htmlbuild.js"></script>
+	<script type="text/javascript" src="js/initcache.js"></script>
+	<script type="text/javascript" src="js/autologin.js"></script>
+	<script type="text/javascript" src="js/myhome_info.js"></script>
+</head>
+<body>
+<!--左栏开始-->
+<script type="text/javascript">
+	window.document.write(htmlbuild.topHtml);
+</script>
+<div class="home_nav">
+	<div class="my_left">
+		<div class="my_menu">
+			<h3 class="my_menu_title" >
+				<a id="J_myhomeBtn"  href="javascript:void(0);">个人中心</a>
+			</h3>
+			<dl>
+				<dt>个人中心</dt>
+				<dd><a class="j-menuItem on" href="javascript:void(0);">个人信息</a></dd>
+				<dd><a class="j-menuItem " href="myhome_rfee.html">会员续费</a></dd>
+				<dd><a class="j-menuItem " href="myhome_rpwd.html">重置密码</a></dd>
+				<dd><a class="j-menuItem " href="myhome_mmbl.html">修改手机</a></dd>
+				<dd><a class="j-menuItem " href="myhome_addr.html">收货地址</a></dd>
+				<dt>我的交易</dt>
+				<dd><a class="j-menuItem " href="myhome_order.html">我的订单</a></dd>
+				<dt>关于我们</dt>
+				<dd><a class="j-menuItem " href="myhome_about.html">关于我们</a></dd>
+			</dl>
+		</div>
+	</div>
+	<!--左栏结束-->
+	<!-- 右侧内容-->
+	<div class="my_main">
+		<div class="account_right">
+			<div>
+				<div class="archives_title">
+					<h2>编辑个人档案<span class=" gray666 f12 bnone"> (带<span class="red">*</span>号的项目为必填项)</span></h2>
+				</div>
+				<div class="edit_message1">
+					<div class="mesage_list">
+						<div class="list_title">会员时间：</div>
+						<div class="list_title" style="width: auto;">
+							&nbsp;&nbsp;<span id="turnonTime"></span>&nbsp;&nbsp;——&nbsp;&nbsp;<span id="expireTime"></span>
+						</div>
+						<div class="empty_box_left"></div>
+					</div>
+					<div class="mesage_list">
+						<div class="list_title">会员昵称：</div>
+						<div class="list_edit">
+							<input id="nickName" type="text" value="" maxlength="20" class="field nickname" />
+							<span class="errMsg" id="nickName_s"></span>
+						</div>
+						<div class="empty_box_left"></div>
+					</div>
+					<div class="mesage_list">
+						<div class="list_title"><em>*</em>会员邮箱：</div>
+						<div class="list_edit">
+							<input id="email" type="text" value="" maxlength="50" class="field email" />
+							<span class="errMsg" id="email_s"></span>
+						</div>
+						<div class="empty_box_left"></div>
+					</div>
+					<div class="mesage_list">
+						<div class="list_title">性别：</div>
+						<div class="list_edit add_edit_h">
+							<input name="sex" value="1" type="radio" class="field radio_button"/>
+							<span class="choice_cont">男</span>
+							<input name="sex" value="0" type="radio" class="field radio_button"/>
+							<span class="choice_cont">女</span>
+							<div id="notice_3" style="visibility: hidden;"></div>
+						</div>
+						<div class="empty_box_left"></div>
+					</div>
+					<div class="mesage_list">
+						<div class="list_title">生日：</div>
+						<div class="list_edit">
+							<select id="birthYear" class="birthday model_select"></select>
+							<span class="model_span"> 年 </span>
+							<select id="birthMonth" class="birthday model_select"></select>
+							<span class="model_span"> 月 </span>
+							<select id="birthDay" class="birthday model_select"></select>
+							<span class="model_span"> 日 </span>
+							<span class="errMsg" id="birthday_s"></span>
+						</div>
+						<div class="empty_box_left"></div>
+					</div>
+					<div class="mesage_list">
+						<div class="list_title">兴趣爱好：</div>
+						<div class="list_edit">
+							<textarea id="hobby" class="field text_interest" rows="2" cols="20" ></textarea><br/>
+							<span class="errMsg" id="hobby_s"></span>
+						</div>
+						<div class="empty_box_left"></div>
+					</div>
+					<div class="mesage_list">
+						<input type="submit" value="保存基本信息" class="save_info" /><br/><br/>
+						<span class="sucMsg succcess hide" id="hobby_s" style="line-height: 22px; font-size: 14px; margin-left: 110px">个人信息修改成功</span>
+					</div>	
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- 右侧内容结束 -->
+</div>
+<script type="text/javascript">
+	window.document.write(htmlbuild.btmHtml);
+</script>
+</body>
+</html>

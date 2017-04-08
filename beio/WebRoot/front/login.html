@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8"/>
+    <title>欢迎登录</title>
+    <link rel="icon" href="#"/>
+    <link type="text/css" rel="stylesheet" href="css/ui-base.css"/>
+    <link type="text/css" rel="stylesheet" href="css/htmlbuild.css"/>  
+    <link type="text/css" rel="stylesheet" href="css/login.css"/>  
+    <script type="text/javascript" src="js/jquery/jquery.js"></script>
+    <script type="text/javascript" src="js/htmlbuild.js"></script>
+    <script type="text/javascript" src="js/initdata.js"></script>
+    <script type="text/javascript" src="js/login.js"></script>
+</head>
+<body>
+<div id="form-header" class="header">
+    <div class="logo-con w clearfix">
+        <a href="index.html" class="logo" ></a>
+    </div>
+</div>
+<div id="content">
+	<div class="login-wrap">
+		<div class="w">
+            <div class="login-form">
+                <div class="login-tab login-tab-l" >
+                    <a href="javascript:void(0)" class="checked" id="login_box_btn">账户登录</a>
+                </div>
+                <div class="login-tab login-tab-r">
+                    <a href="javascript:void(0)" id="qrcode_login_btn"><!-- 微信登录 --></a>
+                </div>
+                <div id="login_box" class="login-box" style="display: block; visibility: visible;">
+                    <div class="mt tab-h">
+                    </div>
+                    <div class="msg-wrap" >
+						<div id="msg-warn" class="msg-warn hide"></div>
+						<div class="msg-error hide"><b></b></div>
+                    </div>
+                    
+                    <div class="mc">
+                        <div class="form" >
+                            <form id="formlogin" method="post" onsubmit="return false;" >
+                            	<!-- 账户 -->
+								<div class="item item-fore1">
+                                    <label for="login_mobile" class="login-label name-label"></label>
+                                    <input id="login_mobile" type="text" class="itxt" autocomplete="off" maxlength="11" placeholder="已注册手机号"/>
+                                </div>
+								<!-- 密码 -->
+								<div class="item item-fore1">
+									<label for="login_pwd" class="login-label pwd-label"></label>
+									<input id="login_pwd" type="password" class="itxt" autocomplete="off" maxlength="20" placeholder="密码"/>
+								</div>
+								<!-- 验证码 -->
+                                <div id="o-authcode" class="item item-vcode item-fore3">
+                                    <input id="login_code" type="text" class="itxt itxt02" autocomplete="off" maxlength="4" placeholder="验证码" />
+                                    <img class="verify-code" src="/beio/image/verifyCode" alt="验证码"/>
+                                    <a href="javascript:void(0)" id="changeCode">看不清换一张</a>
+                                </div>
+								
+								<!-- 自动登录勾选 -->
+								<div class="item item-fore4">
+									<div class="safe">
+										<span>
+											<input id="autoLogin" name="chkRememberMe" type="checkbox" class="jdcheckbox">
+                                            <label for="">自动登录</label>
+										</span>
+										<span class="forget-pw-safe">
+											<a href="forget.html" class="" >忘记密码</a>
+										</span>
+                                 	</div>
+                                </div>
+								
+								<!-- 登录按钮-->
+                                <div class="item item-fore5">
+                                    <div class="login-btn">
+                                        <a href="javascript:void(0);" id="loginsubmit" class="btn-img btn-entry">登&nbsp;&nbsp;&nbsp;&nbsp;录</a>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="qrcode_login" class="qrcode-login" style="display: none; visibility: hidden;">
+                    <div class="mc">
+                        <div class="qrcode-error-2016">
+                            <div class="qrcode-error-mask">
+                            </div>
+                            <p class="err-cont">服务器出错</p>
+                            <a href="javascript:void(0)" class="refresh-btn">刷新</a>
+                        </div>
+                        <div class="qrcode-main">
+                            <div class="qrcode-img">
+                                <img src="image/548faf09N1acc240e.png" alt="">
+                            </div>
+                            <div class="qrcode-help" style="display: none; "></div>
+                        </div>
+                        <div class="qrcode-panel">
+                            <ul>
+                                <li class="fore1">
+									<span>打开</span>
+                                    <a href="javascript:void(0)" target="_blank">
+									<span class="red">微信App</span></a>
+                                </li>
+								<li>扫描二维码</li>
+                            </ul>
+                        </div>
+                        <div class="coagent qr-coagent" id="qrCoagent">
+                            <ul>
+                                <li><b></b><em>免输入</em></li>
+                                <li><b class="faster"></b><em>更快&nbsp;</em></li>
+                                <li><b class="more-safe"></b><em>更安全</em></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+				<div class="coagent" id="kbCoagent">
+                    <ul>
+                    	<!-- 
+						<li>
+							
+							<b></b>
+                            <a href="javascript:void(0)" onclick="window.location='//qq.jd.com/new/qq/login.aspx'+window.location.search;return false;" clstag="pageclick|keycount|201607144|6" class="pdl">
+                            	<b class="QQ-icon"></b>
+                            	<span>QQ</span>
+                            </a>
+                            <span class="line">|</span>
+                            
+						</li>
+                        <li>
+                        	
+							<a href="javascript:void(0)" onclick="window.location='//qq.jd.com/new/wx/login.action'+window.location.search;return false;" clstag="pageclick|keycount|201607144|7" class="pdl">
+								<b class="weixin-icon"></b>
+								<span>微信</span>
+							</a>
+							
+						</li>
+						 -->
+                        <li class="extra-r">
+                            <div>
+                                <div class="regist-link">
+                                	<a href="register.html" >
+                                		<b></b>立即注册</a>
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+			</div>
+        </div>
+        <div class="login-banner" style="background-color: #386eda">
+            <div class="w">
+                <div id="banner-bg" class="i-inner" style="background: url('image/58c66d01Neeb9cf5a.jpg') 0px 0px no-repeat; background-color: #386eda"></div>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+	window.document.write(htmlbuild.btmHtml);
+</script>
+</body>
+</html>
+
+

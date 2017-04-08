@@ -1,0 +1,11 @@
+html {font-size: 12px; color: #404040;}
+body,button,ol,ul,li,p,dl,dd,h1,h2,h3,h4,h5,h6,img,iframe,input,form,textarea{margin: 0; padding: 0; list-style-type: none; border: 0;}
+
+/* bd */
+.con{clear:both;zoom: 1;}
+.con:after{content: '.';height: 0;display: block;clear: both;visibility: hidden;}
+.con .col{float: left;}
+.spacer{display:none;}
+.vspacer{width: 10px;float: left;height: 10px;}
+#bd{width:100%!important;margin:0 auto!important;}
+#bd .bd_body{width:1200px;margin:0 auto;background-color:#fff;}

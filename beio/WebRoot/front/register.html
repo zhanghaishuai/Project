@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8"/>
+    <title>会员注册</title>
+    <link rel="icon" href="#"/>
+	<link type="text/css" rel="stylesheet" href="css/ui-base.css"/>
+	<link type="text/css" rel="stylesheet" href="css/htmlbuild.css"/>
+	<link type="text/css" rel="stylesheet" href="css/register.css"/>
+	<script type="text/javascript" src="js/jquery/jquery.js"></script>
+	<script type="text/javascript" src="js/htmlbuild.js"></script>
+	<script type="text/javascript" src="js/initdata.js"></script>
+	<script type="text/javascript" src="js/register.js"></script>
+</head>
+<body>
+<div id="form-header" class="header">
+    <div class="logo-con w clearfix">
+        <a href="index.html" class="logo" ></a>
+    </div>
+</div>
+<div class="container w">
+    <div class="main clearfix" id="form-main">
+		<div class="reg-form fl">
+			<div class="form-item">
+			    <label>手&nbsp;&nbsp;&nbsp;机&nbsp;&nbsp;&nbsp;号</label>
+			    <input type="text" id="reg_mobile" class="field" autocomplete="off" maxlength="11" placeholder="建议使用常用手机"/>
+			    <i class="i-status"></i>
+			</div>
+			<div class="input-tip">
+			    <span id="reg_mobile_s" class="errMsg"></span>
+			</div>
+			<div class="form-item">
+			    <label>设 置 密 码</label>
+			    <input type="password" id="reg_pwd" class="field" maxlength="20" placeholder="建议至少使用两种字符组合" />
+			    <i class="i-status"></i>
+			</div>
+			<div class="input-tip">
+			    <span id="reg_pwd_s" class="errMsg"></span>
+			</div>
+			<div class="form-item">
+			    <label>确 认 密 码</label>
+			    <input type="password" id="reg_equal_pwd" class="field" placeholder="请再次输入密码" maxlength="20"/>
+			    <i class="i-status"></i>
+			</div>
+			<div class="input-tip">
+			    <span id="reg_equal_pwd_s" class="errMsg"></span>
+			</div>
+			<div class="form-item">
+			    <label>邮&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;箱</label>
+			    <input type="text" id="reg_email" class="field" autocomplete="off" maxlength="50" placeholder="建议使用常用邮箱"/>
+			    <i class="i-status"></i>
+			</div>
+			<div class="input-tip">
+			    <span id="reg_email_s" class="errMsg"></span>
+			</div>
+			<div class="form-item">
+				<label>验&nbsp;&nbsp;&nbsp;证&nbsp;&nbsp;&nbsp;码</label>
+			   	<input type="text" id="reg_verify_code" class="field" autocomplete="off" maxlength="4" placeholder="请输入验证码"/>
+				<img class="img-code" alt="验证码" title="换一换" src="/beio/image/verifyCode"/>
+			</div>
+			<div class="input-tip">
+				<span id="reg_verify_code_s" class="errMsg"></span>
+			</div>
+			<div class="form-item">
+				<label>手机验证码</label>
+				<input type="text" id="reg_mobile_code" class="field" autocomplete="off" maxlength="6" placeholder="请输入手机验证码"/>
+				<button class="btn-phonecode" type="button">获取验证码</button>
+				<i class="i-status"></i>
+			</div>
+			<div class="input-tip">
+				<span id="reg_mobile_code_s" class="errMsg"></span>
+			</div>
+			<div>
+				<input type="checkbox" id="reg_agree"/>
+				阅读并同意<a href="javascript:void(0);" id="protocol">《用户注册协议》</a>
+				<a href="javascript:void(0);" class="blue" id="privacyProtocolTrigger">《隐私政策》</a>
+			</div>
+			<div class="input-tip">
+				<span id="reg_agree_s" class="errMsg"></span>
+			</div>
+			<div>
+				<button type="button" class="btn-register">加入会员</button>
+			</div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+	window.document.write(htmlbuild.btmHtml);
+</script>
+</body>
+</html>
+
+

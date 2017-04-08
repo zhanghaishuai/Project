@@ -1,0 +1,47 @@
+package com.beio.base.util;
+
+/**
+ * 常量工具类
+ * @author zhs
+ * @date 2017-03-29
+ * @version 1.0.0
+ */
+public class Constant {
+	
+	/** Session User **/
+	public static final String SESSIONUSERINFO = "sessionUserInfo";
+	
+	/** Session VerifyCode **/
+	public static final String SESSIONVERIFYCODE = "sessionVerifyCode";
+	
+	/** Session Find Pwd Mobile **/
+	public static final String SESSIONFINDPWDMOBILE = "sessionFindPwdMobile";
+	
+	/** 启用 **/
+	public static final String ENABLE = "1";
+	
+	/** 禁用 **/
+	public static final String NOTENABLE = "0";
+	
+	/** 已存在 **/
+	public static final String EXIST = "1";
+	
+	/** 不存在 **/
+	public static final String NOTEXIST = "0";
+	
+	/** 会员等级（高级） **/
+	public static final String CUSTOMERLEVELSENIOR = "1";
+	
+	/** 会员等级（普通） **/
+	public static final String CUSTOMERLEVELREGULAR = "0";
+	
+	/** 短信发送成功标记 **/
+	public static final String SMSSENDSUCCESS = "0";
+	
+	/** 短信类型（验证码） **/
+	public static final String SMSCATEGORYVERIFYCODE = "01";
+	
+	/** 自动登录标记 **/
+	public static final String AUTOLOGINMARK = "autologin";
+	
+}

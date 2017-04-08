@@ -1,0 +1,201 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>个人中心</title>
+<link rel="Stylesheet" type="text/css" href="../../theme/css/top.css" />
+<link rel="Stylesheet" type="text/css" href="../../theme/css/bottom.css" />
+<link rel="stylesheet" type="text/css" href="../../theme/css/myhome_menu.css"/>
+<link rel="stylesheet" type="text/css" href="../../theme/css/myhome_order.css"/>
+
+
+<script type="text/javascript" src="../../theme/js/jquery/jquery.js"></script>
+<script type="text/javascript" src="../../theme/js/bottom.js"></script>
+<script type="text/javascript" src="../../theme/js/top.js"></script>
+</head>
+<body>
+<!--左栏开始-->
+<script type="text/javascript">
+	window.document.write(initTopHtml());
+</script>
+<div class="home_nav">
+	<div class="my_left">
+		<div class="my_menu">
+			<h3 class="my_menu_title" >
+				<a id="J_myhomeBtn"  href="javascript:void(0);">个人中心</a>
+			</h3>
+			<dl>
+				<dt>个人中心</dt>
+				<dd><a class="j-menuItem " href="myhome_details.html">个人信息</a></dd>
+				<dd><a class="j-menuItem " href="myhome_resetpwd.html">重置密码</a></dd>
+				<dd><a class="j-menuItem " href="myhome_addr.html">收货地址</a></dd>
+				<dt>我的交易</dt>
+				<dd><a class="j-menuItem on" href="javascript:void(0);">我的订单</a></dd>
+				<dt>我的收藏</dt>
+				<dd><a class="j-menuItem " href="myhome_goods_collect.html">商品收藏</a></dd>
+				<dt>成为会员</dt>
+				<dd><a class="j-menuItem " href="myhome_member_pay.html">付费会员</a></dd>
+				<dd><a class="j-menuItem " href="myhome_member_invite.html">内邀会员</a></dd>
+				<dt>关于我们</dt>
+				<dd><a class="j-menuItem " href="myhome_about.html">关于我们</a></dd>
+			</dl>
+		</div>
+	</div>
+	<div class="my_main" style="float: right; width: 980px;">
+		<!-- <div style=" float: right; height: 28px; padding: 6px; font-weight: bold;">
+			<button style="line-height: 28px; font-size: 14px;">&nbsp;搜&nbsp;索&nbsp;</button>
+		</div>
+		<div style=" float: right; height: 28px; padding: 6px;">
+			<input type="text" style="border: 1px solid #ccc; line-height: 26px; width: 200px;"/>
+		</div> -->
+		<div class="centersidebar">
+			<div class="myddorder_search clearfix">
+				<div class="myddorder_inquiry">
+					<input id="searchKey" class="text gray" type="text" value="商品名称、订单号、收货人姓名"><a href="javascript:searchOrders(1,1);" class="btn_see" name="searchorders">搜索</a>
+				</div>
+			</div>
+				<!-- <div class="order_prompt" >提示：刚提交的订单可能无法马上显示，请您耐心等待。</div> -->
+				<div id="order_list">
+					<span></span><span></span><span></span><span></span>
+					<table cellpadding="0" cellspacing="0" class="order_list">
+						<thead>
+							<tr class="order_list_title">
+								<td class="row01">商品信息</td>
+								<td class="row03">实付款</td>
+								<td width="" class="row04">订单信息</td>
+								<td width="" class="row05"><div class="select_div">
+										<select id="o_time" style="z-index: 0;"
+											onchange="javascript:showOrders(1,1);" autocomplete="off">
+											<option value="1" selected="selected">30天以内</option>
+											<option value="2">3个月以内</option>
+											<option value="3">2017年</option>
+											<option value="4">2016年</option>
+											<option value="5">更早的订单</option>
+										</select>
+									</div></td>
+								<td width="" class="row06">
+									<div class="select_div">
+										<select id="o_status" style="z-index: 0;" autocomplete="off"
+											onchange="javascript:showOrders(1,1);"><option
+												value="0" selected="">全部状态</option>
+											<option value="1">待付款</option>
+											<option value="5">待确认收货</option>
+											<option value="6">待评价</option>
+											<option value="2">交易进行中</option>
+											<option value="3">交易成功</option>
+											<option value="4">交易失败</option>
+										</select>
+									</div>
+								</td>
+								<td width="92" class="row02">操作</td>
+							</tr>
+						</thead>
+						<tbody>
+							<tr class="order_all">
+								<td colspan="6">
+									<div class="fanye fanye_top">
+										<a href="javascript:void(0);" class="fanye_page fanye_none"><span>下一页</span></a>
+										<a href="javascript:void(0);" class="nonce"><span>1
+										</span></a> <a href="javascript:void(0);" class="fanye_page fanye_none"><span>上一页</span></a>
+									</div> <label><span class="checkbox_none"><input
+											type="checkbox" name="unionselect" disabled="disabled"></span>全选</label>
+									<a href="javascript:void(0)" class="btn_gr btn_gr_none"
+									name="unionpaylink"
+									onclick="javascript: return unionPayCheck()" target="_blank">合并支付</a>
+									<span class="order_prompt">提示：刚提交的订单可能无法马上显示，请您耐心等待。</span>
+								</td>
+							</tr>
+							<tr class="order_number" id="pid_34892478045_sid_16778">
+								<td colspan="6"><span class="fl"> <span
+										class="checkbox_none"> <input type="checkbox"
+											id="ckb_parent_34892478045" disabled="disabled"></span> <span
+										class="icon shop_i"></span> <span class="number"> 订单号：<a
+											href="#"
+											target="_blank" name="orderlink">34892478045</a></span></span> <span
+									class="zaixian"
+									onclick="javascript:shopOnlineService(16778,34892478045,109.00)">
+										<span class="onlines" style="display: block;"></span>
+								</span> <span class="zaixian" title="系统暂时繁忙，请您稍后访问"><span
+										class="offlines" style="display: none;"></span></span></td>
+							</tr>
+							<tr>
+								<td>
+									<div class="pic_box">
+										<a name="productlink"
+											href="#"
+											target="_blank"><img width="70px" height="70px"
+											src="../../theme/image/1475249138-1_w.jpg"
+											alt="2017春季新款跑步鞋春秋户外运动休闲鞋 英伦男士户外慢跑鞋 舒适厚底运动鞋2833HLL休闲时尚帆布鞋透气户外休闲鞋板鞋透气运动鞋休闲鞋网布板鞋英伦工装网鞋网面潮流跑步支持货到付款_蓝橘,44"
+											title="2017春季新款跑步鞋春秋户外运动休闲鞋 英伦男士户外慢跑鞋 舒适厚底运动鞋2833HLL休闲时尚帆布鞋透气户外休闲鞋板鞋透气运动鞋休闲鞋网布板鞋英伦工装网鞋网面潮流跑步支持货到付款_蓝橘,44"></a>
+									</div>
+								</td>
+								<td><span class="price">¥109.00</span></td>
+								<td class="left">货到付款 <br> <span class="role">
+											<div class="order_pop_info"
+												style="width: 160px; right: -178px; top: 21px;">
+												<p class="padding">****区 100000</p>
+												<p>电话：158****2355</p>
+											</div>张海帅
+									</span></td>
+								<td>2017-03-23<br> 20:31:09</td>
+								<td class="left02">取消<br></td>
+								<td class="operate" style="display: block;"><a
+									href="#"
+									name="orderdetaillink" target="_blank">订单详情</a><br> <a
+										name="orderdeletelink" id="orderdeletelink_34892478045"
+										href="javascript:deleteOrder('34892478045','orderdeletelink_34892478045')">删除</a></td>
+							</tr>
+							<tr class="order_number" id="pid_34892474275_sid_16778">
+								<td colspan="6"><span class="fl"> <span
+										class="checkbox_none"> <input type="checkbox"
+											id="ckb_parent_34892474275" disabled="disabled"></span> <span
+										class="icon shop_i"></span> <span class="number"> 订单号：<a
+											href="#"
+											target="_blank" name="orderlink">34892474275</a></span></span> <span
+									class="zaixian"
+									onclick="javascript:shopOnlineService(16778,34892474275,109.00)">
+										<span class="onlines" style="display: block;"></span>
+								</span> <span class="zaixian" title="系统暂时繁忙，请您稍后访问"><span
+										class="offlines" style="display: none;"></span></span></td>
+							</tr>
+							<tr>
+								<td>
+									<div class="pic_box">
+										<a name="productlink"
+											href="#"
+											target="_blank"><img width="70px" height="70px"
+											src="../../theme/image/1475249138-1_w.jpg"
+											alt="2017春季新款跑步鞋春秋户外运动休闲鞋 英伦男士户外慢跑鞋 舒适厚底运动鞋2833HLL休闲时尚帆布鞋透气户外休闲鞋板鞋透气运动鞋休闲鞋网布板鞋英伦工装网鞋网面潮流跑步支持货到付款_蓝橘,44"
+											title="2017春季新款跑步鞋春秋户外运动休闲鞋 英伦男士户外慢跑鞋 舒适厚底运动鞋2833HLL休闲时尚帆布鞋透气户外休闲鞋板鞋透气运动鞋休闲鞋网布板鞋英伦工装网鞋网面潮流跑步支持货到付款_蓝橘,44"></a>
+									</div>
+								</td>
+								<td><span class="price">¥109.00</span></td>
+								<td class="left">货到付款 <br> <span class="role">
+											<div class="order_pop_info"
+												style="width: 160px; right: -178px; top: 21px;">
+												<p class="padding">****区 100000</p>
+												<p>电话：158****2355</p>
+											</div>张海帅
+									</span></td>
+								<td>2017-03-23<br> 20:30:32</td>
+								<td class="left02">取消<br></td>
+
+								<td class="operate" style="display: block;"><a
+									href="../../theme/image/1475249138-1_w.jpg"
+									name="orderdetaillink" target="_blank">订单详情</a><br> <a
+										name="orderdeletelink" id="orderdeletelink_34892474275"
+										href="javascript:deleteOrder('34892474275','orderdeletelink_34892474275')">删除</a></td>
+							</tr>
+						</tbody>
+					</table>
+
+				</div>
+			</div>
+	</div>
+</div>
+<script type="text/javascript">
+	window.document.write(initBottomHtml());
+</script>
+</body>
+</html>

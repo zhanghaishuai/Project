@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN"
+	"http://www.springframework.org/dtd/spring-beans.dtd">
+
+<beans default-autowire="byName">
+
+	<bean id="errorAction" class="com.beio.base.action.ErrorAction" singleton="false"></bean>
+
+	<bean id="imageAction" class="com.beio.base.action.ImageAction" singleton="false"></bean>
+	
+	<bean id="sysAction" class="com.beio.base.action.SysAction" singleton="false"></bean>
+	
+</beans>

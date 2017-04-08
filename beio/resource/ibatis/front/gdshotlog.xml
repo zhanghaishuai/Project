@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="gdshotlog">
+	
+	<insert id="searchLog" parameterType="GdsHotLog">
+		insert into gds_hotlog(keyword, creator, createTime) values(#{keyword}, #{creator}, #{createTime});
+	</insert>
+	
+	<select id="hotKey" parameterType="GdsHotLog" resultType="GdsHotLog">
+		SELECT keyword FROM gds_hotlog WHERE keyword != '' GROUP BY keyword ORDER BY COUNT(1) DESC LIMIT 8;
+	</select>
+	
+</mapper>

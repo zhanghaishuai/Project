@@ -1,0 +1,305 @@
+@charset "utf-8";
+/* CSS Document */
+html,body,div,span,iframe,b,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,address,big,cite,code,em,font,img,q,s,samp,small,strike,strong,sub,sup,u,i,center,dl,dt,dd,ol,ul,li,form,label,table,tbody,tfoot,thead,tr,th,td
+	{
+	margin: 0;
+	padding: 0;
+	border: 0;
+	outline: 0;
+	font-size: 100%;
+	background: transparent;
+	list-style: none;
+}
+
+body {
+	font-family: "Microsoft Yahei", 'Hiragino Sans GB', "Simsun", "Arial";
+	font-size: 12px;
+	color: #323232;
+	line-height: 1;
+	background: #fff;
+	word-break: break-all;
+}
+
+a:link,a:visited {
+	text-decoration: none;
+	color: #323232;
+}
+
+a:hover {
+	text-decoration: underline;
+	color: #ff2832;
+}
+
+input:focus,select {
+	outline: none;
+}
+
+.clear {
+	clear: both;
+	height: 0px;
+	margin: 0;
+	padding: 0;
+	width: 0;
+	border: none;
+	overflow: hidden;
+	_font-size: 0px;
+	_line-height: 0px;
+}
+
+.clearfix:after {
+	clear: both;
+	content: " ";
+	display: block;
+	font-size: 0;
+	height: 0;
+	visibility: hidden
+}
+
+.fl {
+	float: left;
+}
+
+.fr {
+	float: right;
+}
+
+* html .clearfix {
+	zoom: 1;
+}
+
+.w960 {
+	width: 960px;
+	margin: 0 auto;
+}
+
+.btn {
+	border: 1px solid rgb(220, 220, 220);
+	border-radius: 2px;
+	color: #000;
+	display: inline-block;
+	*display: inline;
+	*zoom: 1;
+	line-height: 22px;
+	padding: 0 10px;
+	height: 22px;
+	margin-right: 10px;
+	vertical-align: baseline;
+	background: -moz-linear-gradient(90deg, rgb(244, 243, 246) 0%,
+		rgb(254, 254, 254) 100%);
+	background: -webkit-linear-gradient(90deg, rgb(244, 243, 246) 0%,
+		rgb(254, 254, 254) 100%);
+	background: -ms-linear-gradient(90deg, rgb(244, 243, 246) 0%,
+		rgb(254, 254, 254) 100%);
+	background: #f5f5f5\9;
+}
+
+.btn:hover {
+	text-decoration: none;
+	background: #f0f0f0;
+	color: #000;
+}
+
+.btn .bicon {
+	display: inline-block;
+	width: 8px;
+	height: 8px;
+	background: url(../image/icon_bg.png) -14px 0 no-repeat;
+	margin-left: 6px;
+	*vertical-align: middle;
+}
+
+.btn .bicon.a_d {
+	background-position: -14px -20px;
+}
+
+.btn .bicon.a_u {
+	background-position: 0 -20px;
+}
+
+a.btn_red {
+	background-color: #ff2832;
+	height: 30px;
+	line-height: 30px;
+	text-align: center;
+	display: inline-block;
+	color: #fff;
+	font-size: 14px;
+	padding: 0 14px;
+	border-radius: 3px;
+	vertical-align: baseline;
+	vertical-align: bottom\9;
+}
+
+a.btn_red:hover {
+	text-decoration: none;
+}
+
+a.btn_red.disable {
+	background-color: #d2d2d2;
+	cursor: default;
+}
+
+a.btn_red.big {
+	padding: 0 28px;
+}
+
+input.alart {
+	border-color: #ff2832 !important;
+	color: #ff2832 !important;
+	background-color: #fdf0ef;
+}
+
+.alart_tip {
+	position: absolute;
+	left: 10px;
+	top: 42px;
+	color: #ff2832;
+}
+
+.icon_wrong {
+	width: 9px;
+	height: 9px;
+	display: inline-block;
+	background: url(../image/icon_bg.png) 0 -40px no-repeat;
+	margin-right: 4px;
+	*vertical-align: middle;
+}
+
+a.modify {
+	color: #1a66b3;
+	padding-left: 10px;
+	font-size: 12px;
+	font-weight: normal;
+}
+
+a.link {
+	color: #1a66b3;
+	padding: 0 5px;
+}
+
+.red {
+	color: #ff2832;
+}
+
+a.check {
+	width: 14px;
+	height: 16px;
+	display: inline-block;
+	margin-right: 5px;
+	background: url(../image/icon_bg.png) -14px -80px no-repeat;
+	vertical-align: middle;
+}
+
+a.check.checked {
+	background-position: 0 -80px;
+}
+
+a.check.disable {
+	cursor: default;
+	background-position: -14px -180px;
+}
+
+.icon_ask {
+	width: 14px;
+	height: 14px;
+	display: inline-block;
+	background: url(../image/icon_bg.png) 0 -100px no-repeat;
+	vertical-align: middle;
+	margin: 0 4px;
+	cursor: pointer;
+}
+
+.icon_tip {
+	width: 18px;
+	height: 18px;
+	display: inline-block;
+	background: url(../image/icon_bg.png) 0 -140px no-repeat;
+	margin: 0 10px 0 0;
+	vertical-align: middle;
+}
+
+.icon_tip_s {
+	width: 14px;
+	height: 14px;
+	display: inline-block;
+	background: url(../image/icon_bg.png) 0 -160px no-repeat;
+	vertical-align: text-bottom;
+	margin: 0 6px 0 0;
+}
+
+.icon_ok {
+	width: 10px;
+	height: 10px;
+	display: inline-block;
+	background: url(../image/icon_bg.png) -18px -161px no-repeat;
+	vertical-align: text-bottom;
+	margin: 0 2px 0 0;
+}
+
+/*logo*/
+.logo_line {
+	width: 100%;
+	border-bottom: 4px solid #ff2832;
+	height: 100px;
+}
+
+.logo_line .logo {
+	padding: 20px 0 0 15px;
+}
+
+.shopping_procedure {
+	float: right;
+	width: 634px;
+	height: 36px;
+	background: url(../image/procedurefinish_bg.png) 0 0 no-repeat;
+	font: bold 14px/36px "Microsoft Yahei";
+	color: #646464;
+	margin: 30px 0 0;
+}
+
+.shopping_procedure span {
+	width: 211px;
+	display: inline-block;
+	text-align: center;
+}
+
+.shopping_procedure span a {
+	display: block;
+	color: #646464;
+	width: 100%;
+}
+
+.shopping_procedure span.current {
+	color: #fff;
+	width: 206px;
+}
+
+.payamount {
+	width: 960px;
+	margin: 15px auto 0px auto;
+	border: 1px solid #ccc; 
+}
+
+.cashier {
+	font: 38px/50px 'Arial'; margin: 2px 0px 2px 15px;
+}
+
+.order {
+	height: 80px; background-color: #eee;
+}
+
+.order span {
+	font: 18px/40px 'Arial'; display: block; margin-left: 15px;
+}
+
+.wxpaylogo {
+	margin: 10px 0px 0px 15px;
+}
+
+.wxqrcode {
+	margin: 0px auto 0px auto; width: 200px; height: 200px; border: 1px solid #000;
+}
+
+.wxwordlogo {
+	margin: 0px auto 20px auto; width: 202px;
+}

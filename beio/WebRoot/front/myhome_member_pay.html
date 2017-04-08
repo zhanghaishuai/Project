@@ -1,0 +1,76 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>个人中心</title>
+<link rel="Stylesheet" type="text/css" href="../../theme/css/top.css" />
+<link rel="Stylesheet" type="text/css" href="../../theme/css/bottom.css" />
+<link rel="stylesheet" type="text/css" href="../../theme/css/myhome_menu.css"/>
+
+<link rel="stylesheet" type="text/css" href="../../theme/css/pay.css"/>
+
+<script type="text/javascript" src="../../theme/js/jquery/jquery.js"></script>
+<script type="text/javascript" src="../../theme/js/qrcode.js"></script>
+<script type="text/javascript" src="../../theme/js/bottom.js"></script>
+<script type="text/javascript" src="../../theme/js/top.js"></script>
+<script type="text/javascript">
+		$(function(){
+			var qrcode = new QRCode($("#qrcode")[0], {
+				width : 200,
+				height : 200
+			});
+			qrcode.makeCode('http://www.baidu.com');
+		});
+	</script>
+</head>
+<body>
+<!--左栏开始-->
+<script type="text/javascript">
+	window.document.write(initTopHtml());
+</script>
+<div class="home_nav">
+	<div class="my_left">
+		<div class="my_menu">
+			<h3 class="my_menu_title" >
+				<a id="J_myhomeBtn"  href="javascript:void(0);">个人中心</a>
+			</h3>
+			<dl>
+				<dt>个人中心</dt>
+				<dd><a class="j-menuItem " href="myhome_details.html">个人信息</a></dd>
+				<dd><a class="j-menuItem " href="myhome_resetpwd.html">重置密码</a></dd>
+				<dd><a class="j-menuItem " href="myhome_addr.html">收货地址</a></dd>
+				<dt>我的交易</dt>
+				<dd><a class="j-menuItem" href="myhome_order.html">我的订单</a></dd>
+				<dt>我的收藏</dt>
+				<dd><a class="j-menuItem " href="myhome_goods_collect.html">商品收藏</a></dd>
+				<dt>成为会员</dt>
+				<dd><a class="j-menuItem on" href="javascript:void(0);">付费会员</a></dd>
+				<dd><a class="j-menuItem " href="myhome_member_invite.html">内邀会员</a></dd>
+				<dt>关于我们</dt>
+				<dd><a class="j-menuItem " href="myhome_about.html">关于我们</a></dd>
+			</dl>
+		</div>
+	</div>
+	<!--左栏结束-->
+	<!-- 右侧内容-->
+	<div class="my_main">
+		<div class="payamount">
+    <div class="cashier">开通会员</div>
+    <div class="order">
+		<span>会员价格：￥300元</span>
+	</div>
+	<div>
+		<div class="wxpaylogo"><img alt="" src="../../theme/image/WePayLogo.png" width="180px" height="50px"></div>
+		<div id="qrcode" class="wxqrcode"></div>
+		<div class="wxwordlogo"><img alt="" src="../../theme/image/WeWordLogo.png" width="202px" height="66px"></div>
+	</div>
+</div>
+	</div>
+	<!-- 右侧内容结束 -->
+</div>
+<script type="text/javascript">
+	window.document.write(initBottomHtml());
+</script>
+</body>
+</html>

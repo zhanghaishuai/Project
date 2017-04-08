@@ -1,0 +1,61 @@
+html {font-size: 12px; color: #404040;}
+body,button,ol,ul,li,p,dl,dd,h1,h2,h3,h4,h5,h6,img,iframe,input,form,textarea{margin: 0; padding: 0; list-style-type: none; border: 0;}
+
+/* home_circle_c */
+.home_circle_c{margin-left:200px;float:left;width:1000px;overflow:hidden;border-bottom:1px solid #e6e6e6;border-right:1px solid #eaecee;}
+.home_circle_c .focus_box{width:1000px;height:486px;overflow:hidden;position:relative;z-index:10;border-bottom:1px solid #e6e6e6;}
+.home_circle_c .focus_box .pic li{height:486px;overflow:hidden;display:none;}
+.home_circle_c .focus_box .pic li a,.home_circle_c .focus_box .pic li a img{display:block;width:1000px;height:486px;}
+.home_circle_c .focus_box .tab{position:absolute;left:50%;bottom:7px;}
+.home_circle_c .focus_box .tab li{float:left;width:20px;height:20px;font:12px/20px Arial;color:#fff;text-align:center;overflow:hidden;cursor:pointer;background-color:#646464;margin-right:6px;border-radius:10px;}
+.home_circle_c .focus_box .tab li.on{background-color:#ff2832;}
+.home_circle_c .focus_box .btn{position:absolute;width:33px;height:70px;overflow:hidden;background-image:url(../image/home_sprite_1507.png);background-repeat:no-repeat;background-color:#000;top:122px;font-size:0;line-height:99px;cursor:pointer;opacity:0.2;filter:alpha(opacity=20);z-index:10;}
+.home_circle_c .focus_box .hover{opacity:0.5;filter:alpha(opacity=50);}
+
+/* home_classify */
+.home_classify{float:left;width:100%;overflow:hidden;padding-top: 40px;}
+.home_classify .head{height:39px;border-bottom:2px solid #3c3c3c;position:relative;margin-bottom: 2px;}
+.home_classify .title{color:#000;font:bold 28px/30px "simsun";}
+.home_classify .list{border:1px solid #e6e6e6;border-right:none;width:100%;height:454px;}
+.home_classify .list_bg{width:455px; overflow:hidden;}
+.home_classify .list .info{float:left;width:198.83px;height:227px;border-right:1px solid #e6e6e6;border-bottom:1px solid #e6e6e6; overflow:hidden; position:relative;}
+.home_classify .list .pic{display:block;width:150px;height:150px; overflow:hidden; margin:10px auto 0;}
+.home_classify .list .pic img{width:150px;height:150px;}
+.home_classify .list .pic_kong{position:absolute;width:96px;height:96px;background:url(http://img60.ddimg.cn/upload_img/00111/home/miaokong.png) no-repeat 0 0;top:37px;left:51px;}
+.home_classify .list .pic_jijiang{position:absolute;width:96px;height:96px;background:url(http://img61.ddimg.cn/upload_img/00111/home/jijiang.png) no-repeat 0 0;top:37px;left:51px;}
+.home_classify .list .line{ position:absolute;top:160px;width:150px;height:8px;border-radius:5px; background:#ffb7b7;left:24px;line-height:0; font-size:0;z-index:10;}
+.home_classify .list .line span{ background:#fc2c3a;display:block; position:absolute;left:0;top:0;height:8px;border-radius:5px;z-index:30;}
+.home_classify .list span.num_bg{background:#fe8d91;width:76px;height:20px; overflow:hidden;top:-7px;left:38px;z-index:20;border-radius:10px;}
+.home_classify .list .num{width:76px;height:20px;line-height:20px;overflow:hidden;color:#fff; text-align:center;position:absolute;top:153px;left:62px;z-index:40;font-family:Arial;}
+.home_classify .list .name{width:180px; overflow:hidden;line-height:22px;height:22px;margin:0 auto;padding-top:15px;}
+.home_classify .list .name a{color:#646464;}
+.home_classify .list .name a:hover{color:#ff2832;}
+.home_classify .list .price{color:#ff2832;width:180px; margin:2px auto 0; overflow:hidden;line-height:20px;height:20px; font-family:Arial;}
+.home_classify .list .price span{ font-size:16px; margin-left:5px; position:relative;top:1px;}
+.home_classify .list .price span.del{color:#969696; text-decoration:line-through; font-size:12px;}
+
+/* home_classify */
+.shoplist .bigimg li{height: 242px;position: relative;background: #fff;-webkit-transition: all .2s ease-in-out;-moz-transition: all .2s ease-in-out;-o-transition: all .2s ease-in-out;-ms-transition: all .2s ease-in-out;transition: all .2s ease-in-out;padding-left:20px;}
+.shoplist .bigimg li .name a:hover{text-decoration: underline;color:#fa5000;}
+.shoplist .bigimg li .name a:hover .skcolor_ljg{color:#fa5000;}
+.shoplist .bigimg li .price{position: absolute;left: 240px;top: 48px;font-family: "arial";line-height: 30px;}
+.shoplist .bigimg li .search_book_author{position: absolute;left: 240px;top: 70px;color: #787878;line-height: 30px;height: 30px;}
+.narrow_page .shoplist .bigimg li .name{width:520px;} 
+.cloth_good_left{float:left;width:960px;overflow: hidden;position:relative;padding-top:20px;}
+.shoplist .cloth_shoplist{width: 100%; overflow: hidden; padding-left: 15px;}
+.shoplist .cloth_shoplist li {height: 300px; float: left; width: 200px;line-height: 30px; position: relative;margin-right: 27px;padding:5px;border:1px solid #ecebeb;margin-bottom:10px;background:#fff;overflow: hidden;}
+.shoplist .cloth_shoplist li.on{border:2px solid #fa5000;padding:4px;background:#fff;}
+.shoplist .cloth_shoplist li.on .tag_box{right:-5px;top:-1px;}
+.shoplist .cloth_shoplist li .pic_list { width:185px; height:36px; padding:1px 0 0 15px; margin-bottom:2px; overflow:hidden; position:relative;}
+.shoplist .cloth_shoplist li .price {color:#878787;position:static;left:0;top:0;line-height:24px; padding-top:5px;overflow:hidden;white-space:nowrap;}
+.shoplist .cloth_shoplist li .link a:hover { color: #f60; }
+.shoplist .cloth_shoplist li .price_n {font-size:16px; color:#c30; font-weight: bold; padding-right: 10px; font-family: Arial;color:#ff2832;}
+.shoplist .cloth_shoplist li .price_s {font-family: Arial; }
+.shoplist .cloth_shoplist li .price_r {color: #878787; padding-right: 10px; font-family: Arial; text-decoration:line-through;}
+.shoplist .cloth_shoplist li .name {width: 200px; display: block; line-height:20px; height: 20px; overflow: hidden; font-family: Arial; position:static;left:0;top:0;word-break:break-all;word-wrap:break-word;}
+.shoplist .cloth_shoplist li .name a{color:#333;font-size:12px;text-decoration:none;}
+.shoplist .cloth_shoplist li .name a:hover{color:#fa5000;text-decoration: underline;}
+.shoplist .cloth_shoplist li .name .key_word{color:#c30;}
+.shoplist .cloth_shoplist li .name:hover{color:#fa5000;}
+.shoplist .cloth_shoplist li .name:hover .key_word{color:#fa5000;}
+.shoplist .cloth_shoplist li .search_hot_word{width: 200px; height:20px;line-height:20px;color: #fa5000;overflow: hidden;font-size: 12px;}

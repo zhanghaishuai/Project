@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC
+    "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+    "http://struts.apache.org/dtds/struts-2.0.dtd">
+    
+<struts>
+	<package name="sys" extends="beio-default" namespace="/sys">
+	
+		<!-- 查询正则 -->
+		<action name="queryRegex" class="sysAction" method="queryRegex">
+			<result name="json" type="json">
+				<param name="root">root</param>
+			</result>
+			<interceptor-ref name="defaultStack"/>
+		</action>
+		
+		<!-- 查询提示 -->
+		<action name="queryTip" class="sysAction" method="queryTip">
+			<result name="json" type="json">
+				<param name="root">root</param>
+			</result>
+			<interceptor-ref name="defaultStack"/>
+		</action>
+		
+		<!-- 发送验证码 -->
+		<action name="sendSmsVerifyCode" class="sysAction" method="sendSmsVerifyCode">
+			<result name="json" type="json">
+				<param name="root">root</param>
+			</result>
+			<interceptor-ref name="defaultStack"/>
+		</action>
+		
+		<!-- 会员是否存在 -->
+		<action name="isMemberExist" class="sysAction" method="isMemberExist">
+			<result name="json" type="json">
+				<param name="root">root</param>
+			</result>
+			<interceptor-ref name="defaultStack"/>
+		</action>
+		
+		<!-- 用户注册 -->
+		<action name="register" class="sysAction" method="register">
+			<result name="json" type="json">
+				<param name="root">root</param>
+			</result>
+			<interceptor-ref name="defaultStack"/>
+		</action>
+		
+		<!-- 用户登录 -->
+		<action name="login" class="sysAction" method="login">
+			<result name="json" type="json">
+				<param name="root">root</param>
+			</result>
+			<interceptor-ref name="defaultStack"/>
+		</action>
+		
+		<!-- 用户注销 -->
+		<action name="logout" class="sysAction" method="logout">
+			<result name="json" type="json">
+				<param name="root">root</param>
+			</result>
+			<interceptor-ref name="defaultStack"/>
+		</action>
+		
+		<!-- 找回密码（填写手机） -->
+		<action name="findPwdFillMobile" class="sysAction" method="findPwdFillMobile">
+			<result name="json" type="json">
+				<param name="root">root</param>
+			</result>
+			<interceptor-ref name="defaultStack"/>
+		</action>
+		
+		<!-- 找回密码（验证身份） -->
+		<action name="findPwdValidIdentity" class="sysAction" method="findPwdValidIdentity">
+			<result name="json" type="json">
+				<param name="root">root</param>
+			</result>
+			<interceptor-ref name="defaultStack"/>
+		</action>
+		
+		<!-- 会话用户 -->
+		<action name="querySessionMember" class="sysAction" method="querySessionMember">
+			<result name="json" type="json">
+				<param name="root">root</param>
+			</result>
+			<interceptor-ref name="defaultStack"/>
+		</action>
+		
+		<!-- 找回密码（重置密码） -->
+		<action name="findPwdResetPwd" class="sysAction" method="findPwdResetPwd">
+			<result name="json" type="json">
+				<param name="root">root</param>
+			</result>
+			<interceptor-ref name="defaultStack"/>
+		</action>
+		
+		<!-- 修改个人信息 -->
+		<action name="modifyMemberInfo" class="sysAction" method="modifyMemberInfo">
+			<result name="json" type="json">
+				<param name="root">root</param>
+			</result>
+			<interceptor-ref name="identityStack"/>
+		</action>
+		
+	</package>
+</struts>
+
