@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC
+    "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+    "http://struts.apache.org/dtds/struts-2.0.dtd">
+    
+<struts>
+	<package name="goods" extends="beio-default" namespace="/goods">
+	
+		<!-- 商品搜索 -->
+		<action name="search" class="goodsAction" method="search">
+			<result name="json" type="json">
+				<param name="root">root</param>
+			</result>
+			<interceptor-ref name="defaultStack"/>
+		</action>
+		
+		<!-- 头部信息 -->
+		<action name="queryTopInfo" class="goodsAction" method="queryTopInfo">
+			<result name="json" type="json">
+				<param name="root">root</param>
+			</result>
+			<interceptor-ref name="defaultStack"/>
+		</action>
+		
+		<!-- 商品轮播 -->
+		<action name="queryIndexInfo" class="goodsAction" method="queryIndexInfo">
+			<result name="json" type="json">
+				<param name="root">root</param>
+			</result>
+			<interceptor-ref name="defaultStack"/>
+		</action>
+		
+	</package>
+</struts>
+

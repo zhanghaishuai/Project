@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="goods">
+
+	<!-- 搜索记录 -->
+	<insert id="insertSearch" parameterType="GdsSearch">
+		insert into gds_search(id, keyword, creator, createTime) values(#{id}, #{keyword}, #{creator}, #{createTime});
+	</insert>
+
+	<!-- 查询热搜 -->
+	<select id="queryHotKeyword" parameterType="GdsSearch" resultType="GdsSearch">
+		SELECT keyword FROM gds_search GROUP BY keyword ORDER BY COUNT(1) DESC LIMIT 8;
+	</select>
+	
+	<!-- 查询导航 -->
+	<select id="queryNavbars" parameterType="GdsNavbar" resultType="GdsNavbar">
+		SELECT * FROM gds_navbar WHERE enable = '1' AND exist = '1' ORDER BY sort ASC;
+	</select>
+	
+	<!-- 查询分类 -->
+	<select id="queryClassifys" parameterType="GdsClassify" resultType="GdsClassify">
+		SELECT * FROM gds_classify WHERE enable = '1' AND exist = '1' 
+		<if test="pid != null and pid != ''">
+			AND pid = #{pid} 
+		</if>
+		<if test="level != null and level != ''">
+			AND level = #{level} 
+		</if>
+		ORDER BY level ASC , pid ASC , sort ASC;
+	</select>
+	
+	<!-- 根据分类查询商品 -->
+	<select id="queryGoodsByClassify1" parameterType="GdsGoods" resultType="GdsClassify">
+		SELECT 
+		    goods.*
+		FROM
+		    gds_goods goods
+		<choose>
+			<when test='level == "2"'>
+				WHERE goods.categoryID = #{id}
+			</when>
+			<when test='level == "1"'>
+				INNER JOIN gds_category category ON goods.categoryID = category.id AND category.pid = #{id}
+			</when>
+			<otherwise>
+				WHERE 1 = 0
+			</otherwise>
+		</choose>
+		LIMIT 10
+	</select>
+	
+	<!-- 根据分类查询商品 -->
+	<select id="queryImagesByGoods" parameterType="GdsImage" resultType="GdsGoods">
+		SELECT 
+		    goods.*
+		FROM
+		    gds_goods goods
+		<choose>
+			<when test='level == "2"'>
+				WHERE goods.categoryID = #{id}
+			</when>
+			<when test='level == "1"'>
+				INNER JOIN gds_category category ON goods.categoryID = category.id AND category.pid = #{id}
+			</when>
+			<otherwise>
+				WHERE 1 = 0
+			</otherwise>
+		</choose>
+		LIMIT 10
+	</select>
+	
+	<!-- 查询商品轮播 -->
+	<select id="queryBanners" parameterType="GdsBanner" resultType="GdsBanner">
+		SELECT * FROM gds_banner WHERE enable = '1' AND exist = '1' ORDER BY sort ASC;
+	</select>
+	
+</mapper>
