@@ -314,8 +314,8 @@ var htmlbuild = {
 		</div>\
 	</div>'
 };
-$(function() {
-	// 自动登陆
+//自动登陆
+function initHtml(){
 	autologin(function(member){
 		if (member != '' && member != null && member != undefined) {
 			$('.hi').html('尊敬的会员<span>'+(member.nickName == '' ? member.mobile : member.nickName)+'</span>,您好。');
@@ -412,7 +412,7 @@ $(function() {
 			}
 		});
 	});
-});
+}
 // 热搜
 function search(keyword){
 	$.ajax({
