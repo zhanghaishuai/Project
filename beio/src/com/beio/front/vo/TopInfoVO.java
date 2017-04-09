@@ -2,6 +2,7 @@ package com.beio.front.vo;
 
 import java.util.List;
 
+import com.beio.base.vo.Page;
 import com.beio.front.entity.GdsClassify;
 import com.beio.front.entity.GdsNavbar;
 import com.beio.front.entity.GdsSearch;
@@ -12,7 +13,7 @@ import com.beio.front.entity.GdsSearch;
  * @date 2017-04-09
  * @version 1.0.0
  */
-public class TopInfoVO {
+public class TopInfoVO extends Page{
 
 	private List<GdsSearch> searchs = null;
 	

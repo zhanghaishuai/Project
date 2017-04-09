@@ -1,4 +1,5 @@
 $(function(){
+	initHtml(true);
 	$.ajax({
 		url : '/beio/goods/queryIndexInfo',
 		type : 'POST',
@@ -7,15 +8,16 @@ $(function(){
 		dataType : 'json',
 		success : function(data) {
 			if (data.status == '200') {
+				JSON.stringify(data);
 				$.each(data.result.banners, function(i, item){
 					$('#slidecontent').append('<li><a href="'+item.url+'"><img src="'+item.path+'" width="772" height="310"></a></li>');
 					$('#slidelabel_nav').append('<li>'+(++i)+'</li>');
 				});
 				$.each(data.result.classifys, function(i, item){
-					if(item.goods != null){
+					if((item.goods != null && item.goods.length > 0)){
 						$('.shoplist').append('<div class="home_classify"><div class="head"><span class="title">'+item.name+'</span></div><ul class="bigimg cloth_shoplist"></ul></div>');
 						$.each(item.goods, function(i, item){
-							var picPath = item.shows != null ? picPath = item.shows[0].midPath : "";
+							var picPath = (item.shows != null && item.shows.length > 0) ? picPath = item.shows[0].midPath : "";
 							var priceHM = data.result.login ? 
 								'<span class="price_n">'+item.mPrice+'</span><span class="price_r">'+item.cPrice+'</span>'
 									: '<span class="price_n">'+item.cPrice+'</span>';

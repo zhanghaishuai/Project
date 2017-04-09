@@ -7,10 +7,12 @@ import com.beio.base.util.CacheUtil;
 import com.beio.base.util.ComUtil;
 import com.beio.front.dao.GoodsService;
 import com.beio.front.entity.GdsClassify;
+import com.beio.front.entity.GdsGoods;
 import com.beio.front.entity.GdsImage;
 import com.beio.front.vo.ClassifyVO;
 import com.beio.front.vo.GoodsVO;
 import com.beio.front.vo.IndexInfoVO;
+import com.beio.front.vo.SearchInfoVO;
 import com.beio.front.vo.TopInfoVO;
 
 /**
@@ -53,26 +55,79 @@ public class GoodsServiceImpl extends BaseIbatisServiceImpl implements GoodsServ
 				GdsClassify classify = new GdsClassify();
 				classify.setLevel("1");
 				classify.setIsShow("1");
-				List<ClassifyVO> cvs = selectList("goods.queryClassifys", classify);
-				if (ComUtil.isNotEmpty(cvs)) {
-					for (ClassifyVO classifyVO : cvs) {
-						List<GoodsVO> gvs = selectList("goods.queryGoodsByClassify", classifyVO);
-						if (ComUtil.isNotEmpty(gvs)) {
-							classifyVO.setGoods(gvs);
-							for (GoodsVO goodsVO : gvs) {
-								List<GdsImage> shows = selectList("goods.queryShowsByGoods", goodsVO);
-								if (ComUtil.isNotEmpty(shows)) {
-									goodsVO.setShows(shows);
-								}
-							}
-						}
-					}
-				}
-				index.setClassifys(cvs);
+				index.setClassifys(queryClassify(classify));
 				CacheUtil.setCache(CacheUtil.GLOBALINDEXINFO, index);
 			}
 		}
 		return (IndexInfoVO) CacheUtil.getCache(CacheUtil.GLOBALINDEXINFO);
+	}
+	
+	@Override
+	public SearchInfoVO querySearchInfo(SearchInfoVO searchInfoVO) throws Exception {
+		SearchInfoVO searchInfo = new SearchInfoVO();
+		searchInfo.setGoods(queryGoods(searchInfoVO));
+		searchInfo.setBrands(selectList("goods.queryBrands"));
+		searchInfo.setClassifys(selectList("goods.queryClassifysBySearch", searchInfoVO));
+		searchInfo.setNavClassifys(selectList("goods.queryClassifyNavBar", searchInfoVO));
+		return searchInfo;
+	}
+	
+	/**
+	 * 查询商品分类
+	 * @param classify
+	 * @return
+	 * @throws Exception
+	 */
+	private List<ClassifyVO> queryClassify(GdsClassify classify) throws Exception{
+		List<ClassifyVO> cvs = selectList("goods.queryClassifys", classify);
+		if (ComUtil.isNotEmpty(cvs)) {
+			for (ClassifyVO classifyVO : cvs) {
+				classifyVO.setGoods(queryGoods(classifyVO));
+			}
+		}
+		return cvs;
+	}
+	
+	/**
+	 * 查询商品信息
+	 * @param classify
+	 * @return
+	 * @throws Exception
+	 */
+	private List<GoodsVO> queryGoods(GdsClassify classify) throws Exception{
+		List<GoodsVO> gvs = selectList("goods.queryGoodsByClassify", classify);
+		if (ComUtil.isNotEmpty(gvs)) {
+			for (GoodsVO goodsVO : gvs) {
+				goodsVO.setShows(queryShowImage(goodsVO));
+			}
+		}
+		return gvs;
+	}
+	
+	/**
+	 * 查询商品信息
+	 * @param classify
+	 * @return
+	 * @throws Exception
+	 */
+	private List<GoodsVO> queryGoods(SearchInfoVO searchInfoVO) throws Exception{
+		List<GoodsVO> gvs = selectList("goods.queryGoodsBySearch", searchInfoVO);
+		if (ComUtil.isNotEmpty(gvs)) {
+			for (GoodsVO goodsVO : gvs) {
+				goodsVO.setShows(queryShowImage(goodsVO));
+			}
+		}
+		return gvs;
+	}
+	
+	/**
+	 * 查询显示图片
+	 * @param goods
+	 * @return
+	 * @throws Exception
+	 */
+	private List<GdsImage> queryShowImage(GdsGoods goods) throws Exception{
+		return selectList("goods.queryShowsByGoods", goods);
 	}
 	
 	/**
@@ -100,5 +155,5 @@ public class GoodsServiceImpl extends BaseIbatisServiceImpl implements GoodsServ
 			}
 		}
 	}
-	
+
 }

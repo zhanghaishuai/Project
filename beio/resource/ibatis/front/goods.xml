@@ -5,68 +5,119 @@
 <mapper namespace="goods">
 
 	<!-- 搜索记录 -->
-	<insert id="insertSearch" parameterType="GdsSearch">
-		insert into gds_search(id, keyword, creator, createTime) values(#{id}, #{keyword}, #{creator}, #{createTime});
+	<insert id="insertSearch" parameterType="Object">
+		insert into gds_search(id, keyword, creator, createTime) 
+			values(#{id}, #{keyword}, #{creator}, #{createTime});
 	</insert>
+	
+	<!-- 查询导航 -->
+	<select id="queryNavbars" parameterType="Object" resultType="GdsNavbar">
+		SELECT * FROM gds_navbar WHERE enable = '1' AND exist = '1' ORDER BY sort + '' ASC;
+	</select>
 
 	<!-- 查询热搜 -->
-	<select id="queryHotKeyword" parameterType="GdsSearch" resultType="GdsSearch">
+	<select id="queryHotKeyword" parameterType="Object" resultType="GdsSearch">
 		SELECT keyword FROM gds_search GROUP BY keyword ORDER BY COUNT(1) DESC LIMIT 8;
 	</select>
 	
-	<!-- 查询导航 -->
-	<select id="queryNavbars" parameterType="GdsNavbar" resultType="GdsNavbar">
-		SELECT * FROM gds_navbar WHERE enable = '1' AND exist = '1' ORDER BY sort ASC;
+	<!-- 查询轮播 -->
+	<select id="queryBanners" parameterType="Object" resultType="GdsBanner">
+		SELECT * FROM gds_banner WHERE enable = '1' AND exist = '1' ORDER BY sort + '' ASC;
 	</select>
 	
 	<!-- 查询分类 -->
-	<select id="queryClassifys" parameterType="GdsClassify" resultType="ClassifyVO">
+	<select id="queryBrands" parameterType="Object" resultType="GdsBrand">
+		SELECT * FROM gds_brand WHERE enable = '1' AND exist = '1' ORDER BY sort + '' ASC;
+	</select>
+	
+	<!-- 查询分类 -->
+	<select id="queryClassifys" parameterType="Object" resultType="ClassifyVO">
 		SELECT * FROM gds_classify WHERE enable = '1' AND exist = '1' 
 		<if test="level != null and level != ''">
 			AND level = #{level} 
 		</if>
-		<if test="pid != null and pid != ''">
-			AND pid = #{pid} 
-		</if>
 		<if test="isShow != null and isShow != ''">
 			AND isShow = #{isShow} 
 		</if>
-		ORDER BY level ASC , pid ASC , sort ASC;
+		ORDER BY level + '' ASC , pid + '' ASC , sort + '' ASC;
 	</select>
 	
 	<!-- 根据分类查询商品 -->
-	<select id="queryGoodsByClassify" parameterType="GdsClassify" resultType="GoodsVO">
-		SELECT 
-		    goods.*
-		FROM
-		    gds_goods goods
-		<choose>
-			<when test='level == "2"'>
-				WHERE goods.classifyID = #{id}
-			</when>
-			<when test='level == "1"'>
-				INNER JOIN gds_classify classify ON goods.classifyID = classify.id AND classify.pid = #{id}
-			</when>
-			<otherwise>
-				WHERE 1 = 0
-			</otherwise>
-		</choose>
+	<select id="queryGoodsByClassify" parameterType="Object" resultType="GoodsVO">
+		SELECT goods.* FROM gds_goods goods
+		<if test="id != null and id != ''">
+			INNER JOIN
+			(SELECT id FROM gds_classify WHERE id = #{id} 
+				UNION ALL 
+				SELECT id FROM gds_classify WHERE pid = #{id} 
+			) classify ON goods.classifyID = classify.id
+		</if>
+		WHERE goods.enable = '1' AND goods.exist = '1'
+		ORDER BY goods.heatUp + '' DESC
 		LIMIT #{firstResult}, #{maxResults};
 	</select>
 	
 	<!-- 根据商品查询展示图 -->
-	<select id="queryShowsByGoods" parameterType="GdsGoods" resultType="GdsImage">
+	<select id="queryShowsByGoods" parameterType="Object" resultType="GdsImage">
 		SELECT * FROM gds_image WHERE enable = '1' AND exist = '1' AND category = '0' AND goodsID = #{id};
 	</select>
 	
 	<!-- 根据商品查询详情图 -->
-	<select id="queryDetailsByGoods" parameterType="GdsGoods" resultType="GdsImage">
+	<select id="queryDetailsByGoods" parameterType="Object" resultType="GdsImage">
 		SELECT * FROM gds_image WHERE enable = '1' AND exist = '1' AND category = '1' AND goodsID = #{id};
 	</select>
 	
-	<!-- 查询商品轮播 -->
-	<select id="queryBanners" parameterType="GdsBanner" resultType="GdsBanner">
-		SELECT * FROM gds_banner WHERE enable = '1' AND exist = '1' ORDER BY sort ASC;
+	<!-- 查询分类导航-->
+	<select id="queryClassifyNavBar" parameterType="Object" resultType="GdsClassify">
+		SELECT * FROM gds_classify WHERE enable = '1' AND exist = '1' 
+		<choose>
+			<when test="category != null and category != ''">
+				AND id = #{category}
+				UNION ALL 
+				SELECT * FROM gds_classify WHERE id = ( 
+					SELECT pid FROM gds_classify WHERE id = #{category} 
+				) 
+			</when>
+			<otherwise>
+				AND 1=0
+			</otherwise>
+		</choose>
+		ORDER BY level + '' ASC 
+	</select>
+	
+	<!-- 查询分类 -->
+	<select id="queryClassifysBySearch" parameterType="Object" resultType="GdsClassify">
+		SELECT * FROM gds_classify WHERE enable = '1' AND exist = '1' 
+		<choose>
+			<when test="category != null and category != ''">
+				AND pid = #{category} 
+			</when>
+			<otherwise>
+				AND pid = '0' 
+			</otherwise>
+		</choose>
+		ORDER BY level + '' ASC , pid + '' ASC , sort + '' ASC;
+	</select>
+	
+	<!-- 根据分类查询商品 -->
+	<select id="queryGoodsBySearch" parameterType="Object" resultType="GoodsVO">
+		SELECT goods.* FROM gds_goods goods
+		<if test="category != null and category != ''">
+			INNER JOIN
+			(SELECT id FROM gds_classify WHERE id = #{category} 
+				UNION ALL 
+				SELECT id FROM gds_classify WHERE pid = #{category} 
+			) classify ON goods.classifyID = classify.id
+		</if>
+		WHERE goods.enable = '1' AND goods.exist = '1'
+		<if test="brand != null and brand != ''">
+			AND goods.brandID = #{brand} 
+		</if>
+		<if test="keyword != null and keyword != ''">
+			AND goods.name REGEXP #{keyword}
+		</if>
+		ORDER BY goods.heatUp + '' DESC
+		LIMIT #{firstResult}, #{maxResults};
 	</select>
 	
 </mapper>

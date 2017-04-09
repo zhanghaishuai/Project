@@ -1,23 +1,20 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>网上商城</title><meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-<meta name="description" content="图书、音像、母婴、美妆、家居、数码3C、服装、鞋包" />
-<meta name="keywords" content="网上购物，网上商城，网上买书，购物中心，在线购物，图书，影视，音像，教育音像，CD， DVD，百货，母婴，家居，家纺，厨具，化妆品，美妆，个人护理用品，数码，电脑，笔记本，u盘，手机，mp3，mp4，数码相机，摄影，摄像，家电，软件，游戏，服装，鞋，礼品箱包，钟表首饰，玩具，运动健康用品" />
-<link rel="Stylesheet" type="text/css" href="css/top.css" />
-<link rel="Stylesheet" type="text/css" href="css/center.css" />
-<link rel="Stylesheet" type="text/css" href="css/bottom.css" />
-<link rel="Stylesheet" type="text/css" href="css/search.css" />
-
-<script type="text/javascript" src="js/jquery/jquery.js"></script>
-<script type="text/javascript" src="js/top.js"></script>
-<script type="text/javascript" src="js/menu.js"></script>
-<script type="text/javascript" src="js/bottom.js"></script>
-<script type="text/javascript" src="js/search.js"></script>
+    <meta charset="utf-8"/>
+    <title>商城搜索</title>
+    <link rel="icon" href="#"/>
+    <link type="text/css" rel="stylesheet" href="css/htmlbuild.css"/>  
+    <link rel="Stylesheet" type="text/css" href="css/search.css" /> 
+    <script type="text/javascript" src="js/jquery/jquery.js"></script>
+    <script type="text/javascript" src="js/htmlbuild.js"></script>
+    <script type="text/javascript" src="js/initcache.js"></script>
+    <script type="text/javascript" src="js/autologin.js"></script>
+    <script type="text/javascript" src="js/search.js"></script>
 </head>
 <body>
 <script type="text/javascript">
-	window.document.write(initTopHtml());
+	window.document.write(htmlbuild.topHtml);
 </script>
 
 <div id="bd">
@@ -26,51 +23,25 @@
 			<div class="spacer"></div>
 			<div class="crumbs_fb clearfix">
    				<div class="crumbs_fb_left">
-       				<span class="sp"><a href="#" class="a">所有</a></span>
-       				<span class="sp">&gt;</span>
-       				<span class="sp"><a href="#" class="a">食品</a></span>
-       				<span class="sp">&gt;</span>
+       				<span class="sp"><a href="search.html" class="a">所有分类</a></span>
    				</div>
-   				<span class="sp total">共<em class="b">296</em>件商品</span>
 			</div>
 			<div class="spacer"></div>
 			<div class="filtrate_box clearfix">
         		<ul class="filtrate_list" style="height: auto;">
-                    <li class="child_li first_sort" style="height:35px;overflow:hidden;display:block;">
+                    <li class="child_li first_sort" style="display:block;">
                     <div class="list_left" title="分类">分类</div>
                     <div class="list_right">
                         <div class="list_content fix_list">
-                            <div class="clearfix">
-                                <span><a href="#" title="休闲零食"><em></em>休闲零食</a></span>
-                                <span><a href="#" title="茶"><em></em>茶</a></span>
-                                <span><a href="#" title="干货"><em></em>干货</a></span>
-                                <span><a href="#" title="进口食品"><em></em>进口食品</a></span>
-                                <span><a href="#" title="地方特产"><em></em>地方特产</a></span>
-                            </div>
-                        </div>
-                        <a href="javascript:void(0);" class="btn btn_choose">多选</a>
-                        <div class="btn_box btn_box2" style="display: none">
-                            <a href="javascript:void(0);" class="btn btn_yes btn_disable">确定</a>
-                            <a href="javascript:void(0);" class="btn btn_no">取消</a>
+                            <div class="clearfix classify"></div>
                         </div>
                     </div>
                 	</li>
-                	<li class="child_li" style="height:35px;overflow:hidden;display:block;">
+                	<li class="child_li" style="display:block;">
                     <div class="list_left" title="品牌">品牌</div>
                     <div class="list_right">
                         <div class="list_content fix_list">
-                            <div class="clearfix" id="1">
-                                <span><a href="#" title="三只松鼠"><em></em>三只松鼠</a></span>
-                                <span><a href="#" title="松鼠小贱"><em></em>松鼠小贱</a></span>
-                                <span><a href="#" title="松鼠小美"><em></em>松鼠小美</a></span>
-                                <span><a href="#" title="九日"><em></em>九日</a></span>
-                                <span><a href="#" title="可瑞安"><em></em>可瑞安</a></span>
-                            </div>
-                        </div>
-                        <a href="javascript:void(0);" class="btn btn_choose">多选</a>
-                        <div class="btn_box btn_box2" style="display: none">
-                            <a href="javascript:void(0);" class="btn btn_yes btn_disable">确定</a>
-                            <a href="javascript:void(0);" class="btn btn_no">取消</a>
+                            <div class="clearfix brands"></div>
                         </div>
                     </div>
                 	</li>
@@ -376,7 +347,7 @@
 </div>
 
 <script type="text/javascript">
-	window.document.write(initBottomHtml());
+	window.document.write(htmlbuild.btmHtml);
 </script>
 </body>
 </html>

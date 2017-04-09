@@ -2,15 +2,16 @@ package com.beio.front.vo;
 
 import java.util.List;
 
+import com.beio.base.vo.Page;
 import com.beio.front.entity.GdsBanner;
 
 /**
- * 头部值对象
+ * 首页值对象
  * @author zhs
  * @date 2017-04-09
  * @version 1.0.0
  */
-public class IndexInfoVO {
+public class IndexInfoVO extends Page{
 
 	private List<GdsBanner> banners = null;
 	

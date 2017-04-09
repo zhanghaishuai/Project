@@ -4,6 +4,7 @@ import com.beio.base.action.BaseAction;
 import com.beio.front.dao.GoodsService;
 import com.beio.front.entity.GdsSearch;
 import com.beio.front.vo.IndexInfoVO;
+import com.beio.front.vo.SearchInfoVO;
 import com.beio.front.vo.TopInfoVO;
 
 /**
@@ -19,6 +20,8 @@ public class GoodsAction extends BaseAction{
 	GoodsService goodsService;
 	
 	private GdsSearch gdsSearch;
+	
+	private SearchInfoVO searchInfo;
 	
 	/**
 	 * 商品搜索
@@ -55,6 +58,16 @@ public class GoodsAction extends BaseAction{
 		setRoot(index, "200");
 		return JSON;
 	}
+	
+	/**
+	 * 搜索信息
+	 * @return
+	 * @throws Exception
+	 */
+	public String querySearchInfo() throws Exception{
+		setRoot(goodsService.querySearchInfo(searchInfo), "200");
+		return JSON;
+	}
 
 	public GoodsService getGoodsService() {
 		return goodsService;
@@ -71,5 +84,13 @@ public class GoodsAction extends BaseAction{
 	public void setGdsSearch(GdsSearch gdsSearch) {
 		this.gdsSearch = gdsSearch;
 	}
-	
+
+	public SearchInfoVO getSearchInfo() {
+		return searchInfo;
+	}
+
+	public void setSearchInfo(SearchInfoVO searchInfo) {
+		this.searchInfo = searchInfo;
+	}
+
 }

@@ -314,8 +314,9 @@ var htmlbuild = {
 		</div>\
 	</div>'
 };
+
 //自动登陆
-function initHtml(){
+function initHtml(index){
 	autologin(function(member){
 		if (member != '' && member != null && member != undefined) {
 			$('.hi').html('尊敬的会员<span>'+(member.nickName == '' ? member.mobile : member.nickName)+'</span>,您好。');
@@ -362,20 +363,35 @@ function initHtml(){
 		});
 	}, false);
 	
-	// 显示分类菜单
-	$('.home_nav_l').css('display', 'block');
-	// 显示详细菜单
-	$('.home_nav_l > .new_pub_nav > .navli').hover(function(){
-		$('.navli').removeClass('on');
-		$('.new_pub_nav_pop').css('display', 'none');
-		$(this).addClass('on');
-		$('#'+$(this).attr('id')+'_child').css('display', 'block');
-	},false);
-	// 隐藏详细菜单
-	$('.home_nav_l').hover(null,function(){
-		$('.new_pub_nav_pop').css('display', 'none');
-		$('.navli').removeClass('on');
-	});
+	if(index != true) {
+		// 菜单展开
+		$('.all').hover(function(){$('.home_nav_l').slideDown(100);},false);
+		$('.home_nav_l > .new_pub_nav > .navli').hover(function(){
+			$('.navli').removeClass('on');
+			$('.new_pub_nav_pop').css('display', 'none');
+			$(this).addClass('on');
+			$('#'+$(this).attr('id')+'_child').css('display', 'block');
+		},false);
+		// 菜单收起
+		$('.home_nav_l').hover(null,function(){
+			$('.home_nav_l').slideUp(100);
+		});
+	} else {
+		// 显示分类菜单
+    	$('.home_nav_l').css('display', 'block');
+    	// 显示详细菜单
+    	$('.home_nav_l > .new_pub_nav > .navli').hover(function(){
+    		$('.navli').removeClass('on');
+    		$('.new_pub_nav_pop').css('display', 'none');
+    		$(this).addClass('on');
+    		$('#'+$(this).attr('id')+'_child').css('display', 'block');
+    	},false);
+    	// 隐藏详细菜单
+    	$('.home_nav_l').hover(null,function(){
+    		$('.new_pub_nav_pop').css('display', 'none');
+    		$('.navli').removeClass('on');
+    	});
+	}
 	
 	// 搜索
 	$('#searchBtn').click(function(){

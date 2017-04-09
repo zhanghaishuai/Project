@@ -30,6 +30,14 @@
 			<interceptor-ref name="defaultStack"/>
 		</action>
 		
+		<!-- 搜索信息 -->
+		<action name="querySearchInfo" class="goodsAction" method="querySearchInfo">
+			<result name="json" type="json">
+				<param name="root">root</param>
+			</result>
+			<interceptor-ref name="defaultStack"/>
+		</action>
+		
 	</package>
 </struts>
 
