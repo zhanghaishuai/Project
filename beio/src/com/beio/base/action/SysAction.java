@@ -198,7 +198,7 @@ public class SysAction extends BaseAction{
 			}
 		}
 		
-		SysMember m = getBaseIbaitsService().selectOne("sys.login", mr);
+		SysMember m = (SysMember) getBaseIbaitsService().selectOne("sys.login", mr);
 		if (m == null) {
 			setRoot("190");
 			return JSON;

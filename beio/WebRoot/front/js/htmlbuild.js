@@ -26,10 +26,10 @@ var htmlbuild = {
 					</div>\
 				</div>\
 				<div class="new_cart">\
-					<a href="car.html"><i class="icon_card"></i>购物车<b id="cart_items_count"></b></a>\
+					<a href="car.html"><i class="icon_card"></i>购物车<b id="cart_num"></b></a>\
 				</div>\
 				<div class="new_order">\
-					<a href="myhome_order.html">我的订单<b id="unpaid_num"></b></a>\
+					<a href="myhome_order.html">我的订单<b id="order_num"></b></a>\
 				</div>\
 			</div>\
 		</div>\
@@ -314,3 +314,121 @@ var htmlbuild = {
 		</div>\
 	</div>'
 };
+$(function() {
+	// 自动登陆
+	autologin(function(member){
+		if (member != '' && member != null && member != undefined) {
+			$('.hi').html('尊敬的会员<span>'+(member.nickName == '' ? member.mobile : member.nickName)+'</span>,您好。');
+			$('.head_operate_nav').html('<li><a href="myhome_info.html">个人中心</a></li><li><a href="javascript:void(0);" id="logout">注销</a></li>');
+		}
+		$.ajax({
+			url : '/beio/goods/queryTopInfo',
+			type : 'POST',
+			async : false,
+			cache : true,
+			dataType : 'json',
+			success : function(data) {
+				if (data.status == '200') {
+					$.each(data.result.searchs, function(i, item){
+						if(i == 0){
+							$('#searchInp').attr('placeholder', item.keyword);
+						}
+						$('.search_hot').append('<a href="javascript:void(0);">' + item.keyword + '</a>');
+					});
+					$.each(data.result.classifys, function(i, item){
+						if(item.level == '1'){
+							$('.new_pub_nav').append('<li id="nav_'+item.id+'" class="navli"><span class="nav"><a href="search.html?category='+item.id+'">'+item.name+'</a></span></li>');
+							$('.new_pub_nav').after('<div id="nav_'+item.id+'_child" class="new_pub_nav_pop"><div class="pop_column"></div></div>');
+						}else if(item.level == '2'){
+							if($('#nav_'+item.pid+'_child') != null && $('#nav_'+item.pid+'_child') != undefined){
+								$('#nav_'+item.pid+'_child > .pop_column').append('<div class="pop_row"><a href="search.html?category='+item.id+'">'+item.name+'</a></div>');
+							}
+						}
+					});
+					$.each(data.result.navbars, function(i, item){
+						$('.nav_top > ul').append('<li><a href="'+item.url+'">'+item.name+'</a></li>');
+					});
+					if(data.result.login == true){
+						$('#cart_num').html(data.result.cartNum);
+						$('#order_num').html(data.result.orderNum);
+					}
+				} else {
+					alert(tip('400'));
+				};
+			},
+			error : function() {
+				alert(tip('500'));
+			}
+		});
+	}, false);
+	
+	// 显示分类菜单
+	$('.home_nav_l').css('display', 'block');
+	// 显示详细菜单
+	$('.home_nav_l > .new_pub_nav > .navli').hover(function(){
+		$('.navli').removeClass('on');
+		$('.new_pub_nav_pop').css('display', 'none');
+		$(this).addClass('on');
+		$('#'+$(this).attr('id')+'_child').css('display', 'block');
+	},false);
+	// 隐藏详细菜单
+	$('.home_nav_l').hover(null,function(){
+		$('.new_pub_nav_pop').css('display', 'none');
+		$('.navli').removeClass('on');
+	});
+	
+	// 搜索
+	$('#searchBtn').click(function(){
+		if (/^\S+$/.test($('#searchInp').val()) == true) {
+			search($('#searchInp').val());
+		}else {
+			search($('#searchInp').attr('placeholder'));
+		}
+	});
+	// 热搜
+	$('.search_hot > a:gt(0)').click(function(){
+		search($(this).html());
+	});
+	
+	// 注销
+	$('#logout').click(function(){
+		$.ajax({
+			url : '/beio/sys/logout',
+			type : 'POST',
+			async : false,
+			cache : true,
+			dataType : 'json',
+			success : function(data) {
+				if (data.status == '200') {
+					localStorage.removeItem('mobile');
+					localStorage.removeItem('password');
+					window.location.href = 'login.html';
+				} else {
+					alert(tip('400'));
+				};
+			},
+			error : function() {
+				alert(tip('500'));
+			}
+		});
+	});
+});
+// 热搜
+function search(keyword){
+	$.ajax({
+		url : '/beio/goods/search',
+		data : {'gdsSearch.keyword' : keyword},
+		type : 'POST',
+		async : false,
+		cache : true,
+		dataType : 'json',
+		success : function(data) {
+			if (data.resp == '1') {
+				window.location.href = 'search.html?keyword=' + keyword;
+			}else {
+				alert(data.msg);
+			}
+		},
+		error : function() {}
+	});
+}

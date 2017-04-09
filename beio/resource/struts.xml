@@ -48,4 +48,6 @@
 	<include file="struts/base/image.xml" />
 	<include file="struts/base/sys.xml" />
 	
+	<include file="struts/front/goods.xml" />
+	
 </struts>

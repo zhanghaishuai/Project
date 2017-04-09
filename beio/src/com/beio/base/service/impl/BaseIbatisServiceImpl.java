@@ -13,6 +13,7 @@ import com.beio.base.vo.Page;
  * @date 2017-03-29
  * @version 1.0.0
  */
+@SuppressWarnings("rawtypes")
 public class BaseIbatisServiceImpl implements BaseIbaitsService {
 
 	private BaseIbatisDao baseIbatisDao;
@@ -60,38 +61,38 @@ public class BaseIbatisServiceImpl implements BaseIbaitsService {
 	}
 
 	@Override
-	public <T> T selectOne(String arg0) throws Exception {
+	public Object selectOne(String arg0) throws Exception {
 		// TODO Auto-generated method stub
 		return baseIbatisDao.selectOne(arg0);
 	}
 
 	@Override
-	public <T> T selectOne(String arg0, Object arg1) throws Exception {
+	public Object selectOne(String arg0, Object arg1) throws Exception {
 		// TODO Auto-generated method stub
 		return baseIbatisDao.selectOne(arg0, arg1);
 	}
 
 	@Override
-	public <T> List<T> selectList(String arg0) throws Exception {
+	public List selectList(String arg0) throws Exception {
 		// TODO Auto-generated method stub
 		return baseIbatisDao.selectList(arg0);
 	}
 
 	@Override
-	public <T> List<T> selectList(String arg0, Object arg1) throws Exception {
+	public List selectList(String arg0, Object arg1) throws Exception {
 		// TODO Auto-generated method stub
 		return baseIbatisDao.selectList(arg0, arg1);
 	}
 
 	@Override
-	public <T> Map<String, T> selectMap(String arg0, String arg2)
+	public Map selectMap(String arg0, String arg2)
 			throws Exception {
 		// TODO Auto-generated method stub
 		return baseIbatisDao.selectMap(arg0, arg2);
 	}
 
 	@Override
-	public <T> Map<String, T> selectMap(String arg0, Object arg1, String arg2)
+	public Map selectMap(String arg0, Object arg1, String arg2)
 			throws Exception {
 		// TODO Auto-generated method stub
 		return baseIbatisDao.selectMap(arg0, arg1, arg2);

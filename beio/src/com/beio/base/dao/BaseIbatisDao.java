@@ -11,6 +11,7 @@ import com.beio.base.vo.Page;
  * @date 2017-03-29
  * @version 1.0.0
  */
+@SuppressWarnings("rawtypes")
 public interface BaseIbatisDao {
 
 	/**
@@ -77,7 +78,7 @@ public interface BaseIbatisDao {
 	 * @return
 	 * @throws Exception
 	 */
-	public <T> T selectOne(String arg0) throws Exception;
+	public Object selectOne(String arg0) throws Exception;
 
 	/**
 	 * 对象查询
@@ -86,7 +87,7 @@ public interface BaseIbatisDao {
 	 * @return
 	 * @throws Exception
 	 */
-	public <T> T selectOne(String arg0, Object arg1) throws Exception;
+	public Object selectOne(String arg0, Object arg1) throws Exception;
 	
 	/**
 	 * 集合查询
@@ -94,7 +95,7 @@ public interface BaseIbatisDao {
 	 * @return
 	 * @throws Exception
 	 */
-	public <T> List<T> selectList(String arg0) throws Exception;
+	public List selectList(String arg0) throws Exception;
 	
 	/**
 	 * 集合查询
@@ -103,7 +104,7 @@ public interface BaseIbatisDao {
 	 * @return
 	 * @throws Exception
 	 */
-	public <T> List<T> selectList(String arg0, Object arg1) throws Exception;
+	public List selectList(String arg0, Object arg1) throws Exception;
 
 	/**
 	 * 字典查询
@@ -113,7 +114,7 @@ public interface BaseIbatisDao {
 	 * @return
 	 * @throws Exception
 	 */
-	public <T> Map<String, T> selectMap(String arg0, String arg2) throws Exception;
+	public Map selectMap(String arg0, String arg2) throws Exception;
 	
 	/**
 	 * 字典查询
@@ -123,7 +124,7 @@ public interface BaseIbatisDao {
 	 * @return
 	 * @throws Exception
 	 */
-	public <T> Map<String, T> selectMap(String arg0, Object arg1, String arg2) throws Exception;
+	public Map selectMap(String arg0, Object arg1, String arg2) throws Exception;
 
 	/**
 	 * 分页查询

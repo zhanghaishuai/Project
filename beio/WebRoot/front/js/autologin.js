@@ -1,4 +1,4 @@
-function autologin(callback){
+function autologin(callback, marker){
 	$.ajax({
 		url : '/beio/sys/querySessionMember',
 		type : 'POST',
@@ -24,12 +24,18 @@ function autologin(callback){
 						dataType : 'json',
 						success : function(data) {
 							if (data.status == '200') {
-								$('.shadow').remove();
+								if(marker != false){
+									$('.shadow').remove();
+								}
 								callback(data.result);
 							} else if (data.status == '120' || data.status == '122' || data.status == '124' || 
 									data.status == '125' || data.status == '190' || data.status == '192' || data.status == '193') {
-								$('body').append(htmlbuild.loginBox);
-								buildlogin(callback);
+								if(marker != false){
+									$('body').append(htmlbuild.loginBox);
+									buildlogin(callback);
+								}else {
+									callback();
+								}
 							} else {
 								alert(tip('400'));
 							};
@@ -39,8 +45,12 @@ function autologin(callback){
 						}
 					});
 				}else {
-					$('body').append(htmlbuild.loginBox);
-					buildlogin(callback);
+					if (marker != false) {
+						$('body').append(htmlbuild.loginBox);
+						buildlogin(callback);
+					}else {
+						callback();
+					}
 				}
 			} else {
 				alert(tip('400'));

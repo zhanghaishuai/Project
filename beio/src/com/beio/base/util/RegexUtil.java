@@ -24,6 +24,22 @@ public class RegexUtil extends SqlSessionDaoSupport{
 	public void initRegexs() {
 		synchronized (this) {
 			if (ComUtil.isEmpty(regexs)) {
+				regexs.clear();
+				List<SysRegex> list = getSqlSession().selectList("sys.queryRegex");
+				for (SysRegex sysRegex : list) {
+					regexs.put(sysRegex.getName(), sysRegex);
+				}
+			}
+		}
+	}
+	
+	/**
+	 * 初始化正则
+	 */
+	public void initRegexs(String key) {
+		synchronized (this) {
+			if (regexs.get(key) == null) {
+				regexs.clear();
 				List<SysRegex> list = getSqlSession().selectList("sys.queryRegex");
 				for (SysRegex sysRegex : list) {
 					regexs.put(sysRegex.getName(), sysRegex);
@@ -32,13 +48,6 @@ public class RegexUtil extends SqlSessionDaoSupport{
 		}
 	}
 
-	public SysRegex getRegex(String key) {
-		if (ComUtil.isEmpty(regexs)) {
-			initRegexs();
-		}
-		return regexs.get(key);
-	}
-	
 	public Map<String, SysRegex> getRegexs() {
 		if (ComUtil.isEmpty(regexs)) {
 			initRegexs();
@@ -46,4 +55,11 @@ public class RegexUtil extends SqlSessionDaoSupport{
 		return regexs;
 	}
 
+	public SysRegex getRegex(String key) {
+		if (regexs.get(key) == null) {
+			initRegexs(key);
+		}
+		return regexs.get(key);
+	}
+	
 }

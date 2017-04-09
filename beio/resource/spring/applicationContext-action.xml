@@ -10,4 +10,6 @@
 	
 	<bean id="sysAction" class="com.beio.base.action.SysAction" singleton="false"></bean>
 	
+	<bean id="goodsAction" class="com.beio.front.action.GoodsAction" singleton="false"></bean>
+	
 </beans>

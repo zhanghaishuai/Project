@@ -9,11 +9,14 @@
     <script type="text/javascript" src="js/jquery/jquery.js"></script>
     <script type="text/javascript" src="js/htmlbuild.js"></script>
     <script type="text/javascript" src="js/initcache.js"></script>
+    <script type="text/javascript" src="js/autologin.js"></script>
     <script type="text/javascript" src="js/index.js"></script>
+    <script type="text/javascript">
+    </script>
 </head>
 <body>
 <script type="text/javascript">
-	window.document.write(initTopHtml());
+	window.document.write(htmlbuild.topHtml);
 </script>
 
 <div id="bd">
@@ -31,7 +34,7 @@
 </div>
 
 <script type="text/javascript">
-	window.document.write(initBottomHtml());
+	window.document.write(htmlbuild.btmHtml);
 </script>
 </body>
 </html>

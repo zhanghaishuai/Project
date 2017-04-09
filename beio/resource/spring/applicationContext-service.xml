@@ -6,4 +6,6 @@
 
 	<bean id="baseIbaitsService" class="com.beio.base.service.impl.BaseIbatisServiceImpl" singleton="true"></bean>
 	
+	<bean id="goodsService" class="com.beio.front.dao.impl.GoodsServiceImpl" singleton="true"></bean>
+	
 </beans>

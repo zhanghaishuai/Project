@@ -232,7 +232,7 @@ public class BaseAction extends ActionSupport {
 	 * @throws Exception 
 	 */
 	public SysMember queryMember(SysMember member) throws Exception{
-		return baseIbaitsService.selectOne("sys.queryMember", member);
+		return (SysMember) baseIbaitsService.selectOne("sys.queryMember", member);
 	}
 	
 	/**
