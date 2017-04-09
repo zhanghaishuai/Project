@@ -17,6 +17,7 @@ public class ErrorAction extends BaseAction{
 	private Exception exception;
 	
 	public void exception() {
+		exception.printStackTrace();
 		logger.error("Global catch exception:", exception);
 		try {
 			print("The server has a error, Please try again later!");

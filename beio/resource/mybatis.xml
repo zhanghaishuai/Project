@@ -19,6 +19,9 @@
 		<typeAlias type="com.beio.front.entity.GdsSearch" alias="GdsSearch"/>
 		
 		<typeAlias type="com.beio.base.vo.Member" alias="Member"/>
+		<typeAlias type="com.beio.front.vo.ClassifyVO" alias="ClassifyVO"/>
+		<typeAlias type="com.beio.front.vo.GoodsVO" alias="GoodsVO"/>
+		<typeAlias type="com.beio.front.vo.IndexInfoVO" alias="IndexInfoVO"/>
 		<typeAlias type="com.beio.front.vo.TopInfoVO" alias="TopInfoVO"/>
 		
 	</typeAliases>

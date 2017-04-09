@@ -3,6 +3,7 @@ package com.beio.front.action;
 import com.beio.base.action.BaseAction;
 import com.beio.front.dao.GoodsService;
 import com.beio.front.entity.GdsSearch;
+import com.beio.front.vo.IndexInfoVO;
 import com.beio.front.vo.TopInfoVO;
 
 /**
@@ -44,12 +45,14 @@ public class GoodsAction extends BaseAction{
 	}
 	
 	/**
-	 * 商品轮播
+	 * 首页信息
 	 * @return
 	 * @throws Exception
 	 */
 	public String queryIndexInfo() throws Exception{
-		setRoot(goodsService.queryIndexInfo(), "200");
+		IndexInfoVO index = goodsService.queryIndexInfo();
+		index.setLogin(sessionMember() != null ? true : false);
+		setRoot(index, "200");
 		return JSON;
 	}
 

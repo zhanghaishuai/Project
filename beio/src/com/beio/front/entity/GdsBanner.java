@@ -1,12 +1,16 @@
 package com.beio.front.entity;
 
+import com.beio.base.util.ComUtil;
+import com.beio.base.util.PathUtil;
+import com.beio.base.vo.Page;
+
 /**
  * 商品轮播
  * @author zhs
  * @date 2017-04-09
  * @version 1.0.0
  */
-public class GdsBanner {
+public class GdsBanner extends Page{
 
 	private String id; // 主键
 	
@@ -45,6 +49,14 @@ public class GdsBanner {
 	}
 
 	public String getPath() {
+		if (ComUtil.isNotEmpty(path)) {
+			try {
+				return PathUtil.serverPath(path);
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
 		return path;
 	}
 

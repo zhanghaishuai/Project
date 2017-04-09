@@ -1,5 +1,6 @@
 package com.beio.front.dao;
 
+import com.beio.front.vo.IndexInfoVO;
 import com.beio.front.vo.TopInfoVO;
 
 /**
@@ -22,6 +23,6 @@ public interface GoodsService {
 	 * @return
 	 * @throws Exception
 	 */
-	public TopInfoVO queryIndexInfo() throws Exception;
+	public IndexInfoVO queryIndexInfo() throws Exception;
 	
 }

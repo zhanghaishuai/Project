@@ -15,6 +15,8 @@ public class IndexInfoVO {
 	private List<GdsBanner> banners = null;
 	
 	private List<ClassifyVO> classifys = null;
+	
+	private boolean login;
 
 	public List<GdsBanner> getBanners() {
 		return banners;
@@ -30,6 +32,14 @@ public class IndexInfoVO {
 
 	public void setClassifys(List<ClassifyVO> classifys) {
 		this.classifys = classifys;
+	}
+
+	public boolean isLogin() {
+		return login;
+	}
+
+	public void setLogin(boolean login) {
+		this.login = login;
 	}
 	
 }

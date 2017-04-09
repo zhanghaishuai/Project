@@ -22,7 +22,7 @@
 			<interceptor-ref name="defaultStack"/>
 		</action>
 		
-		<!-- 商品轮播 -->
+		<!-- 首页信息 -->
 		<action name="queryIndexInfo" class="goodsAction" method="queryIndexInfo">
 			<result name="json" type="json">
 				<param name="root">root</param>

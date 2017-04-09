@@ -20,55 +20,48 @@
 	</select>
 	
 	<!-- 查询分类 -->
-	<select id="queryClassifys" parameterType="GdsClassify" resultType="GdsClassify">
+	<select id="queryClassifys" parameterType="GdsClassify" resultType="ClassifyVO">
 		SELECT * FROM gds_classify WHERE enable = '1' AND exist = '1' 
+		<if test="level != null and level != ''">
+			AND level = #{level} 
+		</if>
 		<if test="pid != null and pid != ''">
 			AND pid = #{pid} 
 		</if>
-		<if test="level != null and level != ''">
-			AND level = #{level} 
+		<if test="isShow != null and isShow != ''">
+			AND isShow = #{isShow} 
 		</if>
 		ORDER BY level ASC , pid ASC , sort ASC;
 	</select>
 	
 	<!-- 根据分类查询商品 -->
-	<select id="queryGoodsByClassify1" parameterType="GdsGoods" resultType="GdsClassify">
+	<select id="queryGoodsByClassify" parameterType="GdsClassify" resultType="GoodsVO">
 		SELECT 
 		    goods.*
 		FROM
 		    gds_goods goods
 		<choose>
 			<when test='level == "2"'>
-				WHERE goods.categoryID = #{id}
+				WHERE goods.classifyID = #{id}
 			</when>
 			<when test='level == "1"'>
-				INNER JOIN gds_category category ON goods.categoryID = category.id AND category.pid = #{id}
+				INNER JOIN gds_classify classify ON goods.classifyID = classify.id AND classify.pid = #{id}
 			</when>
 			<otherwise>
 				WHERE 1 = 0
 			</otherwise>
 		</choose>
-		LIMIT 10
+		LIMIT #{firstResult}, #{maxResults};
 	</select>
 	
-	<!-- 根据分类查询商品 -->
-	<select id="queryImagesByGoods" parameterType="GdsImage" resultType="GdsGoods">
-		SELECT 
-		    goods.*
-		FROM
-		    gds_goods goods
-		<choose>
-			<when test='level == "2"'>
-				WHERE goods.categoryID = #{id}
-			</when>
-			<when test='level == "1"'>
-				INNER JOIN gds_category category ON goods.categoryID = category.id AND category.pid = #{id}
-			</when>
-			<otherwise>
-				WHERE 1 = 0
-			</otherwise>
-		</choose>
-		LIMIT 10
+	<!-- 根据商品查询展示图 -->
+	<select id="queryShowsByGoods" parameterType="GdsGoods" resultType="GdsImage">
+		SELECT * FROM gds_image WHERE enable = '1' AND exist = '1' AND category = '0' AND goodsID = #{id};
+	</select>
+	
+	<!-- 根据商品查询详情图 -->
+	<select id="queryDetailsByGoods" parameterType="GdsGoods" resultType="GdsImage">
+		SELECT * FROM gds_image WHERE enable = '1' AND exist = '1' AND category = '1' AND goodsID = #{id};
 	</select>
 	
 	<!-- 查询商品轮播 -->

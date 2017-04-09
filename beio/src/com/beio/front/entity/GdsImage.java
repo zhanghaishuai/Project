@@ -1,12 +1,14 @@
 package com.beio.front.entity;
 
+import com.beio.base.vo.Page;
+
 /**
  * 商品图片
  * @author zhs
  * @date 2017-04-09
  * @version 1.0.0
  */
-public class GdsImage {
+public class GdsImage extends Page{
 
 	private String id; // 主键
 	

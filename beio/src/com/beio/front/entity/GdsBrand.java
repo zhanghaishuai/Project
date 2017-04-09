@@ -1,18 +1,18 @@
 package com.beio.front.entity;
 
+import com.beio.base.vo.Page;
+
 /**
  * 商品品牌
  * @author zhs
  * @date 2017-04-09
  * @version 1.0.0
  */
-public class GdsBrand {
+public class GdsBrand extends Page{
 
 	private String id; // 主键
 	
-	private String url; // 请求
-	
-	private String path; // 图片
+	private String name; // 名称
 	
 	private String sort; // 排序号码
 	
@@ -36,20 +36,12 @@ public class GdsBrand {
 		this.id = id;
 	}
 
-	public String getUrl() {
-		return url;
+	public String getName() {
+		return name;
 	}
 
-	public void setUrl(String url) {
-		this.url = url;
-	}
-
-	public String getPath() {
-		return path;
-	}
-
-	public void setPath(String path) {
-		this.path = path;
+	public void setName(String name) {
+		this.name = name;
 	}
 
 	public String getSort() {

@@ -423,12 +423,14 @@ function search(keyword){
 		cache : true,
 		dataType : 'json',
 		success : function(data) {
-			if (data.resp == '1') {
+			if (data.status == '200') {
 				window.location.href = 'search.html?keyword=' + keyword;
 			}else {
-				alert(data.msg);
+				alert(tip('400'));
 			}
 		},
-		error : function() {}
+		error : function() {
+			alert(tip('500'));
+		}
 	});
 }

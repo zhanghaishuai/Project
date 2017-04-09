@@ -43,6 +43,38 @@ public class GoodsServiceImpl extends BaseIbatisServiceImpl implements GoodsServ
 		return top;
 	}
 	
+	@Override
+	public IndexInfoVO queryIndexInfo() throws Exception {
+		Object obj = CacheUtil.getCache(CacheUtil.GLOBALINDEXINFO);
+		if (obj == null) {
+			synchronized (this) {
+				IndexInfoVO index = new IndexInfoVO();
+				index.setBanners(selectList("goods.queryBanners"));
+				GdsClassify classify = new GdsClassify();
+				classify.setLevel("1");
+				classify.setIsShow("1");
+				List<ClassifyVO> cvs = selectList("goods.queryClassifys", classify);
+				if (ComUtil.isNotEmpty(cvs)) {
+					for (ClassifyVO classifyVO : cvs) {
+						List<GoodsVO> gvs = selectList("goods.queryGoodsByClassify", classifyVO);
+						if (ComUtil.isNotEmpty(gvs)) {
+							classifyVO.setGoods(gvs);
+							for (GoodsVO goodsVO : gvs) {
+								List<GdsImage> shows = selectList("goods.queryShowsByGoods", goodsVO);
+								if (ComUtil.isNotEmpty(shows)) {
+									goodsVO.setShows(shows);
+								}
+							}
+						}
+					}
+				}
+				index.setClassifys(cvs);
+				CacheUtil.setCache(CacheUtil.GLOBALINDEXINFO, index);
+			}
+		}
+		return (IndexInfoVO) CacheUtil.getCache(CacheUtil.GLOBALINDEXINFO);
+	}
+	
 	/**
 	 * 初始化商品导航
 	 * @param top
@@ -67,31 +99,6 @@ public class GoodsServiceImpl extends BaseIbatisServiceImpl implements GoodsServ
 				top.setClassifys(selectList("goods.queryClassifys"));
 			}
 		}
-	}
-
-	@Override
-	public TopInfoVO queryIndexInfo() throws Exception {
-		Object obj = CacheUtil.getCache(CacheUtil.GLOBALINDEXINFO);
-		if (obj != null) {
-			return (TopInfoVO) obj;
-		}
-		IndexInfoVO index = new IndexInfoVO();
-		index.setBanners(selectList("goods.queryBanners"));
-		GdsClassify classify = new GdsClassify();
-		classify.setLevel("1");
-		List<ClassifyVO> cvs = selectList("goods.queryClassifys", classify);
-		if (ComUtil.isNotEmpty(cvs)) {
-			for (ClassifyVO classifyVO : cvs) {
-				List<GoodsVO> gvs = selectList("goods.queryGoodsByClassify", cvs);
-				if (ComUtil.isNotEmpty(gvs)) {
-					classifyVO.setGoods(gvs);
-					for (GoodsVO goodsVO : gvs) {
-						List<GdsImage> shows = selectList("goods.queryGoodsByClassify", gvs);
-					}
-				}
-			}
-		}
-		return null;
 	}
 	
 }
