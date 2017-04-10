@@ -1,14 +1,14 @@
-package com.beio.front.dao.impl;
+package com.beio.front.service.impl;
 
 import java.util.List;
 
 import com.beio.base.service.impl.BaseIbatisServiceImpl;
 import com.beio.base.util.CacheUtil;
 import com.beio.base.util.ComUtil;
-import com.beio.front.dao.GoodsService;
 import com.beio.front.entity.GdsClassify;
 import com.beio.front.entity.GdsGoods;
 import com.beio.front.entity.GdsImage;
+import com.beio.front.service.GoodsService;
 import com.beio.front.vo.ClassifyVO;
 import com.beio.front.vo.GoodsVO;
 import com.beio.front.vo.IndexInfoVO;

@@ -1,4 +1,4 @@
-package com.beio.front.dao;
+package com.beio.front.service;
 
 import com.beio.front.vo.IndexInfoVO;
 import com.beio.front.vo.SearchInfoVO;

@@ -1,8 +1,8 @@
 package com.beio.front.action;
 
 import com.beio.base.action.BaseAction;
-import com.beio.front.dao.GoodsService;
 import com.beio.front.entity.GdsSearch;
+import com.beio.front.service.GoodsService;
 import com.beio.front.vo.IndexInfoVO;
 import com.beio.front.vo.SearchInfoVO;
 import com.beio.front.vo.TopInfoVO;
