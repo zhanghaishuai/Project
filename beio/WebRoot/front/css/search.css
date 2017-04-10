@@ -14,7 +14,7 @@ textarea{resize:none; outline:none; overflow:auto;}
 .filtrate_list li,.list_content,.other_select_con,.other_select_con_list{zoom:1;}
 .filtrate_list li:after,.list_content:after,.other_select_con:after,.other_select_con_list:after{ content: '.'; height: 0; display: block; clear: both; visibility: hidden; }
 .overflow_x_y{overflow:hidden;}
-.filtrate_box{font-family:Arial,'Hiragino Sans GB',"Simsun",sans-serif;position: relative;z-index: 10;width: 1200px;margin: 0 auto;margin-bottom:20px;}
+.filtrate_box{font-family:Arial,'Hiragino Sans GB',"Simsun",sans-serif;position: relative;z-index: 10;width: 1200px;margin: 0 auto;}
 .filtrate_box .cloth_slide_btn_line{height:22px;border-top:1px solid #e4e4e4;position:relative;width:1200px;top:-1px;}
 .filtrate_box .cloth_slide_btn{height:16px;line-height:16px;padding:0 20px 6px 20px;border:1px solid #efefef;border-top:none;position:absolute;left:50%;bottom:1px;color:#333;border-radius:0 0 3px 3px;background: #fff;cursor: pointer;background: #fff;text-align:center;margin-left:-32px;}
 .filtrate_box .cloth_slide_btn .icon{width:11px;height:6px;background: url(../../images/model/vsearch/icon_shaixuan.gif) 0 0 no-repeat;display:inline-block;zoom:1;margin-left:5px;font-size:0;}
@@ -310,7 +310,7 @@ textarea{resize:none; outline:none; overflow:auto;}
 /*分页*/
 .paginating{width:960px;height: 40px;text-align: center;}
 .paginating .paging{position:relative;float:left;left:50%;}
-.paginating ul{display:inline-block;*display:inline;zoom:1;margin:0 auto;position:relative;left:-50%;}
+.paginating ul{display:inline-block;*display:inline;zoom:1;margin:0 auto;}
 .paginating ul li{float: left;width: 40px;height: 40px;margin-left: -1px;*position: relative;}
 .paginating ul li a{display: block;float: left;width: 38px;height: 38px;border:1px solid #e7e7e9;line-height: 38px;font-family: Arial,simsun;font-size: 18px;color: #666;}
 .paginating ul li span{display: block;line-height: 32px;height: 38px;font-family: tahoma,Arial;overflow: hidden;border: 1px solid #e7e7e9;}
@@ -360,8 +360,8 @@ textarea{resize:none; outline:none; overflow:auto;}
 .narrow_page .crumbs_fb{width:940px;}
 
 /* after */
-.shoplist .cloth_shoplist li { float: left; width: 200px;line-height: 20px; position: relative;margin-right: 27px;padding:5px;border:1px solid #ecebeb;margin-bottom:40px;background:#fff;-webkit-transition: border-color .2s ease-in-out;-moz-transition: border-color .2s ease-in-out;-o-transition: border-color .2s ease-in-out;-ms-transition: border-color .2s ease-in-out;transition: border-color .2s ease-in-out;overflow: hidden;}
-.shoplist .cloth_shoplist li .price {color: #878787;position:static;left:0;top:0;line-height:20px; padding-top:5px;height:22px;overflow:hidden;white-space:nowrap;}
+.shoplist .cloth_shoplist li {height: 300px; float: left; width: 200px;line-height: 30px; position: relative;margin-right: 27px;padding:5px;border:1px solid #ecebeb;margin-bottom:10px;background:#fff;overflow: hidden;}
+.shoplist .cloth_shoplist li .price {color: #878787;position:static;left:0;top:0;line-height:25px; padding-top:5px;height:25px;overflow:hidden;white-space:nowrap;}
 .shoplist .bigimg li .pic_list_show { width:185px; height:38px; padding:1px 0 0 15px; margin-bottom:2px; overflow:hidden; position:relative;}
 .shoplist .bigimg li .pic_list_show .pic_list_lunbo{width:176px;overflow: hidden;position: relative;}
 .shoplist .bigimg li .pic_list_show .pic_list_lunbo ul{width:600px;height:38px;}

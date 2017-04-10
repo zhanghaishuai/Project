@@ -64,12 +64,11 @@ public class GoodsServiceImpl extends BaseIbatisServiceImpl implements GoodsServ
 	
 	@Override
 	public SearchInfoVO querySearchInfo(SearchInfoVO searchInfoVO) throws Exception {
-		SearchInfoVO searchInfo = new SearchInfoVO();
-		searchInfo.setGoods(queryGoods(searchInfoVO));
-		searchInfo.setBrands(selectList("goods.queryBrands"));
-		searchInfo.setClassifys(selectList("goods.queryClassifysBySearch", searchInfoVO));
-		searchInfo.setNavClassifys(selectList("goods.queryClassifyNavBar", searchInfoVO));
-		return searchInfo;
+		searchInfoVO.setBrands(selectList("goods.queryBrands"));
+		searchInfoVO.setClassifys(selectList("goods.queryClassifysBySearch", searchInfoVO));
+		searchInfoVO.setNavClassifys(selectList("goods.queryClassifyNavBar", searchInfoVO));
+		queryGoods(searchInfoVO);
+		return searchInfoVO;
 	}
 	
 	/**
@@ -110,14 +109,13 @@ public class GoodsServiceImpl extends BaseIbatisServiceImpl implements GoodsServ
 	 * @return
 	 * @throws Exception
 	 */
-	private List<GoodsVO> queryGoods(SearchInfoVO searchInfoVO) throws Exception{
-		List<GoodsVO> gvs = selectList("goods.queryGoodsBySearch", searchInfoVO);
-		if (ComUtil.isNotEmpty(gvs)) {
-			for (GoodsVO goodsVO : gvs) {
-				goodsVO.setShows(queryShowImage(goodsVO));
+	private void queryGoods(SearchInfoVO searchInfoVO) throws Exception{
+		selectPage("goods.queryGoodsBySearch", searchInfoVO);
+		if (ComUtil.isNotEmpty(searchInfoVO.getPageList())) {
+			for (Object goodsVO : searchInfoVO.getPageList()) {
+				((GoodsVO)goodsVO).setShows(queryShowImage((GoodsVO)goodsVO));
 			}
 		}
-		return gvs;
 	}
 	
 	/**

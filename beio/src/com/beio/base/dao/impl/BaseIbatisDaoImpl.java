@@ -102,9 +102,7 @@ public class BaseIbatisDaoImpl extends SqlSessionDaoSupport implements BaseIbati
 		// TODO Auto-generated method stub
 		// 获取总数
 		page.setPageQueryCount(true);
-		int total = getSqlSession().selectOne(arg0, page);
-		// 构建分页对象
-		page.setPageTotal(total);
+		page.setPageTotal(((Page)getSqlSession().selectOne(arg0, page)).getPageTotal());
 		// 获取当前页数据
 		page.setPageQueryCount(false);
 		page.setPageList(getSqlSession().selectList(arg0, page));

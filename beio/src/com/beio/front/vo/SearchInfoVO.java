@@ -14,8 +14,6 @@ import com.beio.front.entity.GdsClassify;
  */
 public class SearchInfoVO extends Page{
 	
-	private List<GoodsVO> goods = null;
-
 	private List<GdsBrand> brands = null;
 	
 	private List<GdsClassify> classifys = null;
@@ -28,14 +26,8 @@ public class SearchInfoVO extends Page{
 	
 	private String category;
 	
-	public List<GoodsVO> getGoods() {
-		return goods;
-	}
-
-	public void setGoods(List<GoodsVO> goods) {
-		this.goods = goods;
-	}
-
+	private boolean login;
+	
 	public List<GdsBrand> getBrands() {
 		return brands;
 	}
@@ -84,4 +76,12 @@ public class SearchInfoVO extends Page{
 		this.category = category;
 	}
 
+	public boolean isLogin() {
+		return login;
+	}
+
+	public void setLogin(boolean login) {
+		this.login = login;
+	}
+	
 }

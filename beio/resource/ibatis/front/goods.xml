@@ -101,7 +101,16 @@
 	
 	<!-- 根据分类查询商品 -->
 	<select id="queryGoodsBySearch" parameterType="Object" resultType="GoodsVO">
-		SELECT goods.* FROM gds_goods goods
+		SELECT 
+		<choose>
+			<when test="pageQueryCount == false">
+				goods.* 
+			</when>
+			<otherwise>
+				count(1) as pageTotal 
+			</otherwise>
+		</choose>
+		FROM gds_goods goods
 		<if test="category != null and category != ''">
 			INNER JOIN
 			(SELECT id FROM gds_classify WHERE id = #{category} 
@@ -117,7 +126,9 @@
 			AND goods.name REGEXP #{keyword}
 		</if>
 		ORDER BY goods.heatUp + '' DESC
-		LIMIT #{firstResult}, #{maxResults};
+		<if test="pageQueryCount == false">
+			LIMIT #{firstResult}, #{maxResults};
+		</if>
 	</select>
 	
 </mapper>
