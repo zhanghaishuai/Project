@@ -65,6 +65,8 @@ public class GoodsAction extends BaseAction{
 	 * @throws Exception
 	 */
 	public String querySearchInfo() throws Exception{
+		searchInfo.setPageSize(25);
+		searchInfo.setLogin(sessionMember() != null ? true : false);
 		setRoot(goodsService.querySearchInfo(searchInfo), "200");
 		return JSON;
 	}

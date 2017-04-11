@@ -3,7 +3,6 @@ package com.beio.front.service.impl;
 import java.util.List;
 
 import com.beio.base.service.impl.BaseIbatisServiceImpl;
-import com.beio.base.util.CacheUtil;
 import com.beio.base.util.ComUtil;
 import com.beio.front.entity.GdsClassify;
 import com.beio.front.entity.GdsGoods;
@@ -47,19 +46,13 @@ public class GoodsServiceImpl extends BaseIbatisServiceImpl implements GoodsServ
 	
 	@Override
 	public IndexInfoVO queryIndexInfo() throws Exception {
-		Object obj = CacheUtil.getCache(CacheUtil.GLOBALINDEXINFO);
-		if (obj == null) {
-			synchronized (this) {
-				IndexInfoVO index = new IndexInfoVO();
-				index.setBanners(selectList("goods.queryBanners"));
-				GdsClassify classify = new GdsClassify();
-				classify.setLevel("1");
-				classify.setIsShow("1");
-				index.setClassifys(queryClassify(classify));
-				CacheUtil.setCache(CacheUtil.GLOBALINDEXINFO, index);
-			}
-		}
-		return (IndexInfoVO) CacheUtil.getCache(CacheUtil.GLOBALINDEXINFO);
+		IndexInfoVO index = new IndexInfoVO();
+		index.setBanners(selectList("goods.queryBanners"));
+		GdsClassify classify = new GdsClassify();
+		classify.setLevel("1");
+		classify.setIsShow("1");
+		index.setClassifys(queryClassify(classify));
+		return index;
 	}
 	
 	@Override
@@ -84,6 +77,10 @@ public class GoodsServiceImpl extends BaseIbatisServiceImpl implements GoodsServ
 				classifyVO.setGoods(queryGoods(classifyVO));
 			}
 		}
+		ClassifyVO hot = new ClassifyVO();
+		hot.setName("热门商品");
+		hot.setGoods(queryGoods(hot));
+		cvs.add(0, hot);
 		return cvs;
 	}
 	

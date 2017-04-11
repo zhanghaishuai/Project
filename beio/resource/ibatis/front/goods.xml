@@ -125,7 +125,48 @@
 		<if test="keyword != null and keyword != ''">
 			AND goods.name REGEXP #{keyword}
 		</if>
-		ORDER BY goods.heatUp + '' DESC
+		<choose>
+			<when test="login">
+				<if test="minPrice != null and minPrice != ''">
+					AND goods.mPrice <![CDATA[>=]]> #{minPrice}
+				</if>
+				<if test="maxPrice != null and maxPrice != ''">
+					AND goods.mPrice <![CDATA[<=]]> #{maxPrice}
+				</if>
+			</when>
+			<otherwise>
+				<if test="minPrice != null and minPrice != ''">
+					AND goods.cPrice <![CDATA[>=]]> #{minPrice}
+				</if>
+				<if test="maxPrice != null and maxPrice != ''">
+					AND goods.cPrice <![CDATA[<=]]> #{maxPrice}
+				</if>
+			</otherwise>
+		</choose>
+		<choose>
+			<when test='order == "1"'>
+				<if test="login">
+					ORDER BY goods.mPrice + '' DESC
+				</if>
+				<if test="!login">
+					ORDER BY goods.cPrice + '' DESC
+				</if>
+			</when>
+			<when test='order == "2"'>
+				ORDER BY goods.createTime + '' ASC
+			</when>
+			<when test='order == "3"'>
+				ORDER BY goods.createTime + '' DESC
+			</when>
+			<otherwise>
+				<if test="login">
+					ORDER BY goods.mPrice + '' ASC
+				</if>
+				<if test="!login">
+					ORDER BY goods.cPrice + '' ASC
+				</if>
+			</otherwise>
+		</choose>
 		<if test="pageQueryCount == false">
 			LIMIT #{firstResult}, #{maxResults};
 		</if>

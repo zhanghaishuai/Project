@@ -106,7 +106,7 @@ public class Page {
 	public void setPageEndTime(Date pageEndTime) {
 		this.pageEndTime = pageEndTime;
 	}
-
+	
 	public boolean isPageQueryCount() {
 		return pageQueryCount;
 	}
@@ -136,12 +136,12 @@ public class Page {
 		return pageSize;
 	}
 	
-	public Page() {
-		super();
-	}
-
 	public Page(int pageSize) {
 		super();
 		this.pageSize = pageSize;
+	}
+	
+	public Page() {
+		super();
 	}
 }

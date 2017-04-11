@@ -27,20 +27,20 @@
 		</div>
 		<div class="spacer"></div>
 		<div class="filtrate_box clearfix">
-       		<ul class="filtrate_list" style="height: auto;">
-                   <li class="child_li first_sort" style="display:block;">
-                   <div class="list_left" title="分类">分类</div>
-                   <div class="list_right">
-                       <div class="list_content fix_list">
-                           <div class="clearfix classify"></div>
-                       </div>
-                   </div>
-               	</li>
-               	<li class="child_li" style="display:block;">
+       		<ul class="filtrate_list first_sort" style="height: auto;">
+       			<li class="child_li" style="display:block;">
                    <div class="list_left" title="品牌">品牌</div>
                    <div class="list_right">
                        <div class="list_content fix_list">
                            <div class="clearfix brands"></div>
+                       </div>
+                   </div>
+               	</li>
+				<li class="child_li classifytop" style="display:block;">
+                   <div class="list_left" title="分类">分类</div>
+                   <div class="list_right">
+                       <div class="list_content fix_list">
+                           <div class="clearfix classify"></div>
                        </div>
                    </div>
                	</li>
@@ -51,21 +51,21 @@
 			<div class="tools_box bg_change">
    				<div class="top">
 			        <ul class="sorting_box">
-			            <li class="tools_to_float">
+			            <li class="tools_to_float new" style="width: 66px;">
 			                <a href="#" class="sorting_box_a" title="点击后按最新由近到远">最新<span class="icon"></span></a>
 			            </li>
-			            <li class="tools_to_float">
+			            <li class="tools_to_float price" style="width: 66px;">
 			                <a href="#" class="sorting_box_a" title="点击后按价格由低到高">价格<span class="icon"></span></a>
 			            </li>
-			            <li class="tools_to_float price">
+			            <li class="price">
 			                <div class="interval">
 			                    <div class="inner">
-			                        <input type="text" class="text" title="最低价" value=""><span>-</span><input type="text" class="text" title="最高价" value="">
-			                        <div>
-			                        	<input type="button" class="button btn_yes" value="确定"><input type="button" class="button btn_clear" value="清除">
-			                        </div>
+			                        <input type="text" class="min text" title="最低价" value="">
+			                        	<span>-</span>
+			                        <input type="text" class="max text" title="最高价" value="">
 			                    </div>
 			                </div>
+			                <input type="button" class="button btn_yes" value="确定">
 			            </li>
 			        </ul>
 				</div>

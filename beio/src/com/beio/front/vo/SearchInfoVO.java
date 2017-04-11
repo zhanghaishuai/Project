@@ -26,6 +26,12 @@ public class SearchInfoVO extends Page{
 	
 	private String category;
 	
+	private Integer minPrice;
+	
+	private Integer maxPrice;
+	
+	private String order;
+	
 	private boolean login;
 	
 	public List<GdsBrand> getBrands() {
@@ -74,6 +80,30 @@ public class SearchInfoVO extends Page{
 
 	public void setCategory(String category) {
 		this.category = category;
+	}
+
+	public Integer getMinPrice() {
+		return minPrice;
+	}
+
+	public void setMinPrice(Integer minPrice) {
+		this.minPrice = minPrice;
+	}
+
+	public Integer getMaxPrice() {
+		return maxPrice;
+	}
+
+	public void setMaxPrice(Integer maxPrice) {
+		this.maxPrice = maxPrice;
+	}
+
+	public String getOrder() {
+		return order;
+	}
+
+	public void setOrder(String order) {
+		this.order = order;
 	}
 
 	public boolean isLogin() {

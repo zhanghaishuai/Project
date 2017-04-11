@@ -24,14 +24,14 @@ textarea{resize:none; outline:none; overflow:auto;}
 .filtrate_box .cloth_slide_btn:hover .slide_up{background-position:0 -18px;}
 .filtrate_box a{color: #666;}
 .nicescroll-rails{border-radius: 5px;}
-.filtrate_box .filtrate_list{border-top:1px solid #fff;width:1200px;background-color: #fef8f5;height:35px;overflow: hidden;position:relative;}
+.filtrate_box .filtrate_list{border-top:1px solid #fff;border-bottom:1px solid #fff;width:1200px;background-color: #fef8f5;height:35px;overflow: hidden;position:relative;}
 .filtrate_box ul.list_show{height:auto;}
 .filtrate_list li.child_li{border-bottom:1px dotted #eeeceb;width: 1200px;position: relative;vertical-align: top;}
 .filtrate_list li.child_li a{color:#646464;}
 .filtrate_list li.child_li a:hover{text-decoration:underline;}
 .filtrate_list li.first_sort{border-bottom:1px solid #eeeceb;}
 .filtrate_list li.border_bottom0{border-bottom:0px;}
-.filtrate_list li .list_left{width:71px;float:left;padding:9px 0px 0px 12px;color: #999;line-height:18px;overflow: hidden;height:18px;overflow: hidden;white-space: nowrap;text-overflow: ellipsis;}
+.filtrate_list li .list_left{padding-left:21px;width:56px;float:left;color: #999;line-height:35px;overflow: hidden;height:35px;overflow: hidden;white-space: nowrap;text-overflow: ellipsis;}
 .filtrate_list li .list_right{width:1080px;float:left;padding:4px 2px 4px 35px;position:relative;background-color: #fff;}
 .filtrate_list li .list_right_on{padding:2px 0px 2px 32px;border:2px solid #e6e2e1;}
 .filtrate_list .list_right .list_content span{height: 22px;float: left;display:block;padding: 3px 10px 3px 0;}
@@ -73,7 +73,6 @@ textarea{resize:none; outline:none; overflow:auto;}
 .tools_box .t3 .bottom_inner .opt{position: relative;left:0;border:none;box-shadow:none;padding: 0px 0px 0 0px;}
 .tools_box .top { height: 30px; border: solid 1px #efefef;line-height: 30px;background-color: #f5f5f5;}
 .tools_box .sorting_box { float: left; }
-.tools_box .sorting_box li { float: left; background-position: right -97px; cursor: pointer; margin-left: -1px; background-repeat: no-repeat; height:30px; }
 .tools_box .sorting_box li div,.tools_box .sorting_box li a.sorting_box_a {display: block; text-align: center; padding:2px 10px 0; line-height: 28px; _height: 23px; _padding:10px 10px 0; _line-height: 14px; font-size:12px; _float:left;}
 .tools_box .sorting_box li a.sorting_box_a:hover{text-decoration: none;}
 .tools_box .sorting_box li .icon { display: inline-block; height: 11px; width:7px; background-position: 0 -195px; margin-left:5px; *vertical-align: middle; overflow: hidden; vertical-align: middle;}
@@ -82,11 +81,10 @@ textarea{resize:none; outline:none; overflow:auto;}
 .tools_box .sorting_box li .icon_top{background-position:-10px -195px;}
 .tools_box .sorting_box .on div, .tools_box .sorting_box .hover div ,.tools_box .sorting_box .on a.sorting_box_a, .tools_box .sorting_box .hover a.sorting_box_a{color: #fff; }
 .tools_box .sorting_box .hover div,.tools_box .sorting_box .hover a.sorting_box_a {color: #fd5115;background-color: #e6e6e6;}
-.tools_box .sorting_box .on div,.tools_box .sorting_box .on a.sorting_box_a { color: #fd5115; }
-.tools_box .sorting_box .hover .icon { background-position:25px -195px;}
-.tools_box .sorting_box .hover .icon_top{background-position: -20px -195px;}
-.tools_box .sorting_box .on .icon { background-position:25px -195px}
-.tools_box .sorting_box .on .icon_top{background-position: -20px -195px}
+.tools_box .sorting_box .on div,.tools_box .sorting_box .on a.sorting_box_a,.tools_box .sorting_box .top a.sorting_box_a { color: #fd5115; }
+.tools_box .sorting_box .hover .icon { background-position: 25px -195px;}
+.tools_box .sorting_box .on .icon { background-position: 25px -195px;}
+.tools_box .sorting_box .top .icon{ background-position: -20px -195px;}
 .tools_box .sorting_box li .icon_t,.tools_box .sorting_box li.on .icon_t,.tools_box .sorting_box li.hover .icon_t { background:url(../image/btn_new.gif) -8px 0 no-repeat;}
 .tools_box .sorting_box li .icon_b,.tools_box .sorting_box li.on .icon_b,.tools_box .sorting_box li.hover .icon_b{background:url(../image/btn_new.gif) -16px 0 no-repeat;}
 .tools_box .sorting_box li .select_box { float: left; height: 24px; line-height: 20px; position: relative; z-index: 100; padding: 3px 0;width: 126px; cursor: default;}
@@ -107,10 +105,10 @@ textarea{resize:none; outline:none; overflow:auto;}
 .tools_box .interval_on .inner div { display: block; padding: 5px 0 3px; text-align: center; }
 .tools_box .interval .text { border: solid 1px #e1e1e1; padding: 2px 0 2px 13px; margin:0; line-height: 18px; height: 18px; width: 34px;color:#878787; outline: none;background:#fff url(../image/tools_box_bg.png) -45px -169px no-repeat;}
 .tools_box .interval .text_hover{border-color: #f3bfa1;}
-.tools_box .interval .button{padding: 0; margin: 0;height: 23px;line-height: 23px;width: 50px;cursor: pointer; font-size: 12px;margin: 0 2px;display: inline-block;background-color:#f0f0f0;}
-.tools_box .interval .button:hover{text-decoration: none;background-color:#e6e6e6;color:#555;}
-.tools_box .interval .btn_yes{ background-color:#fa5000;color: #fff; }
-.tools_box .interval .btn_yes:hover{background:#fa2f00;color:#fff;}
+.button {padding: 0; margin: 0;height: 23px;line-height: 23px;width: 50px;cursor: pointer; font-size: 12px;margin: 0 2px;display: inline-block;background-color:#e6e6e6;}
+.button:hover {text-decoration: none;background-color:#e6e6e6;color:#000;}
+.btn_yes {background-color:#fa5000;color:#fff;}
+.btn_yes:hover {background:#fa2f00;color:#fff;}
 .tools_box .data { float: right; padding-right: 6px; padding-top: 9px; height: 24px; line-height: 15px; }
 .tools_box .data .arrow_l, .tools_box .data .arrow_r,.tools_box .data .arrow_l:hover, .tools_box .data .arrow_r:hover{ display: inline-block; width: 16px; height: 17px; line-height: 0;vertical-align: middle; background-position: 5px -62px; margin: -5px 4px 0; *margin-top: 0px; _margin-top: -4px; background-repeat: no-repeat;cursor:pointer;background-color:#dcdcdc;}
 .tools_box .data .none,.tools_box .data .none:hover{background-color:#b5b5b5;cursor: default;}
@@ -155,7 +153,7 @@ textarea{resize:none; outline:none; overflow:auto;}
 .tools_box .bottom .opt .opt_box li a{background:none;height: 24px;line-height: 24px;padding-left: 0;}
 .tools_box .bottom .opt .opt_box li a:hover,.tools_box .bottom .opt .opt_box li a.on{color: #fd4708;text-decoration: underline;}
 .tools_box .bottom .opt .opt_box li a.on{text-decoration: none;}
-.tools_box .sorting_box li { float: left; background-position: right -97px; cursor: pointer; margin-left: -1px; background-repeat: no-repeat; height:30px;}
+.tools_box .sorting_box li {padding:0px 5px;float: left; background-position: right -97px; cursor: pointer; margin:0px 0px; background-repeat: no-repeat; height:30px;}
 .tools_box .interval_on .inner { background:#fff; position:absolute; top:0px;left:4px; width:110px; border:1px solid #e1e1e1;padding: 1px 5px 0 5px;margin-left: 0;}
 .tools_box .bottom .opt{width:340px;height:30px;overflow: hidden;margin-left:10px;padding:1px 0px 0 11px;position:relative;cursor: pointer;}
 .tools_box .bottom_inner .opt{position:absolute;left:10px;top:0;background:#fff;width:340px;padding:0px 0px 0 10px; box-shadow: -2px 0 1px rgba(238,238,238,0.5), 0 2px 1px rgba(238,238,238,0.5),  2px 0 1px rgba(238,238,238,0.5); border:1px solid #f0f0f0;height:auto;overflow: visible;margin-left:0;}
@@ -202,7 +200,7 @@ textarea{resize:none; outline:none; overflow:auto;}
 .shoplist .shoplist_title{margin-bottom: 10px;height: 30px;line-height: 30px;padding-left: 3px;font-family: "Microsoft Yahei";font-weight: normal;color:#333;font-size:16px;overflow: hidden;}
 .shoplist .shoplist_title span{color: #c30;}
 .shoplist .bigimg li{height: 242px;width:960px;position: relative;background: #fff;-webkit-transition: all .2s ease-in-out;-moz-transition: all .2s ease-in-out;-o-transition: all .2s ease-in-out;-ms-transition: all .2s ease-in-out;transition: all .2s ease-in-out;padding-left:20px;}
-.shoplist .bigimg li.hover{background:#f8f8f8;}
+.shoplist .bigimg li .hover{background:#f8f8f8;}
 .shoplist .bigimg li .pic,.shoplist .bigimg li .pic img{display: block;width: 200px;height: 200px;}
 .shoplist .bigimg li .pic{position: absolute;left: 20px;top: 21px;}
 .shoplist .bigimg li .name{position: absolute;left: 240px;top: 21px;line-height: 20px;height: 20px;width: 720px;overflow: hidden;}
@@ -331,7 +329,7 @@ textarea{resize:none; outline:none; overflow:auto;}
 .narrow_page .paginating{width:720px;}
 
 /* crumbs_fb */
-.crumbs_fb{line-height: 32px;background-color: #f5f5f5;width: 1180px;margin: 0 auto;padding:6px 0 6px 20px;}
+.crumbs_fb{line-height: 32px;background-color: #f5f5f5;width: 1186px;margin: 0 auto;padding:6px 0 6px 14px;}
 .crumbs_fb_left{float:left;width:auto;}
 .narrow_page .crumbs_fb_left{width:760px;_width:700px;}
 .crumbs_fb .a{color: #404040;display: block;float: left;}
@@ -398,3 +396,5 @@ textarea{resize:none; outline:none; overflow:auto;}
 .shoplist .cloth_shoplist li .level, .cloth_shoplist li .level span{width: 76px;height: 16px;background: url(../image/icon_star3.png) 0 -16px repeat-x;display: inline-block;zoom: 1;vertical-align: middle;font-size: 0;vertical-align: middle;}
 .shoplist .cloth_shoplist li .star a, .shoplist .cloth_shoplist li .star a:hover{font-family: Arial;}
 
+
+.goods_detail_border{border: 2px solid red;}
