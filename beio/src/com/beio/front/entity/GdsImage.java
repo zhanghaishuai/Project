@@ -1,5 +1,7 @@
 package com.beio.front.entity;
 
+import com.beio.base.util.ComUtil;
+import com.beio.base.util.PathUtil;
 import com.beio.base.vo.Page;
 
 /**
@@ -43,6 +45,14 @@ public class GdsImage extends Page{
 	}
 
 	public String getOrgPath() {
+		if (ComUtil.isNotEmpty(orgPath)) {
+			try {
+				return PathUtil.serverPath(orgPath);
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
 		return orgPath;
 	}
 
@@ -51,6 +61,14 @@ public class GdsImage extends Page{
 	}
 
 	public String getSmaPath() {
+		if (ComUtil.isNotEmpty(smaPath)) {
+			try {
+				return PathUtil.serverPath(smaPath);
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
 		return smaPath;
 	}
 
@@ -59,6 +77,14 @@ public class GdsImage extends Page{
 	}
 
 	public String getMidPath() {
+		if (ComUtil.isNotEmpty(midPath)) {
+			try {
+				return PathUtil.serverPath(midPath);
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
 		return midPath;
 	}
 
@@ -67,6 +93,14 @@ public class GdsImage extends Page{
 	}
 
 	public String getBigPath() {
+		if (ComUtil.isNotEmpty(bigPath)) {
+			try {
+				return PathUtil.serverPath(bigPath);
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
 		return bigPath;
 	}
 

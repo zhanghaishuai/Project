@@ -17,6 +17,8 @@ public class GoodsVO extends GdsGoods{
 	
 	private List<GdsImage> details = null;
 	
+	private boolean login;
+	
 	public List<GdsImage> getShows() {
 		return shows;
 	}
@@ -31,6 +33,14 @@ public class GoodsVO extends GdsGoods{
 
 	public void setDetails(List<GdsImage> details) {
 		this.details = details;
+	}
+
+	public boolean isLogin() {
+		return login;
+	}
+
+	public void setLogin(boolean login) {
+		this.login = login;
 	}
 
 }

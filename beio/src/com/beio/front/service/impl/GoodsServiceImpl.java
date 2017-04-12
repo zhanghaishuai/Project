@@ -5,8 +5,6 @@ import java.util.List;
 import com.beio.base.service.impl.BaseIbatisServiceImpl;
 import com.beio.base.util.ComUtil;
 import com.beio.front.entity.GdsClassify;
-import com.beio.front.entity.GdsGoods;
-import com.beio.front.entity.GdsImage;
 import com.beio.front.service.GoodsService;
 import com.beio.front.vo.ClassifyVO;
 import com.beio.front.vo.GoodsVO;
@@ -64,6 +62,15 @@ public class GoodsServiceImpl extends BaseIbatisServiceImpl implements GoodsServ
 		return searchInfoVO;
 	}
 	
+	@Override
+	public GoodsVO queryGoodsInfo(GoodsVO goodsVO) throws Exception {
+		// TODO Auto-generated method stub
+		goodsVO = (GoodsVO) selectOne("goods.queryGoods", goodsVO);
+		goodsVO.setShows(selectList("goods.queryShowsByGoods", goodsVO));
+		goodsVO.setDetails(selectList("goods.queryDetailsByGoods", goodsVO));
+		return goodsVO;
+	}
+	
 	/**
 	 * 查询商品分类
 	 * @param classify
@@ -94,7 +101,7 @@ public class GoodsServiceImpl extends BaseIbatisServiceImpl implements GoodsServ
 		List<GoodsVO> gvs = selectList("goods.queryGoodsByClassify", classify);
 		if (ComUtil.isNotEmpty(gvs)) {
 			for (GoodsVO goodsVO : gvs) {
-				goodsVO.setShows(queryShowImage(goodsVO));
+				goodsVO.setShows(selectList("goods.queryShowsByGoods", goodsVO));
 			}
 		}
 		return gvs;
@@ -110,19 +117,10 @@ public class GoodsServiceImpl extends BaseIbatisServiceImpl implements GoodsServ
 		selectPage("goods.queryGoodsBySearch", searchInfoVO);
 		if (ComUtil.isNotEmpty(searchInfoVO.getPageList())) {
 			for (Object goodsVO : searchInfoVO.getPageList()) {
-				((GoodsVO)goodsVO).setShows(queryShowImage((GoodsVO)goodsVO));
+				((GoodsVO)goodsVO).setShows(selectList(
+						"goods.queryShowsByGoods", goodsVO));
 			}
 		}
-	}
-	
-	/**
-	 * 查询显示图片
-	 * @param goods
-	 * @return
-	 * @throws Exception
-	 */
-	private List<GdsImage> queryShowImage(GdsGoods goods) throws Exception{
-		return selectList("goods.queryShowsByGoods", goods);
 	}
 	
 	/**

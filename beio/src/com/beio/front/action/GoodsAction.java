@@ -3,6 +3,7 @@ package com.beio.front.action;
 import com.beio.base.action.BaseAction;
 import com.beio.front.entity.GdsSearch;
 import com.beio.front.service.GoodsService;
+import com.beio.front.vo.GoodsVO;
 import com.beio.front.vo.IndexInfoVO;
 import com.beio.front.vo.SearchInfoVO;
 import com.beio.front.vo.TopInfoVO;
@@ -22,6 +23,8 @@ public class GoodsAction extends BaseAction{
 	private GdsSearch gdsSearch;
 	
 	private SearchInfoVO searchInfo;
+	
+	private GoodsVO goodsVO;
 	
 	/**
 	 * 商品搜索
@@ -70,6 +73,18 @@ public class GoodsAction extends BaseAction{
 		setRoot(goodsService.querySearchInfo(searchInfo), "200");
 		return JSON;
 	}
+	
+	/**
+	 * 商品详情
+	 * @return
+	 * @throws Exception
+	 */
+	public String queryGoodsInfo() throws Exception{
+		goodsVO = goodsService.queryGoodsInfo(goodsVO);
+		goodsVO.setLogin(sessionMember() != null ? true : false);
+		setRoot(goodsVO, "200");
+		return JSON;
+	}
 
 	public GoodsService getGoodsService() {
 		return goodsService;
@@ -93,6 +108,14 @@ public class GoodsAction extends BaseAction{
 
 	public void setSearchInfo(SearchInfoVO searchInfo) {
 		this.searchInfo = searchInfo;
+	}
+
+	public GoodsVO getGoodsVO() {
+		return goodsVO;
+	}
+
+	public void setGoodsVO(GoodsVO goodsVO) {
+		this.goodsVO = goodsVO;
 	}
 
 }

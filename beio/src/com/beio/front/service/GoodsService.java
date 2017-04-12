@@ -1,5 +1,6 @@
 package com.beio.front.service;
 
+import com.beio.front.vo.GoodsVO;
 import com.beio.front.vo.IndexInfoVO;
 import com.beio.front.vo.SearchInfoVO;
 import com.beio.front.vo.TopInfoVO;
@@ -32,5 +33,12 @@ public interface GoodsService {
 	 * @throws Exception
 	 */
 	public SearchInfoVO querySearchInfo(SearchInfoVO condition) throws Exception;
+	
+	/**
+	 * 查询商品详情
+	 * @return
+	 * @throws Exception
+	 */
+	public GoodsVO queryGoodsInfo(GoodsVO goodsVO) throws Exception;
 	
 }

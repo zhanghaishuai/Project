@@ -38,6 +38,14 @@
 			<interceptor-ref name="defaultStack"/>
 		</action>
 		
+		<!-- 商品详情 -->
+		<action name="queryGoodsInfo" class="goodsAction" method="queryGoodsInfo">
+			<result name="json" type="json">
+				<param name="root">root</param>
+			</result>
+			<interceptor-ref name="defaultStack"/>
+		</action>
+		
 	</package>
 </struts>
 

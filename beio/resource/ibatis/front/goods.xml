@@ -42,6 +42,15 @@
 		ORDER BY level + '' ASC , pid + '' ASC , sort + '' ASC;
 	</select>
 	
+	<!-- 查询商品 -->
+	<select id="queryGoods" parameterType="Object" resultType="GoodsVO">
+		SELECT * FROM gds_goods WHERE enable = '1' AND exist = '1' 
+		<if test="id != null and id != ''">
+			AND id = #{id}
+		</if>
+		ORDER BY heatUp + '' DESC
+	</select>
+	
 	<!-- 根据分类查询商品 -->
 	<select id="queryGoodsByClassify" parameterType="Object" resultType="GoodsVO">
 		SELECT goods.* FROM gds_goods goods
