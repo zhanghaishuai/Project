@@ -46,6 +46,14 @@
 			<interceptor-ref name="defaultStack"/>
 		</action>
 		
+		<!-- 购买商品 -->
+		<action name="buyGoods" class="goodsAction" method="buyGoods">
+			<result name="json" type="json">
+				<param name="root">root</param>
+			</result>
+			<interceptor-ref name="defaultStack"/>
+		</action>
+		
 	</package>
 </struts>
 

@@ -1,6 +1,9 @@
 package com.beio.front.action;
 
 import com.beio.base.action.BaseAction;
+import com.beio.base.entity.SysMember;
+import com.beio.base.util.ComUtil;
+import com.beio.front.entity.GdsBuycat;
 import com.beio.front.entity.GdsSearch;
 import com.beio.front.service.GoodsService;
 import com.beio.front.vo.GoodsVO;
@@ -26,6 +29,8 @@ public class GoodsAction extends BaseAction{
 	
 	private GoodsVO goodsVO;
 	
+	private GdsBuycat gdsBuycat;
+	
 	/**
 	 * 商品搜索
 	 * @return
@@ -44,8 +49,9 @@ public class GoodsAction extends BaseAction{
 	 * @return
 	 */
 	public String queryTopInfo() throws Exception{
-		TopInfoVO top = goodsService.queryTopInfo();
-		top.setLogin(sessionMember() != null ? true : false);
+		SysMember m = sessionMember();
+		TopInfoVO top = goodsService.queryTopInfo(m);
+		top.setLogin(m != null ? true : false);
 		setRoot(top, "200");
 		return JSON;
 	}
@@ -85,6 +91,34 @@ public class GoodsAction extends BaseAction{
 		setRoot(goodsVO, "200");
 		return JSON;
 	}
+	
+	/**
+	 * 购买商品
+	 * @return
+	 * @throws Exception
+	 */
+	public String buyGoods() throws Exception{
+		SysMember m = sessionMember();
+		if (m == null) {
+			setRoot("170");
+			return JSON;
+		}
+		if (ComUtil.isNotMatches(getRegex("buyNum").getRegex(), gdsBuycat.getQuantity())) {
+			setRoot("136");
+			return JSON;
+		}
+		gdsBuycat.setBuyerID(m.getId());
+		gdsBuycat.setCreator(m.getId());
+		gdsBuycat.setCreateTime(curTimeStr());
+		gdsBuycat.setModifier(m.getId());
+		gdsBuycat.setModifyTime(curTimeStr());
+		if (goodsService.joinBuycat(gdsBuycat) == -1) {
+			setRoot("100");
+			return JSON;
+		}
+		setRoot(goodsService.selectOne("goods.buycatQuantity", m), "200");
+		return JSON;
+	}
 
 	public GoodsService getGoodsService() {
 		return goodsService;
@@ -116,6 +150,14 @@ public class GoodsAction extends BaseAction{
 
 	public void setGoodsVO(GoodsVO goodsVO) {
 		this.goodsVO = goodsVO;
+	}
+
+	public GdsBuycat getGdsBuycat() {
+		return gdsBuycat;
+	}
+
+	public void setGdsBuycat(GdsBuycat gdsBuycat) {
+		this.gdsBuycat = gdsBuycat;
 	}
 
 }

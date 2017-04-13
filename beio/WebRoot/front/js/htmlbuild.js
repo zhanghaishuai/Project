@@ -350,8 +350,8 @@ function initHtml(index){
 						$('.nav_top > ul').append('<li><a href="'+item.url+'">'+item.name+'</a></li>');
 					});
 					if(data.result.login == true){
-						$('#cart_num').html(data.result.cartNum);
-						$('#order_num').html(data.result.orderNum);
+						$('#cart_num').html(data.result.cartNum > 99 ? '99+' : data.result.cartNum);
+						$('#order_num').html(data.result.orderNum > 99 ? '99+' : data.result.orderNum);
 					}
 				} else {
 					alert(tip('400'));

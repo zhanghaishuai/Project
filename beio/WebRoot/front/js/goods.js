@@ -1,16 +1,16 @@
 $(function(){
 	initHtml();
 	var search = window.location.search.substring(1);
-	var params = search.split("&"), id = '', showImgs = [], detailsImgs = [], timer;
+	var params = search.split("&"), goodsid = '', showImgs = [], detailsImgs = [], timer;
 	$.each(params, function(index, item){
 		param = item.split("=");
-		if(param[0] == 'id'){
-			id = param[1];
+		if(param[0] == 'goods'){
+			goodsid = param[1];
 		}
 	});
 	$.ajax({
 		url : '/beio/goods/queryGoodsInfo',
-		data : {'goodsVO.id' : id},
+		data : {'goodsVO.id' : goodsid},
 		type : 'POST',
 		async : false,
 		cache : true,
@@ -90,30 +90,87 @@ $(function(){
 				}else {
 					$('.buy_box_btn').html('<a href="javascript:;" class="btn btn_red btn_cat hide">\
 						<i class="cart"></i>加入购物车</a>\
-							<a href="javascript:;" class="btn btn_b btn_b_red">立即购买</a>');
+							<!--<a href="javascript:;" class="btn btn_b btn_b_red">立即购买</a>-->');
 				}
 				detailsImgs = data.result.details;
 				$.each(detailsImgs, function(i, item){
 					$('.descrip > p').append('<img src="'+item.orgPath+'" width="930"><br/>');
 				});
 				$(".btn_cat").click(function(event){
-					var catSrc = $('.small').attr('src');
-					var flyer = $('<img src="'+catSrc+'">');
-					flyer.fly({
-						start: {
-							left: event.pageX - 27,
-							top: event.pageY - 27
-						},
-						end: {
-							left: $(".new_cart").offset().left+50,
-							top: $(".new_cart").offset().top+50,
-							width: 0,
-							height: 0
-						},
-						onEnd: function(){
-							this.destory();
+					if (data.result.login) {
+						var catSrc = $('.small').attr('src');
+						var flyer = $('<img src="'+catSrc+'">');
+						flyer.fly({
+							start: {
+								left: event.pageX - 27,
+								top: event.pageY - 27
+							},
+							end: {
+								left: $(".new_cart").offset().left+50,
+								top: $(".new_cart").offset().top+50,
+								width: 0,
+								height: 0
+							},
+							onEnd: function(){
+								$.ajax({
+									url : '/beio/goods/buyGoods',
+									data : {
+										'gdsBuycat.goodsID' : goodsid,
+										'gdsBuycat.quantity' : $('#buy-num').val()
+									},
+									type : 'POST',
+									async : false,
+									cache : true,
+									dataType : 'json',
+									success : function(data) {
+										if (data.status == '200') {
+											$('#cart_num').html(data.result > 99 ? '99+' : data.result);
+										}else if (data.status == '170' || data.status == '136') {
+											alert(tip('170'));
+										}else {
+											alert(tip('400'));
+										}
+									},
+									error : function() {
+										alert(tip('500'));
+									}
+								});
+								this.destory();
+							}
+						});
+					}else {
+						alert(tip('194'));
+					}
+				});
+				$('.num_add').click(function(){
+					if(!isNaN(parseInt($('#buy-num').val()))){
+						if (parseInt($('#buy-num').val()) <= parseInt($('.stock').html())) {
+							$('#buy-num').val(parseInt($('#buy-num').val())+1);
 						}
-					});
+					}
+				});
+				$('.num_del').click(function(){
+					if(!isNaN(parseInt($('#buy-num').val()))){
+						if (parseInt($('#buy-num').val()) > 1) {
+							$('#buy-num').val(parseInt($('#buy-num').val())-1);
+						}
+					}
+				});
+				$('#buy-num').blur(function(){
+					$(this).val($(this).val().replace(/[^0-9]/g, ''));
+					if (parseInt($('#buy-num').val()) > parseInt($('.stock').html())) {
+						$(this).val($('.stock').html());
+					} else if (new RegExp(regex('buyNum')).test($(this).val()) == false) {
+						$(this).val('1');
+					}
+				});
+				$('#buy-num').keyup(function(){
+					$(this).val($(this).val().replace(/[^0-9]/g, ''));
+					if (parseInt($('#buy-num').val()) > parseInt($('.stock').html())) {
+						$(this).val($('.stock').html());
+					} else if (new RegExp(regex('buyNum')).test($(this).val()) == false) {
+						$(this).val('1');
+					}
 				});
 				if(localStorage.getItem('historygoods') != null){
 					var goods = JSON.stringify(data.result);
@@ -130,7 +187,7 @@ $(function(){
 									</a>\
 								</p>\
 								<p class="name">\
-									<a href="goods.html?id='+see.id+'" title="'+see.name+'">'+see.name+'</a>\
+									<a href="goods.html?goods='+see.id+'" title="'+see.name+'">'+see.name+'</a>\
 								</p>\
 								<p class="price">\
 									<span class="price_d">¥'+seePrice+'</span>\

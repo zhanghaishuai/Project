@@ -78,12 +78,12 @@ $(function(){
 									: '<span class="price_n">'+item.cPrice+'</span>';
 						$('.cloth_shoplist').append('\
 							<li>\
-								<a href="goods.html?id='+item.id+'" title="'+item.name+'">\
+								<a href="goods.html?goods='+item.id+'" title="'+item.name+'">\
 								<img src="'+(item.shows.length>0?item.shows[0].midPath:"")+'"/>\
 							</a>\
 							<p class="price">'+priceH+'</p>\
 							<p class="name">\
-								<a title="'+item.name+'" href="goods.html?id='+item.id+'">\
+								<a title="'+item.name+'" href="goods.html?goods='+item.id+'">\
 									<span class="skcolor_ljg">'+item.name+'</span>\
 								</a>\
 							</p>\

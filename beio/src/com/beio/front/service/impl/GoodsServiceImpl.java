@@ -2,8 +2,10 @@ package com.beio.front.service.impl;
 
 import java.util.List;
 
+import com.beio.base.entity.SysMember;
 import com.beio.base.service.impl.BaseIbatisServiceImpl;
 import com.beio.base.util.ComUtil;
+import com.beio.front.entity.GdsBuycat;
 import com.beio.front.entity.GdsClassify;
 import com.beio.front.service.GoodsService;
 import com.beio.front.vo.ClassifyVO;
@@ -22,7 +24,7 @@ import com.beio.front.vo.TopInfoVO;
 public class GoodsServiceImpl extends BaseIbatisServiceImpl implements GoodsService {
 
 	@Override
-	public TopInfoVO queryTopInfo() throws Exception {
+	public TopInfoVO queryTopInfo(SysMember member) throws Exception {
 		TopInfoVO top = new TopInfoVO();
 		// 装载热搜关键字
 		top.setSearchs(selectList("goods.queryHotKeyword"));
@@ -35,7 +37,7 @@ public class GoodsServiceImpl extends BaseIbatisServiceImpl implements GoodsServ
 			initTopClassifys(top);
 		}
 		// 装载购买数量
-		top.setCartNum("0");
+		top.setCartNum(String.valueOf(selectOne("goods.buycatQuantity", member)));
 		// 装载订单数量
 		top.setOrderNum("0");
 		// TODO Auto-generated method stub
@@ -65,10 +67,21 @@ public class GoodsServiceImpl extends BaseIbatisServiceImpl implements GoodsServ
 	@Override
 	public GoodsVO queryGoodsInfo(GoodsVO goodsVO) throws Exception {
 		// TODO Auto-generated method stub
-		goodsVO = (GoodsVO) selectOne("goods.queryGoods", goodsVO);
+		goodsVO = (GoodsVO) selectOne("goods.queryGoodsByID", goodsVO);
 		goodsVO.setShows(selectList("goods.queryShowsByGoods", goodsVO));
 		goodsVO.setDetails(selectList("goods.queryDetailsByGoods", goodsVO));
 		return goodsVO;
+	}
+	
+	@Override
+	public int joinBuycat(GdsBuycat gdsBuycat) throws Exception {
+		// TODO Auto-generated method stub
+		if (update("goods.updtBuycat", gdsBuycat) < 1) {
+			if (insert("goods.joinBuycat", gdsBuycat) < 1) {
+				return -1;
+			}
+		}
+		return 0;
 	}
 	
 	/**

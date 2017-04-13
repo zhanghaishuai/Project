@@ -18,6 +18,7 @@
 		<typeAlias type="com.beio.front.entity.GdsImage" alias="GdsImage"/>
 		<typeAlias type="com.beio.front.entity.GdsNavbar" alias="GdsNavbar"/>
 		<typeAlias type="com.beio.front.entity.GdsSearch" alias="GdsSearch"/>
+		<typeAlias type="com.beio.front.entity.GdsBuycat" alias="GdsBuycat"/>
 		
 		<typeAlias type="com.beio.base.vo.Member" alias="Member"/>
 		<typeAlias type="com.beio.front.vo.ClassifyVO" alias="ClassifyVO"/>
