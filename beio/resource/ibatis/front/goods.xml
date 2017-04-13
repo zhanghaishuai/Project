@@ -178,20 +178,20 @@
 	</select>
 	
 	<!-- 加入购物车 -->
-	<insert id="joinBuycat" parameterType="Object">
-		insert into gds_buycat(id, buyerID, goodsID, quantity, creator, createTime, modifier, modifyTime) 
+	<insert id="joinBuycart" parameterType="Object">
+		insert into gds_buycart(id, buyerID, goodsID, quantity, creator, createTime, modifier, modifyTime) 
 			values(#{id}, #{buyerID}, #{goodsID}, #{quantity}, #{creator}, #{createTime}, #{modifier}, #{modifyTime});
 	</insert>
 	
 	<!-- 更新购物车 -->
-	<update id="updtBuycat" parameterType="Object">
-		update gds_buycat set quantity = quantity+#{quantity}, modifier = #{modifier}, modifyTime = #{modifyTime} 
+	<update id="updtBuycart" parameterType="Object">
+		update gds_buycart set quantity = quantity+#{quantity}, modifier = #{modifier}, modifyTime = #{modifyTime} 
 			where buyerID = #{buyerID} and goodsID = #{goodsID} and status = '0' and enable = '1' and exist = '1';
 	</update>
 	
 	<!-- 查询购物车商品数量 -->
-	<select id="buycatQuantity" parameterType="Object" resultType="int">
-		select ifnull(sum(quantity), 0) as quantity from gds_buycat where buyerID = #{id};
+	<select id="buycartQuantity" parameterType="Object" resultType="int">
+		select ifnull(sum(quantity), 0) as quantity from gds_buycart where buyerID = #{id};
 	</select>
 	
 </mapper>

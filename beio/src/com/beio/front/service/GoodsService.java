@@ -2,7 +2,7 @@ package com.beio.front.service;
 
 import com.beio.base.entity.SysMember;
 import com.beio.base.service.BaseIbaitsService;
-import com.beio.front.entity.GdsBuycat;
+import com.beio.front.entity.GdsBuycart;
 import com.beio.front.vo.GoodsVO;
 import com.beio.front.vo.IndexInfoVO;
 import com.beio.front.vo.SearchInfoVO;
@@ -50,6 +50,6 @@ public interface GoodsService extends BaseIbaitsService{
 	 * @return
 	 * @throws Exception
 	 */
-	public int joinBuycat(GdsBuycat gdsBuycat) throws Exception;
+	public int joinBuycat(GdsBuycart gdsBuycat) throws Exception;
 	
 }

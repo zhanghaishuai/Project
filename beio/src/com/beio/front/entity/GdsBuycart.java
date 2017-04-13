@@ -8,7 +8,7 @@ import com.beio.base.vo.Page;
  * @date 2017-04-13
  * @version 1.0.0
  */
-public class GdsBuycat extends Page{
+public class GdsBuycart extends Page{
 
 	private String id; // 主键
 	

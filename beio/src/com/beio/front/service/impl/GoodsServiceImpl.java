@@ -5,7 +5,7 @@ import java.util.List;
 import com.beio.base.entity.SysMember;
 import com.beio.base.service.impl.BaseIbatisServiceImpl;
 import com.beio.base.util.ComUtil;
-import com.beio.front.entity.GdsBuycat;
+import com.beio.front.entity.GdsBuycart;
 import com.beio.front.entity.GdsClassify;
 import com.beio.front.service.GoodsService;
 import com.beio.front.vo.ClassifyVO;
@@ -37,7 +37,7 @@ public class GoodsServiceImpl extends BaseIbatisServiceImpl implements GoodsServ
 			initTopClassifys(top);
 		}
 		// 装载购买数量
-		top.setCartNum(String.valueOf(selectOne("goods.buycatQuantity", member)));
+		top.setCartNum(String.valueOf(selectOne("goods.buycartQuantity", member)));
 		// 装载订单数量
 		top.setOrderNum("0");
 		// TODO Auto-generated method stub
@@ -74,10 +74,10 @@ public class GoodsServiceImpl extends BaseIbatisServiceImpl implements GoodsServ
 	}
 	
 	@Override
-	public int joinBuycat(GdsBuycat gdsBuycat) throws Exception {
+	public int joinBuycat(GdsBuycart gdsBuycat) throws Exception {
 		// TODO Auto-generated method stub
-		if (update("goods.updtBuycat", gdsBuycat) < 1) {
-			if (insert("goods.joinBuycat", gdsBuycat) < 1) {
+		if (update("goods.updtBuycart", gdsBuycat) < 1) {
+			if (insert("goods.joinBuycart", gdsBuycat) < 1) {
 				return -1;
 			}
 		}

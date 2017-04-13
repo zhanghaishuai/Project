@@ -26,7 +26,7 @@ var htmlbuild = {
 					</div>\
 				</div>\
 				<div class="new_cart">\
-					<a href="car.html"><i class="icon_card"></i>购物车<b id="cart_num"></b></a>\
+					<a href="buycart.html"><i class="icon_card"></i>购物车<b id="cart_num"></b></a>\
 				</div>\
 				<div class="new_order">\
 					<a href="myhome_order.html">我的订单<b id="order_num"></b></a>\
