@@ -47,7 +47,6 @@ $(function(){
 			$('#hobby_s').removeClass('hide');
 			flag = false;
 		}
-		
 		if(flag == true){
 			$.ajax({
 				url : '/beio/sys/modifyMemberInfo',

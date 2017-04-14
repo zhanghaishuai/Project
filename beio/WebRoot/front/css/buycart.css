@@ -1545,10 +1545,7 @@ a.check_de,a.check_de:hover {
 }
 
 .shoppingcart_loading {
-	height: 130px;
-	padding-top: 80px;
 	text-align: center;
-	border-top: 1px solid #efeae5;
 	border-bottom: 5px solid #efeae5
 }
 

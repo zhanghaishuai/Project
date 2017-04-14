@@ -5,6 +5,7 @@
     <title>购物车</title>
     <link rel="icon" href="#"/>
     <link type="text/css" rel="stylesheet" href="css/htmlbuild.css"/>  
+    <link type="text/css" rel="stylesheet" href="css/login.css"/>  
     <link rel="Stylesheet" type="text/css" href="css/buycart.css" />
     <script type="text/javascript" src="js/jquery/jquery.js"></script>
     <script type="text/javascript" src="js/htmlbuild.js"></script>
@@ -29,107 +30,13 @@
         <li class="f4">金额（元）</li>
         <li class="f5">操作</li>
     </ul>
-    <div class="fn-shop">
-    	<div class="shopping_list">
-    		<table>
-    			<tbody>
-    				<tr class="bb_none">
-    					<td class="row_check row1">
-							<a href="javascript:void(0)" class="fn-product-check checknow check_on">选中</a> 
-						</td> 
-						<td class="row_img"> 
-							<a href="#"> 
-								<img src="image/1024593425-1_m.jpg" width="80" height="80"> 
-							</a> 
-							<div style="display: none;" class="img_big">
-								<a href="#">
-									<img src="image/1024593425-1_b.jpg">
-								</a>
-								<span class="arrow"></span>
-							</div> 
-						</td> 
-						<td class="row_name"> 
-							<div class="name"> 
-								<a href="#" title="哈佛管理经典案例全集全8册精装 哈佛商学院MBA管理全书集/哈佛管理全集/辽海出版社" style="word-break:break-all;word-wrap:break-word;">哈佛管理经典案例全集全8册精装 哈佛商学院MBA管理全书集/哈佛管理全集/辽海出版社</a>
-							</div>      
-						</td> 
-						<td class="row_single row3">
-							<span class="red">¥376.00</span>
-						</td> 
-						<td class="fn-count-tip row3">
-							<span class="amount fn-updatecount">
-								<a href="javascript:void(0)">-</a>
-								<input class="goodsNum" value="1" type="text">
-								<a href="javascript:void(0)">+</a>
-							</span>
-						</td> 
-						<td class="row_amount row4">
-							<span class="red">¥376.00</span>
-						</td> 
-						<td class="row_delete row5">
-							<span>
-								<a href="javascript:void(0)" class="fn-remove-product">删除</a>
-							</span>
-						</td> 
-					</tr>
-				</tbody>
-			</table>
-		</div>
-	</div>
-	<div class="fn-shop">
-    	<div class="shopping_list">
-    		<table>
-    			<tbody>
-    				<tr class="bb_none">
-    					<td class="row_check row1">
-							<a href="javascript:void(0)" class="fn-product-check checknow check_on">选中</a> 
-						</td> 
-						<td class="row_img"> 
-							<a href="#"> 
-								<img src="image/1024593425-1_m.jpg" width="80" height="80"> 
-							</a> 
-							<div style="display: none;" class="img_big">
-								<a href="#">
-									<img src="image/1024593425-1_b.jpg">
-								</a>
-								<span class="arrow"></span>
-							</div> 
-						</td> 
-						<td class="row_name"> 
-							<div class="name"> 
-								<a href="#" title="哈佛管理经典案例全集全8册精装 哈佛商学院MBA管理全书集/哈佛管理全集/辽海出版社" style="word-break:break-all;word-wrap:break-word;">哈佛管理经典案例全集全8册精装 哈佛商学院MBA管理全书集/哈佛管理全集/辽海出版社</a>
-							</div>      
-						</td> 
-						<td class="row_single row3">
-							<span class="red">¥376.00</span>
-						</td> 
-						<td class="fn-count-tip row3">
-							<span class="amount fn-updatecount">
-								<a href="javascript:void(0)">-</a>
-								<input class="goodsNum" value="1" type="text">
-								<a href="javascript:void(0)">+</a>
-							</span>
-						</td> 
-						<td class="row_amount row4">
-							<span class="red">¥376.00</span>
-						</td> 
-						<td class="row_delete row5">
-							<span>
-								<a href="javascript:void(0)" class="fn-remove-product">删除</a>
-							</span>
-						</td> 
-					</tr>
-				</tbody>
-			</table>
-		</div>
-	</div>
-    <div class="shoppingcart_loading" style="display:none;"><img height="30" width="30" src="image/loading.gif"></div>
+    <div class="shoppingcart_loading"></div>
 </div>
 
 <div class="real" style="position:static;bottom:-20px;z-index:101;width:100%;left:0px;">
   <div class="shopping_total">
     <div class="shopping_total_right">
-        <a class="total_btn fn-checkout" href="order.html">结&nbsp;&nbsp;算</a>
+        <a class="total_btn fn-checkout" href="javascript:void(0);">结&nbsp;&nbsp;算</a>
         <div class="subtotal">
             <p><span class="cartsum">总计(不含运费)：</span><span id="payAmount" class="price">752.00</span></p>
         </div>
@@ -155,7 +62,7 @@
 </div>
 
 <script type="text/javascript">
-	window.document.write(initBottomHtml());
+	window.document.write(htmlbuild.btmHtml);
 </script>
 </body>
 </html>

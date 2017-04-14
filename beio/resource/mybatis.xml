@@ -26,6 +26,7 @@
 		<typeAlias type="com.beio.front.vo.IndexInfoVO" alias="IndexInfoVO"/>
 		<typeAlias type="com.beio.front.vo.TopInfoVO" alias="TopInfoVO"/>
 		<typeAlias type="com.beio.front.vo.SearchInfoVO" alias="SearchInfoVO"/>
+		<typeAlias type="com.beio.front.vo.BuycartVO" alias="BuycartVO"/>
 		
 	</typeAliases>
 	

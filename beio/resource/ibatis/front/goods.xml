@@ -191,7 +191,33 @@
 	
 	<!-- 查询购物车商品数量 -->
 	<select id="buycartQuantity" parameterType="Object" resultType="int">
-		select ifnull(sum(quantity), 0) as quantity from gds_buycart where buyerID = #{id};
+		select ifnull(sum(quantity), 0) as quantity from gds_buycart 
+		where buyerID = #{id} and status = '0' and enable = '1' and exist = '1';;
+	</select>
+	
+	<!-- 查询购物车商品 -->
+	<select id="queryBuycart" parameterType="Object" resultType="BuycartVO">
+		SELECT * FROM gds_buycart WHERE buyerID = #{id} and status = '0' and enable = '1' and exist = '1';
+	</select>
+	
+	<!-- 编辑购物车商品 -->
+	<select id="editBuycart" parameterType="Object" resultType="BuycartVO">
+		update gds_buycart 
+		<set>
+			<if test="quantity != null and quantity != ''">
+				quantity = #{quantity},
+			</if>
+			<if test="exist != null and exist != ''">
+				exist = #{exist},
+			</if>
+			<if test="modifier != null and modifier != ''">
+				modifier = #{modifier},
+			</if>
+			<if test="modifyTime != null and modifyTime != ''">
+				modifyTime = #{modifyTime},
+			</if>
+		</set>
+		where id = #{id};
 	</select>
 	
 </mapper>

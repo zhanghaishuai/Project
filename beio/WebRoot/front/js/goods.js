@@ -100,42 +100,42 @@ $(function(){
 					if (data.result.login) {
 						var catSrc = $('.small').attr('src');
 						var flyer = $('<img src="'+catSrc+'">');
-						flyer.fly({
-							start: {
-								left: event.pageX - 27,
-								top: event.pageY - 27
+						$.ajax({
+							url : '/beio/goods/buyGoods',
+							data : {
+								'gdsBuycart.goodsID' : goodsid,
+								'gdsBuycart.quantity' : $('#buy-num').val()
 							},
-							end: {
-								left: $(".new_cart").offset().left+50,
-								top: $(".new_cart").offset().top+50,
-								width: 0,
-								height: 0
-							},
-							onEnd: function(){
-								$.ajax({
-									url : '/beio/goods/buyGoods',
-									data : {
-										'gdsBuycat.goodsID' : goodsid,
-										'gdsBuycat.quantity' : $('#buy-num').val()
-									},
-									type : 'POST',
-									async : false,
-									cache : true,
-									dataType : 'json',
-									success : function(data) {
-										if (data.status == '200') {
-											$('#cart_num').html(data.result > 99 ? '99+' : data.result);
-										}else if (data.status == '170' || data.status == '136') {
-											alert(tip('170'));
-										}else {
-											alert(tip('400'));
+							type : 'POST',
+							async : false,
+							cache : true,
+							dataType : 'json',
+							success : function(data) {
+								if (data.status == '200') {
+									cartNum = data.result;
+									flyer.fly({
+										start: {
+											left: event.pageX - 27,
+											top: event.pageY - 27
+										},
+										end: {
+											left: $(".new_cart").offset().left+50,
+											top: $(".new_cart").offset().top+50,
+											width: 0,
+											height: 0
+										},
+										onEnd: function(){
+											$('#cart_num').html(cartNum > 99 ? '99+' : cartNum);
 										}
-									},
-									error : function() {
-										alert(tip('500'));
-									}
-								});
-								this.destory();
+									});
+								}else if (data.status == '170' || data.status == '136') {
+									alert(tip('170'));
+								}else {
+									alert(tip('400'));
+								}
+							},
+							error : function() {
+								alert(tip('500'));
 							}
 						});
 					}else {

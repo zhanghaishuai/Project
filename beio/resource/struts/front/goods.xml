@@ -54,6 +54,22 @@
 			<interceptor-ref name="defaultStack"/>
 		</action>
 		
+		<!-- 查询购物车 -->
+		<action name="queryBuycart" class="goodsAction" method="queryBuycart">
+			<result name="json" type="json">
+				<param name="root">root</param>
+			</result>
+			<interceptor-ref name="defaultStack"/>
+		</action>
+		
+		<!-- 编辑购物车 -->
+		<action name="editBuycart" class="goodsAction" method="editBuycart">
+			<result name="json" type="json">
+				<param name="root">root</param>
+			</result>
+			<interceptor-ref name="defaultStack"/>
+		</action>
+		
 	</package>
 </struts>
 

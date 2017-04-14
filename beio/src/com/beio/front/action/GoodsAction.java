@@ -21,7 +21,7 @@ public class GoodsAction extends BaseAction{
 	
 	private static final long serialVersionUID = 1L;
 	
-	GoodsService goodsService;
+	private GoodsService goodsService;
 	
 	private GdsSearch gdsSearch;
 	
@@ -117,6 +117,47 @@ public class GoodsAction extends BaseAction{
 			return JSON;
 		}
 		setRoot(goodsService.selectOne("goods.buycartQuantity", m), "200");
+		return JSON;
+	}
+	
+	/**
+	 * 查询购物车
+	 * @return
+	 * @throws Exception
+	 */
+	public String queryBuycart() throws Exception{
+		SysMember m = sessionMember();
+		if (m == null) {
+			setRoot("170");
+			return JSON;
+		}
+		setRoot(goodsService.queryBuycart(m), "200");
+		return JSON;
+	}
+	
+	/**
+	 * 编辑购物车
+	 * @return
+	 * @throws Exception
+	 */
+	public String editBuycart() throws Exception{
+		SysMember m = sessionMember();
+		if (m == null) {
+			setRoot("170");
+			return JSON;
+		}
+		if (ComUtil.isNotEmpty(gdsBuycart.getQuantity()) && 
+				ComUtil.isNotMatches(getRegex("buyNum").getRegex(), gdsBuycart.getQuantity())) {
+			setRoot("136");
+			return JSON;
+		}
+		gdsBuycart.setModifier(m.getId());
+		gdsBuycart.setModifyTime(curTimeStr());
+		if (goodsService.update("goods.editBuycart", gdsBuycart) < 1) {
+			setRoot("100");
+			return JSON;
+		}
+		setRoot(gdsBuycart, "200");
 		return JSON;
 	}
 

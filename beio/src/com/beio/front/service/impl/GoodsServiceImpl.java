@@ -8,6 +8,7 @@ import com.beio.base.util.ComUtil;
 import com.beio.front.entity.GdsBuycart;
 import com.beio.front.entity.GdsClassify;
 import com.beio.front.service.GoodsService;
+import com.beio.front.vo.BuycartVO;
 import com.beio.front.vo.ClassifyVO;
 import com.beio.front.vo.GoodsVO;
 import com.beio.front.vo.IndexInfoVO;
@@ -74,14 +75,26 @@ public class GoodsServiceImpl extends BaseIbatisServiceImpl implements GoodsServ
 	}
 	
 	@Override
-	public int joinBuycat(GdsBuycart gdsBuycat) throws Exception {
+	public int joinBuycat(GdsBuycart gdsBuycart) throws Exception {
 		// TODO Auto-generated method stub
-		if (update("goods.updtBuycart", gdsBuycat) < 1) {
-			if (insert("goods.joinBuycart", gdsBuycat) < 1) {
+		if (update("goods.updtBuycart", gdsBuycart) < 1) {
+			if (insert("goods.joinBuycart", gdsBuycart) < 1) {
 				return -1;
 			}
 		}
 		return 0;
+	}
+	
+	@Override
+	public List<BuycartVO> queryBuycart(SysMember member) throws Exception {
+		// TODO Auto-generated method stub
+		List<BuycartVO> carts = selectList("goods.queryBuycart", member);
+		if (ComUtil.isNotEmpty(carts)) {
+			for (BuycartVO cart : carts) {
+				cart.setGoods(queryGoods(cart));
+			}
+		}
+		return carts;
 	}
 	
 	/**
@@ -130,10 +143,23 @@ public class GoodsServiceImpl extends BaseIbatisServiceImpl implements GoodsServ
 		selectPage("goods.queryGoodsBySearch", searchInfoVO);
 		if (ComUtil.isNotEmpty(searchInfoVO.getPageList())) {
 			for (Object goodsVO : searchInfoVO.getPageList()) {
-				((GoodsVO)goodsVO).setShows(selectList(
-						"goods.queryShowsByGoods", goodsVO));
+				((GoodsVO)goodsVO).setShows(selectList("goods.queryShowsByGoods", goodsVO));
 			}
 		}
+	}
+	
+	/**
+	 * 查询商品信息
+	 * @param classify
+	 * @return
+	 * @throws Exception
+	 */
+	private GoodsVO queryGoods(BuycartVO buycartVO) throws Exception{
+		GoodsVO goods = (GoodsVO) selectOne("goods.queryGoodsByID", buycartVO.getGoodsID());
+		if (goods != null) {
+			goods.setShows(selectList("goods.queryShowsByGoods", goods));
+		}
+		return goods;
 	}
 	
 	/**
