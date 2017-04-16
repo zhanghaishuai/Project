@@ -1,4 +1,38 @@
 @charset "utf-8";
+/* CSS Document */
+html,body,div,span,iframe,b,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,address,big,cite,code,em,font,img,q,s,samp,small,strike,strong,sub,sup,u,i,center,dl,dt,dd,ol,ul,li,form,label,table,tbody,tfoot,thead,tr,th,td
+	{
+	margin: 0;
+	padding: 0;
+	border: 0;
+	outline: 0;
+	font-size: 100%;
+	background: transparent;
+	list-style: none;
+}
+
+body {
+	font-family: "Microsoft Yahei", 'Hiragino Sans GB', "Simsun", "Arial";
+	font-size: 12px;
+	color: #323232;
+	line-height: 1;
+	background: #fff;
+	word-break: break-all;
+}
+
+a:link,a:visited {
+	text-decoration: none;
+	color: #323232;
+}
+
+a:hover {
+	text-decoration: underline;
+	color: #ff2832;
+}
+
+input:focus,select {
+	outline: none;
+}
 
 .clear {
 	clear: both;
@@ -202,9 +236,47 @@ a.check.disable {
 	margin: 0 2px 0 0;
 }
 
+/*logo*/
+.logo_line {
+	width: 100%;
+	border-bottom: 4px solid #ff2832;
+	height: 100px;
+}
+
+.logo_line .logo {
+	padding: 20px 0 0 15px;
+}
+
+.shopping_procedure {
+	float: right;
+	width: 634px;
+	height: 36px;
+	background: url(../image/procedurefinish_bg.png) 0 0 no-repeat;
+	font: bold 14px/36px "Microsoft Yahei";
+	color: #646464;
+	margin: 30px 0 0;
+}
+
+.shopping_procedure span {
+	width: 211px;
+	display: inline-block;
+	text-align: center;
+}
+
+.shopping_procedure span a {
+	display: block;
+	color: #646464;
+	width: 100%;
+}
+
+.shopping_procedure span.current {
+	color: #fff;
+	width: 206px;
+}
+
 .payamount {
 	width: 960px;
-	margin: 15px auto 15px auto;
+	margin: 15px auto 0px auto;
 	border: 1px solid #ccc; 
 }
 
@@ -217,7 +289,7 @@ a.check.disable {
 }
 
 .order span {
-	font: 18px/40px 'Arial'; display: block; margin-left: 15px; margin-right: 15px;
+	font: 18px/40px 'Arial'; display: block; margin-left: 15px;
 }
 
 .wxpaylogo {

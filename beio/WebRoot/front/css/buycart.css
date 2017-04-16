@@ -4675,3 +4675,25 @@ input {
 .shopping_total .adisabled {
 	background-color: #ccc;
 }
+
+.checkout_tip {
+	background-color: #fff5f5;
+	border: 1px solid #ffecec;
+	color: #323232;
+	line-height: 34px;
+	padding: 0 10px;
+	margin: 10px auto 0;
+}
+
+.checkout_tip b {
+	display: inline-block;
+}
+
+.checkout_tip .con {
+	display: inline-block;
+	*display: inline;
+	*zoom: 1;
+	vertical-align: top;
+	line-height: 24px;
+	padding: 6px 0;
+}
