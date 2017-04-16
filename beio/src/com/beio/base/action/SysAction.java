@@ -2,11 +2,14 @@ package com.beio.base.action;
 
 import java.util.Calendar;
 
+import com.beio.base.entity.SysArea;
 import com.beio.base.entity.SysMember;
+import com.beio.base.service.SysService;
 import com.beio.base.util.ComUtil;
 import com.beio.base.util.Constant;
 import com.beio.base.util.DateUtil;
 import com.beio.base.util.SmsUtil;
+import com.beio.base.vo.Address;
 import com.beio.base.vo.Member;
 
 /**
@@ -19,7 +22,13 @@ public class SysAction extends BaseAction{
 	
 	private static final long serialVersionUID = 1L;
 	
-	Member mr = new Member();
+	private Member mr = new Member();
+	
+	private SysArea area = new SysArea();
+	
+	private Address addr = new Address();
+	
+	private SysService sysService;
 	
 	/**
 	 * 查询正则
@@ -36,6 +45,15 @@ public class SysAction extends BaseAction{
 	 */
 	public String queryTip() throws Exception{
 		setRoot(getTips(), "200");
+		return JSON;
+	}
+	
+	/**
+	 * 查询区划
+	 * @return
+	 */
+	public String queryArea() throws Exception{
+		setRoot(baseIbaitsService.selectList("sys.queryArea", area), "200");
 		return JSON;
 	}
 	
@@ -301,7 +319,9 @@ public class SysAction extends BaseAction{
 			return JSON;
 		}
 		mr.setMobile(mobile);
-		if (getBaseIbaitsService().insert("sys.findPwd", mr) < 1) {
+		mr.setModifier(sessionMemberID());
+		mr.setModifyTime(curTimeStr());
+		if (baseIbaitsService.insert("sys.findPwd", mr) < 1) {
 			setRoot("100");
 			return JSON;
 		}
@@ -337,13 +357,118 @@ public class SysAction extends BaseAction{
 			return JSON;
 		}
 		mr.setId(sessionMemberID());
-		if (getBaseIbaitsService().insert("sys.modifyMemberInfo", mr) < 1) {
+		mr.setModifier(sessionMemberID());
+		mr.setModifyTime(curTimeStr());
+		if (baseIbaitsService.insert("sys.modifyMemberInfo", mr) < 1) {
 			setRoot("100");
 			return JSON;
 		}
 		SysMember m =queryMember(mr);
 		getSession().setAttribute(Constant.SESSIONUSERINFO, m);
 		setRoot(m, "200");
+		return JSON;
+	}
+	
+	/**
+	 * 查询收货地址
+	 * @return
+	 * @throws Exception 
+	 */
+	public String queryAddr() throws Exception{
+		addr.setMemberID(sessionMemberID());
+		addr = (Address) baseIbaitsService.selectOne("sys.queryAddr", addr);
+		if (addr == null) {
+			setRoot("139");
+			return JSON;
+		}
+		setRoot(addr, "200");
+		return JSON;
+	}
+	
+	/**
+	 * 编辑收货地址
+	 * @return
+	 * @throws Exception 
+	 */
+	public String editAddr() throws Exception{
+		if (ComUtil.isNotMatches(getRegex("empty").getRegex(), addr.getName())) {
+			setRoot("137");
+			return JSON;
+		}
+		if (ComUtil.isNotMatches(getRegex("mobile").getRegex(), addr.getMobile())) {
+			setRoot("120");
+			return JSON;
+		}
+		if (ComUtil.isNotMatches(getRegex("empty").getRegex(), addr.getMobile())) {
+			setRoot("121");
+			return JSON;
+		}
+		if (ComUtil.isNotMatches(getRegex("empty").getRegex(), addr.getProvince())) {
+			setRoot("141");
+			return JSON;
+		}
+		if (ComUtil.isNotMatches(getRegex("empty").getRegex(), addr.getCity())) {
+			setRoot("142");
+			return JSON;
+		}
+		if (ComUtil.isNotMatches(getRegex("empty").getRegex(), addr.getCounty())) {
+			setRoot("143");
+			return JSON;
+		}
+		if (ComUtil.isNotMatches(getRegex("empty").getRegex(), addr.getAddress())) {
+			setRoot("144");
+			return JSON;
+		}
+		addr.setMemberID(sessionMemberID());
+		addr.setIsdefault(Constant.DEFAULT);
+		addr.setCreator(sessionMemberID());
+		addr.setCreateTime(curTimeStr());
+		addr.setModifier(sessionMemberID());
+		addr.setModifyTime(curTimeStr());
+		int result = sysService.editAddr(addr);
+		if (result < 0) {
+			setRoot("140");
+			return JSON;
+		}
+		if (result < 1) {
+			setRoot("100");
+			return JSON;
+		}
+		setRoot(addr, "200");
+		return JSON;
+	}
+	
+	/**
+	 * 删除收货地址
+	 * @return
+	 * @throws Exception 
+	 */
+	public String delAddr() throws Exception{
+		addr.setMemberID(sessionMemberID());
+		addr.setModifier(sessionMemberID());
+		addr.setModifyTime(curTimeStr());
+		if (baseIbaitsService.update("sys.delAddr", addr) < 1) {
+			setRoot("100");
+			return JSON;
+		}
+		setRoot("200");
+		return JSON;
+	}
+	
+	/**
+	 * 默认收货地址
+	 * @return
+	 * @throws Exception 
+	 */
+	public String defaultAddr() throws Exception{
+		addr.setMemberID(sessionMemberID());
+		addr.setModifier(sessionMemberID());
+		addr.setModifyTime(curTimeStr());
+		if (sysService.defaultAddr(addr) < 1) {
+			setRoot("100");
+			return JSON;
+		}
+		setRoot("200");
 		return JSON;
 	}
 
@@ -353,6 +478,30 @@ public class SysAction extends BaseAction{
 
 	public void setMr(Member mr) {
 		this.mr = mr;
+	}
+
+	public SysArea getArea() {
+		return area;
+	}
+
+	public void setArea(SysArea area) {
+		this.area = area;
+	}
+
+	public Address getAddr() {
+		return addr;
+	}
+
+	public void setAddr(Address addr) {
+		this.addr = addr;
+	}
+
+	public SysService getSysService() {
+		return sysService;
+	}
+
+	public void setSysService(SysService sysService) {
+		this.sysService = sysService;
 	}
 	
 }

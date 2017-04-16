@@ -19,8 +19,8 @@ $(function(){
 						$.each(item.goods, function(i, item){
 							var picPath = (item.shows != null && item.shows.length > 0) ? picPath = item.shows[0].midPath : "";
 							var priceHM = data.result.login ? 
-								'<span class="price_n">'+item.mPrice+'</span><span class="price_r">'+item.cPrice+'</span>'
-									: '<span class="price_n">'+item.cPrice+'</span>';
+								'<span class="price_n">'+parseFloat(item.mPrice).toFixed(2)+'</span><span class="price_r">'+parseFloat(item.cPrice).toFixed(2)+'</span>'
+									: '<span class="price_n">'+parseFloat(item.cPrice).toFixed(2)+'</span>';
 							$('.cloth_shoplist:last').append('<li><a href="goods.html?goods='
 									+item.id+'" class="pic" title="'+item.name+'"><img src="'
 									+picPath+'" width="200" height="200"></a><p class="price">'

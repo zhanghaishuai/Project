@@ -70,17 +70,17 @@ $(function(){
 					priceElement = '\
 						<div class="price_d">\
 	        				<p class="t">现价</p>\
-	        				<p><span class="yen">¥</span>'+data.result.mPrice+'</p>\
+	        				<p><span class="yen">¥</span>'+parseFloat(data.result.mPrice).toFixed(2)+'</p>\
 	        			</div>\
 	        			<div class="price_m price_m_t">原价</div>\
 	        			<div class="price_m" id="original-price">\
-							<span class="yen">¥</span>499.00'+data.result.cPrice+'\
+							<span class="yen">¥</span>'+parseFloat(data.result.cPrice).toFixed(2)+'\
 						</div>';
 				}else {
 					priceElement = '\
 						<div class="price_d">\
 	        				<p class="t">现价</p>\
-	        				<p><span class="yen">¥</span>'+data.result.cPrice+'</p>\
+	        				<p><span class="yen">¥</span>'+parseFloat(data.result.cPrice).toFixed(2)+'</p>\
 	        			</div>';
 				}
 				$('.price_pc').html(priceElement);
@@ -190,7 +190,7 @@ $(function(){
 									<a href="goods.html?goods='+see.id+'" title="'+see.name+'">'+see.name+'</a>\
 								</p>\
 								<p class="price">\
-									<span class="price_d">¥'+seePrice+'</span>\
+									<span class="price_d">¥'+parseFloat(seePrice).toFixed(2)+'</span>\
 								</p>\
 							</li>');
 						goods += '&&&&&'+item;

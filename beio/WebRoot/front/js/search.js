@@ -74,8 +74,8 @@ $(function(){
 				if (data.result.pageTotal > 0) {
 					$.each(data.result.pageList, function(i, item){
 						var priceH = data.result.login ? 
-								'<span class="price_n">'+item.mPrice+'</span><span class="price_r">'+item.cPrice+'</span>'
-									: '<span class="price_n">'+item.cPrice+'</span>';
+								'<span class="price_n">'+parseFloat(item.mPrice).toFixed(2)+'</span><span class="price_r">'+parseFloat(item.cPrice).toFixed(2)+'</span>'
+									: '<span class="price_n">'+parseFloat(item.cPrice).toFixed(2)+'</span>';
 						$('.cloth_shoplist').append('\
 							<li>\
 								<a href="goods.html?goods='+item.id+'" title="'+item.name+'">\

@@ -4,6 +4,16 @@
 
 <mapper namespace="sys">
 
+	<!-- 查询主键 -->
+	<select id="queryid" parameterType="Object" resultType="int">
+		select last_insert_id();
+	</select>
+
+	<!-- 查询区划 -->
+	<select id="queryArea" parameterType="SysArea" resultType="SysArea">
+		select * from sys_area where parent = #{code} order by code;
+	</select>
+
 	<!-- 查询正则 -->
 	<select id="queryRegex" parameterType="SysRegex" resultType="SysRegex">
 		select * from sys_regex;
@@ -56,7 +66,8 @@
 	
 	<!-- 找回密码 -->
 	<update id="findPwd" parameterType="SysMember">
-		update sys_member set password = #{password} where mobile = #{mobile};
+		update sys_member set password = #{password}, modifier = #{modifier},
+			modifyTime = #{modifyTime} where mobile = #{mobile};
 	</update>
 	
 	<!-- 修改个人信息 -->
@@ -68,8 +79,98 @@
 			hobby = #{hobby},
 			nickName = #{nickName},
 			birthday = #{birthday},
+			modifier = #{modifier},
+			modifyTime = #{modifyTime},
 		</set>
 		where id = #{id};
+	</update>
+	
+	<!-- 根据会员ID查询地址 -->
+	<select id="queryAddrByMID" parameterType="String" resultType="Address">
+		select 
+		    addr.*,
+		    a1.name AS provinceName,
+		    a2.name AS cityName,
+		    a3.name AS countyName
+		from
+		    sys_addr addr
+		        LEFT JOIN
+		    sys_area a1 ON addr.province = a1.code
+		        LEFT JOIN
+		    sys_area a2 ON addr.city = a2.code
+		        LEFT JOIN
+		    sys_area a3 ON addr.county = a3.code
+		where enable = '1' and exist = '1' and memberID = #{id}
+		order by isdefault desc
+	</select>
+	
+	<!-- 新增地址 -->
+	<insert id="addAddr" parameterType="SysAddr">
+		insert into sys_addr (memberID, name, mobile, telephone, province, city, county, 
+			zipcode, address, isdefault, creator, createTime, modifier, modifyTime) 
+		values (#{memberID}, #{name}, #{mobile}, #{telephone}, #{province}, #{city}, #{county}, #{zipcode}, 
+			#{address}, #{isdefault}, #{creator}, #{createTime}, #{modifier}, #{modifyTime});
+	</insert>
+	
+	<!-- 编辑地址 -->
+	<update id="editAddr" parameterType="SysAddr">
+		update sys_addr 
+		<set>
+			name = #{name},
+			mobile = #{mobile},
+			telephone = #{telephone},
+			province = #{province},
+			city = #{city},
+			county = #{county},
+			zipcode = #{zipcode},
+			address = #{address},
+			isdefault = #{isdefault},
+			modifier = #{modifier},
+			modifyTime = #{modifyTime},
+		</set>
+		where id = #{id} and memberID = #{memberID};
+	</update>
+	
+	<!-- 重置地址 -->
+	<update id="resetAddr" parameterType="SysAddr">
+		update sys_addr set isdefault = '0', modifier = #{modifier},
+			modifyTime = #{modifyTime} where memberID = #{memberID};
+	</update>
+	
+	<!-- 根据会员ID查询地址 -->
+	<select id="queryAddr" parameterType="SysAddr" resultType="Address">
+		select 
+		    addr.*,
+		    a1.name AS provinceName,
+		    a2.name AS cityName,
+		    a3.name AS countyName
+		from
+		    sys_addr addr
+		        LEFT JOIN
+		    sys_area a1 ON addr.province = a1.code
+		        LEFT JOIN
+		    sys_area a2 ON addr.city = a2.code
+		        LEFT JOIN
+		    sys_area a3 ON addr.county = a3.code
+		where enable = '1' and exist = '1' 
+		and id = #{id} and memberID = #{memberID}
+	</select>
+	
+	<!-- 查询会员地址总数 -->
+	<select id="queryTotalAddr" parameterType="SysAddr" resultType="int">
+		select count(1) from sys_addr where enable = '1' and exist = '1' and memberID = #{memberID}
+	</select>
+	
+	<!-- 删除地址 -->
+	<update id="delAddr" parameterType="SysAddr">
+		update sys_addr set exist = '0', modifier = #{modifier}, 
+			modifyTime = #{modifyTime} where id = #{id} and memberID = #{memberID};
+	</update>
+	
+	<!-- 默认地址 -->
+	<update id="defaultAddr" parameterType="SysAddr">
+		update sys_addr set isdefault = '1', modifier = #{modifier}, 
+			modifyTime = #{modifyTime} where id = #{id} and memberID = #{memberID};
 	</update>
 	
 </mapper>

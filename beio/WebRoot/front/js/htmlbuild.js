@@ -312,6 +312,56 @@ var htmlbuild = {
 		        </li>\
 		    </ul>\
 		</div>\
+	</div>',
+	addrBox : '\
+	<div id="divDialog">\
+		<div class="pop">\
+			<a href="javascript:void(0)" class="addr_close close"></a>\
+				<div class="pop_title">编辑收货地址</div>\
+				<div class="pop_con info_list">\
+					<ul>\
+						<li>\
+							<span class="name">收货人</span>\
+							<input id="addr_name" class="addr_filed addr_name" type="text" value="" maxlength="8">\
+							<div class="alart_tip addr_name_s hide"></div>\
+						</li>\
+						<li>\
+							<span class="name">手机号码</span>\
+							<input id="addr_mobile" class="addr_filed addr_mobile" type="text" value="" maxlength="11">\
+							<span class="name">或固定电话</span>\
+							<input id="addr_telephone" class="addr_filed addr_telephone" type="text" value="" maxlength="20">\
+							<div class="alart_tip addr_mobile_s addr_telephone_s hide"></div>\
+						</li>\
+						<li>\
+							<span class="name">所在地区</span>\
+							<select id="addr_province" class="addr_filed addr_province" style="width:130px;">\
+								<option value="" selected="">请选择</option>\
+							</select>\
+							<select id="addr_city" class="addr_filed addr_city" style="width:130px;">\
+								<option value="" selected="">请选择</option>\
+							</select>\
+							<select id="addr_county" class="addr_filed addr_county" style="width:130px;">\
+								<option value="" selected="">请选择</option>\
+							</select>\
+							<div class="alart_tip addr_province_s addr_city_s addr_county_s hide"></div>\
+						</li>\
+						<li>\
+							<span class="name">详细地址</span>\
+							<input id="addr_address" class="addr_filed addr_address" type="text" style="width:413px;" value="" maxlength="150"/>\
+							<div class="alart_tip addr_address_s hide"></div>\
+						</li>\
+						<li>\
+							<span class="name">邮编</span>\
+							<input id="addr_zipcode" class="addr_filed addr_zipcode" type="text" value="" maxlength="6"/>\
+							<div class="alart_tip addr_zipcode_s hide"></div>\
+						</li>\
+					</ul>\
+				<div class="btn_bar">\
+				 	<a href="javascript:void(0)" class="btn_red addr_submit">确认</a>\
+					<a href="javascript:void(0)" class="btn addr_cancel">取消</a>\
+				</div>\
+			</div>\
+		</div>\
 	</div>'
 };
 

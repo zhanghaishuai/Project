@@ -8,6 +8,7 @@ import com.beio.front.entity.GdsSearch;
 import com.beio.front.service.GoodsService;
 import com.beio.front.vo.GoodsVO;
 import com.beio.front.vo.IndexInfoVO;
+import com.beio.front.vo.OrderVO;
 import com.beio.front.vo.SearchInfoVO;
 import com.beio.front.vo.TopInfoVO;
 
@@ -30,6 +31,8 @@ public class GoodsAction extends BaseAction{
 	private GoodsVO goodsVO;
 	
 	private GdsBuycart gdsBuycart;
+	
+	private OrderVO orderVO;
 	
 	/**
 	 * 商品搜索
@@ -98,25 +101,20 @@ public class GoodsAction extends BaseAction{
 	 * @throws Exception
 	 */
 	public String buyGoods() throws Exception{
-		SysMember m = sessionMember();
-		if (m == null) {
-			setRoot("170");
-			return JSON;
-		}
 		if (ComUtil.isNotMatches(getRegex("buyNum").getRegex(), gdsBuycart.getQuantity())) {
 			setRoot("136");
 			return JSON;
 		}
-		gdsBuycart.setBuyerID(m.getId());
-		gdsBuycart.setCreator(m.getId());
+		gdsBuycart.setBuyerID(sessionMemberID());
+		gdsBuycart.setCreator(sessionMemberID());
 		gdsBuycart.setCreateTime(curTimeStr());
-		gdsBuycart.setModifier(m.getId());
+		gdsBuycart.setModifier(sessionMemberID());
 		gdsBuycart.setModifyTime(curTimeStr());
-		if (goodsService.joinBuycat(gdsBuycart) == -1) {
+		if (goodsService.joinBuycat(gdsBuycart) < 1) {
 			setRoot("100");
 			return JSON;
 		}
-		setRoot(goodsService.selectOne("goods.buycartQuantity", m), "200");
+		setRoot(goodsService.selectOne("goods.buycartQuantity", sessionMember()), "200");
 		return JSON;
 	}
 	
@@ -126,12 +124,7 @@ public class GoodsAction extends BaseAction{
 	 * @throws Exception
 	 */
 	public String queryBuycart() throws Exception{
-		SysMember m = sessionMember();
-		if (m == null) {
-			setRoot("170");
-			return JSON;
-		}
-		setRoot(goodsService.queryBuycart(m), "200");
+		setRoot(goodsService.queryBuycart(sessionMember()), "200");
 		return JSON;
 	}
 	
@@ -141,23 +134,29 @@ public class GoodsAction extends BaseAction{
 	 * @throws Exception
 	 */
 	public String editBuycart() throws Exception{
-		SysMember m = sessionMember();
-		if (m == null) {
-			setRoot("170");
-			return JSON;
-		}
-		if (ComUtil.isNotEmpty(gdsBuycart.getQuantity()) && 
-				ComUtil.isNotMatches(getRegex("buyNum").getRegex(), gdsBuycart.getQuantity())) {
+		if (ComUtil.isNotEmpty(gdsBuycart.getQuantity()) && ComUtil.isNotMatches(
+				getRegex("buyNum").getRegex(), gdsBuycart.getQuantity())) {
 			setRoot("136");
 			return JSON;
 		}
-		gdsBuycart.setModifier(m.getId());
+		gdsBuycart.setModifier(sessionMemberID());
 		gdsBuycart.setModifyTime(curTimeStr());
 		if (goodsService.update("goods.editBuycart", gdsBuycart) < 1) {
 			setRoot("100");
 			return JSON;
 		}
 		setRoot(gdsBuycart, "200");
+		return JSON;
+	}
+	
+	/**
+	 * 购物车结算
+	 * @return
+	 * @throws Exception
+	 */
+	public String settlement() throws Exception{
+		orderVO.setMemberID(sessionMemberID());
+		setRoot(goodsService.settlement(orderVO), "200");
 		return JSON;
 	}
 
@@ -199,6 +198,14 @@ public class GoodsAction extends BaseAction{
 
 	public void setGdsBuycart(GdsBuycart gdsBuycart) {
 		this.gdsBuycart = gdsBuycart;
+	}
+
+	public OrderVO getOrderVO() {
+		return orderVO;
+	}
+
+	public void setOrderVO(OrderVO orderVO) {
+		this.orderVO = orderVO;
 	}
 
 }

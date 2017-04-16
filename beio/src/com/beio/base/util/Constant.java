@@ -44,4 +44,10 @@ public class Constant {
 	/** 自动登录标记 **/
 	public static final String AUTOLOGINMARK = "autologin";
 	
+	/** 设为默认标记 **/
+	public static final String DEFAULT = "1";
+	
+	/** 设为默认标记 **/
+	public static final Integer MAXTOTALADDR = 4;
+	
 }

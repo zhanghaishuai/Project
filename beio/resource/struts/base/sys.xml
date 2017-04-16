@@ -6,6 +6,14 @@
 <struts>
 	<package name="sys" extends="beio-default" namespace="/sys">
 	
+		<!-- 查询区划 -->
+		<action name="queryArea" class="sysAction" method="queryArea">
+			<result name="json" type="json">
+				<param name="root">root</param>
+			</result>
+			<interceptor-ref name="defaultStack"/>
+		</action>
+	
 		<!-- 查询正则 -->
 		<action name="queryRegex" class="sysAction" method="queryRegex">
 			<result name="json" type="json">
@@ -96,6 +104,38 @@
 		
 		<!-- 修改个人信息 -->
 		<action name="modifyMemberInfo" class="sysAction" method="modifyMemberInfo">
+			<result name="json" type="json">
+				<param name="root">root</param>
+			</result>
+			<interceptor-ref name="identityStack"/>
+		</action>
+		
+		<!-- 查询收货地址 -->
+		<action name="queryAddr" class="sysAction" method="queryAddr">
+			<result name="json" type="json">
+				<param name="root">root</param>
+			</result>
+			<interceptor-ref name="identityStack"/>
+		</action>
+		
+		<!-- 编辑收货地址 -->
+		<action name="editAddr" class="sysAction" method="editAddr">
+			<result name="json" type="json">
+				<param name="root">root</param>
+			</result>
+			<interceptor-ref name="identityStack"/>
+		</action>
+		
+		<!-- 删除收货地址 -->
+		<action name="delAddr" class="sysAction" method="delAddr">
+			<result name="json" type="json">
+				<param name="root">root</param>
+			</result>
+			<interceptor-ref name="identityStack"/>
+		</action>
+		
+		<!-- 默认收货地址 -->
+		<action name="defaultAddr" class="sysAction" method="defaultAddr">
 			<result name="json" type="json">
 				<param name="root">root</param>
 			</result>

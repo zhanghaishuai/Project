@@ -77,11 +77,9 @@
 		SELECT * FROM gds_classify WHERE enable = '1' AND exist = '1' 
 		<choose>
 			<when test="category != null and category != ''">
-				AND id = #{category}
-				UNION ALL 
-				SELECT * FROM gds_classify WHERE id = ( 
-					SELECT pid FROM gds_classify WHERE id = #{category} 
-				) 
+				AND id = #{category} UNION ALL 
+				SELECT * FROM gds_classify WHERE id = (
+				SELECT pid FROM gds_classify WHERE id = #{category}) 
 			</when>
 			<otherwise>
 				AND 1=0
@@ -189,7 +187,7 @@
 			where buyerID = #{buyerID} and goodsID = #{goodsID} and status = '0' and enable = '1' and exist = '1';
 	</update>
 	
-	<!-- 查询购物车商品数量 -->
+	<!-- 查询购物车数量 -->
 	<select id="buycartQuantity" parameterType="Object" resultType="int">
 		select ifnull(sum(quantity), 0) as quantity from gds_buycart 
 		where buyerID = #{id} and status = '0' and enable = '1' and exist = '1';;
@@ -201,7 +199,7 @@
 	</select>
 	
 	<!-- 编辑购物车商品 -->
-	<select id="editBuycart" parameterType="Object" resultType="BuycartVO">
+	<update id="editBuycart" parameterType="Object">
 		update gds_buycart 
 		<set>
 			<if test="quantity != null and quantity != ''">
@@ -218,6 +216,14 @@
 			</if>
 		</set>
 		where id = #{id};
+	</update>
+	
+	<!-- 购物车结算 -->
+	<select id="settlement" parameterType="Object" resultType="BuycartVO">
+		select * from gds_buycart where id in 
+		<foreach collection="cartIDs" index="index" item="item" open="(" separator="," close=")">
+			#{item}
+		</foreach>
 	</select>
 	
 </mapper>

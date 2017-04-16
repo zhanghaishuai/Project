@@ -1193,7 +1193,6 @@ a.check_de,a.check_de:hover {
 
 .shopping_total .total_btn:hover {
 	text-decoration: none;
-	background-color: #F00
 }
 
 .shopping_total .unable,.shopping_total .unable:hover {
@@ -4672,4 +4671,7 @@ input {
 
 #bd {
 	width: 960px;
+}
+.shopping_total .adisabled {
+	background-color: #ccc;
 }

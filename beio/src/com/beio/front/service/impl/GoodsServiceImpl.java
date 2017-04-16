@@ -12,6 +12,7 @@ import com.beio.front.vo.BuycartVO;
 import com.beio.front.vo.ClassifyVO;
 import com.beio.front.vo.GoodsVO;
 import com.beio.front.vo.IndexInfoVO;
+import com.beio.front.vo.OrderVO;
 import com.beio.front.vo.SearchInfoVO;
 import com.beio.front.vo.TopInfoVO;
 
@@ -79,10 +80,10 @@ public class GoodsServiceImpl extends BaseIbatisServiceImpl implements GoodsServ
 		// TODO Auto-generated method stub
 		if (update("goods.updtBuycart", gdsBuycart) < 1) {
 			if (insert("goods.joinBuycart", gdsBuycart) < 1) {
-				return -1;
+				return 0;
 			}
 		}
-		return 0;
+		return 1;
 	}
 	
 	@Override
@@ -95,6 +96,19 @@ public class GoodsServiceImpl extends BaseIbatisServiceImpl implements GoodsServ
 			}
 		}
 		return carts;
+	}
+	
+	@Override
+	public OrderVO settlement(OrderVO orderVO) throws Exception {
+		// TODO Auto-generated method stub
+		orderVO.setAddress(selectList("sys.queryAddrByMID", orderVO.getMemberID()));
+		orderVO.setCarts(selectList("goods.settlement", orderVO));
+		if (ComUtil.isNotEmpty(orderVO.getCarts())) {
+			for (BuycartVO cart : orderVO.getCarts()) {
+				cart.setGoods(queryGoods(cart));
+			}
+		}
+		return orderVO;
 	}
 	
 	/**

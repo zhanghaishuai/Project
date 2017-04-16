@@ -31,7 +31,7 @@ $(function(){
 														</div>\
 													</td>\
 													<td class="row_single row3">\
-														<span class="red">¥<em class="mprice">'+item.goods.mPrice+'</em></span>\
+														<span class="red">¥<em class="mprice">'+parseFloat(item.goods.mPrice).toFixed(2)+'</em></span>\
 													</td>\
 													<td class="fn-count-tip row3">\
 														<span class="amount fn-updatecount">\
@@ -141,20 +141,6 @@ $(function(){
 					$('.fn-close-batchremovebox').click(function(){
 						$('.pop_del').css('display', 'none');
 					});
-					
-					// 商品结算
-					$('.fn-checkout').click(function(){
-						$.each($('.fn-product-check.check_on').parents('.bb_none'), function(i, item){
-							var ele = $(item);
-							editBuycart({
-								'gdsBuycart.id' : ele.attr('id'), 
-								'gdsBuycart.exist' : '0'
-							}, function(){
-								ele.parents('.fn-shop').remove();
-							});
-						});
-					});
-					
 					// 刷新价格
 					refreshPrice();
 				} else if (data.status == '170') {
@@ -185,6 +171,22 @@ function refreshPrice(){
 		$('.real').css('display', 'none');
 		$('.empty').css('display', 'block');
 	};
+	// 商品结算
+	if ($('.fn-product-check.check_on').parents('.bb_none').size() > 0) {
+		$('.fn-checkout').removeClass('adisabled');
+		$('.fn-checkout').click(function(){
+			var params = new Array();
+			$.each($('.fn-product-check.check_on').parents('.bb_none'), function(i, item){
+				var ele = $(item);
+				params[i] = ele.attr('id');
+			});
+			sessionStorage.setItem('orderBuyIDs', params);
+			window.location.href='order.html';
+		});
+	}else {
+		$('.fn-checkout').addClass('adisabled');
+		$('.fn-checkout').unbind();
+	}
 }
 
 // 编辑购物车
