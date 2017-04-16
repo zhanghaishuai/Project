@@ -31,19 +31,13 @@
 				<dd><a class="j-menuItem " href="mymmbl.html">修改手机</a></dd>
 				<dd><a class="j-menuItem " href="myaddr.html">收货地址</a></dd>
 				<dt>我的交易</dt>
-				<dd><a class="j-menuItem " href="myorder.html">我的订单</a></dd>
+				<dd><a class="j-menuItem on" href="javascript:void(0);">我的订单</a></dd>
 				<dt>关于我们</dt>
-				<dd><a class="j-menuItem on" href="javascript:void(0);">关于我们</a></dd>
+				<dd><a class="j-menuItem " href="myabout.html">关于我们</a></dd>
 			</dl>
 		</div>
 	</div>
-	<div class="my_main" style="float: right; width: 980px;">
-		<!-- <div style=" float: right; height: 28px; padding: 6px; font-weight: bold;">
-			<button style="line-height: 28px; font-size: 14px;">&nbsp;搜&nbsp;索&nbsp;</button>
-		</div>
-		<div style=" float: right; height: 28px; padding: 6px;">
-			<input type="text" style="border: 1px solid #ccc; line-height: 26px; width: 200px;"/>
-		</div> -->
+	<div class="my_main">
 		<div class="centersidebar">
 			<div class="myddorder_search clearfix">
 				<div class="myddorder_inquiry">
@@ -58,9 +52,10 @@
 							<tr class="order_list_title">
 								<td class="row01">商品信息</td>
 								<td class="row03">实付款</td>
-								<td width="" class="row04">订单信息</td>
-								<td width="" class="row05"><div class="select_div">
-										<select id="o_time" style="z-index: 0;"
+								<td class="row04">订单信息</td>
+								<td class="row05">
+								<div class="select_div">
+										<select id="o_time" style="width: 150px;"
 											onchange="javascript:showOrders(1,1);" autocomplete="off">
 											<option value="1" selected="selected">30天以内</option>
 											<option value="2">3个月以内</option>
@@ -68,7 +63,8 @@
 											<option value="4">2016年</option>
 											<option value="5">更早的订单</option>
 										</select>
-									</div></td>
+								</div>
+								</td>
 								<td width="" class="row06">
 									<div class="select_div">
 										<select id="o_status" style="z-index: 0;" autocomplete="off"
