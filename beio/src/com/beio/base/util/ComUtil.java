@@ -146,6 +146,15 @@ public class ComUtil {
 	}
 	
 	/**
+	 * 生成验证码
+	 * @param len
+	 * @return
+	 */
+	public static String generateSmsVerifyCode(){
+		return new DecimalFormat("000000").format((int) (Math.random() * Math.pow(10, 6)));
+	}
+	
+	/**
 	 * 生成订单号
 	 * @param reg
 	 * @param str
@@ -156,6 +165,10 @@ public class ComUtil {
 		String orderNo = DateUtil.formatDate(DateUtil.getTime(),DateUtil.PATTERNNONETIMEWITHMS)
 				+ new DecimalFormat("000").format((int) (Math.random() * 1000));
 		return orderNo;
+	}
+	
+	public static void main(String[] args) {
+		System.out.println(generateSmsVerifyCode());
 	}
 	
 }

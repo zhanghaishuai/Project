@@ -153,7 +153,10 @@
 		        LEFT JOIN
 		    sys_area a3 ON addr.county = a3.code
 		where enable = '1' and exist = '1' 
-		and id = #{id} and memberID = #{memberID}
+		and memberID = #{memberID} 
+		<if test="id != null and id != ''">
+			and id = #{id}
+		</if>
 	</select>
 	
 	<!-- 查询会员地址总数 -->
@@ -171,6 +174,11 @@
 	<update id="defaultAddr" parameterType="SysAddr">
 		update sys_addr set isdefault = '1', modifier = #{modifier}, 
 			modifyTime = #{modifyTime} where id = #{id} and memberID = #{memberID};
+	</update>
+	
+	<!-- 换绑手机 -->
+	<update id="changeBindMobile" parameterType="SysMember">
+		update sys_member set mobile = #{mobile}, modifier = #{modifier}, modifyTime = #{modifyTime} where id = #{id};
 	</update>
 	
 </mapper>

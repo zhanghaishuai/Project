@@ -19,28 +19,28 @@ function initRegex() {
 		}
 	});
 }
-function dataMilliFormat(dataMilliStr, pattern){
-	if(dataMilliStr == '' || dataMilliStr == null || dataMilliStr == undefined){
+function dateMilliFormat(dateMilliStr, pattern){
+	if(dateMilliStr == '' || dateMilliStr == null || dateMilliStr == undefined){
 		return '';
 	}
 	if(pattern != '' && pattern != null && pattern != undefined){
 		if ('TIME' == pattern.toUpperCase()){
-			return dataMilliStr.substring(0, 20);
+			return dateMilliStr.substring(0, 20);
 		}
 		if ('DATE' == pattern.toUpperCase()) {
-			return dataMilliStr.substring(0, 11);
+			return dateMilliStr.substring(0, 11);
 		}
 		if ('DAY' == pattern.toUpperCase()) {
-			return dataMilliStr.substring(8, 11);
+			return dateMilliStr.substring(8, 11);
 		}
 		if ('MONTH' == pattern.toUpperCase()) {
-			return dataMilliStr.substring(5, 7);
+			return dateMilliStr.substring(5, 7);
 		}
 		if ('YEAR' == pattern.toUpperCase()) {
-			return dataMilliStr.substring(0, 4);
+			return dateMilliStr.substring(0, 4);
 		}
 	}
-	return dataMilliStr.substring(0, dataMilliStr.indexOf('.'));
+	return dateMilliStr.substring(0, dateMilliStr.indexOf('.'));
 }
 function tip(key) {return JSON.parse(sessionStorage.getItem('tips'))[key].tip;}
 function regex(key) {return JSON.parse(sessionStorage.getItem('regexs'))[key].regex;}

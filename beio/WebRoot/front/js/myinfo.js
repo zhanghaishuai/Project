@@ -1,13 +1,14 @@
 $(function(){
+	initHtml();
 	autologin(function(member){
-		$('#turnonTime').html(dataMilliFormat(member.turnonTime, 'Date'));
-		$('#expireTime').html(dataMilliFormat(member.expireTime, 'Date'));
+		$('#turnonTime').html(dateMilliFormat(member.turnonTime, 'Date'));
+		$('#expireTime').html(dateMilliFormat(member.expireTime, 'Date'));
 		$('#nickName').val(member.nickName);
 		$('#email').val(member.email);
 		$('input[name=sex][value='+member.sex+']').attr('checked','checked');
-		$('#birthYear').attr('rel', dataMilliFormat(member.birthday, 'YEAR'));
-		$('#birthMonth').attr('rel', dataMilliFormat(member.birthday, 'MONTH'));
-		$('#birthDay').attr('rel', dataMilliFormat(member.birthday, 'DAY'));
+		$('#birthYear').attr('rel', dateMilliFormat(member.birthday, 'YEAR'));
+		$('#birthMonth').attr('rel', dateMilliFormat(member.birthday, 'MONTH'));
+		$('#birthDay').attr('rel', dateMilliFormat(member.birthday, 'DAY'));
 		$('#hobby').html(member.hobby);
 		$.ms_DatePicker(); 
 	});
@@ -82,14 +83,14 @@ $(function(){
 					}else if (data.status == '170') {
 						alert(tip(data.status));
 						autologin(function(member){
-							$('#turnonTime').html(dataMilliFormat(member.turnonTime, 'Date'));
-							$('#expireTime').html(dataMilliFormat(member.expireTime, 'Date'));
+							$('#turnonTime').html(dateMilliFormat(member.turnonTime, 'Date'));
+							$('#expireTime').html(dateMilliFormat(member.expireTime, 'Date'));
 							$('#nickName').val(member.nickName);
 							$('#email').val(member.email);
 							$('input[name=sex][value='+member.sex+']').attr('checked','checked');
-							$('#birthYear').attr('rel', dataMilliFormat(member.birthday, 'YEAR'));
-							$('#birthMonth').attr('rel', dataMilliFormat(member.birthday, 'MONTH'));
-							$('#birthDay').attr('rel', dataMilliFormat(member.birthday, 'DAY'));
+							$('#birthYear').attr('rel', dateMilliFormat(member.birthday, 'YEAR'));
+							$('#birthMonth').attr('rel', dateMilliFormat(member.birthday, 'MONTH'));
+							$('#birthDay').attr('rel', dateMilliFormat(member.birthday, 'DAY'));
 							$('#hobby').html(member.hobby);
 							$.ms_DatePicker(); 
 						});

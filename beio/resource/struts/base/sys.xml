@@ -70,6 +70,22 @@
 			<interceptor-ref name="defaultStack"/>
 		</action>
 		
+		<!-- 个人中心（重置密码） -->
+		<action name="findPwdMyCenter" class="sysAction" method="findPwdMyCenter">
+			<result name="json" type="json">
+				<param name="root">root</param>
+			</result>
+			<interceptor-ref name="identityStack"/>
+		</action>
+		
+		<!-- 个人中心（更换手机） -->
+		<action name="changeMblMyCenter" class="sysAction" method="changeMblMyCenter">
+			<result name="json" type="json">
+				<param name="root">root</param>
+			</result>
+			<interceptor-ref name="identityStack"/>
+		</action>
+		
 		<!-- 找回密码（填写手机） -->
 		<action name="findPwdFillMobile" class="sysAction" method="findPwdFillMobile">
 			<result name="json" type="json">
@@ -86,16 +102,16 @@
 			<interceptor-ref name="defaultStack"/>
 		</action>
 		
-		<!-- 会话用户 -->
-		<action name="querySessionMember" class="sysAction" method="querySessionMember">
+		<!-- 找回密码（重置密码） -->
+		<action name="findPwdResetPwd" class="sysAction" method="findPwdResetPwd">
 			<result name="json" type="json">
 				<param name="root">root</param>
 			</result>
 			<interceptor-ref name="defaultStack"/>
 		</action>
 		
-		<!-- 找回密码（重置密码） -->
-		<action name="findPwdResetPwd" class="sysAction" method="findPwdResetPwd">
+		<!-- 会话用户 -->
+		<action name="querySessionMember" class="sysAction" method="querySessionMember">
 			<result name="json" type="json">
 				<param name="root">root</param>
 			</result>
@@ -136,6 +152,14 @@
 		
 		<!-- 默认收货地址 -->
 		<action name="defaultAddr" class="sysAction" method="defaultAddr">
+			<result name="json" type="json">
+				<param name="root">root</param>
+			</result>
+			<interceptor-ref name="identityStack"/>
+		</action>
+		
+		<!-- 查询收货地址 -->
+		<action name="queryAllAddr" class="sysAction" method="queryAllAddr">
 			<result name="json" type="json">
 				<param name="root">root</param>
 			</result>

@@ -8,7 +8,6 @@ import com.beio.base.service.SysService;
 import com.beio.base.util.ComUtil;
 import com.beio.base.util.Constant;
 import com.beio.base.util.DateUtil;
-import com.beio.base.util.SmsUtil;
 import com.beio.base.vo.Address;
 import com.beio.base.vo.Member;
 
@@ -67,10 +66,6 @@ public class SysAction extends BaseAction{
 			setRoot("121");
 			return JSON;
 		}
-		if (!sendSms(mr.getMobile(), SmsUtil.smsVerifyCode(6), Constant.SMSCATEGORYVERIFYCODE)) {
-			setRoot("128");
-			return JSON;
-		}
 		SysMember m = queryMember(mr);
 		if (m == null && Constant.EXIST.equals(mr.getExist())) {
 			setRoot("190");
@@ -86,6 +81,11 @@ public class SysAction extends BaseAction{
 		}
 		if (m != null && !Constant.EXIST.equals(m.getExist())) {
 			setRoot("193");
+			return JSON;
+		}
+		if (!sendSms(mr.getMobile(), ComUtil.generateSmsVerifyCode()
+				, Constant.SMSCATEGORYVERIFYCODE)) {
+			setRoot("128");
 			return JSON;
 		}
 		setRoot("200");
@@ -240,6 +240,54 @@ public class SysAction extends BaseAction{
 	 */
 	public String logout() throws Exception{
 		getSession().removeAttribute(Constant.SESSIONUSERINFO);
+		setRoot("200");
+		return JSON;
+	}
+	
+	/**
+	 * 个人中心（重置密码）
+	 * @return
+	 * @throws Exception 
+	 */
+	public String findPwdMyCenter() throws Exception{
+		SysMember m = sessionMember();
+		getSession().setAttribute(Constant.SESSIONFINDPWDMOBILE, m.getMobile());
+		setRoot(m, "200");
+		return JSON;
+	}
+	
+	/**
+	 * 个人中心（更换手机）
+	 * @return
+	 * @throws Exception 
+	 */
+	public String changeMblMyCenter() throws Exception{
+		if (ComUtil.isNotMatches(getRegex("empty").getRegex(), mr.getMobile())) {
+			setRoot("120");
+			return JSON;
+		}
+		if (ComUtil.isNotMatches(getRegex("mobile").getRegex(), mr.getMobile())) {
+			setRoot("121");
+			return JSON;
+		}
+		if (ComUtil.isNotMatches(getRegex("empty").getRegex(), mr.getSmsVerifyCode())) {
+			setRoot("126");
+			return JSON;
+		}
+		if (!mr.getSmsVerifyCode().equals(baseIbaitsService.selectOne("sys.querySmsVerify", mr.getMobile()))) {
+			setRoot("127");
+			return JSON;
+		}
+		mr.setId(sessionMemberID());
+		mr.setModifier(sessionMemberID());
+		mr.setModifyTime(curTimeStr());
+		if (baseIbaitsService.update("sys.changeBindMobile", mr) < 1) {
+			setRoot("100");
+			return JSON;
+		}
+		SysMember m =queryMember(mr);
+		getSession().setAttribute(Constant.SESSIONUSERINFO, m);
+		getSession().removeAttribute(Constant.SESSIONFINDPWDMOBILE);
 		setRoot("200");
 		return JSON;
 	}
@@ -469,6 +517,17 @@ public class SysAction extends BaseAction{
 			return JSON;
 		}
 		setRoot("200");
+		return JSON;
+	}
+	
+	/**
+	 * 查询收货地址
+	 * @return
+	 * @throws Exception 
+	 */
+	public String queryAllAddr() throws Exception{
+		addr.setMemberID(sessionMemberID());
+		setRoot(baseIbaitsService.selectList("sys.queryAddr", addr), "200");
 		return JSON;
 	}
 

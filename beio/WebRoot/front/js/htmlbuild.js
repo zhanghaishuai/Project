@@ -370,7 +370,7 @@ function initHtml(index){
 	autologin(function(member){
 		if (member != '' && member != null && member != undefined) {
 			$('.hi').html('尊敬的会员<span>'+(member.nickName == '' ? member.mobile : member.nickName)+'</span>,您好。');
-			$('.head_operate_nav').html('<li><a href="myhome_info.html">个人中心</a></li><li><a href="javascript:void(0);" id="logout">注销</a></li>');
+			$('.head_operate_nav').html('<li><a href="myinfo.html">个人中心</a></li><li><a href="javascript:void(0);" id="logout">注销</a></li>');
 		}
 		$.ajax({
 			url : '/beio/goods/queryTopInfo',

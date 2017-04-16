@@ -68,8 +68,8 @@ $(function(){
 										<input type="hidden" class="provinceCode" value="'+addr.province+'"/>\
 										<input type="hidden" class="cityCode" value="'+addr.city+'"/>\
 										<input type="hidden" class="countyCode" value="'+addr.county+'"/>\
-										<input type="hidden" class="telephone" value="'+item.telephone+'"/>\
-										<input type="hidden" class="zipcode" value="'+item.zipcode+'"/>\
+										<input type="hidden" class="telephone" value="'+addr.telephone+'"/>\
+										<input type="hidden" class="zipcode" value="'+addr.zipcode+'"/>\
 										<h1><em class="name">'+addr.name+'</em><span class="mobile">'+addr.mobile+'</span></h1>\
 										<p class="area">'+addr.provinceName+' '+addr.cityName+' '+addr.countyName+' </p>\
 										<p class="address">'+addr.address+'</p>\

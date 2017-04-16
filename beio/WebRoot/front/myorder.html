@@ -1,23 +1,21 @@
-
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
+<!DOCTYPE html>
+<html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<title>个人中心</title>
-<link rel="Stylesheet" type="text/css" href="../../theme/css/top.css" />
-<link rel="Stylesheet" type="text/css" href="../../theme/css/bottom.css" />
-<link rel="stylesheet" type="text/css" href="../../theme/css/myhome_menu.css"/>
-<link rel="stylesheet" type="text/css" href="../../theme/css/myhome_order.css"/>
-
-
-<script type="text/javascript" src="../../theme/js/jquery/jquery.js"></script>
-<script type="text/javascript" src="../../theme/js/bottom.js"></script>
-<script type="text/javascript" src="../../theme/js/top.js"></script>
+	<meta charset="utf-8"/>
+    <title>关于我们</title>
+    <link rel="icon" href="#"/>
+	<link type="text/css" rel="stylesheet" href="css/htmlbuild.css"/>
+	<link type="text/css" rel="stylesheet" href="css/login.css"/>  
+	<link rel="stylesheet" type="text/css" href="css/mymain.css"/>
+	<link rel="stylesheet" type="text/css" href="css/myorder.css"/>
+	<script type="text/javascript" src="js/jquery/jquery.js"></script>
+	<script type="text/javascript" src="js/htmlbuild.js"></script>
+	<script type="text/javascript" src="js/initcache.js"></script>
+	<script type="text/javascript" src="js/autologin.js"></script>
 </head>
 <body>
-<!--左栏开始-->
 <script type="text/javascript">
-	window.document.write(initTopHtml());
+	window.document.write(htmlbuild.topHtml);
 </script>
 <div class="home_nav">
 	<div class="my_left">
@@ -27,18 +25,15 @@
 			</h3>
 			<dl>
 				<dt>个人中心</dt>
-				<dd><a class="j-menuItem " href="myhome_details.html">个人信息</a></dd>
-				<dd><a class="j-menuItem " href="myhome_resetpwd.html">重置密码</a></dd>
-				<dd><a class="j-menuItem " href="myhome_addr.html">收货地址</a></dd>
+				<dd><a class="j-menuItem " href="myinfo.html">个人信息</a></dd>
+				<dd><a class="j-menuItem " href="myrfee.html">会员续费</a></dd>
+				<dd><a class="j-menuItem " href="myrpwd.html">重置密码</a></dd>
+				<dd><a class="j-menuItem " href="mymmbl.html">修改手机</a></dd>
+				<dd><a class="j-menuItem " href="myaddr.html">收货地址</a></dd>
 				<dt>我的交易</dt>
-				<dd><a class="j-menuItem on" href="javascript:void(0);">我的订单</a></dd>
-				<dt>我的收藏</dt>
-				<dd><a class="j-menuItem " href="myhome_goods_collect.html">商品收藏</a></dd>
-				<dt>成为会员</dt>
-				<dd><a class="j-menuItem " href="myhome_member_pay.html">付费会员</a></dd>
-				<dd><a class="j-menuItem " href="myhome_member_invite.html">内邀会员</a></dd>
+				<dd><a class="j-menuItem " href="myorder.html">我的订单</a></dd>
 				<dt>关于我们</dt>
-				<dd><a class="j-menuItem " href="myhome_about.html">关于我们</a></dd>
+				<dd><a class="j-menuItem on" href="javascript:void(0);">关于我们</a></dd>
 			</dl>
 		</div>
 	</div>
@@ -125,7 +120,7 @@
 										<a name="productlink"
 											href="#"
 											target="_blank"><img width="70px" height="70px"
-											src="../../theme/image/1475249138-1_w.jpg"
+											src="image/1475249138-1_w.jpg"
 											alt="2017春季新款跑步鞋春秋户外运动休闲鞋 英伦男士户外慢跑鞋 舒适厚底运动鞋2833HLL休闲时尚帆布鞋透气户外休闲鞋板鞋透气运动鞋休闲鞋网布板鞋英伦工装网鞋网面潮流跑步支持货到付款_蓝橘,44"
 											title="2017春季新款跑步鞋春秋户外运动休闲鞋 英伦男士户外慢跑鞋 舒适厚底运动鞋2833HLL休闲时尚帆布鞋透气户外休闲鞋板鞋透气运动鞋休闲鞋网布板鞋英伦工装网鞋网面潮流跑步支持货到付款_蓝橘,44"></a>
 									</div>
@@ -165,7 +160,7 @@
 										<a name="productlink"
 											href="#"
 											target="_blank"><img width="70px" height="70px"
-											src="../../theme/image/1475249138-1_w.jpg"
+											src="image/1475249138-1_w.jpg"
 											alt="2017春季新款跑步鞋春秋户外运动休闲鞋 英伦男士户外慢跑鞋 舒适厚底运动鞋2833HLL休闲时尚帆布鞋透气户外休闲鞋板鞋透气运动鞋休闲鞋网布板鞋英伦工装网鞋网面潮流跑步支持货到付款_蓝橘,44"
 											title="2017春季新款跑步鞋春秋户外运动休闲鞋 英伦男士户外慢跑鞋 舒适厚底运动鞋2833HLL休闲时尚帆布鞋透气户外休闲鞋板鞋透气运动鞋休闲鞋网布板鞋英伦工装网鞋网面潮流跑步支持货到付款_蓝橘,44"></a>
 									</div>
@@ -182,7 +177,7 @@
 								<td class="left02">取消<br></td>
 
 								<td class="operate" style="display: block;"><a
-									href="../../theme/image/1475249138-1_w.jpg"
+									href="image/1475249138-1_w.jpg"
 									name="orderdetaillink" target="_blank">订单详情</a><br> <a
 										name="orderdeletelink" id="orderdeletelink_34892474275"
 										href="javascript:deleteOrder('34892474275','orderdeletelink_34892474275')">删除</a></td>
@@ -195,7 +190,7 @@
 	</div>
 </div>
 <script type="text/javascript">
-	window.document.write(initBottomHtml());
+	window.document.write(htmlbuild.btmHtml);
 </script>
 </body>
 </html>
