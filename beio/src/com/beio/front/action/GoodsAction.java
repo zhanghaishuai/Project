@@ -8,7 +8,7 @@ import com.beio.front.entity.GdsSearch;
 import com.beio.front.service.GoodsService;
 import com.beio.front.vo.GoodsVO;
 import com.beio.front.vo.IndexInfoVO;
-import com.beio.front.vo.OrderVO;
+import com.beio.front.vo.SettlementVO;
 import com.beio.front.vo.SearchInfoVO;
 import com.beio.front.vo.TopInfoVO;
 
@@ -32,7 +32,7 @@ public class GoodsAction extends BaseAction{
 	
 	private GdsBuycart gdsBuycart;
 	
-	private OrderVO orderVO;
+	private SettlementVO settlementVO;
 	
 	/**
 	 * 商品搜索
@@ -155,8 +155,8 @@ public class GoodsAction extends BaseAction{
 	 * @throws Exception
 	 */
 	public String settlement() throws Exception{
-		orderVO.setMemberID(sessionMemberID());
-		setRoot(goodsService.settlement(orderVO), "200");
+		settlementVO.setMemberID(sessionMemberID());
+		setRoot(goodsService.settlement(settlementVO), "200");
 		return JSON;
 	}
 
@@ -200,12 +200,12 @@ public class GoodsAction extends BaseAction{
 		this.gdsBuycart = gdsBuycart;
 	}
 
-	public OrderVO getOrderVO() {
-		return orderVO;
+	public SettlementVO getSettlementVO() {
+		return settlementVO;
 	}
 
-	public void setOrderVO(OrderVO orderVO) {
-		this.orderVO = orderVO;
+	public void setSettlementVO(SettlementVO settlementVO) {
+		this.settlementVO = settlementVO;
 	}
 
 }

@@ -6,12 +6,12 @@ import com.beio.base.vo.Address;
 import com.beio.front.entity.GdsBuycart;
 
 /**
- * 订单值对象
+ * 结算值对象
  * @author zhs
  * @date 2017-04-09
  * @version 1.0.0
  */
-public class OrderVO extends GdsBuycart{
+public class SettlementVO extends GdsBuycart{
 
 	private List<Address> address;
 	

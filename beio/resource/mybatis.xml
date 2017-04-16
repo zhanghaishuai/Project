@@ -34,8 +34,8 @@
 		<typeAlias type="com.beio.front.vo.ClassifyVO" alias="ClassifyVO"/>
 		<typeAlias type="com.beio.front.vo.GoodsVO" alias="GoodsVO"/>
 		<typeAlias type="com.beio.front.vo.IndexInfoVO" alias="IndexInfoVO"/>
-		<typeAlias type="com.beio.front.vo.OrderVO" alias="OrderVO"/>
 		<typeAlias type="com.beio.front.vo.SearchInfoVO" alias="SearchInfoVO"/>
+		<typeAlias type="com.beio.front.vo.SettlementVO" alias="SettlementVO"/>
 		<typeAlias type="com.beio.front.vo.TopInfoVO" alias="TopInfoVO"/>
 		
 	</typeAliases>

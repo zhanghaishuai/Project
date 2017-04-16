@@ -8,7 +8,7 @@ import com.beio.front.entity.GdsBuycart;
 import com.beio.front.vo.BuycartVO;
 import com.beio.front.vo.GoodsVO;
 import com.beio.front.vo.IndexInfoVO;
-import com.beio.front.vo.OrderVO;
+import com.beio.front.vo.SettlementVO;
 import com.beio.front.vo.SearchInfoVO;
 import com.beio.front.vo.TopInfoVO;
 
@@ -70,6 +70,6 @@ public interface GoodsService extends BaseIbaitsService{
 	 * @return
 	 * @throws Exception
 	 */
-	public OrderVO settlement(OrderVO orderVO) throws Exception;
+	public SettlementVO settlement(SettlementVO settlementVO) throws Exception;
 	
 }
