@@ -226,4 +226,50 @@
 		</foreach>
 	</select>
 	
+	<!-- 商品下单 -->
+	<update id="preGoods" parameterType="Object">
+		UPDATE gds_goods 
+		SET 
+		    stock = CASE id
+		    <foreach collection="details" index="index" item="item" open="" separator="" close="">
+				WHEN #{item.goodsID} THEN CONVERT( stock , SIGNED) - CONVERT( #{item.quantity} , SIGNED)
+			</foreach>
+		    END, 
+		    salds = CASE id
+		    <foreach collection="details" index="index" item="item" open="" separator="" close="">
+				WHEN #{item.goodsID} THEN CONVERT( salds , SIGNED) + CONVERT( #{item.quantity} , SIGNED)
+			</foreach>
+		    END
+		WHERE
+		    id IN 
+		<foreach collection="details" index="index" item="item" open="(" separator="," close=")">
+			#{item.goodsID}
+		</foreach>
+	</update>
+	
+	<!-- 购物车下单 -->
+	<update id="preBuycart" parameterType="Object">
+		update gds_buycart set status = '1', modifier = #{modifier}, modifyTime = #{modifyTime} 
+			where buyerID = #{buyerID} and goodsID in 
+		<foreach collection="details" index="index" item="item" open="(" separator="," close=")">
+			#{item.goodsID}
+		</foreach>
+	</update>
+	
+	<!-- 订单详情下单 -->
+	<insert id="preDetails" parameterType="Object">
+		insert into gds_details (orderID, goodsID, price, freight, quantity, totalPrice, creator, createTime, modifier, modifyTime) values 
+		<foreach collection="details" index="index" item="item" open="" separator="," close="">
+			(#{id}, #{item.goodsID}, #{item.price}, #{item.freight}, #{item.quantity}, #{item.totalPrice}, #{creator}, #{createTime}, #{modifier}, #{modifyTime})
+		</foreach>
+	</insert>
+	
+	<!-- 购物订单下单 -->
+	<insert id="preOrder" parameterType="Object">
+		insert into sys_order (orderNo, buyerID, addrName, addrMobile, addrTelephone, addrProvince, addrCity, addrCounty, addrZipcode, addrAddress, 
+			payment, receipt, goodsPrice, freight, totalPrice, category, status, creator, createTime, modifier, modifyTime)
+		values (#{orderNo}, #{buyerID}, #{addrName}, #{addrMobile}, #{addrTelephone}, #{addrProvince}, #{addrCity}, #{addrCounty}, #{addrZipcode}, #{addrAddress}, 
+			#{payment}, #{receipt}, #{goodsPrice}, #{freight}, #{totalPrice}, #{category}, #{status}, #{creator}, #{createTime}, #{modifier}, #{modifyTime});
+	</insert>
+	
 </mapper>

@@ -1,5 +1,6 @@
 package com.beio.base.util;
 
+import java.text.DecimalFormat;
 import java.util.Collection;
 import java.util.Map;
 import java.util.regex.Matcher;
@@ -142,6 +143,19 @@ public class ComUtil {
 	 */
 	public static boolean isNotMatches(String reg, String str) {
 		return !isMatches(reg, str);
+	}
+	
+	/**
+	 * 生成订单号
+	 * @param reg
+	 * @param str
+	 * @return
+	 * @throws Exception 
+	 */
+	public static String generateOrderNO() throws Exception {
+		String orderNo = DateUtil.formatDate(DateUtil.getTime(),DateUtil.PATTERNNONETIMEWITHMS)
+				+ new DecimalFormat("000").format((int) (Math.random() * 1000));
+		return orderNo;
 	}
 	
 }

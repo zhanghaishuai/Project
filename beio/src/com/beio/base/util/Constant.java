@@ -50,4 +50,13 @@ public class Constant {
 	/** 设为默认标记 **/
 	public static final Integer MAXTOTALADDR = 4;
 	
+	/** 订单类型（购物） **/
+	public static final String ORDERCATEGORYSHOPING = "0";
+	
+	/** 订单状态（未付） **/
+	public static final String ORDERSTATUSUNPAID = "0";
+	
+	/** 临时常量（运费） **/
+	public static final Float TEMPORARYFREIGHT = 15.00f;
+	
 }

@@ -58,10 +58,10 @@
 								<tbody>
 									<tr>
 										<th colspan="2" scope="col" class="th_name">商品名称</th>
-										<th scope="col">单价</th>
-										<th scope="col">数量</th>
-										<th scope="col">运费</th>
-										<th scope="col">总价</th>
+										<th scope="col">商品单价</th>
+										<th scope="col">商品数量</th>
+										<th scope="col">商品总价</th>
+										<th scope="col">运输费用</th>
 									</tr>
 								</tbody>
 							</table>
@@ -71,14 +71,14 @@
 						<div class="sub_left">
 							<p>是否开具发票：</p>
 							<p>
-								不开发票：<input name="re" type="radio" checked="checked" style="vertical-align:middle; margin-top:-3px;"/>
-								&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;纸质发票：<input name="re" type="radio" style="vertical-align:middle; margin-top:-3px;"/>
-								&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;电子发票：<input name="re" type="radio" style="vertical-align:middle; margin-top:-3px;"/>
+								不开发票：<input name="receipt" type="radio" value="0" checked="checked" style="vertical-align:middle; margin-top:-3px;"/>
+								&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;纸质发票：<input name="receipt" type="radio" value="1" style="vertical-align:middle; margin-top:-3px;"/>
+								&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;电子发票：<input name="receipt" type="radio" value="2" style="vertical-align:middle; margin-top:-3px;"/>
 							</p>
 						</div>
 						<div class="sub_right">
-							<p><span class="tab">商品金额：￥<em class="prices">0.00</em></span><span class="tab">运费：￥<em class="freight">0.00</em></span><span class="tab"></span></p>
-							<p><span class="tab">应付金额：￥</span><span class="price red amount">0.00</span></p>
+							<p><span class="tab">商品金额：￥<em class="prices">0.00</em></span><span class="tab">运费：￥<em class="freights">0.00</em></span><span class="tab"></span></p>
+							<p><span class="tab">应付金额：￥</span><span class="red totalprices">0.00</span></p>
 						</div>
 					</div>
 				</div>
@@ -88,7 +88,7 @@
 </div>
 <div>
 	<div class="submit">
-		<div class="box">共<span class="red goodsnum">1</span>件商品<span class="price">应付金额：<span class="red amount">0.00</span></span>(含运费<span class="red freight">0.00</span>元)<a id="submit" href="javascript:void(0)" class="btn_red">提交订单</a></div>
+		<div class="box">共<span class="red goodsnum">1</span>件商品<span class="price">应付金额：<span class="red totalprices">0.00</span></span>(含运费<span class="red freights">0.00</span>元)<a id="submit" href="javascript:void(0)" class="btn_red">提交订单</a></div>
 	</div>
 </div>
 <script type="text/javascript">

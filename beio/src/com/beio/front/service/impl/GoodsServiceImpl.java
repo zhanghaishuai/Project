@@ -5,15 +5,20 @@ import java.util.List;
 import com.beio.base.entity.SysMember;
 import com.beio.base.service.impl.BaseIbatisServiceImpl;
 import com.beio.base.util.ComUtil;
+import com.beio.base.util.Constant;
+import com.beio.base.vo.Root;
 import com.beio.front.entity.GdsBuycart;
 import com.beio.front.entity.GdsClassify;
+import com.beio.front.entity.GdsGoods;
 import com.beio.front.service.GoodsService;
 import com.beio.front.vo.BuycartVO;
 import com.beio.front.vo.ClassifyVO;
+import com.beio.front.vo.DetailsVO;
 import com.beio.front.vo.GoodsVO;
 import com.beio.front.vo.IndexInfoVO;
-import com.beio.front.vo.SettlementVO;
+import com.beio.front.vo.PreOrderVO;
 import com.beio.front.vo.SearchInfoVO;
+import com.beio.front.vo.SettlementVO;
 import com.beio.front.vo.TopInfoVO;
 
 /**
@@ -202,4 +207,76 @@ public class GoodsServiceImpl extends BaseIbatisServiceImpl implements GoodsServ
 		}
 	}
 
+	@Override
+	public Root preOrder(PreOrderVO preOrderVO) throws Exception {
+		// TODO Auto-generated method stub
+		// 订单为空
+		if (preOrderVO == null) {
+			return new Root("301");
+		}
+		// 详情为空
+		if (ComUtil.isEmpty(preOrderVO.getDetails())) {
+			return new Root("302");
+		}
+		// 声明商品总额、总运费、订单总额
+		Float goodsPrice = 0f, freight = 0f, totalPrice = 0f, singleTotalPrice;
+		// 校验商品准确性
+		for (DetailsVO detail : preOrderVO.getDetails()) {
+			// 查询订单对应商品
+			GdsGoods goods = (GdsGoods) selectOne("goods.queryGoodsByID", detail.getGoodsID());
+			// 商品不存在
+			if (goods == null) {
+				return new Root("303");
+			}
+			// 计算单个商品总价
+			singleTotalPrice = Float.valueOf(goods.getmPrice())*Integer.valueOf(detail.getQuantity());
+			// 计算商品总额
+			goodsPrice += singleTotalPrice;
+			// 计算总运费
+			freight += Constant.TEMPORARYFREIGHT;
+			// 价格不对等
+			if (!Float.valueOf(goods.getmPrice()).equals(Float.valueOf(detail.getPrice()))) {
+				return new Root("304");
+			}
+			// 库存不足
+			if (Integer.valueOf(goods.getStock()) < Integer.valueOf(detail.getQuantity())) {
+				return new Root("305");
+			}
+			// 单个商品价格计算异常
+			if (!singleTotalPrice.equals(Float.valueOf(detail.getTotalPrice()))) {
+				return new Root("306");
+			}
+		}
+		// 商品总额异常
+		if (!goodsPrice.equals(Float.valueOf(preOrderVO.getGoodsPrice()))) {
+			return new Root("306");
+		}
+		// 总运费异常
+		if (!freight.equals(Float.valueOf(preOrderVO.getFreight()))) {
+			return new Root("307");
+		}
+		// 计算订单总额
+		totalPrice += goodsPrice + freight;
+		// 订单总额异常
+		if (!totalPrice.equals(Float.valueOf(preOrderVO.getTotalPrice()))) {
+			System.out.println(totalPrice);
+			System.out.println(Float.valueOf(preOrderVO.getTotalPrice()));
+			return new Root("308");
+		}
+		// 生成订单号
+		preOrderVO.setOrderNo(ComUtil.generateOrderNO());
+		// 购物订单下单
+		insert("goods.preOrder", preOrderVO);
+		// 查询订单ID
+		preOrderVO.setId(String.valueOf(selectOne("sys.queryid")));
+		// 订单详情下单
+		insert("goods.preDetails", preOrderVO);
+		// 购物车下单
+		update("goods.preBuycart", preOrderVO);
+		// 商品下单
+		update("goods.preGoods", preOrderVO);
+		// 返回成功结果
+		return new Root(preOrderVO, "200");
+	}
+	
 }

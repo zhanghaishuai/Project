@@ -78,6 +78,14 @@
 			<interceptor-ref name="identityStack"/>
 		</action>
 		
+		<!-- 商品下单 -->
+		<action name="preOrder" class="goodsAction" method="preOrder">
+			<result name="json" type="json">
+				<param name="root">root</param>
+			</result>
+			<interceptor-ref name="identityStack"/>
+		</action>
+		
 	</package>
 </struts>
 

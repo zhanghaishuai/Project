@@ -39,4 +39,27 @@ public class Root {
 		this.message = message;
 	}
 
+	public Root() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
+
+	public Root(String status) {
+		super();
+		this.status = status;
+	}
+
+	public Root(Object result, String status) {
+		super();
+		this.result = result;
+		this.status = status;
+	}
+
+	public Root(Object result, String status, String message) {
+		super();
+		this.result = result;
+		this.status = status;
+		this.message = message;
+	}
+	
 }

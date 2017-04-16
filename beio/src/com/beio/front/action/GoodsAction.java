@@ -3,11 +3,13 @@ package com.beio.front.action;
 import com.beio.base.action.BaseAction;
 import com.beio.base.entity.SysMember;
 import com.beio.base.util.ComUtil;
+import com.beio.base.util.Constant;
 import com.beio.front.entity.GdsBuycart;
 import com.beio.front.entity.GdsSearch;
 import com.beio.front.service.GoodsService;
 import com.beio.front.vo.GoodsVO;
 import com.beio.front.vo.IndexInfoVO;
+import com.beio.front.vo.PreOrderVO;
 import com.beio.front.vo.SettlementVO;
 import com.beio.front.vo.SearchInfoVO;
 import com.beio.front.vo.TopInfoVO;
@@ -33,6 +35,8 @@ public class GoodsAction extends BaseAction{
 	private GdsBuycart gdsBuycart;
 	
 	private SettlementVO settlementVO;
+	
+	private PreOrderVO preOrderVO;
 	
 	/**
 	 * 商品搜索
@@ -159,6 +163,23 @@ public class GoodsAction extends BaseAction{
 		setRoot(goodsService.settlement(settlementVO), "200");
 		return JSON;
 	}
+	
+	/**
+	 * 商品下单
+	 * @return
+	 * @throws Exception
+	 */
+	public String preOrder() throws Exception{
+		preOrderVO.setBuyerID(sessionMemberID());
+		preOrderVO.setStatus(Constant.ORDERSTATUSUNPAID);
+		preOrderVO.setCategory(Constant.ORDERCATEGORYSHOPING);
+		preOrderVO.setCreator(sessionMemberID());
+		preOrderVO.setCreateTime(curTimeStr());
+		preOrderVO.setModifier(sessionMemberID());
+		preOrderVO.setModifyTime(curTimeStr());
+		root = goodsService.preOrder(preOrderVO);
+		return JSON;
+	}
 
 	public GoodsService getGoodsService() {
 		return goodsService;
@@ -206,6 +227,14 @@ public class GoodsAction extends BaseAction{
 
 	public void setSettlementVO(SettlementVO settlementVO) {
 		this.settlementVO = settlementVO;
+	}
+
+	public PreOrderVO getPreOrderVO() {
+		return preOrderVO;
+	}
+
+	public void setPreOrderVO(PreOrderVO preOrderVO) {
+		this.preOrderVO = preOrderVO;
 	}
 
 }
