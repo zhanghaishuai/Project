@@ -12,15 +12,17 @@ public class GdsClassify extends Page{
 
 	private String id; // 主键
 	
+	private String pid; // 上级
+	
+	private String sort; // 排序
+	
 	private String name; // 名称
 	
 	private String level; // 等级
 	
-	private String pid; // 上级主键
+	private String showIndex; // 首页展示（0：否、1：是）
 	
-	private String sort; // 排序号码
-	
-	private String isShow; // 首页展示（0：否、1：是）
+	private String showAbeam; // 横向展示（0：否、1：是）
 	
 	private String enable; // 是否启用（0：否、1：是）
 	
@@ -74,12 +76,20 @@ public class GdsClassify extends Page{
 		this.sort = sort;
 	}
 
-	public String getIsShow() {
-		return isShow;
+	public String getShowIndex() {
+		return showIndex;
 	}
 
-	public void setIsShow(String isShow) {
-		this.isShow = isShow;
+	public void setShowIndex(String showIndex) {
+		this.showIndex = showIndex;
+	}
+
+	public String getShowAbeam() {
+		return showAbeam;
+	}
+
+	public void setShowAbeam(String showAbeam) {
+		this.showAbeam = showAbeam;
 	}
 
 	public String getEnable() {
