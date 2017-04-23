@@ -9,6 +9,7 @@ import com.beio.front.entity.GdsBuycart;
 import com.beio.front.vo.BuycartVO;
 import com.beio.front.vo.GoodsVO;
 import com.beio.front.vo.IndexInfoVO;
+import com.beio.front.vo.OrderVO;
 import com.beio.front.vo.PreOrderVO;
 import com.beio.front.vo.SettlementVO;
 import com.beio.front.vo.SearchInfoVO;
@@ -81,5 +82,13 @@ public interface GoodsService extends BaseIbaitsService{
 	 * @throws Exception
 	 */
 	public Root preOrder(PreOrderVO preOrderVO) throws Exception;
+	
+	/**
+	 * 我的订单
+	 * @param member
+	 * @return
+	 * @throws Exception
+	 */
+	public OrderVO myOrder(OrderVO orderVO) throws Exception;
 	
 }

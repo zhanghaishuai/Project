@@ -1,14 +1,16 @@
 package com.beio.base.entity;
 
+import com.beio.base.vo.Page;
+
 /**
  * 订单
  * @author zhs
  * @date 2017-04-15
  * @version 1.0.0
  */
-public class SysOrder {
+public class SysOrder extends Page{
 
-	private String id; // 
+	private String id; // 主键
 	
 	private String orderNo; // 订单编号
 	

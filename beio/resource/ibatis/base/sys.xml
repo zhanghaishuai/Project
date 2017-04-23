@@ -36,6 +36,17 @@
 			values(#{id}, #{ip}, #{action}, #{param}, #{address}, #{creator}, #{createTime});
 	</insert>
 	
+	<!-- 查询内邀码 -->
+	<select id="queryInvite" parameterType="String" resultType="SysInvite">
+		select * from sys_invite where invite = #{invite} and enable = '1' and exist = '1';
+	</select>
+	
+	<!-- 使用内邀码 -->
+	<update id="useInvite" parameterType="SysMember">
+		update sys_invite set status = '1', modifier = #{modifier},
+			modifyTime = #{modifyTime} where invite = #{sysInviteCode};
+	</update>
+	
 	<!-- 查询会员 -->
 	<select id="queryMember" parameterType="SysMember" resultType="SysMember">
 		select * from sys_member where 1=1
@@ -157,6 +168,7 @@
 		<if test="id != null and id != ''">
 			and id = #{id}
 		</if>
+		order by isdefault + '' desc;
 	</select>
 	
 	<!-- 查询会员地址总数 -->

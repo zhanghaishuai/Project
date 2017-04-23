@@ -8,6 +8,8 @@ public class Member extends SysMember{
 	
 	private String smsVerifyCode; // 短信验证码
 	
+	private String sysInviteCode; // 内邀激活码
+	
 	private String autoLoginMark; // 自动登录标记
 
 	public String getImgVerifyCode() {
@@ -24,6 +26,14 @@ public class Member extends SysMember{
 
 	public void setSmsVerifyCode(String smsVerifyCode) {
 		this.smsVerifyCode = smsVerifyCode;
+	}
+
+	public String getSysInviteCode() {
+		return sysInviteCode;
+	}
+
+	public void setSysInviteCode(String sysInviteCode) {
+		this.sysInviteCode = sysInviteCode;
 	}
 
 	public String getAutoLoginMark() {

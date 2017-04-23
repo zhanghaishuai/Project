@@ -11,6 +11,16 @@ import com.beio.front.entity.GdsDetails;
  * @version 1.0.0
  */
 public class DetailsVO extends GdsDetails{
+	
+	private GoodsVO goods;
+	
+	public GoodsVO getGoods() {
+		return goods;
+	}
+
+	public void setGoods(GoodsVO goods) {
+		this.goods = goods;
+	}
 
 	public void setJsonStr(String jsonStr) {
 		JSONObject json = JSONObject.fromObject(jsonStr);

@@ -272,4 +272,35 @@
 			#{payment}, #{receipt}, #{goodsPrice}, #{freight}, #{totalPrice}, #{category}, #{status}, #{creator}, #{createTime}, #{modifier}, #{modifyTime});
 	</insert>
 	
+	<!-- 查询订单 -->
+	<select id="queryOrder" parameterType="Object" resultType="OrderVO">
+		select 
+		<choose>
+			<when test="pageQueryCount == false">
+				so.id, so.orderNo, so.createTime, so.totalPrice, so.status 
+			</when>
+			<otherwise>
+				count(1) as pageTotal 
+			</otherwise>
+		</choose>
+		from sys_order so 
+		where
+		    so.enable = '1' and so.exist = '1' and so.buyerID = #{buyerID} 
+		<if test="status != null and status != ''">
+			and so.status = #{status}
+		</if>
+		<if test="orderNo != null and orderNo != ''">
+			and so.orderNo = #{orderNo}
+		</if>
+		order by so.createTime desc
+		<if test="pageQueryCount == false">
+			limit #{firstResult}, #{maxResults};
+		</if>
+	</select>
+	
+	<!-- 查询订单详情 -->
+	<select id="queryOrderDetails" parameterType="Object" resultType="DetailsVO">
+		select id, goodsID, price, freight, quantity, totalPrice from gds_details where orderID = #{id} and enable = '1' and exist = '1';
+	</select>
+	
 </mapper>

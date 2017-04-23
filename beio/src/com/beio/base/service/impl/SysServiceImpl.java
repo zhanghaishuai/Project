@@ -1,6 +1,7 @@
 package com.beio.base.service.impl;
 
 import com.beio.base.entity.SysAddr;
+import com.beio.base.entity.SysMember;
 import com.beio.base.service.SysService;
 import com.beio.base.util.ComUtil;
 import com.beio.base.util.Constant;
@@ -13,6 +14,15 @@ import com.beio.base.util.Constant;
  */
 public class SysServiceImpl extends BaseIbatisServiceImpl implements SysService {
 
+	@Override
+	public int register(SysMember sysMember) throws Exception {
+		// TODO Auto-generated method stub
+		if (update("sys.useInvite", sysMember) < 1) {
+			return 0;
+		}
+		return insert("sys.register", sysMember);
+	}
+	
 	@Override
 	public int editAddr(SysAddr sysAddr) throws Exception {
 		// TODO Auto-generated method stub
@@ -42,5 +52,5 @@ public class SysServiceImpl extends BaseIbatisServiceImpl implements SysService 
 		// 编辑地址
 		return update("sys.defaultAddr", sysAddr);
 	}
-	
+
 }

@@ -1,6 +1,7 @@
 package com.beio.base.service;
 
 import com.beio.base.entity.SysAddr;
+import com.beio.base.entity.SysMember;
 
 /**
  * 系统业务逻辑接口
@@ -10,6 +11,13 @@ import com.beio.base.entity.SysAddr;
  */
 public interface SysService extends BaseIbaitsService{
 
+	/**
+	 * 用户注册
+	 * @return
+	 * @throws Exception
+	 */
+	public int register(SysMember sysMember) throws Exception;
+	
 	/**
 	 * 编辑收货地址
 	 * @return

@@ -8,6 +8,7 @@
 	
 		<typeAlias type="com.beio.base.entity.SysAddr" alias="SysAddr"/>
 		<typeAlias type="com.beio.base.entity.SysArea" alias="SysArea"/>
+		<typeAlias type="com.beio.base.entity.SysInvite" alias="SysInvite"/>
 		<typeAlias type="com.beio.base.entity.SysMember" alias="SysMember"/>
 		<typeAlias type="com.beio.base.entity.SysOrder" alias="SysOrder"/>
 		<typeAlias type="com.beio.base.entity.SysRegex" alias="SysRegex"/>
@@ -37,6 +38,8 @@
 		<typeAlias type="com.beio.front.vo.SearchInfoVO" alias="SearchInfoVO"/>
 		<typeAlias type="com.beio.front.vo.SettlementVO" alias="SettlementVO"/>
 		<typeAlias type="com.beio.front.vo.TopInfoVO" alias="TopInfoVO"/>
+		<typeAlias type="com.beio.front.vo.DetailsVO" alias="DetailsVO"/>
+		<typeAlias type="com.beio.front.vo.OrderVO" alias="OrderVO"/>
 		
 	</typeAliases>
 	

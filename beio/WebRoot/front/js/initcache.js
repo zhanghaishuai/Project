@@ -25,7 +25,7 @@ function dateMilliFormat(dateMilliStr, pattern){
 	}
 	if(pattern != '' && pattern != null && pattern != undefined){
 		if ('TIME' == pattern.toUpperCase()){
-			return dateMilliStr.substring(0, 20);
+			return dateMilliStr.substring(0, 19);
 		}
 		if ('DATE' == pattern.toUpperCase()) {
 			return dateMilliStr.substring(0, 11);

@@ -9,6 +9,7 @@ import com.beio.front.entity.GdsSearch;
 import com.beio.front.service.GoodsService;
 import com.beio.front.vo.GoodsVO;
 import com.beio.front.vo.IndexInfoVO;
+import com.beio.front.vo.OrderVO;
 import com.beio.front.vo.PreOrderVO;
 import com.beio.front.vo.SettlementVO;
 import com.beio.front.vo.SearchInfoVO;
@@ -26,17 +27,19 @@ public class GoodsAction extends BaseAction{
 	
 	private GoodsService goodsService;
 	
-	private GdsSearch gdsSearch;
+	private GdsSearch gdsSearch = new GdsSearch();
 	
-	private SearchInfoVO searchInfo;
+	private SearchInfoVO searchInfo = new SearchInfoVO();
 	
-	private GoodsVO goodsVO;
+	private GoodsVO goodsVO = new GoodsVO();
 	
-	private GdsBuycart gdsBuycart;
+	private GdsBuycart gdsBuycart = new GdsBuycart();
 	
-	private SettlementVO settlementVO;
+	private SettlementVO settlementVO = new SettlementVO();
 	
-	private PreOrderVO preOrderVO;
+	private PreOrderVO preOrderVO = new PreOrderVO();
+	
+	private OrderVO orderVO = new OrderVO();
 	
 	/**
 	 * 商品搜索
@@ -180,6 +183,19 @@ public class GoodsAction extends BaseAction{
 		root = goodsService.preOrder(preOrderVO);
 		return JSON;
 	}
+	
+	/**
+	 * 我的订单
+	 * @return
+	 * @throws Exception
+	 */
+	public String myOrder() throws Exception{
+		orderVO.setOrderNo(ComUtil.trim(orderVO.getOrderNo()));
+		orderVO.setBuyerID(sessionMemberID());
+		orderVO.setPageSize(5);
+		setRoot(goodsService.myOrder(orderVO), "200");
+		return JSON;
+	}
 
 	public GoodsService getGoodsService() {
 		return goodsService;
@@ -235,6 +251,14 @@ public class GoodsAction extends BaseAction{
 
 	public void setPreOrderVO(PreOrderVO preOrderVO) {
 		this.preOrderVO = preOrderVO;
+	}
+
+	public OrderVO getOrderVO() {
+		return orderVO;
+	}
+
+	public void setOrderVO(OrderVO orderVO) {
+		this.orderVO = orderVO;
 	}
 
 }

@@ -1,4 +1,9 @@
 /com
+/config
+/config.properties
 /ibatis
-/SysUser.class
+/log4j.properties
+/mybatis.xml
 /spring
+/struts
+/struts.xml

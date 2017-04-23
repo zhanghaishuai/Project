@@ -16,6 +16,7 @@ import com.beio.front.vo.ClassifyVO;
 import com.beio.front.vo.DetailsVO;
 import com.beio.front.vo.GoodsVO;
 import com.beio.front.vo.IndexInfoVO;
+import com.beio.front.vo.OrderVO;
 import com.beio.front.vo.PreOrderVO;
 import com.beio.front.vo.SearchInfoVO;
 import com.beio.front.vo.SettlementVO;
@@ -74,7 +75,7 @@ public class GoodsServiceImpl extends BaseIbatisServiceImpl implements GoodsServ
 	@Override
 	public GoodsVO queryGoodsInfo(GoodsVO goodsVO) throws Exception {
 		// TODO Auto-generated method stub
-		goodsVO = (GoodsVO) selectOne("goods.queryGoodsByID", goodsVO);
+		goodsVO = (GoodsVO) selectOne("goods.queryGoodsByID", goodsVO.getId());
 		goodsVO.setShows(selectList("goods.queryShowsByGoods", goodsVO));
 		goodsVO.setDetails(selectList("goods.queryDetailsByGoods", goodsVO));
 		return goodsVO;
@@ -97,7 +98,7 @@ public class GoodsServiceImpl extends BaseIbatisServiceImpl implements GoodsServ
 		List<BuycartVO> carts = selectList("goods.queryBuycart", member);
 		if (ComUtil.isNotEmpty(carts)) {
 			for (BuycartVO cart : carts) {
-				cart.setGoods(queryGoods(cart));
+				cart.setGoods(queryGoods(cart.getGoodsID()));
 			}
 		}
 		return carts;
@@ -110,10 +111,37 @@ public class GoodsServiceImpl extends BaseIbatisServiceImpl implements GoodsServ
 		settlementVO.setCarts(selectList("goods.settlement", settlementVO));
 		if (ComUtil.isNotEmpty(settlementVO.getCarts())) {
 			for (BuycartVO cart : settlementVO.getCarts()) {
-				cart.setGoods(queryGoods(cart));
+				cart.setGoods(queryGoods(cart.getGoodsID()));
 			}
 		}
 		return settlementVO;
+	}
+	
+	@Override
+	public OrderVO myOrder(OrderVO orderVO) throws Exception {
+		// TODO Auto-generated method stub
+		selectPage("goods.queryOrder", orderVO);
+		if (ComUtil.isNotEmpty(orderVO.getPageList())) {
+			for (Object order : orderVO.getPageList()) {
+				queryOrderDetails((OrderVO)order);
+			}
+		}
+		return orderVO;
+	}
+	
+	/**
+	 * 查询订单详情
+	 * @param orderVO
+	 * @throws Exception
+	 */
+	private OrderVO queryOrderDetails(OrderVO orderVO) throws Exception{
+		orderVO.setDetails(selectList("goods.queryOrderDetails", orderVO));
+		if (ComUtil.isNotEmpty(orderVO.getDetails())) {
+			for (DetailsVO details : orderVO.getDetails()) {
+				details.setGoods(queryGoods(details.getGoodsID()));
+			}
+		}
+		return orderVO;
 	}
 	
 	/**
@@ -158,13 +186,14 @@ public class GoodsServiceImpl extends BaseIbatisServiceImpl implements GoodsServ
 	 * @return
 	 * @throws Exception
 	 */
-	private void queryGoods(SearchInfoVO searchInfoVO) throws Exception{
+	private SearchInfoVO queryGoods(SearchInfoVO searchInfoVO) throws Exception{
 		selectPage("goods.queryGoodsBySearch", searchInfoVO);
 		if (ComUtil.isNotEmpty(searchInfoVO.getPageList())) {
 			for (Object goodsVO : searchInfoVO.getPageList()) {
 				((GoodsVO)goodsVO).setShows(selectList("goods.queryShowsByGoods", goodsVO));
 			}
 		}
+		return searchInfoVO;
 	}
 	
 	/**
@@ -173,8 +202,8 @@ public class GoodsServiceImpl extends BaseIbatisServiceImpl implements GoodsServ
 	 * @return
 	 * @throws Exception
 	 */
-	private GoodsVO queryGoods(BuycartVO buycartVO) throws Exception{
-		GoodsVO goods = (GoodsVO) selectOne("goods.queryGoodsByID", buycartVO.getGoodsID());
+	private GoodsVO queryGoods(String goodsID) throws Exception{
+		GoodsVO goods = (GoodsVO) selectOne("goods.queryGoodsByID", goodsID);
 		if (goods != null) {
 			goods.setShows(selectList("goods.queryShowsByGoods", goods));
 		}
@@ -278,5 +307,5 @@ public class GoodsServiceImpl extends BaseIbatisServiceImpl implements GoodsServ
 		// 返回成功结果
 		return new Root(preOrderVO, "200");
 	}
-	
+
 }

@@ -25,6 +25,12 @@ function validate() {
 		$('#reg_pwd_s').removeClass('hide');
 		flag = false;
 	}
+	if (new RegExp(regex('empty')).test($('#reg_equal_pwd').val()) == false || 
+			$('#reg_equal_pwd').val() != $('#reg_pwd').val()) {
+		$('#reg_equal_pwd_s').html('<i class="i-def"></i>' + tip('129'));
+		$('#reg_equal_pwd_s').removeClass('hide');
+		flag = false;
+	}
 	if (new RegExp(regex('email')).test($('#reg_email').val()) == false) {
 		$('#reg_email_s').html('<i class="i-def"></i>' + tip('132'));
 		$('#reg_email_s').removeClass('hide');
@@ -35,10 +41,9 @@ function validate() {
 		$('#reg_email_s').removeClass('hide');
 		flag = false;
 	}
-	if (new RegExp(regex('empty')).test($('#reg_equal_pwd').val()) == false || 
-			$('#reg_equal_pwd').val() != $('#reg_pwd').val()) {
-		$('#reg_equal_pwd_s').html('<i class="i-def"></i>' + tip('129'));
-		$('#reg_equal_pwd_s').removeClass('hide');
+	if (new RegExp(regex('empty')).test($('#reg_invite_code').val()) == false) {
+		$('#reg_invite_code_s').html('<i class="i-def"></i>' + tip('152'));
+		$('#reg_invite_code_s').removeClass('hide');
 		flag = false;
 	}
 	if (new RegExp(regex('empty')).test($('#reg_verify_code').val()) == false) {
@@ -63,6 +68,7 @@ function validate() {
 				'mr.mobile' : $('#reg_mobile').val(), 
 				'mr.password' : $('#reg_pwd').val(), 
 				'mr.email' : $('#reg_email').val(), 
+				'mr.sysInviteCode' : $('#reg_invite_code').val(), 
 				'mr.imgVerifyCode' : $('#reg_verify_code').val(), 
 				'mr.smsVerifyCode' : $('#reg_mobile_code').val()
 			},
@@ -86,6 +92,9 @@ function validate() {
 				}else if (data.status == '124' || data.status == '125') {
 					$('#reg_verify_code_s').html('<i class="i-def"></i>' + tip(data.status));
 					$('#reg_verify_code_s').removeClass('hide');
+				}else if (data.status == '150' || data.status == '151') {
+					$('#reg_invite_code_s').html('<i class="i-def"></i>' + tip(data.status));
+					$('#reg_invite_code_s').removeClass('hide');
 				}else if (data.status == '126' || data.status == '127') {
 					$('#reg_mobile_code_s').removeClass('sucMsg').removeClass('errMsg');
 					$('#reg_mobile_code_s').addClass('errMsg');

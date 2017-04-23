@@ -8,24 +8,12 @@
 	<link type="text/css" rel="stylesheet" href="css/login.css"/>  
 	<link rel="stylesheet" type="text/css" href="css/mymain.css"/>
 	<link rel="Stylesheet" type="text/css" href="css/mycomm.css"/>
+	<link rel="Stylesheet" type="text/css" href="css/myorder.css"/>
 	<script type="text/javascript" src="js/jquery/jquery.js"></script>
 	<script type="text/javascript" src="js/htmlbuild.js"></script>
 	<script type="text/javascript" src="js/initcache.js"></script>
 	<script type="text/javascript" src="js/autologin.js"></script>
 	<script type="text/javascript" src="js/myorder.js"></script>
-	<style type="text/css">
-		.mt button{float:right;padding:2px 10px;margin-left:15px;border:1px solid #bcbcbc;}
-		.mt input{float:right;padding-left:2px;margin-left:15px;border:1px solid #a1a1a1;width:240px;height:23px;}
-		.mt select{float:right;padding-left:2px;border:1px solid #a1a1a1;width:100px;height:25px;}
-		.mt .status{float:right;padding-left:2px;height:25px;margin-left:15px;line-height:25px;font-size:15px;}
-		.mt .title{float:left;height:25px;font:20px/25px "microsoft yahei", "\5b8b\4f53";}
-		.mc table{width: 100%; border: 2px solid #dcdcdc; line-height: 30px;text-align: center;}
-		.mc table tr{border-bottom: 2px solid #dcdcdc;}
-		.mc table tr th{border-right: 2px solid #dcdcdc; padding: 3px 5px; font-size: 16px; letter-spacing: 1px; 
-			background-color: #cdcdcd;}
-		.mc table tr td{border-right: 2px dashed #dcdcdc;}
-		
-	</style>
 </head>
 <body>
 <script type="text/javascript">
@@ -54,47 +42,20 @@
 	<div class="my_main">
 		<div class="mod-main mod-comm">
 			<div class="mt">
-				<button>搜&nbsp;&nbsp;索</button>
-				<input type="text" placeholder="输入订单号、收货人姓名可进行模糊查询"/>
-				<select>
-					<option>请选择</option>
-					<option>未付款</option>
-					<option>已付款</option>
-					<option>已完成</option>
+				<button class="search_btn">搜&nbsp;&nbsp;索</button>
+				<input class="search_no" type="text" placeholder="可输入订单号进行查询"/>
+				<select class="search_status">
+					<option value="">全部订单</option>
+					<option value="0">未付款</option>
+					<option value="1">已付款</option>
+					<option value="2">已完成</option>
+					<option value="3">已取消</option>
+					<option value="4">已关闭</option>
 				</select>
 				<label class="status">订单状态：</label>
 				<label class="title">我的订单</label>
 			</div>
-			<div class="mc">
-				<table>
-					<tr>
-						<th style="width: 430px;" colspan="2">商品信息</th>
-						<th style="width: 180px;">下单时间</th>
-						<th style="width: 100px;">订单总额</th>
-						<th style="width: 100px;">交易状态</th>
-						<th style="width: 100px;">操作</th>
-					</tr>
-					<tr>
-						<td colspan="6" style="text-align: left;padding: 2px; 5px; background-color: #f1f1f1; font-size: 16px;">订单号：22222222222222222222222</td>
-					</tr>
-					<tr>
-						<td style="width: 70px;"><img src="http://localhost:8080//BeioResources/image/goods/show/1022181648-1_x_10.jpg" width="70" height="70"></td>
-						<td style="width: 360px;"><span>剪头皮鞋剪头皮鞋</span></td>
-						<td>2017-04-16 12:12:12</td>
-						<td>￥399.00</td>
-						<td>未付款</td>
-						<td><button style="padding: 2px 10px;border:1px solid #bcbcbc;">付款</button></td>
-					</tr>
-					<tr>
-						<td style="width: 70px;"><img src="http://localhost:8080//BeioResources/image/goods/show/1022181648-1_x_10.jpg" width="70" height="70"></td>
-						<td style="width: 360px;"><span>剪头皮鞋剪头皮鞋</span></td>
-						<td>2017-04-16 12:12:12</td>
-						<td>￥399.00</td>
-						<td>未付款</td>
-						<td><button style="padding: 2px 10px;border:1px solid #bcbcbc;">付款</button></td>
-					</tr>
-				</table>
-			</div>
+			<div class="mc"></div>
 		</div>
 	</div>
 </div>

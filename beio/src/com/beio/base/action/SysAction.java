@@ -3,6 +3,7 @@ package com.beio.base.action;
 import java.util.Calendar;
 
 import com.beio.base.entity.SysArea;
+import com.beio.base.entity.SysInvite;
 import com.beio.base.entity.SysMember;
 import com.beio.base.service.SysService;
 import com.beio.base.util.ComUtil;
@@ -159,6 +160,19 @@ public class SysAction extends BaseAction{
 			setRoot("124");
 			return JSON;
 		}
+		if (ComUtil.isNotMatches(getRegex("empty").getRegex(), mr.getSysInviteCode())) {
+			setRoot("152");
+			return JSON;
+		}
+		SysInvite invite = (SysInvite) baseIbaitsService.selectOne("sys.queryInvite", mr.getSysInviteCode());
+		if (invite == null) {
+			setRoot("150");
+			return JSON;
+		}
+		if ("1".equals(invite.getStatus())) {
+			setRoot("151");
+			return JSON;
+		}
 		if (!mr.getImgVerifyCode().toUpperCase().equals((String) getSession().getAttribute(Constant.SESSIONVERIFYCODE))) {
 			setRoot("125");
 			return JSON;
@@ -183,7 +197,7 @@ public class SysAction extends BaseAction{
 		mr.setCreateTime(curTimeStr());
 		mr.setModifier(sessionMemberID());
 		mr.setModifyTime(curTimeStr());
-		if (baseIbaitsService.insert("sys.register", mr) < 1) {
+		if (sysService.register(mr) < 1) {
 			setRoot("100");
 			return JSON;
 		}
