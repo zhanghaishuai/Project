@@ -1,18 +1,16 @@
 package com.beio.front.service;
 
-import java.util.List;
-
 import com.beio.base.entity.SysMember;
 import com.beio.base.service.BaseIbaitsService;
 import com.beio.base.vo.Root;
 import com.beio.front.entity.GdsBuycart;
-import com.beio.front.vo.BuycartVO;
+import com.beio.front.vo.CartInfoVO;
 import com.beio.front.vo.GoodsVO;
 import com.beio.front.vo.IndexInfoVO;
 import com.beio.front.vo.OrderVO;
 import com.beio.front.vo.PreOrderVO;
-import com.beio.front.vo.SettlementVO;
 import com.beio.front.vo.SearchInfoVO;
+import com.beio.front.vo.SettlementVO;
 import com.beio.front.vo.TopInfoVO;
 
 /**
@@ -35,7 +33,7 @@ public interface GoodsService extends BaseIbaitsService{
 	 * @return
 	 * @throws Exception
 	 */
-	public IndexInfoVO queryIndexInfo() throws Exception;
+	public IndexInfoVO queryIndexInfo(SysMember member) throws Exception;
 	
 	/**
 	 * 查询搜索
@@ -65,7 +63,7 @@ public interface GoodsService extends BaseIbaitsService{
 	 * @return
 	 * @throws Exception
 	 */
-	public List<BuycartVO> queryBuycart(SysMember member) throws Exception;
+	public CartInfoVO queryBuycart(CartInfoVO cartInfoVO) throws Exception;
 	
 	/**
 	 * 购物车结算

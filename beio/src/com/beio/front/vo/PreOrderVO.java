@@ -2,7 +2,7 @@ package com.beio.front.vo;
 
 import java.util.List;
 
-import com.beio.base.entity.SysOrder;
+import com.beio.base.entity.SysMember;
 
 /**
  * 下单值对象
@@ -10,17 +10,36 @@ import com.beio.base.entity.SysOrder;
  * @date 2017-04-09
  * @version 1.0.0
  */
-public class PreOrderVO extends SysOrder{
+public class PreOrderVO {
 
-	// 订单详情
-	private List<DetailsVO> details;
+	private List<OrderVO> orders;
+	
+	private SysMember member;
+	
+	private String currentTime;
 
-	public List<DetailsVO> getDetails() {
-		return details;
+	public List<OrderVO> getOrders() {
+		return orders;
 	}
 
-	public void setDetails(List<DetailsVO> details) {
-		this.details = details;
+	public void setOrders(List<OrderVO> orders) {
+		this.orders = orders;
+	}
+
+	public SysMember getMember() {
+		return member;
+	}
+
+	public void setMember(SysMember member) {
+		this.member = member;
+	}
+
+	public String getCurrentTime() {
+		return currentTime;
+	}
+
+	public void setCurrentTime(String currentTime) {
+		this.currentTime = currentTime;
 	}
 
 }

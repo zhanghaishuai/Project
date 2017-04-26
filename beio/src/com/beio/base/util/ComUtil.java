@@ -161,10 +161,10 @@ public class ComUtil {
 	 * @return
 	 * @throws Exception 
 	 */
-	public static String generateOrderNO() throws Exception {
-		String orderNo = DateUtil.formatDate(DateUtil.getTime(),DateUtil.PATTERNNONETIMEWITHMS)
-				+ new DecimalFormat("000").format((int) (Math.random() * 1000));
-		return orderNo;
+	public static String generateOrderNO(int k) throws Exception {
+		return DateUtil.formatDate(DateUtil.getTime(),
+				DateUtil.PATTERNNONETIMEWITHMS)
+				+ new DecimalFormat("000").format(k);
 	}
 	
 	public static void main(String[] args) {

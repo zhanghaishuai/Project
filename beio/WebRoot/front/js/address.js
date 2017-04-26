@@ -1,7 +1,7 @@
 function buildAddr(id, callback){
-	$('body').append(htmlbuild.addrBox);
+	$('body').append(base.addrBox);
 	$('.addr_cancel,.addr_close').click(function(){
-		$('#divDialog').remove();
+		$('.shadow').remove();
 	});
 	area('000000', function(area){
 		$('.addr_province').html('<option value="">请选择</option>');

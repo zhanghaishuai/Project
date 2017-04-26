@@ -2,9 +2,8 @@ package com.beio.front.vo;
 
 import java.util.List;
 
-import com.beio.base.vo.Page;
+import com.beio.base.entity.SysMember;
 import com.beio.front.entity.GdsClassify;
-import com.beio.front.entity.GdsNavbar;
 import com.beio.front.entity.GdsSearch;
 
 /**
@@ -13,43 +12,17 @@ import com.beio.front.entity.GdsSearch;
  * @date 2017-04-09
  * @version 1.0.0
  */
-public class TopInfoVO extends Page{
-
-	private List<GdsSearch> searchs = null;
-	
-	private static List<GdsNavbar> navbars = null;
-	
-	private static List<GdsClassify> classifys = null;
+public class TopInfoVO {
 	
 	private String cartNum;
 	
 	private String orderNum;
 	
-	private boolean login;
+	private SysMember member;
 
-	public List<GdsSearch> getSearchs() {
-		return searchs;
-	}
-
-	public void setSearchs(List<GdsSearch> searchs) {
-		this.searchs = searchs;
-	}
-
-	public List<GdsNavbar> getNavbars() {
-		return navbars;
-	}
-
-	public void setNavbars(List<GdsNavbar> navbars) {
-		TopInfoVO.navbars = navbars;
-	}
-
-	public List<GdsClassify> getClassifys() {
-		return classifys;
-	}
-
-	public void setClassifys(List<GdsClassify> classifys) {
-		TopInfoVO.classifys = classifys;
-	}
+	private List<GdsSearch> searchs = null;
+	
+	private List<GdsClassify> classifys = null;
 
 	public String getCartNum() {
 		return cartNum;
@@ -67,12 +40,28 @@ public class TopInfoVO extends Page{
 		this.orderNum = orderNum;
 	}
 
-	public boolean isLogin() {
-		return login;
+	public SysMember getMember() {
+		return member;
 	}
 
-	public void setLogin(boolean login) {
-		this.login = login;
+	public void setMember(SysMember member) {
+		this.member = member;
 	}
 
+	public List<GdsSearch> getSearchs() {
+		return searchs;
+	}
+
+	public void setSearchs(List<GdsSearch> searchs) {
+		this.searchs = searchs;
+	}
+
+	public List<GdsClassify> getClassifys() {
+		return classifys;
+	}
+
+	public void setClassifys(List<GdsClassify> classifys) {
+		this.classifys = classifys;
+	}
+	
 }

@@ -1,14 +1,10 @@
 package com.beio.base.action;
 
-import java.util.Calendar;
-
 import com.beio.base.entity.SysArea;
-import com.beio.base.entity.SysInvite;
 import com.beio.base.entity.SysMember;
 import com.beio.base.service.SysService;
 import com.beio.base.util.ComUtil;
 import com.beio.base.util.Constant;
-import com.beio.base.util.DateUtil;
 import com.beio.base.vo.Address;
 import com.beio.base.vo.Member;
 
@@ -156,27 +152,6 @@ public class SysAction extends BaseAction{
 			setRoot("132");
 			return JSON;
 		}
-		if (ComUtil.isNotMatches(getRegex("empty").getRegex(), mr.getImgVerifyCode())) {
-			setRoot("124");
-			return JSON;
-		}
-		if (ComUtil.isNotMatches(getRegex("empty").getRegex(), mr.getSysInviteCode())) {
-			setRoot("152");
-			return JSON;
-		}
-		SysInvite invite = (SysInvite) baseIbaitsService.selectOne("sys.queryInvite", mr.getSysInviteCode());
-		if (invite == null) {
-			setRoot("150");
-			return JSON;
-		}
-		if ("1".equals(invite.getStatus())) {
-			setRoot("151");
-			return JSON;
-		}
-		if (!mr.getImgVerifyCode().toUpperCase().equals((String) getSession().getAttribute(Constant.SESSIONVERIFYCODE))) {
-			setRoot("125");
-			return JSON;
-		}
 		if (ComUtil.isNotMatches(getRegex("empty").getRegex(), mr.getSmsVerifyCode())) {
 			setRoot("126");
 			return JSON;
@@ -191,13 +166,11 @@ public class SysAction extends BaseAction{
 			return JSON;
 		}
 		mr.setLevel(Constant.CUSTOMERLEVELREGULAR);
-		mr.setTurnonTime(curTimeStr());
-		mr.setExpireTime(DateUtil.formatDate(DateUtil.addDate(DateUtil.getTime(), Calendar.YEAR, 1), DateUtil.PATTERNLINETIMEWITHMS));
 		mr.setCreator(sessionMemberID());
 		mr.setCreateTime(curTimeStr());
 		mr.setModifier(sessionMemberID());
 		mr.setModifyTime(curTimeStr());
-		if (sysService.register(mr) < 1) {
+		if (baseIbaitsService.insert("sys.register", mr) < 1) {
 			setRoot("100");
 			return JSON;
 		}
@@ -229,10 +202,9 @@ public class SysAction extends BaseAction{
 				return JSON;
 			}
 		}
-		
 		SysMember m = (SysMember) getBaseIbaitsService().selectOne("sys.login", mr);
 		if (m == null) {
-			setRoot("190");
+			setRoot("195");
 			return JSON;
 		}
 		if (!Constant.ENABLE.equals(m.getEnable())) {

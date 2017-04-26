@@ -79,6 +79,18 @@ public class DateUtil {
 	}
 	
 	/**
+	 * 是否过期
+	 * @param turnon
+	 * @param expire
+	 * @return
+	 * @throws Exception 
+	 */
+	public static boolean isExpire(String turnon, String expire) throws Exception {
+		return !(parseDate(turnon, PATTERNLINEDATE).before(getTime()) && addDate(
+				parseDate(expire, PATTERNLINEDATE), Calendar.DATE, 1).after(getTime()));
+	}
+	
+	/**
 	 * 获取年龄
 	 * @param birthday
 	 * @return
@@ -180,8 +192,4 @@ public class DateUtil {
         return star;  
 	}
 	
-	public static void main(String[] args) {
-		
-		
-	}
 }

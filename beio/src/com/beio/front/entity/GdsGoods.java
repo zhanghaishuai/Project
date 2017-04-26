@@ -20,6 +20,8 @@ public class GdsGoods extends Page{
 	
 	private String cPrice; // 普通价
 	
+	private String freight; // 运费
+	
 	private String salds; // 已售数量
 	
 	private String stock; // 库存数量
@@ -82,6 +84,14 @@ public class GdsGoods extends Page{
 
 	public void setcPrice(String cPrice) {
 		this.cPrice = cPrice;
+	}
+
+	public String getFreight() {
+		return freight;
+	}
+
+	public void setFreight(String freight) {
+		this.freight = freight;
 	}
 
 	public String getSalds() {

@@ -2,6 +2,7 @@ package com.beio.front.vo;
 
 import java.util.List;
 
+import com.beio.base.entity.SysMember;
 import com.beio.base.vo.Page;
 import com.beio.front.entity.GdsBrand;
 import com.beio.front.entity.GdsClassify;
@@ -14,11 +15,7 @@ import com.beio.front.entity.GdsClassify;
  */
 public class SearchInfoVO extends Page{
 	
-	private List<GdsBrand> brands = null;
-	
-	private List<GdsClassify> classifys = null;
-	
-	private List<GdsClassify> navClassifys = null;
+	private String order;
 	
 	private String brand;
 	
@@ -30,32 +27,20 @@ public class SearchInfoVO extends Page{
 	
 	private Integer maxPrice;
 	
-	private String order;
+	private SysMember member;
 	
-	private boolean login;
+	private List<GdsBrand> brands = null;
 	
-	public List<GdsBrand> getBrands() {
-		return brands;
+	private List<GdsClassify> classifys = null;
+	
+	private List<GdsClassify> navClassifys = null;
+
+	public String getOrder() {
+		return order;
 	}
 
-	public void setBrands(List<GdsBrand> brands) {
-		this.brands = brands;
-	}
-
-	public List<GdsClassify> getClassifys() {
-		return classifys;
-	}
-
-	public void setClassifys(List<GdsClassify> classifys) {
-		this.classifys = classifys;
-	}
-
-	public List<GdsClassify> getNavClassifys() {
-		return navClassifys;
-	}
-
-	public void setNavClassifys(List<GdsClassify> navClassifys) {
-		this.navClassifys = navClassifys;
+	public void setOrder(String order) {
+		this.order = order;
 	}
 
 	public String getBrand() {
@@ -98,20 +83,36 @@ public class SearchInfoVO extends Page{
 		this.maxPrice = maxPrice;
 	}
 
-	public String getOrder() {
-		return order;
+	public SysMember getMember() {
+		return member;
 	}
 
-	public void setOrder(String order) {
-		this.order = order;
+	public void setMember(SysMember member) {
+		this.member = member;
 	}
 
-	public boolean isLogin() {
-		return login;
+	public List<GdsBrand> getBrands() {
+		return brands;
 	}
 
-	public void setLogin(boolean login) {
-		this.login = login;
+	public void setBrands(List<GdsBrand> brands) {
+		this.brands = brands;
+	}
+
+	public List<GdsClassify> getClassifys() {
+		return classifys;
+	}
+
+	public void setClassifys(List<GdsClassify> classifys) {
+		this.classifys = classifys;
+	}
+
+	public List<GdsClassify> getNavClassifys() {
+		return navClassifys;
+	}
+
+	public void setNavClassifys(List<GdsClassify> navClassifys) {
+		this.navClassifys = navClassifys;
 	}
 	
 }

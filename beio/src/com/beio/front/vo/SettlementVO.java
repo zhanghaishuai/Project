@@ -2,6 +2,7 @@ package com.beio.front.vo;
 
 import java.util.List;
 
+import com.beio.base.entity.SysMember;
 import com.beio.base.vo.Address;
 import com.beio.front.entity.GdsBuycart;
 
@@ -17,7 +18,7 @@ public class SettlementVO extends GdsBuycart{
 	
 	private List<BuycartVO> carts;
 	
-	private String memberID;
+	private SysMember member;
 	
 	private String[] cartIDs;
 
@@ -37,12 +38,12 @@ public class SettlementVO extends GdsBuycart{
 		this.carts = carts;
 	}
 
-	public String getMemberID() {
-		return memberID;
+	public SysMember getMember() {
+		return member;
 	}
 
-	public void setMemberID(String memberID) {
-		this.memberID = memberID;
+	public void setMember(SysMember member) {
+		this.member = member;
 	}
 
 	public String[] getCartIDs() {

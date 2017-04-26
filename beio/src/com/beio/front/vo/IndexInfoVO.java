@@ -2,6 +2,7 @@ package com.beio.front.vo;
 
 import java.util.List;
 
+import com.beio.base.entity.SysMember;
 import com.beio.base.vo.Page;
 import com.beio.front.entity.GdsBanner;
 
@@ -12,12 +13,20 @@ import com.beio.front.entity.GdsBanner;
  * @version 1.0.0
  */
 public class IndexInfoVO extends Page{
+	
+	private SysMember member;
 
 	private List<GdsBanner> banners = null;
 	
 	private List<ClassifyVO> classifys = null;
 	
-	private boolean login;
+	public SysMember getMember() {
+		return member;
+	}
+
+	public void setMember(SysMember member) {
+		this.member = member;
+	}
 
 	public List<GdsBanner> getBanners() {
 		return banners;
@@ -35,12 +44,4 @@ public class IndexInfoVO extends Page{
 		this.classifys = classifys;
 	}
 
-	public boolean isLogin() {
-		return login;
-	}
-
-	public void setLogin(boolean login) {
-		this.login = login;
-	}
-	
 }

@@ -26,7 +26,7 @@
 .paginating ul li .number{float: left;height: 24px;line-height: 24px;padding: 3px 2px;width: 52px;border:1px solid #e7e7e7;margin-top: 4px;outline: none;text-align: center;}
 .paginating ul li .number_hover{border-color: #e7e7e9;}
 .paginating ul li .button{background: #fa5000;display:block;height: 30px;line-height: 30px;width: 70px;margin-top: 4px;float: left;color: #fff;cursor: pointer;outline: none;margin-left: 8px;border:none;font-size:14px;}
-.paginating ul li .button:hover{background-color:#fa2f00;color:#fff;}
+.paginating ul li .button:hover{background-color:#fd5115;color:#fff;}
 .paginating ul li .button:active{background-position:0 -67px;}
 .paginating ul li.none a{display:none;}
 .narrow_page .paginating{width:720px;}

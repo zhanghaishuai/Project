@@ -6,6 +6,15 @@ body {
 	background: #fff
 }
 
+a {
+	color: #666;
+	text-decoration: none
+}
+
+a:hover {
+	color: #35679a;
+}
+
 a,address,b,big,blockquote,body,center,cite,code,dd,del,div,dl,dt,em,fieldset,font,form,h1,h2,h3,h4,h5,h6,html,i,iframe,img,ins,label,legend,li,ol,p,pre,small,span,strong,u,ul,var
 	{
 	margin: 0;
@@ -45,13 +54,26 @@ em,i,u {
 	font-style: normal
 }
 
-a {
-	color: #666;
-	text-decoration: none
+button,input,select,textarea {
+	outline: 0
 }
 
-a:hover {
-	color: #C81623
+textarea {
+	font-size: 13px;
+	resize: none
+}
+
+input::-ms-clear {
+	display: none
+}
+
+input::-ms-reveal {
+	width: 0;
+	height: 0
+}
+
+body,button,input,txt {
+	font-family: "Microsoft YaHei", "Hiragino Sans GB"
 }
 
 .fl {
@@ -129,83 +151,35 @@ a:hover {
 	margin: 0 auto
 }
 
-.root61 .w {
-	width: 1210px
-}
-
-
 .m,.mb,.mc,.mt,.p-detail,.p-img,.p-market,.p-name,.p-price,.sm,.smb,.smc,.smt
 	{
 	overflow: hidden
 }
 
-.header .logo,.i-company,.i-def,.i-error,.i-error1,.i-global,.i-suc {
-	background: url(../image/logo.jpg) no-repeat;
-	background-size: contain;
-}
-
-.i-error {
-	background-position: -17px -100px
-}
-
-.i-def {
-	background-position: 0 -100px
-}
-
-.i-suc {
-	background-position: 0 -117px
-}
-
-.i-company {
-	background-position: 0 -50px
-}
-
-.i-global {
-	background-position: -50px -50px
-}
-
-.i-error1 {
-	background-position: -17px -117px
-}
-
 .header {
 	height: 110px;
-	border-bottom: 2px solid #ff2832;
+	border-bottom: 2px solid #35679a;
 	margin-bottom: 18px;
 }
 
 .header .logo {
-	width: 362px;
-	height: 77px;
+	background: url(../image/logo.png) no-repeat;
+	background-size : contain;
+	width: 310px;
+	height: 110px;
 	float: left;
-	margin-top: 24px
 }
 
-.header .logo-title {
-	float: left;
-	height: 34px;
-	line-height: 34px;
-	font-size: 24px;
-	color: #333;
-	padding-left: 30px;
-	margin-top: 34px
-}
 
-.header .have-account {
-	font-size: 16px;
-	float: right;
-	margin-top: 55px;
-	color: #999
-}
 
-.header .have-account a {
-	color: #333
-}
-/* user-reg/1.0.0 common.css Date:2016-10-13 17:02:34 */
+
+
+
+
+
 .feedback,.i-clear,.i-company,.i-def,.i-error,.i-error1,.i-global,.i-suc,.registerDialog .close,.registerDialog .ico
 	{
-	background: url(../image/icon.png)
-		no-repeat
+	background: url(../image/icon.png) no-repeat
 }
 
 .i-error {
@@ -230,28 +204,6 @@ a:hover {
 
 .i-error1 {
 	background-position: -17px -117px
-}
-
-button,input,select,textarea {
-	outline: 0
-}
-
-textarea {
-	font-size: 13px;
-	resize: none
-}
-
-input::-ms-clear {
-	display: none
-}
-
-input::-ms-reveal {
-	width: 0;
-	height: 0
-}
-
-body,button,input,txt {
-	font-family: "Microsoft YaHei", "Hiragino Sans GB"
 }
 
 .tips {

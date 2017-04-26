@@ -402,7 +402,7 @@ a {
 }
 
 a:hover {
-	color: #E4393C;
+	color: #35679a;
 	text-decoration: underline
 }
 
@@ -3368,10 +3368,6 @@ div#login-dialog .ui-dialog-close {
 	margin-left: 58px
 }
 
-.form input[type=password] {
-	font-family: Tahoma, Helvetica, Arial
-}
-
 ::-ms-clear {
 	display: none
 }
@@ -3673,7 +3669,7 @@ input:-webkit-autofill {
 	float: none;
 	vertical-align: middle;
 	_vertical-align: -1px;
-	margin: 0 3px 0 0;
+	margin: 0 3px 2px 0;
 	padding: 0
 }
 
@@ -3797,7 +3793,7 @@ input:-webkit-autofill {
 
 .login-form .login-tab a.checked,.login-form .login-tab a:hover {
 	font-weight: 700;
-	color: #e4393c
+	color: #35679a
 }
 
 .login-form .login-tab-l,.login-form .login-tab-r {
@@ -3943,7 +3939,7 @@ input:-webkit-autofill {
 }
 
 .login-form .login-box .login-btn {
-	border: 1px solid #cb2a2d;
+	border: 1px solid #35679a;
 	margin: 0 auto;
 	height: 32px;
 	width: 99%;
@@ -3951,10 +3947,10 @@ input:-webkit-autofill {
 }
 
 .login-form .login-box .login-btn .btn-img {
-	border: 1px solid #e85356;
+	border: 1px solid #35679a;
 	display: block;
 	width: 302px;
-	background: #e4393c;
+	background: #35679a;
 	height: 31px;
 	line-height: 31px;
 	color: #fff;
@@ -4502,7 +4498,7 @@ div.safetips {
 }
 
 .coagent .regist-link a {
-	color: #b61d1d
+	color: #35679a
 }
 
 .coagent .regist-link b {
@@ -4564,8 +4560,13 @@ div.safetips {
 .login-wrap {
 	position: relative;
 	height: 475px;
-	margin: 10px 0 20px;
-	z-index: 5
+	z-index: 5;
+	background-color: #e93854
+}
+
+.login-wrap .w{
+	background: url('../image/login.jpg') 0px 0px no-repeat;
+	height: 475px;
 }
 
 .login-wrap .login-banner {

@@ -29,10 +29,10 @@ public class Constant {
 	/** 不存在 **/
 	public static final String NOTEXIST = "0";
 	
-	/** 会员等级（高级） **/
+	/** 会员等级（会员） **/
 	public static final String CUSTOMERLEVELSENIOR = "1";
 	
-	/** 会员等级（普通） **/
+	/** 会员等级（用户） **/
 	public static final String CUSTOMERLEVELREGULAR = "0";
 	
 	/** 短信发送成功标记 **/

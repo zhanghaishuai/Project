@@ -5,15 +5,14 @@ import java.util.List;
 import com.beio.base.entity.SysMember;
 import com.beio.base.service.impl.BaseIbatisServiceImpl;
 import com.beio.base.util.ComUtil;
-import com.beio.base.util.Constant;
 import com.beio.base.vo.Root;
 import com.beio.front.entity.GdsBuycart;
 import com.beio.front.entity.GdsClassify;
 import com.beio.front.entity.GdsGoods;
 import com.beio.front.service.GoodsService;
 import com.beio.front.vo.BuycartVO;
+import com.beio.front.vo.CartInfoVO;
 import com.beio.front.vo.ClassifyVO;
-import com.beio.front.vo.DetailsVO;
 import com.beio.front.vo.GoodsVO;
 import com.beio.front.vo.IndexInfoVO;
 import com.beio.front.vo.OrderVO;
@@ -34,31 +33,27 @@ public class GoodsServiceImpl extends BaseIbatisServiceImpl implements GoodsServ
 	@Override
 	public TopInfoVO queryTopInfo(SysMember member) throws Exception {
 		TopInfoVO top = new TopInfoVO();
+		// 装载会员信息
+		top.setMember(member);
 		// 装载热搜关键字
-		top.setSearchs(selectList("goods.queryHotKeyword"));
-		// 装载商品导航
-		if (ComUtil.isEmpty(top.getNavbars())) {
-			initNavbars(top);
-		}
+		top.setSearchs(selectList("goods.querySearchs"));
 		// 装载商品分类
-		if (ComUtil.isEmpty(top.getClassifys())) {
-			initTopClassifys(top);
-		}
-		// 装载购买数量
+		top.setClassifys(selectList("goods.queryClassifys"));
+		// 装载购物车数量
 		top.setCartNum(String.valueOf(selectOne("goods.buycartQuantity", member)));
-		// 装载订单数量
-		top.setOrderNum("0");
 		// TODO Auto-generated method stub
 		return top;
 	}
 	
 	@Override
-	public IndexInfoVO queryIndexInfo() throws Exception {
+	public IndexInfoVO queryIndexInfo(SysMember member) throws Exception {
 		IndexInfoVO index = new IndexInfoVO();
+		// 装载会员信息
+		index.setMember(member);
 		index.setBanners(selectList("goods.queryBanners"));
 		GdsClassify classify = new GdsClassify();
 		classify.setLevel("1");
-		classify.setIsShow("1");
+		classify.setShowIndex("1");
 		index.setClassifys(queryClassify(classify));
 		return index;
 	}
@@ -93,21 +88,23 @@ public class GoodsServiceImpl extends BaseIbatisServiceImpl implements GoodsServ
 	}
 	
 	@Override
-	public List<BuycartVO> queryBuycart(SysMember member) throws Exception {
+	public CartInfoVO queryBuycart(CartInfoVO cartInfoVO) throws Exception {
 		// TODO Auto-generated method stub
-		List<BuycartVO> carts = selectList("goods.queryBuycart", member);
-		if (ComUtil.isNotEmpty(carts)) {
-			for (BuycartVO cart : carts) {
+		cartInfoVO.setBuycarts(selectList("goods.queryBuycart", cartInfoVO.getMember()));
+		if (ComUtil.isNotEmpty(cartInfoVO.getBuycarts())) {
+			for (BuycartVO cart : cartInfoVO.getBuycarts()) {
 				cart.setGoods(queryGoods(cart.getGoodsID()));
 			}
 		}
-		return carts;
+		return cartInfoVO;
 	}
 	
 	@Override
 	public SettlementVO settlement(SettlementVO settlementVO) throws Exception {
 		// TODO Auto-generated method stub
-		settlementVO.setAddress(selectList("sys.queryAddrByMID", settlementVO.getMemberID()));
+		if (settlementVO.getMember() != null) {
+			settlementVO.setAddress(selectList("sys.queryAddrByMID", settlementVO.getMember().getId()));
+		}
 		settlementVO.setCarts(selectList("goods.settlement", settlementVO));
 		if (ComUtil.isNotEmpty(settlementVO.getCarts())) {
 			for (BuycartVO cart : settlementVO.getCarts()) {
@@ -135,12 +132,12 @@ public class GoodsServiceImpl extends BaseIbatisServiceImpl implements GoodsServ
 	 * @throws Exception
 	 */
 	private OrderVO queryOrderDetails(OrderVO orderVO) throws Exception{
-		orderVO.setDetails(selectList("goods.queryOrderDetails", orderVO));
-		if (ComUtil.isNotEmpty(orderVO.getDetails())) {
-			for (DetailsVO details : orderVO.getDetails()) {
-				details.setGoods(queryGoods(details.getGoodsID()));
-			}
-		}
+//		orderVO.setDetails(selectList("goods.queryOrderDetails", orderVO));
+//		if (ComUtil.isNotEmpty(orderVO.getDetails())) {
+//			for (DetailsVO details : orderVO.getDetails()) {
+//				details.setGoods(queryGoods(details.getGoodsID()));
+//			}
+//		}
 		return orderVO;
 	}
 	
@@ -210,100 +207,53 @@ public class GoodsServiceImpl extends BaseIbatisServiceImpl implements GoodsServ
 		return goods;
 	}
 	
-	/**
-	 * 初始化商品导航
-	 * @param top
-	 * @throws Exception
-	 */
-	private void initNavbars(TopInfoVO top) throws Exception {
-		synchronized (this) {
-			if (ComUtil.isEmpty(top.getNavbars())) {
-				top.setNavbars(selectList("goods.queryNavbars"));
-			}
-		}
-	}
-	
-	/**
-	 * 初始化商品分类
-	 * @param top
-	 * @throws Exception
-	 */
-	private void initTopClassifys(TopInfoVO top) throws Exception {
-		synchronized (this) {
-			if (ComUtil.isEmpty(top.getClassifys())) {
-				top.setClassifys(selectList("goods.queryClassifys"));
-			}
-		}
-	}
-
 	@Override
 	public Root preOrder(PreOrderVO preOrderVO) throws Exception {
 		// TODO Auto-generated method stub
 		// 订单为空
-		if (preOrderVO == null) {
+		if (preOrderVO == null || ComUtil.isEmpty(preOrderVO.getOrders())) {
 			return new Root("301");
 		}
-		// 详情为空
-		if (ComUtil.isEmpty(preOrderVO.getDetails())) {
-			return new Root("302");
-		}
 		// 声明商品总额、总运费、订单总额
-		Float goodsPrice = 0f, freight = 0f, totalPrice = 0f, singleTotalPrice;
+		Float goodsPrice = 0f, freight = 0f, singleTotalPrice;
+		int k = 0;
 		// 校验商品准确性
-		for (DetailsVO detail : preOrderVO.getDetails()) {
+		for (OrderVO order : preOrderVO.getOrders()) {
 			// 查询订单对应商品
-			GdsGoods goods = (GdsGoods) selectOne("goods.queryGoodsByID", detail.getGoodsID());
+			GdsGoods goods = (GdsGoods) selectOne("goods.queryGoodsByID", order.getGoodsID());
 			// 商品不存在
 			if (goods == null) {
 				return new Root("303");
 			}
 			// 计算单个商品总价
-			singleTotalPrice = Float.valueOf(goods.getmPrice())*Integer.valueOf(detail.getQuantity());
+			singleTotalPrice = Float.valueOf(goods.getmPrice())*Integer.valueOf(order.getGoodsQuantity());
 			// 计算商品总额
 			goodsPrice += singleTotalPrice;
 			// 计算总运费
-			freight += Constant.TEMPORARYFREIGHT;
+			freight += Float.valueOf(goods.getFreight());
 			// 价格不对等
-			if (!Float.valueOf(goods.getmPrice()).equals(Float.valueOf(detail.getPrice()))) {
+			if (!Float.valueOf(goods.getmPrice()).equals(Float.valueOf(order.getGoodsPrice()))) {
 				return new Root("304");
 			}
 			// 库存不足
-			if (Integer.valueOf(goods.getStock()) < Integer.valueOf(detail.getQuantity())) {
+			if (Integer.valueOf(goods.getStock()) < Integer.valueOf(order.getGoodsQuantity())) {
 				return new Root("305");
 			}
 			// 单个商品价格计算异常
-			if (!singleTotalPrice.equals(Float.valueOf(detail.getTotalPrice()))) {
+			if (!singleTotalPrice.equals(Float.valueOf(order.getTotalPrice()))) {
 				return new Root("306");
 			}
+			// 生成订单号
+			order.setOrderNo(ComUtil.generateOrderNO(++k));
+			// 填充购买人
+			order.setBuyerID(preOrderVO.getMember().getId());
 		}
-		// 商品总额异常
-		if (!goodsPrice.equals(Float.valueOf(preOrderVO.getGoodsPrice()))) {
-			return new Root("306");
-		}
-		// 总运费异常
-		if (!freight.equals(Float.valueOf(preOrderVO.getFreight()))) {
-			return new Root("307");
-		}
-		// 计算订单总额
-		totalPrice += goodsPrice + freight;
-		// 订单总额异常
-		if (!totalPrice.equals(Float.valueOf(preOrderVO.getTotalPrice()))) {
-			System.out.println(totalPrice);
-			System.out.println(Float.valueOf(preOrderVO.getTotalPrice()));
-			return new Root("308");
-		}
-		// 生成订单号
-		preOrderVO.setOrderNo(ComUtil.generateOrderNO());
-		// 购物订单下单
-		insert("goods.preOrder", preOrderVO);
-		// 查询订单ID
-		preOrderVO.setId(String.valueOf(selectOne("sys.queryid")));
-		// 订单详情下单
-		insert("goods.preDetails", preOrderVO);
-		// 购物车下单
-		update("goods.preBuycart", preOrderVO);
 		// 商品下单
 		update("goods.preGoods", preOrderVO);
+		// 购物车下单
+		update("goods.preBuycart", preOrderVO);
+		// 购物订单下单
+		insert("goods.preOrder", preOrderVO);
 		// 返回成功结果
 		return new Root(preOrderVO, "200");
 	}

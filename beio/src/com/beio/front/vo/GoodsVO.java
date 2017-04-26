@@ -1,7 +1,9 @@
+
 package com.beio.front.vo;
 
 import java.util.List;
 
+import com.beio.base.entity.SysMember;
 import com.beio.front.entity.GdsGoods;
 import com.beio.front.entity.GdsImage;
 
@@ -17,7 +19,7 @@ public class GoodsVO extends GdsGoods{
 	
 	private List<GdsImage> details = null;
 	
-	private boolean login;
+	private SysMember member;
 	
 	public List<GdsImage> getShows() {
 		return shows;
@@ -35,12 +37,12 @@ public class GoodsVO extends GdsGoods{
 		this.details = details;
 	}
 
-	public boolean isLogin() {
-		return login;
+	public SysMember getMember() {
+		return member;
 	}
 
-	public void setLogin(boolean login) {
-		this.login = login;
+	public void setMember(SysMember member) {
+		this.member = member;
 	}
 
 }

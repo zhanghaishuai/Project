@@ -1,5 +1,8 @@
 package com.beio.base.entity;
 
+import com.beio.base.util.Constant;
+import com.beio.base.util.DateUtil;
+
 /**
  * 会员信息
  * @author zhs
@@ -43,6 +46,8 @@ public class SysMember {
 	private String modifier; // 修改人
 	
 	private String modifyTime; // 修改时间
+	
+	private boolean expire; // 是否过期
 
 	public String getId() {
 		return id;
@@ -187,5 +192,20 @@ public class SysMember {
 	public void setModifyTime(String modifyTime) {
 		this.modifyTime = modifyTime;
 	}
-	
+
+	public boolean isExpire() {
+		try {
+			this.expire = !Constant.CUSTOMERLEVELSENIOR.equals(level) ?
+				true : DateUtil.isExpire(turnonTime, expireTime);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return expire;
+	}
+
+	public void setExpire(boolean expire) {
+		this.expire = expire;
+	}
+
 }

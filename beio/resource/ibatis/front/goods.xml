@@ -4,28 +4,12 @@
 
 <mapper namespace="goods">
 
-	<!-- 搜索记录 -->
-	<insert id="insertSearch" parameterType="Object">
-		insert into gds_search(id, keyword, creator, createTime) 
-			values(#{id}, #{keyword}, #{creator}, #{createTime});
-	</insert>
-	
-	<!-- 查询导航 -->
-	<select id="queryNavbars" parameterType="Object" resultType="GdsNavbar">
-		SELECT * FROM gds_navbar WHERE enable = '1' AND exist = '1' ORDER BY sort + '' ASC;
+	<!-- 查询热搜 -->
+	<select id="querySearchs" parameterType="Object" resultType="GdsSearch">
+		SELECT * FROM gds_search ORDER BY sort + '' ASC LIMIT 8;
 	</select>
 
-	<!-- 查询热搜 -->
-	<select id="queryHotKeyword" parameterType="Object" resultType="GdsSearch">
-		SELECT keyword FROM gds_search GROUP BY keyword ORDER BY COUNT(1) DESC LIMIT 8;
-	</select>
-	
-	<!-- 查询轮播 -->
-	<select id="queryBanners" parameterType="Object" resultType="GdsBanner">
-		SELECT * FROM gds_banner WHERE enable = '1' AND exist = '1' ORDER BY sort + '' ASC;
-	</select>
-	
-	<!-- 查询分类 -->
+	<!-- 查询品牌 -->
 	<select id="queryBrands" parameterType="Object" resultType="GdsBrand">
 		SELECT * FROM gds_brand WHERE enable = '1' AND exist = '1' ORDER BY sort + '' ASC;
 	</select>
@@ -36,10 +20,28 @@
 		<if test="level != null and level != ''">
 			AND level = #{level} 
 		</if>
-		<if test="isShow != null and isShow != ''">
-			AND isShow = #{isShow} 
+		<if test="showIndex != null and showIndex != ''">
+			AND showIndex = #{showIndex} 
+		</if>
+		<if test="showAbeam != null and showAbeam != ''">
+			AND showAbeam = #{showAbeam} 
 		</if>
 		ORDER BY level + '' ASC , pid + '' ASC , sort + '' ASC;
+	</select>
+
+	<!-- 购物数量 -->
+	<select id="buycartQuantity" parameterType="Object" resultType="int">
+		SELECT IFNULL(SUM(quantity), 0) FROM gds_buycart WHERE buyerID = #{id} AND status = '0' AND enable = '1' AND exist = '1';
+	</select>
+	
+	<!-- 订单数量 -->
+	<select id="orderQuantity" parameterType="Object" resultType="int">
+		SELECT count(1) FROM gds_order WHERE buyerID = #{id} AND status = '0';
+	</select>
+	
+	<!-- 查询轮播 -->
+	<select id="queryBanners" parameterType="Object" resultType="GdsBanner">
+		SELECT * FROM gds_banner WHERE enable = '1' AND exist = '1' ORDER BY sort + '' ASC;
 	</select>
 	
 	<!-- 查询商品 -->
@@ -47,7 +49,7 @@
 		SELECT * FROM gds_goods WHERE enable = '1' AND exist = '1' AND id = #{id}
 	</select>
 	
-	<!-- 根据分类查询商品 -->
+	<!-- 查询商品 -->
 	<select id="queryGoodsByClassify" parameterType="Object" resultType="GoodsVO">
 		SELECT goods.* FROM gds_goods goods
 		<if test="id != null and id != ''">
@@ -72,7 +74,7 @@
 		SELECT * FROM gds_image WHERE enable = '1' AND exist = '1' AND category = '1' AND goodsID = #{id};
 	</select>
 	
-	<!-- 查询分类导航-->
+	<!-- 分类导航-->
 	<select id="queryClassifyNavBar" parameterType="Object" resultType="GdsClassify">
 		SELECT * FROM gds_classify WHERE enable = '1' AND exist = '1' 
 		<choose>
@@ -102,7 +104,7 @@
 		ORDER BY level + '' ASC , pid + '' ASC , sort + '' ASC;
 	</select>
 	
-	<!-- 根据分类查询商品 -->
+	<!-- 查询商品 -->
 	<select id="queryGoodsBySearch" parameterType="Object" resultType="GoodsVO">
 		SELECT 
 		<choose>
@@ -129,7 +131,7 @@
 			AND goods.name REGEXP #{keyword}
 		</if>
 		<choose>
-			<when test="login">
+			<when test='member != null and member.level == "1"'>
 				<if test="minPrice != null and minPrice != ''">
 					AND goods.mPrice <![CDATA[>=]]> #{minPrice}
 				</if>
@@ -148,10 +150,10 @@
 		</choose>
 		<choose>
 			<when test='order == "1"'>
-				<if test="login">
+				<if test='member != null and member.level == "1"'>
 					ORDER BY goods.mPrice + '' DESC
 				</if>
-				<if test="!login">
+				<if test='member == null or member.level != "1"'>
 					ORDER BY goods.cPrice + '' DESC
 				</if>
 			</when>
@@ -162,10 +164,10 @@
 				ORDER BY goods.createTime + '' DESC
 			</when>
 			<otherwise>
-				<if test="login">
+				<if test='member != null and member.level == "1"'>
 					ORDER BY goods.mPrice + '' ASC
 				</if>
-				<if test="!login">
+				<if test='member == null or member.level != "1"'>
 					ORDER BY goods.cPrice + '' ASC
 				</if>
 			</otherwise>
@@ -187,18 +189,12 @@
 			where buyerID = #{buyerID} and goodsID = #{goodsID} and status = '0' and enable = '1' and exist = '1';
 	</update>
 	
-	<!-- 查询购物车数量 -->
-	<select id="buycartQuantity" parameterType="Object" resultType="int">
-		select ifnull(sum(quantity), 0) as quantity from gds_buycart 
-		where buyerID = #{id} and status = '0' and enable = '1' and exist = '1';;
-	</select>
-	
-	<!-- 查询购物车商品 -->
+	<!-- 查询购物车 -->
 	<select id="queryBuycart" parameterType="Object" resultType="BuycartVO">
 		SELECT * FROM gds_buycart WHERE buyerID = #{id} and status = '0' and enable = '1' and exist = '1';
 	</select>
 	
-	<!-- 编辑购物车商品 -->
+	<!-- 编辑购物车 -->
 	<update id="editBuycart" parameterType="Object">
 		update gds_buycart 
 		<set>
@@ -231,45 +227,42 @@
 		UPDATE gds_goods 
 		SET 
 		    stock = CASE id
-		    <foreach collection="details" index="index" item="item" open="" separator="" close="">
-				WHEN #{item.goodsID} THEN CONVERT( stock , SIGNED) - CONVERT( #{item.quantity} , SIGNED)
+		    <foreach collection="orders" index="index" item="item" open="" separator="" close="">
+				WHEN #{item.goodsID} THEN CONVERT( stock , SIGNED) - CONVERT( #{item.goodsQuantity} , SIGNED)
 			</foreach>
 		    END, 
 		    salds = CASE id
-		    <foreach collection="details" index="index" item="item" open="" separator="" close="">
-				WHEN #{item.goodsID} THEN CONVERT( salds , SIGNED) + CONVERT( #{item.quantity} , SIGNED)
+		    <foreach collection="orders" index="index" item="item" open="" separator="" close="">
+				WHEN #{item.goodsID} THEN CONVERT( salds , SIGNED) + CONVERT( #{item.goodsQuantity} , SIGNED)
 			</foreach>
-		    END
+		    END,
+		    modifier = #{member.id},
+		    modifyTime = #{currentTime}
 		WHERE
 		    id IN 
-		<foreach collection="details" index="index" item="item" open="(" separator="," close=")">
+		<foreach collection="orders" index="index" item="item" open="(" separator="," close=")">
 			#{item.goodsID}
 		</foreach>
 	</update>
 	
 	<!-- 购物车下单 -->
 	<update id="preBuycart" parameterType="Object">
-		update gds_buycart set status = '1', modifier = #{modifier}, modifyTime = #{modifyTime} 
-			where buyerID = #{buyerID} and goodsID in 
-		<foreach collection="details" index="index" item="item" open="(" separator="," close=")">
+		update gds_buycart set status = '1', modifier = #{member.id}, modifyTime = #{currentTime} 
+			where buyerID = #{member.id} and enable = '1' and exist = '1' and goodsID in 
+		<foreach collection="orders" index="index" item="item" open="(" separator="," close=")">
 			#{item.goodsID}
 		</foreach>
 	</update>
 	
-	<!-- 订单详情下单 -->
-	<insert id="preDetails" parameterType="Object">
-		insert into gds_details (orderID, goodsID, price, freight, quantity, totalPrice, creator, createTime, modifier, modifyTime) values 
-		<foreach collection="details" index="index" item="item" open="" separator="," close="">
-			(#{id}, #{item.goodsID}, #{item.price}, #{item.freight}, #{item.quantity}, #{item.totalPrice}, #{creator}, #{createTime}, #{modifier}, #{modifyTime})
-		</foreach>
-	</insert>
-	
 	<!-- 购物订单下单 -->
 	<insert id="preOrder" parameterType="Object">
-		insert into sys_order (orderNo, buyerID, addrName, addrMobile, addrTelephone, addrProvince, addrCity, addrCounty, addrZipcode, addrAddress, 
-			payment, receipt, goodsPrice, freight, totalPrice, category, status, creator, createTime, modifier, modifyTime)
-		values (#{orderNo}, #{buyerID}, #{addrName}, #{addrMobile}, #{addrTelephone}, #{addrProvince}, #{addrCity}, #{addrCounty}, #{addrZipcode}, #{addrAddress}, 
-			#{payment}, #{receipt}, #{goodsPrice}, #{freight}, #{totalPrice}, #{category}, #{status}, #{creator}, #{createTime}, #{modifier}, #{modifyTime});
+		insert into gds_order (buyerID, goodsID, orderNo, addrName, addrMobile, addrTelephone, addrProvince, addrCity, addrCounty, addrZipcode, addrAddress, 
+			receiptStatus, receiptType, receiptTitle, goodsName, goodsPrice, goodsFreight, goodsQuantity, totalPrice, status, creator, createTime, modifier, modifyTime) values 
+		<foreach collection="orders" index="index" item="item" open="" separator="," close="">
+		(#{item.buyerID}, #{item.goodsID}, #{item.orderNo}, #{item.addrName}, #{item.addrMobile}, #{item.addrTelephone}, #{item.addrProvince}, #{item.addrCity}, 
+		 #{item.addrCounty}, #{item.addrZipcode}, #{item.addrAddress}, #{item.receiptStatus}, #{item.receiptType}, #{item.receiptTitle}, #{item.goodsName}, 
+		 #{item.goodsPrice}, #{item.goodsFreight}, #{item.goodsQuantity}, #{item.totalPrice}, #{item.status}, #{member.id}, #{currentTime}, #{member.id}, #{currentTime})
+		</foreach>
 	</insert>
 	
 	<!-- 查询订单 -->

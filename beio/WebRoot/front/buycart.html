@@ -4,66 +4,17 @@
     <meta charset="utf-8"/>
     <title>购物车</title>
     <link rel="icon" href="#"/>
-    <link type="text/css" rel="stylesheet" href="css/htmlbuild.css"/>  
+    <link type="text/css" rel="stylesheet" href="css/base.css"/>  
     <link type="text/css" rel="stylesheet" href="css/login.css"/>  
     <link rel="Stylesheet" type="text/css" href="css/buycart.css" />
     <script type="text/javascript" src="js/jquery/jquery.js"></script>
-    <script type="text/javascript" src="js/htmlbuild.js"></script>
     <script type="text/javascript" src="js/initcache.js"></script>
-    <script type="text/javascript" src="js/autologin.js"></script>
+    <script type="text/javascript" src="js/base.js"></script>
     <script type="text/javascript" src="js/buycart.js"></script>
 </head>
 <body>
-
-<div class="logo_line">
-    <div class="w960">
-        <div class="shopping_procedure"><span class="current">我的购物车</span><span>填写订单</span><span>完成订单</span></div>
-        <div class="logo"><a href="index.html"><img src="image/dd_logo.jpg" alt=""></a></div>
-    </div>
-</div>
-<div class="w960 real">
-	 <div class="checkout_tip"></div>
-    <ul class="shopping_title">
-        <li class="f1">&nbsp;</li>
-        <li class="f2">商品信息</li>
-        <li class="f3">单价（元）</li>
-        <li class="f4">数量</li>
-        <li class="f4">金额（元）</li>
-        <li class="f5">操作</li>
-    </ul>
-    <div class="shoppingcart_loading"></div>
-</div>
-
-<div class="real" style="position:static;bottom:-20px;z-index:101;width:100%;left:0px;">
-  <div class="shopping_total">
-    <div class="shopping_total_right">
-        <a class="total_btn fn-checkout" href="javascript:void(0);">结&nbsp;&nbsp;算</a>
-        <div class="subtotal">
-            <p><span class="cartsum">总计(不含运费)：</span><span id="payAmount" class="price">752.00</span></p>
-        </div>
-    </div>
-    <div class="shopping_total_left">
-        <a href="javascript:void(0)" class="checknow fn-checkall check_on"></a>全选
-        <a href="javascript:void(0)" class="fn-batch-remove">批量删除</a>
-        <span>已选择<span style="color:red" class="totalGoodsNum">2</span>件商品</span>
-        <div style="z-index:-1;left:0px;display:none;" class="pop_del">
-        	<p>您确定要批量删除商品吗？</p>
-        	<a href="javascript:;" class="pop_btn fn-confirm-batchremovebox">确定</a>
-        	<a href="javascript:;" class="pop_btn fn-close-batchremovebox">取消</a>
-        </div>
-    </div>
-  </div>
-</div>
-
-<div class="w960">
-    <div class="empty" id="empty" style="display: none;">
-        <p>您的购物车还是空的，您可以：</p>
-        <a href="index.html" class="btn">去逛逛</a>
-    </div>
-</div>
-
-<script type="text/javascript">
-	window.document.write(htmlbuild.btmHtml);
-</script>
+<div id="hd1"></div>
+<div id="bd"></div>
+<div id="td"></div>
 </body>
 </html>

@@ -1,5 +1,196 @@
-html {font-size: 12px; color: #404040;}
-body,button,ol,ul,li,p,dl,dd,h1,h2,h3,h4,h5,h6,img,iframe,input,form,textarea{margin: 0; padding: 0; list-style-type: none; border: 0;}
+html {
+	font-size: 12px;
+	color: #404040;
+}
+
+body,button,ol,ul,li,p,dl,dd,h1,h2,h3,h4,h5,h6,img,iframe,input,form,textarea
+	{
+	margin: 0;
+	padding: 0;
+	list-style-type: none;
+	border: 0;
+}
+
+body {
+	font: 12px/150% tahoma, arial, Microsoft YaHei, Hiragino Sans GB,
+		"\u5b8b\u4f53", sans-serif;
+	-webkit-font-smoothing: antialiased;
+	color: #666;
+	background: #fff
+}
+
+a {
+	color: #666;
+	text-decoration: none
+}
+
+a:hover {
+	color: #35679a;
+}
+
+a,address,b,big,blockquote,body,center,cite,code,dd,del,div,dl,dt,em,fieldset,font,form,h1,h2,h3,h4,h5,h6,html,i,iframe,img,ins,label,legend,li,ol,p,pre,small,span,strong,u,ul,var
+	{
+	margin: 0;
+	padding: 0
+}
+
+article,aside,details,figcaption,figure,header,hgroup,main,nav,section,summary
+	{
+	display: block
+}
+
+hr {
+	-moz-box-sizing: content-box;
+	box-sizing: content-box;
+	height: 0
+}
+
+button,html input[type=button],input[type=submit] {
+	-webkit-apperance: button;
+	cursor: pointer
+}
+
+button[disabled],html input[disabled] {
+	cursor: default
+}
+
+ol,ul {
+	list-style: none
+}
+
+img {
+	border: 0;
+	vertical-align: middle
+}
+
+em,i,u {
+	font-style: normal
+}
+
+button,input,select,textarea {
+	outline: 0
+}
+
+textarea {
+	font-size: 13px;
+	resize: none
+}
+
+input::-ms-clear {
+	display: none
+}
+
+input::-ms-reveal {
+	width: 0;
+	height: 0
+}
+
+body,button,input,txt {
+	font-family: "Microsoft YaHei", "Hiragino Sans GB"
+}
+
+.fl {
+	float: left
+}
+
+.fr {
+	float: right
+}
+
+.al {
+	text-align: left
+}
+
+.ac {
+	text-align: center
+}
+
+.ar {
+	text-align: right
+}
+
+.hide {
+	display: none
+}
+
+.clear,.clr {
+	display: block;
+	overflow: hidden;
+	clear: both;
+	height: 0;
+	line-height: 0;
+	font-size: 0
+}
+
+.clearfix:after {
+	content: ".";
+	display: block;
+	height: 0;
+	clear: both;
+	visibility: hidden;
+}
+
+.clearfix {
+	*zoom: 1
+}
+
+.dorpdown {
+	position: relative
+}
+
+.dorpdown-layer {
+	display: none;
+	position: absolute
+}
+
+.dorpdown:hover .dorpdown-layer,.hover .dorpdown-layer {
+	display: block
+}
+
+.cw-icon {
+	position: relative;
+	cursor: default;
+	zoom: 1
+}
+
+.cw-icon .i,.cw-icon i {
+	display: block;
+	position: absolute;
+	overflow: hidden
+}
+
+.w {
+	width: 990px;
+	margin: 0 auto
+}
+
+.m,.mb,.mc,.mt,.p-detail,.p-img,.p-market,.p-name,.p-price,.sm,.smb,.smc,.smt
+	{
+	overflow: hidden
+}
+
+/* header */
+.header {
+	height: 110px;
+	border-bottom: 2px solid #35679a;
+	margin-bottom: 18px;
+}
+
+.header .logo {
+	background: url(../image/logo.png) no-repeat;
+	background-size: contain;
+	width: 310px;
+	height: 110px;
+	float: left;
+}
+
+.errMsg {
+	color: #ff2832;
+}
+
+.sucMsg {
+	color: #90b71b;
+}
 
 /* hd */
 #hd {font: 12px 'Hiragino Sans GB', "simsun", "Arial"; color: #646464; min-width: 1200px; background-color: #fff;}
@@ -16,28 +207,7 @@ body,button,ol,ul,li,p,dl,dd,h1,h2,h3,h4,h5,h6,img,iframe,input,form,textarea{ma
 #hd .tools .head_welcome .hi span {margin-left:3px;margin-right:3px; font-weight:bold; color: #ff2832;}
 
 /* logo_line */
-#hd .logo_line_out{position: relative;z-index:10002;}
-#hd .logo_line{height:100px;width:1200px;margin:0 auto;position:relative;}
-#hd .logo_line .logo{overflow:hidden;width:362px;height:100px;vertical-align:middle;position: absolute;left: 0;top: 0;background: url(../image/DDlogoNEW.gif) no-repeat; background-size: contain;}
-#hd .logo_line .search{position:absolute;margin-top:20px;height:48px;z-index: 9999;left: 362px;top: 0;}
-#hd .logo_line .search form{display:block;height:50px;}
-#hd .logo_line .search .text{width:505px;height:18px;border:2px solid #ff2832; border-right:none; padding:9px 0 9px 10px;position:absolute;left:0;top:0;z-index:2;color:#323232;font:12px/18px 'Hiragino Sans GB',"simsun",Arial;outline:0;background:none;}
-#hd .logo_line .search .button{width:48px;height:40px;border:none;background:url(../image/head_sprite.png) no-repeat 0 -346px;cursor:pointer;position:absolute;left:517px;top:0;}
-#hd .logo_line .search .button:hover{background:url(../image/head_sprite.png) no-repeat 0 -390px;}
-#hd .logo_line .search_bottom{position:absolute;top:65px;left:362px;color:#969696;width:585px;line-height:20px;z-index:6666;}
-#hd .logo_line .search_hot{float:left;width:518px;overflow:hidden;height:20px;}
-#hd .logo_line .search_bottom a,#hd .logo_line .search_bottom a:hover{color:#969696;margin-right:15px;_display:inline;height:20px;overflow:hidden;}
-#hd .logo_line .search_bottom a:hover{color:#ff2832;}
-#hd .logo_line .new_cart, #hd .logo_line .new_order { height:36px;position:absolute; top:20px; border:2px solid #dcdcdc; font:14px/36px "Microsoft Yahei";}
-#hd .logo_line .new_cart { right:88px; width:107px; border-color:#ff2832; background:url(../image/icon_cart.png) 5px 0 no-repeat #ff2832;}
-#hd .logo_line .new_cart:hover { background-position:5px -36px; background-color:#f6f6f6; border-color:#dcdcdc; color:#ff2832;}
-#hd .logo_line .new_cart a:hover, #hd .logo_line .new_order a:hover { text-decoration:none;}
-#hd .logo_line .new_cart a b, #hd .logo_line .new_order a b, .logo_line .new_cart a:hover b { color:#ff2832; padding-left:3px; font-family:Arial; font-weight:bold;}
-#hd .logo_line .new_cart a, #hd .logo_line .new_cart a b { color:#fff;}
-#hd .logo_line .new_cart:hover a, #hd .logo_line .new_cart:hover a b { color:#ff2832;}
-#hd .logo_line .new_order { width:86px; padding:0; text-align:center; right:0; border-left:0; background-color:#f6f6f6;}
-#hd .logo_line .new_order a { display:inline-block; width:86px;}
-#hd .logo_line .new_cart a { padding-left:35px; width:72px; display:inline-block;}
+
 
 /* nav_top */
 #hd .nav_top{width:100%;height:40px; border-bottom:3px solid #ff2832;}
@@ -132,11 +302,7 @@ body {
 	color: #666
 }
 
-.footer {
-	border-top: 2px solid #ff2832;
-	margin-top: 15px;
-	clear: both;
-}
+
 
 .mod_price {
 	font-size: 14px;
@@ -150,10 +316,7 @@ body {
 	font-size: 12px
 }
 
-.grid_c1 {
-	margin: 0 auto;
-	width: 1190px
-}
+
 
 .mod_ver {
 	display: inline-block;

@@ -4,13 +4,12 @@
     <meta charset="utf-8"/>
     <title>订单支付</title>
     <link rel="icon" href="#"/>
-    <link type="text/css" rel="stylesheet" href="css/htmlbuild.css"/>  
+    <link type="text/css" rel="stylesheet" href="css/base.css"/>  
     <link type="text/css" rel="stylesheet" href="css/login.css"/>  
     <link rel="Stylesheet" type="text/css" href="css/pay.css" />
     <script type="text/javascript" src="js/jquery/jquery.js"></script>
-    <script type="text/javascript" src="js/htmlbuild.js"></script>
     <script type="text/javascript" src="js/initcache.js"></script>
-    <script type="text/javascript" src="js/autologin.js"></script>
+    <script type="text/javascript" src="js/base.js"></script>
     <script type="text/javascript" src="js/qrcode.js"></script>
     <script type="text/javascript">
 		$(function(){
@@ -21,11 +20,12 @@
 			qrcode.makeCode('http://www.baidu.com');
 		});
 	</script>
+</head>
 <body>
 <div class="logo_line">
 	<div class="w960">
 		<div class="shopping_procedure"><span>我的购物车</span><span>填写订单</span><span class="current">完成订单</span></div>
-		<div class="logo"><a href="index.html"><img src="image/dd_logo.jpg" alt=""></a></div>
+		<div class="logo1"><a href="index.html"><img src="image/logo1.png" height="72" style="margin-top: 10px;"></a></div>
 	</div>
 </div>
 <div class="payamount">
@@ -41,8 +41,8 @@
 	</div>
 </div>
 	
-<script type="text/javascript">
-	window.document.write(htmlbuild.btmHtml);
+<script type="text/javascript">	
+	window.document.write(base.btmHtml);
 </script>	
 </body>
 </html>

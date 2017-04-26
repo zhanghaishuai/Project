@@ -15,7 +15,7 @@
 		</action>
 		
 		<!-- 头部信息 -->
-		<action name="queryTopInfo" class="goodsAction" method="queryTopInfo">
+		<action name="queryTop" class="goodsAction" method="queryTop">
 			<result name="json" type="json">
 				<param name="root">root</param>
 			</result>

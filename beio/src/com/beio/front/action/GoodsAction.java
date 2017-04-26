@@ -1,19 +1,15 @@
 package com.beio.front.action;
 
 import com.beio.base.action.BaseAction;
-import com.beio.base.entity.SysMember;
 import com.beio.base.util.ComUtil;
-import com.beio.base.util.Constant;
-import com.beio.front.entity.GdsBuycart;
-import com.beio.front.entity.GdsSearch;
 import com.beio.front.service.GoodsService;
+import com.beio.front.vo.BuycartVO;
+import com.beio.front.vo.CartInfoVO;
 import com.beio.front.vo.GoodsVO;
-import com.beio.front.vo.IndexInfoVO;
 import com.beio.front.vo.OrderVO;
 import com.beio.front.vo.PreOrderVO;
-import com.beio.front.vo.SettlementVO;
 import com.beio.front.vo.SearchInfoVO;
-import com.beio.front.vo.TopInfoVO;
+import com.beio.front.vo.SettlementVO;
 
 /**
  * 商品控制器
@@ -27,13 +23,13 @@ public class GoodsAction extends BaseAction{
 	
 	private GoodsService goodsService;
 	
-	private GdsSearch gdsSearch = new GdsSearch();
-	
 	private SearchInfoVO searchInfo = new SearchInfoVO();
 	
 	private GoodsVO goodsVO = new GoodsVO();
 	
-	private GdsBuycart gdsBuycart = new GdsBuycart();
+	private BuycartVO buycartVO = new BuycartVO();
+	
+	private CartInfoVO cartInfoVO = new CartInfoVO();
 	
 	private SettlementVO settlementVO = new SettlementVO();
 	
@@ -42,27 +38,11 @@ public class GoodsAction extends BaseAction{
 	private OrderVO orderVO = new OrderVO();
 	
 	/**
-	 * 商品搜索
-	 * @return
-	 * @throws Exception
-	 */
-	public String search() throws Exception{
-		gdsSearch.setCreator(sessionMemberID());
-		gdsSearch.setCreateTime(curTimeStr());
-		baseIbaitsService.insert("goods.insertSearch", gdsSearch);
-		setRoot("200");
-		return JSON;
-	}
-	
-	/**
 	 * 头部信息
 	 * @return
 	 */
-	public String queryTopInfo() throws Exception{
-		SysMember m = sessionMember();
-		TopInfoVO top = goodsService.queryTopInfo(m);
-		top.setLogin(m != null ? true : false);
-		setRoot(top, "200");
+	public String queryTop() throws Exception{
+		setRoot(goodsService.queryTopInfo(sessionMember()), "200");
 		return JSON;
 	}
 	
@@ -72,9 +52,7 @@ public class GoodsAction extends BaseAction{
 	 * @throws Exception
 	 */
 	public String queryIndexInfo() throws Exception{
-		IndexInfoVO index = goodsService.queryIndexInfo();
-		index.setLogin(sessionMember() != null ? true : false);
-		setRoot(index, "200");
+		setRoot(goodsService.queryIndexInfo(sessionMember()), "200");
 		return JSON;
 	}
 	
@@ -85,7 +63,7 @@ public class GoodsAction extends BaseAction{
 	 */
 	public String querySearchInfo() throws Exception{
 		searchInfo.setPageSize(25);
-		searchInfo.setLogin(sessionMember() != null ? true : false);
+		searchInfo.setMember(sessionMember());
 		setRoot(goodsService.querySearchInfo(searchInfo), "200");
 		return JSON;
 	}
@@ -97,7 +75,7 @@ public class GoodsAction extends BaseAction{
 	 */
 	public String queryGoodsInfo() throws Exception{
 		goodsVO = goodsService.queryGoodsInfo(goodsVO);
-		goodsVO.setLogin(sessionMember() != null ? true : false);
+		goodsVO.setMember(sessionMember());
 		setRoot(goodsVO, "200");
 		return JSON;
 	}
@@ -108,16 +86,17 @@ public class GoodsAction extends BaseAction{
 	 * @throws Exception
 	 */
 	public String buyGoods() throws Exception{
-		if (ComUtil.isNotMatches(getRegex("buyNum").getRegex(), gdsBuycart.getQuantity())) {
+		if (ComUtil.isNotMatches(getRegex("buyNum").getRegex(), buycartVO.getQuantity())) {
 			setRoot("136");
 			return JSON;
 		}
-		gdsBuycart.setBuyerID(sessionMemberID());
-		gdsBuycart.setCreator(sessionMemberID());
-		gdsBuycart.setCreateTime(curTimeStr());
-		gdsBuycart.setModifier(sessionMemberID());
-		gdsBuycart.setModifyTime(curTimeStr());
-		if (goodsService.joinBuycat(gdsBuycart) < 1) {
+		buycartVO.setMember(sessionMember());
+		buycartVO.setBuyerID(sessionMemberID());
+		buycartVO.setCreator(sessionMemberID());
+		buycartVO.setCreateTime(curTimeStr());
+		buycartVO.setModifier(sessionMemberID());
+		buycartVO.setModifyTime(curTimeStr());
+		if (goodsService.joinBuycat(buycartVO) < 1) {
 			setRoot("100");
 			return JSON;
 		}
@@ -131,7 +110,8 @@ public class GoodsAction extends BaseAction{
 	 * @throws Exception
 	 */
 	public String queryBuycart() throws Exception{
-		setRoot(goodsService.queryBuycart(sessionMember()), "200");
+		cartInfoVO.setMember(sessionMember());
+		setRoot(goodsService.queryBuycart(cartInfoVO), "200");
 		return JSON;
 	}
 	
@@ -141,18 +121,18 @@ public class GoodsAction extends BaseAction{
 	 * @throws Exception
 	 */
 	public String editBuycart() throws Exception{
-		if (ComUtil.isNotEmpty(gdsBuycart.getQuantity()) && ComUtil.isNotMatches(
-				getRegex("buyNum").getRegex(), gdsBuycart.getQuantity())) {
+		if (ComUtil.isNotEmpty(buycartVO.getQuantity()) && ComUtil.isNotMatches(
+				getRegex("buyNum").getRegex(), buycartVO.getQuantity())) {
 			setRoot("136");
 			return JSON;
 		}
-		gdsBuycart.setModifier(sessionMemberID());
-		gdsBuycart.setModifyTime(curTimeStr());
-		if (goodsService.update("goods.editBuycart", gdsBuycart) < 1) {
+		buycartVO.setModifier(sessionMemberID());
+		buycartVO.setModifyTime(curTimeStr());
+		if (goodsService.update("goods.editBuycart", buycartVO) < 1) {
 			setRoot("100");
 			return JSON;
 		}
-		setRoot(gdsBuycart, "200");
+		setRoot(buycartVO, "200");
 		return JSON;
 	}
 	
@@ -162,7 +142,7 @@ public class GoodsAction extends BaseAction{
 	 * @throws Exception
 	 */
 	public String settlement() throws Exception{
-		settlementVO.setMemberID(sessionMemberID());
+		settlementVO.setMember(sessionMember());
 		setRoot(goodsService.settlement(settlementVO), "200");
 		return JSON;
 	}
@@ -173,13 +153,8 @@ public class GoodsAction extends BaseAction{
 	 * @throws Exception
 	 */
 	public String preOrder() throws Exception{
-		preOrderVO.setBuyerID(sessionMemberID());
-		preOrderVO.setStatus(Constant.ORDERSTATUSUNPAID);
-		preOrderVO.setCategory(Constant.ORDERCATEGORYSHOPING);
-		preOrderVO.setCreator(sessionMemberID());
-		preOrderVO.setCreateTime(curTimeStr());
-		preOrderVO.setModifier(sessionMemberID());
-		preOrderVO.setModifyTime(curTimeStr());
+		preOrderVO.setMember(sessionMember());
+		preOrderVO.setCurrentTime(curTimeStr());
 		root = goodsService.preOrder(preOrderVO);
 		return JSON;
 	}
@@ -205,14 +180,6 @@ public class GoodsAction extends BaseAction{
 		this.goodsService = goodsService;
 	}
 
-	public GdsSearch getGdsSearch() {
-		return gdsSearch;
-	}
-
-	public void setGdsSearch(GdsSearch gdsSearch) {
-		this.gdsSearch = gdsSearch;
-	}
-
 	public SearchInfoVO getSearchInfo() {
 		return searchInfo;
 	}
@@ -229,12 +196,12 @@ public class GoodsAction extends BaseAction{
 		this.goodsVO = goodsVO;
 	}
 
-	public GdsBuycart getGdsBuycart() {
-		return gdsBuycart;
+	public BuycartVO getBuycartVO() {
+		return buycartVO;
 	}
 
-	public void setGdsBuycart(GdsBuycart gdsBuycart) {
-		this.gdsBuycart = gdsBuycart;
+	public void setBuycartVO(BuycartVO buycartVO) {
+		this.buycartVO = buycartVO;
 	}
 
 	public SettlementVO getSettlementVO() {

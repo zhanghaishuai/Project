@@ -12,13 +12,6 @@ import com.beio.base.entity.SysMember;
 public interface SysService extends BaseIbaitsService{
 
 	/**
-	 * 用户注册
-	 * @return
-	 * @throws Exception
-	 */
-	public int register(SysMember sysMember) throws Exception;
-	
-	/**
 	 * 编辑收货地址
 	 * @return
 	 * @throws Exception

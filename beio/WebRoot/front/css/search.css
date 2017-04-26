@@ -1,5 +1,3 @@
-html {font-size: 12px; color: #404040;}
-body,button,ol,ul,li,p,dl,dd,h1,h2,h3,h4,h5,h6,img,iframe,input,form,textarea{margin: 0; padding: 0; list-style-type: none; border: 0;}
 a{text-decoration:none;outline:none;}
 img{border:none;vertical-align: top;}
 li{list-style:none;}
@@ -24,7 +22,7 @@ textarea{resize:none; outline:none; overflow:auto;}
 .filtrate_box .cloth_slide_btn:hover .slide_up{background-position:0 -18px;}
 .filtrate_box a{color: #666;}
 .nicescroll-rails{border-radius: 5px;}
-.filtrate_box .filtrate_list{border-top:1px solid #fff;border-bottom:1px solid #fff;width:1200px;background-color: #fef8f5;height:35px;overflow: hidden;position:relative;}
+.filtrate_box .filtrate_list{width:1200px;background-color: #f5f5f5;height:35px;overflow: hidden;position:relative;}
 .filtrate_box ul.list_show{height:auto;}
 .filtrate_list li.child_li{border-bottom:1px dotted #eeeceb;width: 1200px;position: relative;vertical-align: top;}
 .filtrate_list li.child_li a{color:#646464;}
@@ -44,6 +42,7 @@ textarea{resize:none; outline:none; overflow:auto;}
 .filtrate_list .list_right .list_content span a.on:hover em{background-position: -20px -61px;}
 .filtrate_list .list_right .fix_list span,.filtrate_list .list_right_open span{width: 125px;padding-right: 10px;overflow: hidden;position:relative;}
 .filtrate_list .list_right .fix_list span a,.filtrate_list .list_right_open .list_content span a{overflow:hidden;white-space: nowrap;text-overflow: ellipsis;display:block;width: 98px;}
+.filtrate_list .list_right .fix_list span a active,.filtrate_list .list_right_open span a active{background-color:#f5f5f5;}
 .filtrate_list .list_right .list_content{padding-right:85px;}
 .filtrate_list .list_right .list_content_select{background-color:#ffebde;border: 1px solid #ebebeb;padding:13px 18px 3px 18px;margin-bottom:7px;}
 .filtrate_list .list_right .list_content_select span{width:140px;}
@@ -57,7 +56,7 @@ textarea{resize:none; outline:none; overflow:auto;}
 .filtrate_list .list_right .btn_out:hover{background-position: right -38px;color: #fa5000;}
 .filtrate_list .list_right .btn_yes,.filtrate_list .list_right .btn_no{display: inline-block;height:23px;line-height:23px;width:50px;margin:5px 9px 0;text-align:center;}
 .filtrate_list .list_right .btn_yes{ background:#fa5000;color: #fff; }
-.filtrate_list .list_right .btn_yes:hover{background:#fa2f00;color:#fff;}
+.filtrate_list .list_right .btn_yes:hover{background:#fa5000;color:#fff;}
 .filtrate_list .list_right .btn_no{color:#404040;background: #f0f0f0;}
 .filtrate_list .list_right .btn_no:hover{color:#404040;background-color: #e6e6e6;}
 .filtrate_list .list_right .btn_disable,.filtrate_list .list_right .btn_disable:hover{color:#c6c4c4;background: #f0f0f0;}
@@ -108,7 +107,7 @@ textarea{resize:none; outline:none; overflow:auto;}
 .button {padding: 0; margin: 0;height: 23px;line-height: 23px;width: 50px;cursor: pointer; font-size: 12px;margin: 0 2px;display: inline-block;background-color:#e6e6e6;}
 .button:hover {text-decoration: none;background-color:#e6e6e6;color:#000;}
 .btn_yes {background-color:#fa5000;color:#fff;}
-.btn_yes:hover {background:#fa2f00;color:#fff;}
+.btn_yes:hover {background:#fa5000;color:#fff;}
 .tools_box .data { float: right; padding-right: 6px; padding-top: 9px; height: 24px; line-height: 15px; }
 .tools_box .data .arrow_l, .tools_box .data .arrow_r,.tools_box .data .arrow_l:hover, .tools_box .data .arrow_r:hover{ display: inline-block; width: 16px; height: 17px; line-height: 0;vertical-align: middle; background-position: 5px -62px; margin: -5px 4px 0; *margin-top: 0px; _margin-top: -4px; background-repeat: no-repeat;cursor:pointer;background-color:#dcdcdc;}
 .tools_box .data .none,.tools_box .data .none:hover{background-color:#b5b5b5;cursor: default;}
@@ -323,7 +322,7 @@ textarea{resize:none; outline:none; overflow:auto;}
 .paginating ul li .number{float: left;height: 24px;line-height: 24px;padding: 3px 2px;width: 52px;border:1px solid #e7e7e7;margin-top: 4px;outline: none;text-align: center;}
 .paginating ul li .number_hover{border-color: #e7e7e9;}
 .paginating ul li .button{background: #fa5000;display:block;height: 30px;line-height: 30px;width: 70px;margin-top: 4px;float: left;color: #fff;cursor: pointer;outline: none;margin-left: 8px;border:none;font-size:14px;}
-.paginating ul li .button:hover{background-color:#fa2f00;color:#fff;}
+.paginating ul li .button:hover{background-color:#fa5000;color:#fff;}
 .paginating ul li .button:active{background-position:0 -67px;}
 .paginating ul li.none a{display:none;}
 .narrow_page .paginating{width:720px;}

@@ -1,4 +1,8 @@
+/**
+ * 忘记密码
+ */
 $(function(){
+	$('#td').append(base.btmHtml);
 	// 填写手机号模块 提交
 	$('#login_findPwd_btn1').click(function(){
 		var flag = true;
@@ -150,7 +154,7 @@ $(function(){
 	$('.itxt').focus(function() {
 		$('#' + $(this).attr('id') + '_s').addClass('hide');
 	});
-	$('.ftx-05').click(function(){
+	$('.ftx-05,.verify-code').click(function(){
 		$('.verify-code').attr('src', '/beio/image/verifyCode?flushStr='+new Date().getTime());
 	});
 	$('#mobileCode').click(function(){

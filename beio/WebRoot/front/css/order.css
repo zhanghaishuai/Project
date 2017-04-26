@@ -117,7 +117,7 @@ input:focus,select {
 }
 
 a.btn_red {
-	background-color: #ff2832;
+	background-color: #35679a;
 	height: 30px;
 	line-height: 30px;
 	text-align: center;
@@ -239,7 +239,7 @@ a.check.disable {
 /*logo*/
 .logo_line {
 	width: 100%;
-	border-bottom: 4px solid #ff2832;
+	border-bottom: 5px solid #35679a;
 	height: 100px;
 }
 
@@ -272,6 +272,36 @@ a.check.disable {
 .shopping_procedure span.current {
 	color: #fff;
 	width: 206px;
+}
+
+.payamount {
+	width: 960px;
+	margin: 15px auto 0px auto;
+	border: 1px solid #ccc; 
+}
+
+.cashier {
+	font: 38px/50px 'Arial'; margin: 2px 0px 2px 15px;
+}
+
+.order {
+	height: 80px; background-color: #eee;
+}
+
+.order span {
+	font: 18px/40px 'Arial'; display: block; margin-left: 15px;
+}
+
+.wxpaylogo {
+	margin: 10px 0px 0px 15px;
+}
+
+.wxqrcode {
+	margin: 0px auto 0px auto; width: 200px; height: 200px; border: 1px solid #000;
+}
+
+.wxwordlogo {
+	margin: 0px auto 20px auto; width: 202px;
 }
 
 /* layout */
@@ -352,7 +382,7 @@ h1.title .title_tip {
 }
 
 .addr_list .addr.active {
-	border-color: #ff2832;
+	border-color: #35679a;
 }
 
 .addr_list .addr.operate a {
@@ -955,8 +985,8 @@ h1.title .title_tip {
 
 .payment .btn_pay.current {
 	color: #fff;
-	background: #ff2832;
-	border-color: #ff2832;
+	background: #35679a;
+	border-color: #35679a;
 	text-decoration: none;
 }
 
@@ -1528,6 +1558,7 @@ h1.title .title_tip {
 .info_list li .alart_tip {
 	left: 90px;
 	font-size: 12px;
+	padding-left: 10px;
 }
 
 .info_list li select {
@@ -2461,10 +2492,6 @@ h1.title .title_tip {
 
 .pop_loading2 img {
 	margin-top: 130px;
-}
-
-.footer {
-	border-color: #ff2832 !important;
 }
 
 /* 调查 */

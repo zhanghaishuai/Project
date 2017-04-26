@@ -1,5 +1,6 @@
 package com.beio.front.vo;
 
+import com.beio.base.entity.SysMember;
 import com.beio.front.entity.GdsBuycart;
 
 /**
@@ -12,6 +13,8 @@ public class BuycartVO extends GdsBuycart{
 
 	// 商品详情
 	private GoodsVO goods;
+	
+	private SysMember member;
 
 	public GoodsVO getGoods() {
 		return goods;
@@ -19,6 +22,14 @@ public class BuycartVO extends GdsBuycart{
 
 	public void setGoods(GoodsVO goods) {
 		this.goods = goods;
+	}
+
+	public SysMember getMember() {
+		return member;
+	}
+
+	public void setMember(SysMember member) {
+		this.member = member;
 	}
 	
 }

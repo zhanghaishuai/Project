@@ -15,15 +15,6 @@ import com.beio.base.util.Constant;
 public class SysServiceImpl extends BaseIbatisServiceImpl implements SysService {
 
 	@Override
-	public int register(SysMember sysMember) throws Exception {
-		// TODO Auto-generated method stub
-		if (update("sys.useInvite", sysMember) < 1) {
-			return 0;
-		}
-		return insert("sys.register", sysMember);
-	}
-	
-	@Override
 	public int editAddr(SysAddr sysAddr) throws Exception {
 		// TODO Auto-generated method stub
 		if (ComUtil.isNotEmpty(sysAddr.getId())) {
