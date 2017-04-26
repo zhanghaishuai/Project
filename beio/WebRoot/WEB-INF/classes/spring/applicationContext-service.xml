@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN"
+	"http://www.springframework.org/dtd/spring-beans.dtd">
+
+<beans default-autowire="byName">
+
+	<bean id="baseIbaitsService" class="com.beio.base.service.impl.BaseIbatisServiceImpl" singleton="true"></bean>
+	
+	<bean id="sysService" class="com.beio.base.service.impl.SysServiceImpl" singleton="true"></bean>
+	
+	<bean id="goodsService" class="com.beio.front.service.impl.GoodsServiceImpl" singleton="true"></bean>
+	
+</beans>

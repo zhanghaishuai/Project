@@ -1,0 +1,53 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC
+    "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+    "http://struts.apache.org/dtds/struts-2.0.dtd">
+
+<struts>
+
+	<constant name="struts.devMode" value="true" />
+	<constant name="struts.configuration.xml.reload" value="true" />
+	<constant name="struts.convention.classes.reload" value="true" />
+	<constant name="struts.enable.DynamicMethodInvocation" value="true" />
+	<constant name="struts.multipart.maxSize" value="90000000" />
+	<constant name="struts.json.dateformat" value="yyyy-MM-dd HH:mm:ss"></constant>
+		
+	<package name="beio-default" extends="struts-default, json-default">
+			
+		<interceptors>
+            <interceptor name="logger" class="com.beio.base.interceptor.LoggerInterceptor" />
+            <interceptor name="identity" class="com.beio.base.interceptor.IdentityInterceptor" />
+            <interceptor-stack name="identityStack">
+            	<interceptor-ref name="logger"/>
+				<interceptor-ref name="defaultStack"/>
+				<interceptor-ref name="json" />
+            	<interceptor-ref name="identity"/>
+            </interceptor-stack>	
+            <interceptor-stack name="defaultStack">
+            	<interceptor-ref name="logger"/>
+				<interceptor-ref name="defaultStack"/>
+				<interceptor-ref name="json" />
+            </interceptor-stack>	
+		</interceptors>
+		
+		<global-results>
+            <result name="exception" type="chain">
+                <param name="namespace">/error</param>
+            	<param name="actionName">exception</param>
+            </result>
+        </global-results>
+
+		<global-exception-mappings>
+            <exception-mapping result="exception" exception="java.lang.Exception">
+            </exception-mapping>
+        </global-exception-mappings>
+        
+	</package>
+	
+	<include file="struts/base/error.xml" />
+	<include file="struts/base/image.xml" />
+	<include file="struts/base/sys.xml" />
+	
+	<include file="struts/front/goods.xml" />
+	
+</struts>
