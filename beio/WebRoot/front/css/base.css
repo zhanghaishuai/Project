@@ -453,7 +453,7 @@ input::-ms-reveal {
 	position: absolute;
 	margin-top: 20px;
 	height: 48px;
-	z-index: 9999;
+	z-index: 10080;
 	left: 335px;
 	top: 0;
 }
@@ -798,7 +798,7 @@ input::-ms-reveal {
 	width: 100%;
 	height: 100%;
 	background-color: #999;
-	z-index: 9998;
+	z-index: 10200;
 	filter: alpha(opacity = 90);
 	moz-opacity: 0.9;
 	opacity: 0.9;
@@ -811,7 +811,7 @@ input::-ms-reveal {
 	width: 100%;
 	height: 100%;
 	background-color: #999;
-	z-index: 9998;
+	z-index: 10200;
 	filter: alpha(opacity = 90);
 	moz-opacity: 0.9;
 	opacity: 0.9;
@@ -823,7 +823,7 @@ input::-ms-reveal {
 	position: absolute;
 	border: 1px solid #b6aca2;
 	background-color: white;
-	z-index: 9999;
+	z-index: 10300;
 	left: 30%;
 	top: 25%;
 }
@@ -1030,6 +1030,7 @@ input::-ms-reveal {
 }
 
 #bd {
+	min-height: 480px;
 	width: 100% !important;
 	margin: 0 auto !important;
 }

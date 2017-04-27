@@ -133,7 +133,7 @@ function buildAddr(id, callback){
 				dataType : 'json',
 				success : function(data) {
 					if (data.status == '200') {
-						$('#divDialog').remove();
+						$('.shadow').remove();
 						callback(data.result);
 					} else if (data.status == '137') {
 						$('.addr_name_s').html('<i class="i-def"></i>' + tip(data.status));

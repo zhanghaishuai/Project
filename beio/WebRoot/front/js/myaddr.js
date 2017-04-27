@@ -1,6 +1,40 @@
 $(function(){
-	initHtml();
-	autologin(function(member){
+	init(function(member){
+		$('#bd').append('\
+			<div class="home_nav">\
+				<div class="my_left">\
+					<div class="my_menu">\
+						<h3 class="my_menu_title" >\
+							<a id="J_myhomeBtn"  href="javascript:void(0);">个人中心</a>\
+						</h3>\
+						<dl>\
+							<dt>个人中心</dt>\
+							<dd><a class="j-menuItem " href="myinfo.html">个人信息</a></dd>\
+							<dd><a class="j-menuItem " href="myrfee.html">会员续费</a></dd>\
+							<dd><a class="j-menuItem " href="myrpwd.html">重置密码</a></dd>\
+							<dd><a class="j-menuItem " href="mymmbl.html">修改手机</a></dd>\
+							<dd><a class="j-menuItem on" href="javascript:void(0);">收货地址</a></dd>\
+							<dt>我的交易</dt>\
+							<dd><a class="j-menuItem " href="myorder.html">我的订单</a></dd>\
+							<dt>关于我们</dt>\
+							<dd><a class="j-menuItem " href="myabout.html">关于我们</a></dd>\
+						</dl>\
+					</div>\
+				</div>\
+				<div class="my_main">\
+					<div class="mod-main mod-comm">\
+						<div class="mt">\
+							<h1 class="title">收货人信息</h1>\
+						</div>\
+						<div class="mc">\
+							<div class="address">\
+								<div class="addr_list" id="address_content"><ul></ul></div>\
+								<p><a id="newAddr" href="javascript:void(0)" class="btn">新增收货地址<em class="bicon"></em></a></p>\
+							</div>\
+						</div>\
+					</div>\
+				</div>\
+			</div>');
 		$.ajax({
 			url : '/beio/sys/queryAllAddr',
 			type : 'POST',
@@ -67,10 +101,10 @@ $(function(){
 				alert(tip('500'));
 			}
 		});
-	});
+	}, true, false);
 });
 
-// 编辑收货地址
+//编辑收货地址
 function editAddr(){
 	var ele = $(this).parents('.addr');
 	buildAddr(ele.attr('id'), function(addr){

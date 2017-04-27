@@ -53,8 +53,6 @@
 		select * from sys_member where mobile = #{mobile} and BINARY password = #{password} order by createTime limit 1;
 	</select>
 	
-	
-	
 	<!-- 查询内邀码 -->
 	<select id="queryInvite" parameterType="String" resultType="SysInvite">
 		select * from sys_invite where invite = #{invite} and enable = '1' and exist = '1';
@@ -82,20 +80,26 @@
 	<select id="querySmsVerify" parameterType="String" resultType="String">
 		select message from sys_smslog where mobile = #{mobile} and category = '01' order by createTime desc limit 1;
 	</select>
-
-	
-	
-	
 	
 	<!-- 修改个人信息 -->
 	<update id="modifyMemberInfo" parameterType="SysMember">
 		update sys_member  
 		<set>
-			sex = #{sex},
-			email = #{email},
-			hobby = #{hobby},
-			nickName = #{nickName},
-			birthday = #{birthday},
+			<if test="sex != null and sex != ''">
+				sex = #{sex},
+			</if>
+			<if test="email != null and email != ''">
+				email = #{email},
+			</if>
+			<if test="hobby != null and hobby != ''">
+				hobby = #{hobby},
+			</if>
+			<if test="nickName != null and nickName != ''">
+				nickName = #{nickName},
+			</if>
+			<if test="birthday != null and birthday != ''">
+				birthday = #{birthday},
+			</if>
 			modifier = #{modifier},
 			modifyTime = #{modifyTime},
 		</set>

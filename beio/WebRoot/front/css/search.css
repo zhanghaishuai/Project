@@ -33,14 +33,14 @@ textarea{resize:none; outline:none; overflow:auto;}
 .filtrate_list li .list_right{width:1080px;float:left;padding:4px 2px 4px 35px;position:relative;background-color: #fff;}
 .filtrate_list li .list_right_on{padding:2px 0px 2px 32px;border:2px solid #e6e2e1;}
 .filtrate_list .list_right .list_content span{height: 22px;float: left;display:block;padding: 3px 10px 3px 0;}
-.filtrate_list .list_right .list_content span a{display:inline-block;padding:0px 19px 0 5px;line-height:20px;height: 20px;border:1px solid #fff;color: #555;padding-right:0;margin-right:19px;white-space:nowrap;*vertical-align: baseline;}
+.filtrate_list .list_right .list_content span a{display:inline-block;padding:0px 19px 0 0;line-height:20px;height: 20px;border:1px solid #fff;color: #555;padding-right:0;margin-right:19px;white-space:nowrap;*vertical-align: baseline;}
 .filtrate_list .list_right .list_content span a em{display:none;height: 20px;width: 19px;background:url(../image/tools_box_bg.png) -37px -61px no-repeat;position: absolute;right: 12px; top:4px;}
 .filtrate_list .list_right .list_content span a:hover{color: #fd5115;text-decoration: underline;}
 .filtrate_list .list_right .list_content span a.on,.filtrate_list .list_right .list_content span a.on:hover{border-color: #ccc;color: #666;text-decoration: none;padding-right:19px;margin-right:0;}
 .filtrate_list .list_right .list_content span a.on:hover{border-color: #f3bfa1;color: #fd5115;}
 .filtrate_list .list_right .list_content span a.on em{cursor: pointer;display: block;}
 .filtrate_list .list_right .list_content span a.on:hover em{background-position: -20px -61px;}
-.filtrate_list .list_right .fix_list span,.filtrate_list .list_right_open span{width: 125px;padding-right: 10px;overflow: hidden;position:relative;}
+.filtrate_list .list_right .fix_list span,.filtrate_list .list_right_open span{width: 125px;padding-right: 10px;overflow: hidden;position:relative;text-align: center;}
 .filtrate_list .list_right .fix_list span a,.filtrate_list .list_right_open .list_content span a{overflow:hidden;white-space: nowrap;text-overflow: ellipsis;display:block;width: 98px;}
 .filtrate_list .list_right .fix_list span a active,.filtrate_list .list_right_open span a active{background-color:#f5f5f5;}
 .filtrate_list .list_right .list_content{padding-right:85px;}

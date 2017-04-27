@@ -102,7 +102,7 @@ body {
 }
 
 a.btn_red {
-	background-color: #ff2832;
+	background-color: #35679a;
 	height: 30px;
 	line-height: 30px;
 	text-align: center;
@@ -129,8 +129,8 @@ a.btn_red.big {
 }
 
 input.alart {
-	border-color: #ff2832 !important;
-	color: #ff2832 !important;
+	border-color: #35679a !important;
+	color: #35679a !important;
 	background-color: #fdf0ef;
 }
 
@@ -138,7 +138,7 @@ input.alart {
 	position: absolute;
 	left: 10px;
 	top: 42px;
-	color: #ff2832;
+	color: #35679a;
 }
 
 .icon_wrong {
@@ -163,7 +163,7 @@ a.link {
 }
 
 .red {
-	color: #ff2832;
+	color: #35679a;
 }
 
 a.check {
@@ -281,7 +281,7 @@ h1.title {
 
 h1.title .title_tip {
 	font-size: 12px;
-	color: #ff2832;
+	color: #35679a;
 	padding-left: 10px;
 }
 
@@ -326,7 +326,7 @@ h1.title .title_tip {
 }
 
 .addr_list .addr.active {
-	border-color: #ff2832;
+	border-color: #35679a;
 }
 
 .addr_list .addr.operate a {
@@ -578,12 +578,12 @@ h1.title .title_tip {
 
 .ship_box .method a:hover {
 	text-decoration: none;
-	color: #ff2832;
+	color: #35679a;
 }
 
 .ship_box .method a.current {
-	background: #ff2832;
-	border-color: #ff2832;
+	background: #35679a;
+	border-color: #35679a;
 	color: #fff;
 }
 
@@ -921,16 +921,16 @@ h1.title .title_tip {
 }
 
 .payment .btn_pay:hover {
-	color: #ff2832;
+	color: #35679a;
 	text-decoration: none;
 	background-color: #fdf0ef;
-	border-color: #ff2832;
+	border-color: #35679a;
 }
 
 .payment .btn_pay.current {
 	color: #fff;
-	background: #ff2832;
-	border-color: #ff2832;
+	background: #35679a;
+	border-color: #35679a;
 	text-decoration: none;
 }
 
@@ -1741,7 +1741,7 @@ h1.title .title_tip {
 }
 
 .package_list li:hover,.package_list li.current {
-	border-color: #ff2832;
+	border-color: #35679a;
 }
 
 .package_list li a {
@@ -1912,7 +1912,7 @@ h1.title .title_tip {
 }
 
 .invoice_title span.red {
-	color: #ff2832;
+	color: #35679a;
 	font-size: 12px;
 }
 
@@ -1993,12 +1993,12 @@ h1.title .title_tip {
 
 .invoice_con .method a:hover {
 	text-decoration: none;
-	color: #ff2832;
+	color: #35679a;
 }
 
 .invoice_con .method a.current {
-	background: #ff2832;
-	border-color: #ff2832;
+	background: #35679a;
+	border-color: #35679a;
 	color: #fff;
 }
 
@@ -2249,7 +2249,7 @@ h1.title .title_tip {
 }
 
 .popup_self .choose_address .title_num .number {
-	color: #ff2832;
+	color: #35679a;
 }
 
 .popup_self .choose_address strong {
@@ -2437,10 +2437,6 @@ h1.title .title_tip {
 	margin-top: 130px;
 }
 
-.footer {
-	border-color: #ff2832 !important;
-}
-
 /* 调查 */
 .fixedbar {
 	left: 50%;
@@ -2521,7 +2517,7 @@ h1.title .title_tip {
 }
 
 .no_return .content ul.list_product li .back_cart:hover {
-	color: #ff2832;
+	color: #35679a;
 }
 
 .no_return .content .info_icon {

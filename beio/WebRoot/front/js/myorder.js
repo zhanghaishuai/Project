@@ -1,6 +1,46 @@
 $(function(){
-	initHtml();
-	autologin(function(member){
+	init(function(member){
+		$('#bd').append('\
+			<div class="home_nav">\
+				<div class="my_left">\
+					<div class="my_menu">\
+						<h3 class="my_menu_title" >\
+							<a id="J_myhomeBtn"  href="javascript:void(0);">个人中心</a>\
+						</h3>\
+						<dl>\
+							<dt>个人中心</dt>\
+							<dd><a class="j-menuItem " href="myinfo.html">个人信息</a></dd>\
+							<dd><a class="j-menuItem " href="myrfee.html">会员续费</a></dd>\
+							<dd><a class="j-menuItem " href="myrpwd.html">重置密码</a></dd>\
+							<dd><a class="j-menuItem " href="mymmbl.html">修改手机</a></dd>\
+							<dd><a class="j-menuItem " href="myaddr.html">收货地址</a></dd>\
+							<dt>我的交易</dt>\
+							<dd><a class="j-menuItem on" href="javascript:void(0);">我的订单</a></dd>\
+							<dt>关于我们</dt>\
+							<dd><a class="j-menuItem " href="myabout.html">关于我们</a></dd>\
+						</dl>\
+					</div>\
+				</div>\
+				<div class="my_main">\
+					<div class="mod-main mod-comm">\
+						<div class="mt">\
+							<button class="search_btn">搜&nbsp;&nbsp;索</button>\
+							<input class="search_no" type="text" placeholder="可输入订单号进行查询"/>\
+							<select class="search_status">\
+								<option value="">全部订单</option>\
+								<option value="0">未付款</option>\
+								<option value="1">已付款</option>\
+								<option value="2">已完成</option>\
+								<option value="3">已取消</option>\
+								<option value="4">已关闭</option>\
+							</select>\
+							<label class="status">订单状态：</label>\
+							<label class="title">我的订单</label>\
+						</div>\
+						<div class="mc"></div>\
+					</div>\
+				</div>\
+			</div>');
 		query();
 		$('.search_btn').click(function(){
 			query({
@@ -8,9 +48,10 @@ $(function(){
 				"orderVO.orderNo":$('.search_no').val()
 			});
 		});
-	});
+	}, true, false);
 });
 
+// 查询订单
 function query(options){
 	$.ajax({
 		url : '/beio/goods/myOrder',
@@ -139,6 +180,7 @@ function query(options){
 	});
 }
 
+// 页面滚动
 function pageScroll(){
     //把内容滚动指定的像素数（第一个参数是向右滚动的像素数，第二个参数是向下滚动的像素数）
     window.scrollBy(0,-50);

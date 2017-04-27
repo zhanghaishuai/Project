@@ -1,170 +1,21 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<meta charset="utf-8"/>
+    <meta charset="utf-8"/>
     <title>修改手机</title>
     <link rel="icon" href="#"/>
-	<link type="text/css" rel="stylesheet" href="css/htmlbuild.css"/>
-	<link type="text/css" rel="stylesheet" href="css/login.css"/>  
-	<link rel="stylesheet" type="text/css" href="css/mymain.css"/>
-	<link rel="Stylesheet" type="text/css" href="css/mycomm.css"/>
-	<script type="text/javascript" src="js/jquery/jquery.js"></script>
-	<script type="text/javascript" src="js/htmlbuild.js"></script>
-	<script type="text/javascript" src="js/initcache.js"></script>
-	<script type="text/javascript" src="js/autologin.js"></script>
-	<script type="text/javascript" src="js/mymmbl.js"></script>
+    <link type="text/css" rel="stylesheet" href="css/base.css"/>  
+    <link type="text/css" rel="stylesheet" href="css/login.css"/>  
+    <link rel="stylesheet" type="text/css" href="css/mymain.css"/>
+    <link rel="Stylesheet" type="text/css" href="css/mycomm.css" />
+    <script type="text/javascript" src="js/jquery/jquery.js"></script>
+    <script type="text/javascript" src="js/initcache.js"></script>
+    <script type="text/javascript" src="js/base.js"></script>
+    <script type="text/javascript" src="js/mymmbl.js"></script>
 </head>
 <body>
-<script type="text/javascript">
-	window.document.write(htmlbuild.topHtml);
-</script>
-<div class="home_nav">
-	<div class="my_left">
-		<div class="my_menu">
-			<h3 class="my_menu_title" >
-				<a id="J_myhomeBtn"  href="javascript:void(0);">个人中心</a>
-			</h3>
-			<dl>
-				<dt>个人中心</dt>
-				<dd><a class="j-menuItem " href="myinfo.html">个人信息</a></dd>
-				<dd><a class="j-menuItem " href="myrfee.html">会员续费</a></dd>
-				<dd><a class="j-menuItem " href="myrpwd.html">重置密码</a></dd>
-				<dd><a class="j-menuItem on" href="javascript:void(0);">修改手机</a></dd>
-				<dd><a class="j-menuItem " href="myaddr.html">收货地址</a></dd>
-				<dt>我的交易</dt>
-				<dd><a class="j-menuItem " href="myorder.html">我的订单</a></dd>
-				<dt>关于我们</dt>
-				<dd><a class="j-menuItem " href="myabout.html">关于我们</a></dd>
-			</dl>
-		</div>
-	</div>
-	<div class="my_main">
-		<div class="mod-main mod-comm">
-			<div class="mt">
-				<h1>修改手机</h1>
-			</div>
-			<div class="mc">
-			<div id="sflex03" class="stepflex">
-				<dl id="l_fp_t_2" class="normal">
-				    <dt class="s-num">2</dt>
-				    <dd class="s-text">验证手机号<s></s><b></b></dd>
-				</dl>
-				<dl id="l_fp_t_3" class="normal">
-				    <dt class="s-num">3</dt>
-				    <dd class="s-text">更换手机号<s></s><b></b></dd>
-				</dl>
-				<dl id="l_fp_t_4" class="last">
-				    <dt class="s-num">&nbsp;</dt>
-				    <dd class="s-text">完成<s></s><b></b></dd>
-				</dl>
-			</div>
-                <div id="l_fp_b_1" class="formpwd formno" style="width: 65%;margin-left: 30%;">
-                    <div class="item">
-                        <span class="label">账户名：</span>
-                        <div class="fl">
-                            <input type="text" id="find_mobile" class="itxt" maxlength="11" placeholder="已注册手机号" />
-                            <div class="clr"></div>
-                            <div class="input-tip" style="height: 18px;">
-                    			<span id="find_mobile_s" class="errMsg"></span>
-                    		</div>
-                        </div>
-                        <div class="clr"></div>
-                    </div>
-                    <div class="item">
-                    	<span class="label">验证码：</span>
-                    	<div class="fl">
-                    		<div style="float: left; height: 100%;"><input type="text" id="find_code" class="itxt" maxlength="4" placeholder="请输入验证码" /></div>
-                    		<div style="float: left; height: 100%;"><img class="verify-code" style="margin-left:5px;cursor:pointer;width:100px;height:36px;" alt="验证码" src="/beio/image/verifyCode"/></div>
-                    		<div style="float: left; height: 100%;"><span style="margin-left:5px;line-height:36px;">看不清？<a class="ftx-05" href="javascript:void(0);">换一张</a></span></div>
-                    		<div class="clr"></div>
-                    		<div class="input-tip" style="height: 18px;">
-                    			<span id="find_code_s" class="errMsg"></span>
-                    		</div>
-                    	</div>
-                    	<div class="clr"></div>
-                    </div>
-                    <div class="item">
-                        <span class="label">&nbsp;</span>
-                        <div class="fl">
-                            <a href="javascript:void(0);" class="btn-5" id="login_findPwd_btn1">提交</a>
-                        </div>
-                        <div class="clr"></div>
-                    </div>
-                </div>
-				<div id="l_fp_b_2" class="formpwd formno hide" style="width: 65%;margin-left: 30%;">
-					<div class="item">
-						<span class="label">验证手机号：</span>
-						<div class="fl">
-							<strong id="valid_mobile" class="ftx-un"></strong>
-							<div class="clr"></div>
-						</div>
-						<div class="clr"></div>
-					</div>
-					<div class="item">
-						<span class="label">手机校验码：</span>
-						<div class="fl">
-							<input type="text" id="valid_code" class="itxt" maxlength="6" placeholder="请输入手机验证码"/>
-							<a href="javascript:void(0);" id="valid_mobile_code" class="btn btn-10 ml10"><s></s>获取短信校验码</a>
-							<div class="clr"></div>
-							<div class="input-tip" style="height: 18px;">
-                    			<span id="valid_code_s" class="errMsg"></span>
-                    		</div>
-						</div>
-						<div class="clr"></div>
-					</div>
-                    <div class="item">
-                        <span class="label">&nbsp;</span>
-                        <div class="fl">
-                            <a href="javascript:void(0);" class="btn-5" id="login_findPwd_btn2">提交</a>
-                        </div>
-                        <div class="clr"></div>
-                    </div>
-                </div>
-				<div id="l_fp_b_3" class="formpwd formno hide" style="width: 65%;margin-left: 30%;">
-                    <div class="item">
-                    	<span class="label">新手机号码：</span>
-                        <div class="fl">
-                            <input type="text" id="set_mobile" class="itxt" maxlength="11" placeholder="新手机号码" />
-                            <div class="clr"></div>
-                            <div class="input-tip" style="height: 18px;">
-                    			<span id="set_mobile_s" class="errMsg"></span>
-                    		</div>
-                        </div>
-                        <div class="clr"></div>
-                    </div>
-                    <div class="item">
-						<span class="label">手机校验码：</span>
-						<div class="fl">
-							<input type="text" id="set_code" class="itxt" maxlength="6" placeholder="请输入手机验证码"/>
-							<a href="javascript:void(0);" id="set_mobile_code" class="btn btn-10 ml10"><s></s>获取短信校验码</a>
-							<div class="clr"></div>
-							<div class="input-tip" style="height: 18px;">
-                    			<span id="set_code_s" class="errMsg"></span>
-                    		</div>
-						</div>
-						<div class="clr"></div>
-					</div>
-                    <div class="item">
-                        <span class="label">&nbsp;</span>
-                        <div class="fl">
-                            <a href="javascript:void(0);" class="btn-5" id="login_findPwd_btn3">提交</a>
-                        </div>
-                        <div class="clr"></div>
-                    </div>
-                </div>
-                <div id="l_fp_b_4" class="formpwd formno hide" style="width: 65%;margin-left: 30%;">
-                	<s class="icon-succ02 m-icon"></s>
-                    <div class="fore">
-                        <h3 class="ftx-02">手机号换绑成功！</h3>
-                        <div class="ftx-03">请牢记您新设置的密码。</div>
-                    </div>
-                </div>
-            </div>
-		</div>
-	</div>
-</div>
-<script type="text/javascript">
-	window.document.write(htmlbuild.btmHtml);
-</script>
+<div id="hd"></div>
+<div id="bd"></div>
+<div id="td"></div>
 </body>
 </html>

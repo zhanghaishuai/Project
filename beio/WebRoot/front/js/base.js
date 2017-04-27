@@ -25,10 +25,10 @@ var base = {
 		</div>\
 		<div class="nav_top">\
 			<ul>\
-				<li class="all" onmousemove="showCategory()" onmouseout="closeCategory()"><a href="javascript:void(0);">全部商品分类</a></li>\
+				<li class="all"><a href="javascript:void(0);">全部商品分类</a></li>\
 			</ul>\
 		</div>\
-		<div id="__ddnav_sort" class="home_nav">\
+		<div class="home_nav">\
 			<div class="home_nav_l">\
 				<ul class="new_pub_nav"></ul>\
 			</div>\
@@ -419,25 +419,34 @@ function init(callback, marker, isIx){
 					if(data.result.member != null && data.result.member != undefined && data.result.member.expire == false){
 						$('#cart_num').html(data.result.cartNum > 99 ? '99+' : data.result.cartNum);
 					}
+					var hideMenu = undefined;
 					// 非首页
-//					if(isIx != true) {
-//						// 菜单展开
-//						$('.all').hover(function(){
-//							$('.home_nav_l').slideDown(100);
-//						}, function(){
-//							
-//						});
-//						$('.home_nav_l > .new_pub_nav > .navli').hover(function(){
-//							$('.navli').removeClass('on');
-//							$('.new_pub_nav_pop').css('display', 'none');
-//							$(this).addClass('on');
-//							$('#'+$(this).attr('id')+'_child').css('display', 'block');
-//						}, null);
-//						// 菜单收起
-//						$('.home_nav_l').hover(null, function(){
-//							$('.home_nav_l').slideUp(100);
-//						});
-//					}
+					if(isIx != true) {
+						// 菜单展开
+						$('.all').hover(function(){
+							window.clearTimeout(hideMenu);
+							$('.home_nav_l').css('display', 'block');
+						}, function(){
+							hideMenu = setTimeout(function(){
+								$('.home_nav_l').css('display', 'none');
+							}, 100);
+						});
+						// 菜单收起
+						$('.home_nav_l').hover(function(){
+							window.clearTimeout(hideMenu);
+						}, function(){
+							hideMenu = setTimeout(function(){
+								$('.home_nav_l').css('display', 'none');
+							}, 100);
+						});
+						// 二级菜单
+						$('.home_nav_l > .new_pub_nav > .navli').hover(function(){
+							$('.navli').removeClass('on');
+							$('.new_pub_nav_pop').css('display', 'none');
+							$(this).addClass('on');
+							$('#'+$(this).attr('id')+'_child').css('display', 'block');
+						}, function(){return false;});
+					}
 					// 搜索
 					$('#searchBtn').click(function(){
 						window.location.href = 'search.html?keyword=' + $('#searchInp').val();
@@ -469,7 +478,7 @@ function init(callback, marker, isIx){
 						});
 					});
 					// 回调
-					callback();
+					callback(data.result.member);
 				} else {
 					alert(tip('400'));
 				};
@@ -478,5 +487,5 @@ function init(callback, marker, isIx){
 				alert(tip('500'));
 			}
 		});
-	}, false);
+	}, marker);
 }
