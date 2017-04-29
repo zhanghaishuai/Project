@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>登录</title>
+	<link rel="stylesheet" type="text/css" href="js/jquery-easyui-1.5.2/themes/custom/easyui.css">
+	<link rel="stylesheet" type="text/css" href="js/jquery-easyui-1.5.2/themes/icon.css">
+	<link rel="stylesheet" type="text/css" href="js/jquery-easyui-1.5.2/demo/demo.css">
+	<script type="text/javascript" src="js/jquery-easyui-1.5.2/jquery.min.js"></script>
+	<script type="text/javascript" src="js/jquery-easyui-1.5.2/jquery.easyui.min.js"></script>
+	<script type="text/javascript">
+		$(function(){
+			$('#login').click(function(){
+				window.location.href='main.html';
+			});
+		});
+	</script>
+</head>
+<body style="background: #fefefe url('js/jquery-easyui-1.5.2/themes/icons/timg.png') no-repeat fixed top; background-size: cover;">
+	<div class="easyui-panel" title="用户登录" style="width:400px;padding:30px 70px 20px 70px">
+		<div style="margin-bottom:10px">
+			<input class="easyui-textbox" style="width:100%;height:40px;padding:12px" data-options="prompt:'Username',iconCls:'icon-man',iconWidth:38">
+		</div>
+		<div style="margin-bottom:20px">
+			<input class="easyui-textbox" type="password" style="width:100%;height:40px;padding:12px" data-options="prompt:'Password',iconCls:'icon-lock',iconWidth:38">
+		</div>
+		<div>
+			<a href="javascript:void(0);" id="login" class="easyui-linkbutton" data-options="" style="padding:5px 0px;width:100%;">
+				<span style="font-size:14px;">登录</span>
+			</a>
+		</div>
+	</div>
+</body>
+</html>

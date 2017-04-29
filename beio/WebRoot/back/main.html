@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>登录</title>
+	<link rel="stylesheet" type="text/css" href="js/jquery-easyui-1.5.2/themes/default/easyui.css">
+	<link rel="stylesheet" type="text/css" href="js/jquery-easyui-1.5.2/themes/icon.css">
+	<link rel="stylesheet" type="text/css" href="js/jquery-easyui-1.5.2/demo/demo.css">
+	<script type="text/javascript" src="js/jquery-easyui-1.5.2/jquery.min.js"></script>
+	<script type="text/javascript" src="js/jquery-easyui-1.5.2/jquery.easyui.min.js"></script>
+</head>
+    <body class="easyui-layout">
+        <div data-options="region:'north',split:true" style="height:50px;">
+        	<span style="line-height: 40px; font-size: 18px; padding-left: 5px;">快客林后台管理</span>
+        </div>
+		<div data-options="region:'west',split:true" style="width:200px;">
+			<ul id="tt" class="easyui-tree">
+				<li>
+					<span>首页</span>
+					<ul>
+						<li><span><a href="#">代办</a></span></li>
+						<li><span>统计</span></li>
+					</ul>
+				</li>
+				<li>
+					<span>供应商管理</span>
+					<ul>
+						<li><span><a href="#">帐号</a></span></li>
+						<li><span>发货管理</span></li>
+						<li><span>异常处理</span></li>
+						<li><span>结算</span></li>
+					</ul>
+				</li>
+				<li>
+					<span>商品管理</span>
+					<ul>
+						<li><span><a href="#">商品列表管理</a></span></li>
+						<li><span>分类管理</span></li>
+						<li><span>标签管理</span></li>
+					</ul>
+				</li>
+				<li>
+					<span>订单管理</span>
+					<ul>
+						<li><span><a href="#">正常订单</a></span></li>
+						<li><span>退货退款</span></li>
+					</ul>
+				</li>
+			</ul>
+		</div>
+		<div data-options="region:'center'" style="background:#eee;">
+       	    <div class="easyui-tabs" data-options="tabWidth:112" style="height:100%">
+				<div title="Home" style="padding:10px">
+					<p>Home Content.</p>
+				</div>
+				<div title="Maps" style="padding:10px">
+					<p>Maps Content.</p>
+				</div>
+				<div title="Journal" style="padding:10px">
+					<p>Journal Content.</p>
+				</div>
+				<div title="History" style="padding:10px">
+					<p>History Content.</p>
+				</div>
+				<div title="References" style="padding:10px">
+					<p>References Content.</p>
+				</div>
+				<div title="Contact" data-options="tabWidth:110" style="padding:10px">
+					<p>Contact Content.</p>
+				</div>
+			</div>
+        </div>
+    </body>
+</html>
