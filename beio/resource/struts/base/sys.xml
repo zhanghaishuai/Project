@@ -166,6 +166,24 @@
 			<interceptor-ref name="identityStack"/>
 		</action>
 		
+		<!-- 后台 -->
+		
+		<!-- 后台用户登录 -->
+		<action name="userLogin" class="sysAction" method="userLogin">
+			<result name="json" type="json">
+				<param name="root">root</param>
+			</result>
+			<interceptor-ref name="backStack"/>
+		</action>
+		
+		<!-- 分页后台用户 -->
+		<action name="pageUsers" class="sysAction" method="pageUsers">
+			<result name="json" type="json">
+				<param name="root">backRoot</param>
+			</result>
+			<interceptor-ref name="backStack"/>
+		</action>
+		
 	</package>
 </struts>
 

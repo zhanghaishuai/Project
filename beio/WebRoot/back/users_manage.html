@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>用户管理</title>
+	<link rel="stylesheet" type="text/css" href="js/jquery-easyui-1.5.2/themes/default/easyui.css">
+	<link rel="stylesheet" type="text/css" href="js/jquery-easyui-1.5.2/themes/icon.css">
+	<link rel="stylesheet" type="text/css" href="js/jquery-easyui-1.5.2/demo/demo.css">
+	<script type="text/javascript" src="js/jquery-easyui-1.5.2/jquery.min.js"></script>
+	<script type="text/javascript" src="js/jquery-easyui-1.5.2/jquery.easyui.min.js"></script>
+		
+</head>
+<body>
+	<div id="goods_tb" style="padding:10px 10px;">
+		<div>
+			<a href="javascript:void(0);" onclick="$('#goods_info').window('open')" class="easyui-linkbutton" plain="false" data-options="iconCls:'icon-add'">新增</a>
+			<a href="javascript:void(0);" class="easyui-linkbutton" plain="false" data-options="iconCls:'icon-edit'">修改</a>
+			<a href="javascript:void(0);" onclick="delRow();" class="easyui-linkbutton" plain="false" data-options="iconCls:'icon-remove'">删除</a>
+			<input id=""  style="margin-left: 200px;"/>
+			<a href="javascript:void(0);" onclick="delRow();" class="easyui-linkbutton" plain="false" data-options="iconCls:'icon-search'">搜索</a>
+		</div>
+	</div>
+	<table id="goods_datagrid" class="easyui-datagrid" style="width:100%;"
+		data-options="
+			fitColumns:true
+			,striped:true
+			,rownumbers:true
+			,singleSelect:true
+			,collapsible:true
+			,pagination:true
+			,pagePosition:'bottom'
+			,pageNumber:1
+			,pageSize:10
+			,url:'/beio/sys/pageUsers'
+			,method:'post'" 
+		toolbar="#goods_tb">
+		<thead>
+			<tr>
+				<th data-options="field:'id',width:120,align:'center',hidden:true">ID</th>
+				<th data-options="field:'username',width:120,align:'center'">用户名</th>
+				<th data-options="field:'password',width:120,align:'center'">密码</th>
+				<th data-options="field:'nickname',width:120,align:'center'">昵称</th>
+				<th data-options="field:'email',width:120,align:'center'">邮箱</th>
+				<th data-options="field:'enable',width:60,align:'center'">是否启用</th>
+				<th data-options="field:'exist',width:60,align:'center'">是否删除</th>
+			</tr>
+		</thead>
+	</table>
+	<div id="goods_info" class="easyui-window" closed="true" title="商品信息" data-options="iconCls:'icon-save', collapsible: false, minimizable: false, maximizable: false, resizable: false,left: '300px', top: '200px'" style="width:500px; height:500px; padding:5px;">
+		<form id="ff" method="post">
+			<table cellpadding="5">
+				<tr>
+					<td>Name:</td>
+					<td><input class="easyui-textbox" type="text" name="name" data-options="required:true"></input></td>
+				</tr>
+				<tr>
+					<td>Email:</td>
+					<td><input class="easyui-textbox" type="text" name="email" data-options="required:true,validType:'email'"></input></td>
+				</tr>
+				<tr>
+					<td>Subject:</td>
+					<td><input class="easyui-textbox" type="text" name="subject" data-options="required:true"></input></td>
+				</tr>
+				<tr>
+					<td>Message:</td>
+					<td><input class="easyui-textbox" name="message" data-options="multiline:true" style="height:60px"></input></td>
+				</tr>
+				<tr>
+					<td>Language:</td>
+					<td>
+						<select class="easyui-combobox" name="language"><option value="ar">Arabic</option><option value="bg">Bulgarian</option><option value="ca">Catalan</option><option value="zh-cht">Chinese Traditional</option><option value="cs">Czech</option><option value="da">Danish</option><option value="nl">Dutch</option><option value="en" selected="selected">English</option><option value="et">Estonian</option><option value="fi">Finnish</option><option value="fr">French</option><option value="de">German</option><option value="el">Greek</option><option value="ht">Haitian Creole</option><option value="he">Hebrew</option><option value="hi">Hindi</option><option value="mww">Hmong Daw</option><option value="hu">Hungarian</option><option value="id">Indonesian</option><option value="it">Italian</option><option value="ja">Japanese</option><option value="ko">Korean</option><option value="lv">Latvian</option><option value="lt">Lithuanian</option><option value="no">Norwegian</option><option value="fa">Persian</option><option value="pl">Polish</option><option value="pt">Portuguese</option><option value="ro">Romanian</option><option value="ru">Russian</option><option value="sk">Slovak</option><option value="sl">Slovenian</option><option value="es">Spanish</option><option value="sv">Swedish</option><option value="th">Thai</option><option value="tr">Turkish</option><option value="uk">Ukrainian</option><option value="vi">Vietnamese</option></select>
+					</td>
+				</tr>
+			</table>
+		</form>
+		<div style="text-align:center;padding:5px">
+			<a href="javascript:void(0)" class="easyui-linkbutton" onclick="submitForm()">Submit</a>
+			<a href="javascript:void(0)" class="easyui-linkbutton" onclick="clearForm()">Clear</a>
+		</div>
+	</div>
+</body>
+</html>
