@@ -17,6 +17,9 @@
 		<interceptors>
             <interceptor name="logger" class="com.beio.base.interceptor.LoggerInterceptor" />
             <interceptor name="identity" class="com.beio.base.interceptor.IdentityInterceptor" />
+            <interceptor-stack name="backStack">
+				<interceptor-ref name="defaultStack"/>
+            </interceptor-stack>
             <interceptor-stack name="identityStack">
             	<interceptor-ref name="logger"/>
 				<interceptor-ref name="defaultStack"/>
@@ -28,9 +31,6 @@
 				<interceptor-ref name="defaultStack"/>
 				<interceptor-ref name="json" />
             </interceptor-stack>	
-            <interceptor-stack name="backStack">
-				<interceptor-ref name="defaultStack"/>
-            </interceptor-stack>
 		</interceptors>
 		
 		<global-results>
