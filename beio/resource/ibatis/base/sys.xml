@@ -203,4 +203,20 @@
 		update sys_member set mobile = #{mobile}, modifier = #{modifier}, modifyTime = #{modifyTime} where id = #{id};
 	</update>
 	
+	<!--          后台                  -->
+	
+	<!-- 后台用户登录 -->
+	<select id="userLogin" parameterType="SysUser" resultType="SysUser">
+		select * from sys_user where username = #{username} and BINARY password = #{password} order by createTime limit 1;
+	</select>
+	
+	<!-- 分页后台用户 -->
+	<select id="pageUser" parameterType="SysUser" resultType="SysUser">
+		select * from sys_user where 1=1 order by id desc limit #{page}, #{rows};
+	</select>
+	
+	<!-- 查询后台用户总数 -->
+	<select id="countUser" parameterType="SysUser" resultType="int">
+		select count(id) from sys_user;
+	</select>
 </mapper>

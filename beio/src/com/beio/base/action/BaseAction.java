@@ -18,6 +18,7 @@ import com.beio.base.entity.SysMember;
 import com.beio.base.entity.SysRegex;
 import com.beio.base.entity.SysSmsLog;
 import com.beio.base.entity.SysTipMsg;
+import com.beio.base.entity.SysUser;
 import com.beio.base.service.BaseIbaitsService;
 import com.beio.base.util.ComUtil;
 import com.beio.base.util.Constant;
@@ -25,6 +26,7 @@ import com.beio.base.util.DateUtil;
 import com.beio.base.util.RegexUtil;
 import com.beio.base.util.SmsUtil;
 import com.beio.base.util.TipMsgUtil;
+import com.beio.base.vo.BackRoot;
 import com.beio.base.vo.Root;
 import com.opensymphony.xwork2.ActionSupport;
 
@@ -57,6 +59,9 @@ public class BaseAction extends ActionSupport {
 	// 接口反馈对象
 	protected Root root = new Root();
 	
+	// 后台借口返回值
+	protected BackRoot backRoot = new BackRoot();
+	
 	// 会员对象
 	protected SysMember member = new SysMember();
 	
@@ -71,6 +76,10 @@ public class BaseAction extends ActionSupport {
 		
 	// 业务逻辑基类
 	protected BaseIbaitsService baseIbaitsService;
+	
+	protected String page;
+	
+	protected String rows;
 	
 	/**
 	 * JSON时间格式 
@@ -203,6 +212,17 @@ public class BaseAction extends ActionSupport {
 	}
 	
 	/**
+	 * 会话后台用户
+	 * @return
+	 */
+	public SysUser sessionUser() {
+		if (getSession().getAttribute(Constant.SESSIONBACKUSERINFO) != null) {
+			return ((SysUser) getSession().getAttribute(Constant.SESSIONBACKUSERINFO));
+		}
+		return null;
+	}
+	
+	/**
 	 * 当前时间
 	 * @return
 	 * @throws Exception
@@ -289,6 +309,10 @@ public class BaseAction extends ActionSupport {
 		return root;
 	}
 	
+	public BackRoot getBackRoot() {
+		return backRoot;
+	}
+	
 	public void setRoot(Object result) {
 		this.root.setResult(result);
 	}
@@ -306,6 +330,11 @@ public class BaseAction extends ActionSupport {
 		this.root.setResult(result);
 		this.root.setStatus(status);
 		this.root.setMessage(message);
+	}
+	
+	public void setBackPageRoot(Integer total, Object rows){
+		this.backRoot.setTotal(total);
+		this.backRoot.setRows(rows);
 	}
 
 	public SysMember getMember() {
@@ -363,5 +392,21 @@ public class BaseAction extends ActionSupport {
 	public void setBaseIbaitsService(BaseIbaitsService baseIbaitsService) {
 		this.baseIbaitsService = baseIbaitsService;
 	}
-	
+
+	public String getPage() {
+		return page;
+	}
+
+	public void setPage(String page) {
+		this.page = page;
+	}
+
+	public String getRows() {
+		return rows;
+	}
+
+	public void setRows(String rows) {
+		this.rows = rows;
+	}
+
 }

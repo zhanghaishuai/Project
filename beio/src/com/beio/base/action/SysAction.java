@@ -1,12 +1,20 @@
 package com.beio.base.action;
 
+import javax.servlet.http.HttpServletRequest;
+
+import org.apache.struts2.ServletActionContext;
+
+import net.sf.json.JSONArray;
+
 import com.beio.base.entity.SysArea;
 import com.beio.base.entity.SysMember;
+import com.beio.base.entity.SysUser;
 import com.beio.base.service.SysService;
 import com.beio.base.util.ComUtil;
 import com.beio.base.util.Constant;
 import com.beio.base.vo.Address;
 import com.beio.base.vo.Member;
+import com.beio.base.vo.User;
 
 /**
  * 系统控制器
@@ -23,6 +31,8 @@ public class SysAction extends BaseAction{
 	private SysArea area = new SysArea();
 	
 	private Address addr = new Address();
+	
+	private User user = new User(); // 后台用户
 	
 	private SysService sysService;
 	
@@ -516,7 +526,63 @@ public class SysAction extends BaseAction{
 		setRoot(baseIbaitsService.selectList("sys.queryAddr", addr), "200");
 		return JSON;
 	}
-
+	
+	/************************************** 后台  ****************************************************/
+	
+	/**
+	 * 后台用户登录
+	 * @return
+	 * @throws Exception
+	 */
+	public String userLogin() throws Exception{
+		if (ComUtil.isNotMatches(getRegex("empty").getRegex(), user.getUsername())) {
+			setRoot("120");
+			return JSON;
+		}
+		if (ComUtil.isNotMatches(getRegex("empty").getRegex(), user.getPassword())) {
+			setRoot("122");
+			return JSON;
+		}
+//		if (!Constant.AUTOLOGINMARK.equals(mr.getAutoLoginMark())) {
+			if (ComUtil.isNotMatches(getRegex("empty").getRegex(), user.getImgVerifyCode())) {
+				setRoot("124");
+				return JSON;
+			}
+			if (!user.getImgVerifyCode().toUpperCase().equals((String) getSession().getAttribute(Constant.SESSIONVERIFYCODE))) {
+				setRoot("125");
+				return JSON;
+			}
+//		}
+		SysUser u = (SysUser) getBaseIbaitsService().selectOne("sys.userLogin", user);
+		if (u == null) {
+			setRoot("195");
+			return JSON;
+		}
+		if (!Constant.ENABLE.equals(u.getEnable())) {
+			setRoot("192");
+			return JSON;
+		}
+		if (!Constant.EXIST.equals(u.getExist())) {
+			setRoot("193");
+			return JSON;
+		}
+		getSession().setAttribute(Constant.SESSIONBACKUSERINFO, u);
+		setRoot(u, "200");
+		return JSON;
+	}
+	
+	/**
+	 * 分页查询后台用户
+	 * @return
+	 * @throws Exception
+	 */
+	public String pageUsers() throws Exception{
+		user.setPage((Integer.valueOf(page) - 1) * Integer.valueOf(rows));
+		user.setRows(Integer.valueOf(rows));
+		setBackPageRoot((int)baseIbaitsService.selectOne("sys.countUser", user), JSONArray.fromObject(baseIbaitsService.selectList("sys.pageUser", user)));
+		return JSON;
+	}
+	
 	public Member getMr() {
 		return mr;
 	}
@@ -547,6 +613,14 @@ public class SysAction extends BaseAction{
 
 	public void setSysService(SysService sysService) {
 		this.sysService = sysService;
+	}
+
+	public User getUser() {
+		return user;
+	}
+
+	public void setUser(User user) {
+		this.user = user;
 	}
 	
 }

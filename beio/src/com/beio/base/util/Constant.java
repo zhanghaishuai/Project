@@ -11,6 +11,9 @@ public class Constant {
 	/** Session User **/
 	public static final String SESSIONUSERINFO = "sessionUserInfo";
 	
+	/** Session backUser **/
+	public static final String SESSIONBACKUSERINFO = "sessionBackUserInfo";
+	
 	/** Session VerifyCode **/
 	public static final String SESSIONVERIFYCODE = "sessionVerifyCode";
 	

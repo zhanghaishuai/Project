@@ -14,7 +14,7 @@ public class Root {
 	private String status; // 响应状态
 
 	private String message; // 消息提示
-
+	
 	public Object getResult() {
 		return result;
 	}
@@ -61,5 +61,6 @@ public class Root {
 		this.status = status;
 		this.message = message;
 	}
+	
 	
 }

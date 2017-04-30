@@ -41,6 +41,14 @@
 		<typeAlias type="com.beio.front.vo.DetailsVO" alias="DetailsVO"/>
 		<typeAlias type="com.beio.front.vo.OrderVO" alias="OrderVO"/>
 		
+		
+		
+		
+		
+		<typeAlias type="com.beio.base.entity.SysUser" alias="SysUser"/>
+		
+		
+		
 	</typeAliases>
 	
 	<mappers>
