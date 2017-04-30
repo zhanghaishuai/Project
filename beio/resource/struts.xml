@@ -17,6 +17,12 @@
 		<interceptors>
             <interceptor name="logger" class="com.beio.base.interceptor.LoggerInterceptor" />
             <interceptor name="identity" class="com.beio.base.interceptor.IdentityInterceptor" />
+            <interceptor name="backIdentity" class="com.beio.base.interceptor.BackIdentityInterceptor" />
+            <interceptor-stack name="backIdentityStack">
+				<interceptor-ref name="defaultStack"/>
+				<interceptor-ref name="json" />
+            	<interceptor-ref name="backIdentity"/>
+            </interceptor-stack>
             <interceptor-stack name="backStack">
 				<interceptor-ref name="defaultStack"/>
             </interceptor-stack>

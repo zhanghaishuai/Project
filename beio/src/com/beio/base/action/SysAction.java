@@ -579,7 +579,7 @@ public class SysAction extends BaseAction{
 	public String pageUsers() throws Exception{
 		user.setPage((Integer.valueOf(page) - 1) * Integer.valueOf(rows));
 		user.setRows(Integer.valueOf(rows));
-		setBackPageRoot((int)baseIbaitsService.selectOne("sys.countUser", user), JSONArray.fromObject(baseIbaitsService.selectList("sys.pageUser", user)));
+		setBackPageRoot((int)baseIbaitsService.selectOne("sys.countUser", user), JSONArray.fromObject(baseIbaitsService.selectList("sys.pageUser", user)), "200");
 		return JSON;
 	}
 	

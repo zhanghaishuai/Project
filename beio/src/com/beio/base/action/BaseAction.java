@@ -332,9 +332,10 @@ public class BaseAction extends ActionSupport {
 		this.root.setMessage(message);
 	}
 	
-	public void setBackPageRoot(Integer total, Object rows){
+	public void setBackPageRoot(Integer total, Object rows, String status){
 		this.backRoot.setTotal(total);
 		this.backRoot.setRows(rows);
+		this.backRoot.setStatus(status);
 	}
 
 	public SysMember getMember() {

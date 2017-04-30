@@ -32,7 +32,8 @@
 			,pageNumber:1
 			,pageSize:10
 			,url:'/beio/sys/pageUsers'
-			,method:'post'" 
+			,method:'post'
+			,loadFilter: function(data){if(data.status=='170'){alert('请重新登录');window.location.href = 'login.html'}else{return data}}" 
 		toolbar="#goods_tb">
 		<thead>
 			<tr>
