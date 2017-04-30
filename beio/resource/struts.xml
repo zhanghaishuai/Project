@@ -28,6 +28,9 @@
 				<interceptor-ref name="defaultStack"/>
 				<interceptor-ref name="json" />
             </interceptor-stack>	
+            <interceptor-stack name="backStack">
+				<interceptor-ref name="defaultStack"/>
+            </interceptor-stack>
 		</interceptors>
 		
 		<global-results>
