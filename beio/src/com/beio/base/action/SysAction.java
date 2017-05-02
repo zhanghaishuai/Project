@@ -1,13 +1,11 @@
 package com.beio.base.action;
 
-import javax.servlet.http.HttpServletRequest;
-
-import org.apache.struts2.ServletActionContext;
-
 import net.sf.json.JSONArray;
 
 import com.beio.base.entity.SysArea;
 import com.beio.base.entity.SysMember;
+import com.beio.base.entity.SysMrfee;
+import com.beio.base.entity.SysPay;
 import com.beio.base.entity.SysUser;
 import com.beio.base.service.SysService;
 import com.beio.base.util.ComUtil;
@@ -32,6 +30,9 @@ public class SysAction extends BaseAction{
 	
 	private Address addr = new Address();
 	
+	private SysPay pay = new SysPay();
+	
+	private SysMrfee mrfee = new SysMrfee();
 	private User user = new User(); // 后台用户
 	
 	private SysService sysService;
@@ -90,7 +91,7 @@ public class SysAction extends BaseAction{
 			setRoot("193");
 			return JSON;
 		}
-		if (!sendSms(mr.getMobile(), ComUtil.generateSmsVerifyCode()
+		if (!sendSms(mr.getMobile(), ComUtil.smsVerifyCode()
 				, Constant.SMSCATEGORYVERIFYCODE)) {
 			setRoot("128");
 			return JSON;
@@ -527,6 +528,56 @@ public class SysAction extends BaseAction{
 		return JSON;
 	}
 	
+	/**
+	 * 查询支付信息
+	 * @return
+	 * @throws Exception 
+	 */
+	public String queryPay() throws Exception{
+		setRoot(baseIbaitsService.selectOne("sys.queryPay", pay), "200");
+		return JSON;
+	}
+	
+	/**
+	 * 开通续费会员
+	 * @return
+	 * @throws Exception 
+	 */
+	public String mrfeeInvite() throws Exception{
+		mr.setMember(sessionMember());
+		mr.setModifyTime(curTimeStr());
+		root = sysService.mrfeeInvite(mr);
+		SysMember m =queryMember(mr.getMember());
+		getSession().setAttribute(Constant.SESSIONUSERINFO, m);
+		return JSON;
+	}
+	
+	/**
+	 * 微信会员下单
+	 * @return
+	 * @throws Exception 
+	 */
+	public String preMrfee() throws Exception{
+		mr.setMember(sessionMember());
+		mr.setModifyTime(curTimeStr());
+		root = sysService.preMrfee(mr);
+		return JSON;
+	}
+	
+	/**
+	 * 微信会员支付
+	 * @return
+	 * @throws Exception 
+	 */
+	public String payMrfee() throws Exception{
+		mr.setMember(sessionMember());
+		mr.setModifyTime(curTimeStr());
+		root = sysService.payMrfee(mr, pay);
+		SysMember m =queryMember(mr.getMember());
+		getSession().setAttribute(Constant.SESSIONUSERINFO, m);
+		return JSON;
+	}
+
 	/************************************** 后台  ****************************************************/
 	
 	/**
@@ -605,6 +656,22 @@ public class SysAction extends BaseAction{
 
 	public void setAddr(Address addr) {
 		this.addr = addr;
+	}
+
+	public SysPay getPay() {
+		return pay;
+	}
+
+	public void setPay(SysPay pay) {
+		this.pay = pay;
+	}
+
+	public SysMrfee getMrfee() {
+		return mrfee;
+	}
+
+	public void setMrfee(SysMrfee mrfee) {
+		this.mrfee = mrfee;
 	}
 
 	public SysService getSysService() {

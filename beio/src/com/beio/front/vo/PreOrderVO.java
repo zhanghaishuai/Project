@@ -12,12 +12,16 @@ import com.beio.base.entity.SysMember;
  */
 public class PreOrderVO {
 
-	private List<OrderVO> orders;
+	private String payID;
+	
+	private String payUrl;
 	
 	private SysMember member;
 	
 	private String currentTime;
-
+	
+	private List<OrderVO> orders;
+	
 	public List<OrderVO> getOrders() {
 		return orders;
 	}
@@ -40,6 +44,22 @@ public class PreOrderVO {
 
 	public void setCurrentTime(String currentTime) {
 		this.currentTime = currentTime;
+	}
+
+	public String getPayID() {
+		return payID;
+	}
+
+	public void setPayID(String payID) {
+		this.payID = payID;
+	}
+
+	public String getPayUrl() {
+		return payUrl;
+	}
+
+	public void setPayUrl(String payUrl) {
+		this.payUrl = payUrl;
 	}
 
 }

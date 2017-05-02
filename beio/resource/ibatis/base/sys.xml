@@ -53,17 +53,6 @@
 		select * from sys_member where mobile = #{mobile} and BINARY password = #{password} order by createTime limit 1;
 	</select>
 	
-	<!-- 查询内邀码 -->
-	<select id="queryInvite" parameterType="String" resultType="SysInvite">
-		select * from sys_invite where invite = #{invite} and enable = '1' and exist = '1';
-	</select>
-	
-	<!-- 使用内邀码 -->
-	<update id="useInvite" parameterType="SysMember">
-		update sys_invite set status = '1', modifier = #{modifier},
-			modifyTime = #{modifyTime} where invite = #{sysInviteCode};
-	</update>
-	
 	<!-- 查询会员 -->
 	<select id="queryMember" parameterType="SysMember" resultType="SysMember">
 		select * from sys_member where 1=1
@@ -158,7 +147,7 @@
 			modifyTime = #{modifyTime} where memberID = #{memberID};
 	</update>
 	
-	<!-- 根据会员ID查询地址 -->
+	<!-- 查询地址 -->
 	<select id="queryAddr" parameterType="SysAddr" resultType="Address">
 		select 
 		    addr.*,
@@ -181,7 +170,7 @@
 		order by isdefault + '' desc;
 	</select>
 	
-	<!-- 查询会员地址总数 -->
+	<!-- 地址总数 -->
 	<select id="queryTotalAddr" parameterType="SysAddr" resultType="int">
 		select count(1) from sys_addr where enable = '1' and exist = '1' and memberID = #{memberID}
 	</select>
@@ -201,6 +190,73 @@
 	<!-- 换绑手机 -->
 	<update id="changeBindMobile" parameterType="SysMember">
 		update sys_member set mobile = #{mobile}, modifier = #{modifier}, modifyTime = #{modifyTime} where id = #{id};
+	</update>
+	
+	<!-- 支付 -->
+	<insert id="pay" parameterType="SysPay">
+		insert into sys_pay (category) values (#{category});
+	</insert>
+	
+	<!-- 统一下单 -->
+	<update id="unifiedorder" parameterType="SysPay">
+		update sys_pay set total_fee = #{total_fee}, return_code = #{return_code}, return_msg = #{return_msg}, 
+		code_url = #{code_url}, prepay_id = #{prepay_id}, sender_str = #{sender_str}, return_str = #{return_str}, 
+		pre_time = #{pre_time} where id = #{id}
+	</update>
+	
+	<!-- 查询订单 -->
+	<update id="orderquery" parameterType="SysPay">
+		update sys_pay set status = #{status}, trade_state = #{trade_state}, pay_str = #{pay_str}, pay_time = #{pay_time} where id = #{id}
+	</update>
+	
+	<!-- 统一下单 -->
+	<select id="queryPay" parameterType="SysPay" resultType="SysPay">
+		select * from sys_pay where id = #{id};
+	</select>
+	
+	<!-- 查询内邀码 -->
+	<select id="queryInvite" parameterType="String" resultType="SysInvite">
+		select * from sys_invite where invite = #{invite} and mobile = #{mobile} and enable = '1' and exist = '1';
+	</select>
+	
+	<!-- 使用内邀码 -->
+	<update id="useInvite" parameterType="SysMember">
+		update sys_invite set status = '1', modifier = #{member.id}, modifyTime = #{modifyTime} 
+		where mobile = #{member.mobile} and invite = #{sysInviteCode} and status = '0' and enable = '1' and exist = '1';
+	</update>
+	
+	<!-- 开通、续费会员 -->
+	<update id="turnon" parameterType="SysMember">
+		update sys_member  
+		<set>
+			<if test="turnonTime != null and turnonTime != ''">
+				turnonTime = #{turnonTime},
+			</if>
+			<if test="expireTime != null and expireTime != ''">
+				expireTime = #{expireTime},
+			</if>
+			level = '1',
+			modifier = #{member.id},
+			modifyTime = #{modifyTime},
+		</set>
+		where id = #{member.id};
+	</update>
+	
+	<!-- 开通、续费会员 -->
+	<insert id="mrfeeInvite" parameterType="SysMember">
+		insert into sys_mrfee (memberID, payID, status, category, turnonTime, expireTime)
+		values (#{member.id}, #{sysInviteCode}, '1', '0', #{mrfeeTurnon}, #{expireTime});
+	</insert>
+	
+	<!-- 微信预下单 -->
+	<insert id="preMrfee" parameterType="SysMember">
+		insert into sys_mrfee (memberID, payID, category) values (#{member.id}, #{payID}, '1');
+	</insert>
+	
+	<!-- 支付会员年费 -->
+	<update id="payMrfee" parameterType="SysMember">
+		update sys_mrfee set status = '1', turnonTime = #{mrfeeTurnon}, expireTime = #{expireTime} 
+			where payID = #{payID};
 	</update>
 	
 	<!--          后台                  -->

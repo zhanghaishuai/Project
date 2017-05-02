@@ -216,7 +216,12 @@
 	
 	<!-- 购物车结算 -->
 	<select id="settlement" parameterType="Object" resultType="BuycartVO">
-		select * from gds_buycart where id in 
+		select cart.*, ifnull(fare.fee, 0) as fee from gds_buycart cart
+		inner join gds_goods goods on cart.goodsID = goods.id
+		left join sys_fare fare on fare.code = #{defaultAddr} 
+		and fare.min + 0 <![CDATA[< ]]> (goods.weight * cart.quantity) + 0
+		and fare.max + 0 <![CDATA[>=]]> (goods.weight * cart.quantity) + 0
+		where cart.id in 
 		<foreach collection="cartIDs" index="index" item="item" open="(" separator="," close=")">
 			#{item}
 		</foreach>
@@ -256,11 +261,11 @@
 	
 	<!-- 购物订单下单 -->
 	<insert id="preOrder" parameterType="Object">
-		insert into gds_order (buyerID, goodsID, orderNo, addrName, addrMobile, addrTelephone, addrProvince, addrCity, addrCounty, addrZipcode, addrAddress, 
+		insert into gds_order (buyerID, goodsID, orderNo, addrName, addrMobile, addrTelephone, addrProvince, addrCity, addrCounty, addrZipcode, addrAddress, payID,
 			receiptStatus, receiptType, receiptTitle, goodsName, goodsPrice, goodsFreight, goodsQuantity, totalPrice, status, creator, createTime, modifier, modifyTime) values 
 		<foreach collection="orders" index="index" item="item" open="" separator="," close="">
 		(#{item.buyerID}, #{item.goodsID}, #{item.orderNo}, #{item.addrName}, #{item.addrMobile}, #{item.addrTelephone}, #{item.addrProvince}, #{item.addrCity}, 
-		 #{item.addrCounty}, #{item.addrZipcode}, #{item.addrAddress}, #{item.receiptStatus}, #{item.receiptType}, #{item.receiptTitle}, #{item.goodsName}, 
+		 #{item.addrCounty}, #{item.addrZipcode}, #{item.addrAddress}, #{payID}, #{item.receiptStatus}, #{item.receiptType}, #{item.receiptTitle}, #{item.goodsName}, 
 		 #{item.goodsPrice}, #{item.goodsFreight}, #{item.goodsQuantity}, #{item.totalPrice}, #{item.status}, #{member.id}, #{currentTime}, #{member.id}, #{currentTime})
 		</foreach>
 	</insert>
@@ -291,9 +296,36 @@
 		</if>
 	</select>
 	
-	<!-- 查询订单详情 -->
+	<!-- 订单详情 -->
 	<select id="queryOrderDetails" parameterType="Object" resultType="DetailsVO">
 		select id, goodsID, price, freight, quantity, totalPrice from gds_details where orderID = #{id} and enable = '1' and exist = '1';
 	</select>
+	
+	<!-- 查询运费 -->
+	<select id="freight" parameterType="Object" resultType="BuycartVO">
+		select cart.id, ifnull(fare.fee, 0) as fee from gds_buycart cart
+		inner join gds_goods goods on cart.goodsID = goods.id
+		left join sys_fare fare on fare.code = #{provinceCode} 
+		and fare.min + 0 <![CDATA[< ]]> (goods.weight * cart.quantity) + 0
+		and fare.max + 0 <![CDATA[>=]]> (goods.weight * cart.quantity) + 0
+		where cart.id in 
+		<foreach collection="cartIDs" index="index" item="item" open="(" separator="," close=")">
+			#{item}
+		</foreach>
+	</select>
+	
+	<!-- 校验运费 -->
+	<select id="validFreight" parameterType="Object" resultType="String">
+		select ifnull(fare.fee, 0) as fee from gds_goods goods
+		left join sys_fare fare on fare.code = #{addrProvince} 
+		and fare.min + 0 <![CDATA[< ]]> (goods.weight * #{goodsQuantity}) + 0
+		and fare.max + 0 <![CDATA[>=]]> (goods.weight * #{goodsQuantity}) + 0
+		where goods.id = #{goodsID}
+	</select>
+	
+	<!-- 购物支付订单 -->
+	<update id="payOrder" parameterType="Object">
+		update gds_order set status = '1', modifier = #{modifier}, modifyTime = #{pay_time} where payID = #{id}
+	</update>
 	
 </mapper>

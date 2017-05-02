@@ -1,10 +1,15 @@
 package com.beio.front.service.impl;
 
+import java.math.BigDecimal;
 import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
 
 import com.beio.base.entity.SysMember;
+import com.beio.base.entity.SysPay;
 import com.beio.base.service.impl.BaseIbatisServiceImpl;
 import com.beio.base.util.ComUtil;
+import com.beio.base.util.ConfigUtil;
 import com.beio.base.vo.Root;
 import com.beio.front.entity.GdsBuycart;
 import com.beio.front.entity.GdsClassify;
@@ -215,7 +220,7 @@ public class GoodsServiceImpl extends BaseIbatisServiceImpl implements GoodsServ
 			return new Root("301");
 		}
 		// 声明商品总额、总运费、订单总额
-		Float goodsPrice = 0f, freight = 0f, singleTotalPrice;
+		Float totalPrice = 0f, singleTotalPrice;
 		int k = 0;
 		// 校验商品准确性
 		for (OrderVO order : preOrderVO.getOrders()) {
@@ -227,10 +232,6 @@ public class GoodsServiceImpl extends BaseIbatisServiceImpl implements GoodsServ
 			}
 			// 计算单个商品总价
 			singleTotalPrice = Float.valueOf(goods.getmPrice())*Integer.valueOf(order.getGoodsQuantity());
-			// 计算商品总额
-			goodsPrice += singleTotalPrice;
-			// 计算总运费
-			freight += Float.valueOf(goods.getFreight());
 			// 价格不对等
 			if (!Float.valueOf(goods.getmPrice()).equals(Float.valueOf(order.getGoodsPrice()))) {
 				return new Root("304");
@@ -243,11 +244,57 @@ public class GoodsServiceImpl extends BaseIbatisServiceImpl implements GoodsServ
 			if (!singleTotalPrice.equals(Float.valueOf(order.getTotalPrice()))) {
 				return new Root("306");
 			}
+			// 运费不对等
+			if (!Float.valueOf(order.getGoodsFreight()).equals(Float.valueOf(selectOne("goods.validFreight", order).toString()))) {
+				return new Root("307");
+			}
 			// 生成订单号
-			order.setOrderNo(ComUtil.generateOrderNO(++k));
+			order.setOrderNo(ComUtil.orderNo(++k));
 			// 填充购买人
 			order.setBuyerID(preOrderVO.getMember().getId());
+			// 计算商品总额
+			totalPrice += singleTotalPrice + Float.valueOf(order.getGoodsFreight());
 		}
+		
+		// 元转分
+		String total_fee = String.valueOf(BigDecimal.valueOf(totalPrice).multiply(new BigDecimal(100)).intValue());
+		
+		// 创建支付对象
+		SysPay pay = new SysPay();
+		pay.setCategory("0");
+		// 保存下单信息
+		insert("sys.pay", pay);
+		// 获取支付标识
+		pay.setId(String.valueOf(selectOne("queryid")));
+		preOrderVO.setPayID(pay.getId());
+		
+		// 微信统一下单参数
+		Map<String, String> param = new TreeMap<String, String>();
+		param.put("appid", ConfigUtil.getProperties("wx.appid"));
+		param.put("body", "快客林-购买商品");
+		param.put("mch_id", ConfigUtil.getProperties("wx.mch_id"));
+		param.put("nonce_str", ComUtil.uuid());
+		param.put("notify_url", "http://localhost:8080/beio/pay/notify");
+		param.put("out_trade_no", preOrderVO.getPayID());
+		param.put("total_fee", total_fee);
+		param.put("trade_type", "NATIVE");
+		param.put("sign", ComUtil.signWX(param, ConfigUtil.getProperties("wx.api_key")));
+		String sender_str = ComUtil.installXML(param);
+		String return_str = ComUtil.httpPost("https://api.mch.weixin.qq.com/pay/unifiedorder", sender_str);
+		
+		// 解析下单响应参数
+		Map<String, String> map = ComUtil.parseXML(return_str);
+		
+		pay.setTotal_fee(total_fee);
+		pay.setSender_str(sender_str);
+		pay.setReturn_str(return_str);
+		pay.setCode_url(map.get("code_url"));
+		pay.setPrepay_id(map.get("prepay_id"));
+		pay.setReturn_msg(map.get("return_msg"));
+		pay.setReturn_code(map.get("return_code"));
+		pay.setPre_time(preOrderVO.getCurrentTime());
+		update("sys.unifiedorder", pay);
+		
 		// 商品下单
 		update("goods.preGoods", preOrderVO);
 		// 购物车下单
@@ -258,4 +305,48 @@ public class GoodsServiceImpl extends BaseIbatisServiceImpl implements GoodsServ
 		return new Root(preOrderVO, "200");
 	}
 
+	@Override
+	public SettlementVO freight(SettlementVO settlementVO) throws Exception {
+		// TODO Auto-generated method stub
+		settlementVO.setCarts(selectList("goods.freight", settlementVO));
+		return settlementVO;
+	}
+
+	@Override
+	public Root payOrder(SysPay pay) throws Exception {
+		// TODO Auto-generated method stub
+		// 微信查询订单参数
+		Map<String, String> param = new TreeMap<String, String>();
+		param.put("appid", ConfigUtil.getProperties("wx.appid"));
+		param.put("mch_id", ConfigUtil.getProperties("wx.mch_id"));
+		param.put("out_trade_no", pay.getId());
+		param.put("nonce_str", ComUtil.uuid());
+		param.put("sign", ComUtil.signWX(param, ConfigUtil.getProperties("wx.api_key")));
+		String sender_str = ComUtil.installXML(param);
+		String return_str = ComUtil.httpPost("https://api.mch.weixin.qq.com/pay/orderquery", sender_str);
+		// 解析下单响应参数
+		Map<String, String> map = ComUtil.parseXML(return_str);
+		// 判断支付结果
+		if ("SUCCESS".equals(map.get("return_code"))) {
+			if ("SUCCESS".equals(map.get("result_code"))) {
+				// 支付成功
+				if ("SUCCESS".equals(map.get("trade_state")) || "REFUND".equals(map.get("trade_state"))
+						|| "CLOSED".equals(map.get("trade_state")) || "REVOKED".equals(map.get("trade_state"))
+						|| "PAYERROR".equals(map.get("trade_state"))) {
+					if ("SUCCESS".equals(map.get("trade_state"))) {
+						pay.setStatus("1");
+						update("goods.payOrder", pay);
+					}else {
+						pay.setStatus("2");
+					}
+					pay.setPay_str(return_str);
+					pay.setTrade_state(map.get("trade_state"));
+					// 更新支付状态
+					update("sys.orderquery", pay);
+				}
+			}
+		}
+		return new Root(map.get("trade_state"), "200");
+	}
+	
 }

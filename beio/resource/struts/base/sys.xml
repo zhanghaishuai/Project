@@ -166,6 +166,45 @@
 			<interceptor-ref name="identityStack"/>
 		</action>
 		
+		<!-- 查询支付信息 -->
+		<action name="queryPay" class="sysAction" method="queryPay">
+			<result name="json" type="json">
+				<param name="root">root</param>
+			</result>
+			<interceptor-ref name="identityStack"/>
+		</action>
+		
+		<!-- 查询支付订单 -->
+		<action name="orderquery" class="sysAction" method="orderquery">
+			<result name="json" type="json">
+				<param name="root">root</param>
+			</result>
+			<interceptor-ref name="identityStack"/>
+		</action>
+		
+		<!-- 开通续费会员 -->
+		<action name="mrfeeInvite" class="sysAction" method="mrfeeInvite">
+			<result name="json" type="json">
+				<param name="root">root</param>
+			</result>
+			<interceptor-ref name="identityStack"/>
+		</action>
+		
+		<!-- 微信会员下单 -->
+		<action name="preMrfee" class="sysAction" method="preMrfee">
+			<result name="json" type="json">
+				<param name="root">root</param>
+			</result>
+			<interceptor-ref name="identityStack"/>
+		</action>
+		
+		<!-- 微信会员支付 -->
+		<action name="payMrfee" class="sysAction" method="payMrfee">
+			<result name="json" type="json">
+				<param name="root">root</param>
+			</result>
+			<interceptor-ref name="identityStack"/>
+		</action>
 		<!-- 后台 -->
 		
 		<!-- 后台用户登录 -->

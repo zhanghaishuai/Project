@@ -3,6 +3,8 @@ package com.beio.front.vo;
 import java.util.List;
 
 import com.beio.base.entity.SysMember;
+import com.beio.base.util.ComUtil;
+import com.beio.base.util.Constant;
 import com.beio.base.vo.Address;
 import com.beio.front.entity.GdsBuycart;
 
@@ -21,6 +23,8 @@ public class SettlementVO extends GdsBuycart{
 	private SysMember member;
 	
 	private String[] cartIDs;
+	
+	private String provinceCode;
 
 	public List<Address> getAddress() {
 		return address;
@@ -53,5 +57,24 @@ public class SettlementVO extends GdsBuycart{
 	public void setCartIDs(String[] cartIDs) {
 		this.cartIDs = cartIDs;
 	}
-	
+
+	public String getProvinceCode() {
+		return provinceCode;
+	}
+
+	public void setProvinceCode(String provinceCode) {
+		this.provinceCode = provinceCode;
+	}
+
+	public String getDefaultAddr() {
+		if (ComUtil.isNotEmpty(address)) {
+			for (Address addr : address) {
+				if (Constant.DEFAULT.equals(addr.getIsdefault())) {
+					return addr.getProvince();
+				}
+			}
+		}
+		return null;
+	}
+
 }

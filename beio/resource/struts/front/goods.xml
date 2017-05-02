@@ -86,6 +86,14 @@
 			<interceptor-ref name="identityStack"/>
 		</action>
 		
+		<!-- 查询运费 -->
+		<action name="freight" class="goodsAction" method="freight">
+			<result name="json" type="json">
+				<param name="root">root</param>
+			</result>
+			<interceptor-ref name="identityStack"/>
+		</action>
+		
 		<!-- 我的订单  -->
 		<action name="myOrder" class="goodsAction" method="myOrder">
 			<result name="json" type="json">

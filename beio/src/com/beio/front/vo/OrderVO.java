@@ -12,7 +12,7 @@ import com.beio.front.entity.GdsOrder;
  * @version 1.0.0
  */
 public class OrderVO extends GdsOrder{
-
+	
 	public void setJsonStr(String jsonStr) {
 		JSONObject json = JSONObject.fromObject(jsonStr);
 		this.setAddrName(json.getString("addrName"));

@@ -285,7 +285,7 @@ a.check.disable {
 }
 
 .order {
-	height: 80px; background-color: #eee;
+	height: 40px; background-color: #eee;
 }
 
 .order span {
@@ -303,3 +303,5 @@ a.check.disable {
 .wxwordlogo {
 	margin: 0px auto 20px auto; width: 202px;
 }
+
+#descr a {color: red; font-size: 16px;}

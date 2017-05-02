@@ -80,7 +80,7 @@ $(function(){
 														</div>\
 														<div class="sub_right">\
 															<p><span class="tab">商品金额：￥<em class="prices">0.00</em></span><span class="tab">运费：￥<em class="freights">0.00</em></span><span class="tab"></span></p>\
-															<p><span class="tab">应付金额：￥</span><span class="red totalprices">0.00</span></p>\
+															<p><span class="tab">应付金额：<span class="red">￥</span></span><span class="red totalprices">0.00</span></p>\
 														</div>\
 													</div>\
 												</div>\
@@ -90,7 +90,7 @@ $(function(){
 								</div>\
 								<div>\
 									<div class="submit">\
-										<div class="box">共<span class="red goodsnum">1</span>件商品<span class="price">应付金额：<span class="red totalprices">0.00</span></span>(含运费<span class="red freights">0.00</span>元)<a id="submit" href="javascript:void(0)" class="btn_red">提交订单</a></div>\
+										<div class="box">共<span class="red goodsnum">1</span>件商品<span class="price">应付金额：<span class="red">￥</span><span class="red totalprices">0.00</span></span>(含运费<span class="red">￥</span><span class="red freights">0.00</span>元)<a id="submit" href="javascript:void(0)" class="btn_red">提交订单</a></div>\
 									</div>\
 								</div>');
 							if(data.result.address.length > 0){
@@ -138,13 +138,43 @@ $(function(){
 									$('#'+addr.id+' .delete').click(deleteAddr);
 									$('#'+addr.id+' .us').click(defaultAddr);
 									$('#'+addr.id).click(checkAddr);
+									$.ajax({
+										url : '/beio/goods/freight',
+										data : {
+											'settlementVO.provinceCode' : $('.active .provinceCode').val(),
+											'settlementVO.cartIDs' : sessionStorage.getItem('orderBuyIDs').split(',')
+										},
+										type : 'POST',
+										async : false,
+										cache : true,
+										dataType : 'json',
+										traditional : true,
+										success : function(data) {
+											if (data.status == '200') {
+												var freights = 0;
+												$.each(data.result.carts, function(i, item){
+													freights += parseFloat(item.fee);
+													$('#'+item.id).html(parseFloat(item.fee).toFixed(2));
+												});
+												$('.freights').html(freights.toFixed(2));
+												$('.totalprices').html((parseFloat($('.prices').html()) + freights).toFixed(2));
+											} else if (data.status == '170') {
+												alert(tip(data.status));
+											} else {
+												alert(tip('400'));
+											};
+										},
+										error : function() {
+											alert(tip('500'));
+										}
+									});
 								});
 							}
 							var prices = 0, quantities = 0, freight = 0;
 							$.each(data.result.carts, function(i, item){
 								prices += (item.goods.mPrice*item.quantity);
 								quantities += parseFloat(item.quantity);
-								freight += parseFloat(item.goods.freight);
+								freight += parseFloat(item.fee);
 								var img = item.goods.shows.length > 0 ? item.goods.shows[0].smaPath : '';
 								$('.list > tbody').append('\
 									<tr class="goods" id="'+item.goods.id+'">\
@@ -157,7 +187,7 @@ $(function(){
 										<td>￥<em class="price">'+parseFloat(item.goods.mPrice).toFixed(2)+'</em></td>\
 										<td><em class="quantity">'+item.quantity+'</em></td>\
 										<td>￥<em class="totalprice">'+(item.goods.mPrice*item.quantity).toFixed(2)+'</em></td>\
-										<td>￥<em class="freight">'+parseFloat(item.goods.freight).toFixed(2)+'</em></td>\
+										<td>￥<em id="'+item.id+'" class="freight">'+parseFloat(item.fee).toFixed(2)+'</em></td>\
 									</tr>');
 							});
 							$('.goodsnum').html(quantities);
@@ -188,6 +218,36 @@ $(function(){
 									$('#'+addr.id+' .delete').click(deleteAddr);
 									$('#'+addr.id+' .us').click(defaultAddr);
 									$('#'+addr.id).click(checkAddr);
+									$.ajax({
+										url : '/beio/goods/freight',
+										data : {
+											'settlementVO.provinceCode' : $('.active .provinceCode').val(),
+											'settlementVO.cartIDs' : sessionStorage.getItem('orderBuyIDs').split(',')
+										},
+										type : 'POST',
+										async : false,
+										cache : true,
+										dataType : 'json',
+										traditional : true,
+										success : function(data) {
+											if (data.status == '200') {
+												var freights = 0;
+												$.each(data.result.carts, function(i, item){
+													freights += parseFloat(item.fee);
+													$('#'+item.id).html(parseFloat(item.fee).toFixed(2));
+												});
+												$('.freights').html(freights.toFixed(2));
+												$('.totalprices').html((parseFloat($('.prices').html()) + freights).toFixed(2));
+											} else if (data.status == '170') {
+												alert(tip(data.status));
+											} else {
+												alert(tip('400'));
+											};
+										},
+										error : function() {
+											alert(tip('500'));
+										}
+									});
 								});
 							});
 							$('.addr .edit').click(editAddr);
@@ -272,7 +332,10 @@ function editReceipt(){
 function checkAddr(){
 	$('.addr_list > ul > li').removeClass('active');
 	$(this).addClass('active');
-	showReceipt();
+	if ($('input[name=receipt]:checked').val() == '1') {
+		showReceipt();
+	}
+	freight();
 }
 
 // 编辑收货地址
@@ -288,6 +351,7 @@ function editAddr(){
 		ele.find('.area').html(addr.provinceName + ' ' + addr.cityName + ' ' + addr.countyName);
 		ele.find('.address').html(addr.address);
 	});
+	freight();
 }
 
 // 删除收货地址
@@ -349,7 +413,42 @@ function defaultAddr(){
 			alert(tip('500'));
 		}
 	});
+	freight();
 }
+
+//快递运费
+function freight(){
+	$.ajax({
+		url : '/beio/goods/freight',
+		data : {
+			'settlementVO.provinceCode' : $('.active .provinceCode').val(),
+			'settlementVO.cartIDs' : sessionStorage.getItem('orderBuyIDs').split(',')
+		},
+		type : 'POST',
+		async : false,
+		cache : true,
+		dataType : 'json',
+		traditional : true,
+		success : function(data) {
+			if (data.status == '200') {
+				var freights = 0;
+				$.each(data.result.carts, function(i, item){
+					freights += parseFloat(item.fee);
+					$('#'+item.id).html(parseFloat(item.fee).toFixed(2));
+				});
+				$('.freights').html(freights.toFixed(2));
+				$('.totalprices').html((parseFloat($('.prices').html()) + freights).toFixed(2));
+			} else if (data.status == '170') {
+				alert(tip(data.status));
+			} else {
+				alert(tip('400'));
+			};
+		},
+		error : function() {
+			alert(tip('500'));
+		}
+	});
+};
 
 // 下单
 function preOrder(){
@@ -390,7 +489,7 @@ function preOrder(){
 		success : function(data) {
 			if (data.status == '200') {
 				sessionStorage.removeItem('orderBuyIDs');
-				window.location.href = "pay.html";
+				window.location.href = "pay.html?payno="+data.result.payID;
 			} else if (data.status == '301' || data.status == '302' || data.status == '303' 
 				|| data.status == '304' || data.status == '305' || data.status == '306' 
 					|| data.status == '307' || data.status == '308' || data.status == '170') {
@@ -404,3 +503,4 @@ function preOrder(){
 		}
 	});
 };
+

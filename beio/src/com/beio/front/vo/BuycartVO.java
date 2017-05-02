@@ -11,10 +11,22 @@ import com.beio.front.entity.GdsBuycart;
  */
 public class BuycartVO extends GdsBuycart{
 
+	// 运费
+	private String fee;
+	
 	// 商品详情
 	private GoodsVO goods;
 	
+	// 会员信息
 	private SysMember member;
+	
+	public String getFee() {
+		return fee;
+	}
+
+	public void setFee(String fee) {
+		this.fee = fee;
+	}
 
 	public GoodsVO getGoods() {
 		return goods;

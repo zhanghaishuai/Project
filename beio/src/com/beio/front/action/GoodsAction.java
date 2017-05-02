@@ -1,6 +1,7 @@
 package com.beio.front.action;
 
 import com.beio.base.action.BaseAction;
+import com.beio.base.entity.SysPay;
 import com.beio.base.util.ComUtil;
 import com.beio.front.service.GoodsService;
 import com.beio.front.vo.BuycartVO;
@@ -36,6 +37,8 @@ public class GoodsAction extends BaseAction{
 	private PreOrderVO preOrderVO = new PreOrderVO();
 	
 	private OrderVO orderVO = new OrderVO();
+	
+	private SysPay pay = new SysPay();
 	
 	/**
 	 * 头部信息
@@ -160,6 +163,17 @@ public class GoodsAction extends BaseAction{
 	}
 	
 	/**
+	 * 查询运费
+	 * @return
+	 * @throws Exception
+	 */
+	public String freight() throws Exception{
+		settlementVO.setMember(sessionMember());
+		setRoot(goodsService.freight(settlementVO), "200");
+		return JSON;
+	}
+	
+	/**
 	 * 我的订单
 	 * @return
 	 * @throws Exception
@@ -169,6 +183,18 @@ public class GoodsAction extends BaseAction{
 		orderVO.setBuyerID(sessionMemberID());
 		orderVO.setPageSize(5);
 		setRoot(goodsService.myOrder(orderVO), "200");
+		return JSON;
+	}
+	
+	/**
+	 * 支付订单
+	 * @return
+	 * @throws Exception
+	 */
+	public String payOrder() throws Exception{
+		pay.setPay_time(curTimeStr());
+		pay.setModifier(sessionMemberID());
+		root = goodsService.payOrder(pay);
 		return JSON;
 	}
 

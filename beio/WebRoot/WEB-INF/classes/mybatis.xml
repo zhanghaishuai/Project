@@ -15,6 +15,7 @@
 		<typeAlias type="com.beio.base.entity.SysSmsLog" alias="SysSmsLog"/>
 		<typeAlias type="com.beio.base.entity.SysTipMsg" alias="SysTipMsg"/>
 		<typeAlias type="com.beio.base.entity.SysVisitLog" alias="SysVisitLog"/>
+		<typeAlias type="com.beio.base.entity.SysPay" alias="SysPay"/>
 		
 		<typeAlias type="com.beio.front.entity.GdsBanner" alias="GdsBanner"/>
 		<typeAlias type="com.beio.front.entity.GdsBrand" alias="GdsBrand"/>

@@ -1,9 +1,6 @@
 package com.beio.base.interceptor;
 
-import org.apache.log4j.Logger;
-
 import com.beio.base.action.BaseAction;
-import com.beio.base.action.ErrorAction;
 import com.beio.base.entity.SysVisitLog;
 import com.opensymphony.xwork2.ActionInvocation;
 import com.opensymphony.xwork2.interceptor.Interceptor;
