@@ -125,24 +125,9 @@ public class GoodsServiceImpl extends BaseIbatisServiceImpl implements GoodsServ
 		selectPage("goods.queryOrder", orderVO);
 		if (ComUtil.isNotEmpty(orderVO.getPageList())) {
 			for (Object order : orderVO.getPageList()) {
-				queryOrderDetails((OrderVO)order);
+				((OrderVO)order).setShows(selectList("goods.queryShowsByGoods", ((OrderVO)order).getGoodsID()));
 			}
 		}
-		return orderVO;
-	}
-	
-	/**
-	 * 查询订单详情
-	 * @param orderVO
-	 * @throws Exception
-	 */
-	private OrderVO queryOrderDetails(OrderVO orderVO) throws Exception{
-//		orderVO.setDetails(selectList("goods.queryOrderDetails", orderVO));
-//		if (ComUtil.isNotEmpty(orderVO.getDetails())) {
-//			for (DetailsVO details : orderVO.getDetails()) {
-//				details.setGoods(queryGoods(details.getGoodsID()));
-//			}
-//		}
 		return orderVO;
 	}
 	

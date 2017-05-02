@@ -181,7 +181,6 @@ public class GoodsAction extends BaseAction{
 	public String myOrder() throws Exception{
 		orderVO.setOrderNo(ComUtil.trim(orderVO.getOrderNo()));
 		orderVO.setBuyerID(sessionMemberID());
-		orderVO.setPageSize(5);
 		setRoot(goodsService.myOrder(orderVO), "200");
 		return JSON;
 	}

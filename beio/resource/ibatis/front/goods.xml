@@ -275,15 +275,14 @@
 		select 
 		<choose>
 			<when test="pageQueryCount == false">
-				so.id, so.orderNo, so.createTime, so.totalPrice, so.status 
+				so.*
 			</when>
 			<otherwise>
 				count(1) as pageTotal 
 			</otherwise>
 		</choose>
-		from sys_order so 
-		where
-		    so.enable = '1' and so.exist = '1' and so.buyerID = #{buyerID} 
+		from gds_order so 
+		where so.buyerID = #{buyerID} 
 		<if test="status != null and status != ''">
 			and so.status = #{status}
 		</if>
@@ -294,11 +293,6 @@
 		<if test="pageQueryCount == false">
 			limit #{firstResult}, #{maxResults};
 		</if>
-	</select>
-	
-	<!-- 订单详情 -->
-	<select id="queryOrderDetails" parameterType="Object" resultType="DetailsVO">
-		select id, goodsID, price, freight, quantity, totalPrice from gds_details where orderID = #{id} and enable = '1' and exist = '1';
 	</select>
 	
 	<!-- 查询运费 -->

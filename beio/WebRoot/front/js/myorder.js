@@ -29,10 +29,9 @@ $(function(){
 							<select class="search_status">\
 								<option value="">全部订单</option>\
 								<option value="0">未付款</option>\
-								<option value="1">已付款</option>\
-								<option value="2">已完成</option>\
-								<option value="3">已取消</option>\
-								<option value="4">已关闭</option>\
+								<option value="1">待发货</option>\
+								<option value="2">已发货</option>\
+								<option value="3">已完成</option>\
 							</select>\
 							<label class="status">订单状态：</label>\
 							<label class="title">我的订单</label>\
@@ -85,32 +84,24 @@ function query(options){
 						</td></tr></tfoot>\
 					</table>');
 					$.each(data.result.pageList, function(i, item){
-						var order = item;
-						$.each(item.details, function(i, item){
-							var img = item.goods.shows.length > 0 ? item.goods.shows[0].smaPath : '';
-							if (i == 0) {
-								$('.order_info').append('\
-									<tr>\
-										<td colspan="6" class="orderNo">订单号：'+order.orderNo+'</td>\
-									</tr>\
-									<tr>\
-										<td style="width: 70px;"><img src="'+img+'" width="70" height="70"></td>\
-										<td style="width: 360px;"><span>'+item.goods.name+'</span></td>\
-										<td rowspan="'+order.details.length+'">'+dateMilliFormat(order.createTime, 'TIME')+'</td>\
-										<td rowspan="'+order.details.length+'">￥'+order.totalPrice+'</td>\
-										<td rowspan="'+order.details.length+'">未付款</td>\
-										<td rowspan="'+order.details.length+'">\
-											<button style="padding: 2px 10px;border:1px solid #bcbcbc;">付款</button>\
-										</td>\
-									</tr>');
-							}else {
-								$('.order_info').append('\
-									<tr>\
-										<td style="width: 70px;"><img src="'+img+'" width="70" height="70"></td>\
-										<td style="width: 360px;"><span>'+item.goods.name+'</span></td>\
-									</tr>');
-							}
-						});
+						var img = item.shows.length > 0 ? item.shows[0].smaPath : '';
+						var status = '', btn = '';
+						if (item.status == '0') {
+							status = '未付款';
+							btn = '<button style="padding: 2px 10px;border:1px solid #bcbcbc;">付款</button>';
+						}
+						$('.order_info').append('\
+							<tr>\
+								<td colspan="6" class="orderNo">订单号：'+item.orderNo+'</td>\
+							</tr>\
+							<tr>\
+								<td style="width: 70px;"><img src="'+img+'" width="70" height="70"></td>\
+								<td style="width: 360px;"><span>'+item.goodsName+'</span></td>\
+								<td>'+dateMilliFormat(item.createTime, 'TIME')+'</td>\
+								<td>￥'+item.totalPrice+'</td>\
+								<td>'+status+'</td>\
+								<td>'+btn+'</td>\
+							</tr>');
 					});
 					$('.paging > ul').empty();
 					$('.paging > ul').append('<li class="prev"><a href="javascript:void(0);" title="上一页">上一页</a></li>');

@@ -1,8 +1,11 @@
 package com.beio.front.vo;
 
+import java.util.List;
+
 import net.sf.json.JSONObject;
 
 import com.beio.base.util.Constant;
+import com.beio.front.entity.GdsImage;
 import com.beio.front.entity.GdsOrder;
 
 /**
@@ -12,6 +15,8 @@ import com.beio.front.entity.GdsOrder;
  * @version 1.0.0
  */
 public class OrderVO extends GdsOrder{
+	
+	private List<GdsImage> shows;
 	
 	public void setJsonStr(String jsonStr) {
 		JSONObject json = JSONObject.fromObject(jsonStr);
@@ -35,4 +40,12 @@ public class OrderVO extends GdsOrder{
 		this.setStatus(Constant.ORDERSTATUSUNPAID);
 	}
 
+	public List<GdsImage> getShows() {
+		return shows;
+	}
+
+	public void setShows(List<GdsImage> shows) {
+		this.shows = shows;
+	}
+	
 }
