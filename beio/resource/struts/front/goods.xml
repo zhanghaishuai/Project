@@ -102,6 +102,14 @@
 			<interceptor-ref name="identityStack"/>
 		</action>
 		
+		<!-- 订单支付 -->
+		<action name="payOrder" class="goodsAction" method="payOrder">
+			<result name="json" type="json">
+				<param name="root">root</param>
+			</result>
+			<interceptor-ref name="identityStack"/>
+		</action>
+		
 	</package>
 </struts>
 
