@@ -106,4 +106,12 @@ public interface GoodsService extends BaseIbaitsService{
 	 */
 	public Root payOrder(SysPay pay) throws Exception;
 	
+	/**
+	 * 取消订单
+	 * @param member
+	 * @return
+	 * @throws Exception
+	 */
+	public Root cancelOrder(OrderVO orderVO) throws Exception;
+	
 }

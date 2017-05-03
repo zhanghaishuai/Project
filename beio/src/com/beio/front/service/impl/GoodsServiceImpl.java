@@ -205,7 +205,7 @@ public class GoodsServiceImpl extends BaseIbatisServiceImpl implements GoodsServ
 			return new Root("301");
 		}
 		// 声明商品总额、总运费、订单总额
-		Float totalPrice = 0f, singleTotalPrice;
+		Float totalPrice = 0f;
 		int k = 0;
 		// 校验商品准确性
 		for (OrderVO order : preOrderVO.getOrders()) {
@@ -215,8 +215,6 @@ public class GoodsServiceImpl extends BaseIbatisServiceImpl implements GoodsServ
 			if (goods == null) {
 				return new Root("303");
 			}
-			// 计算单个商品总价
-			singleTotalPrice = Float.valueOf(goods.getmPrice())*Integer.valueOf(order.getGoodsQuantity());
 			// 价格不对等
 			if (!Float.valueOf(goods.getmPrice()).equals(Float.valueOf(order.getGoodsPrice()))) {
 				return new Root("304");
@@ -225,20 +223,21 @@ public class GoodsServiceImpl extends BaseIbatisServiceImpl implements GoodsServ
 			if (Integer.valueOf(goods.getStock()) < Integer.valueOf(order.getGoodsQuantity())) {
 				return new Root("305");
 			}
-			// 单个商品价格计算异常
-			if (!singleTotalPrice.equals(Float.valueOf(order.getTotalPrice()))) {
-				return new Root("306");
-			}
 			// 运费不对等
 			if (!Float.valueOf(order.getGoodsFreight()).equals(Float.valueOf(selectOne("goods.validFreight", order).toString()))) {
 				return new Root("307");
+			}
+			// 计算商品总额
+			totalPrice += Float.valueOf(goods.getmPrice()) * Integer.valueOf(order.getGoodsQuantity()) 
+					+ Float.valueOf(order.getGoodsFreight());
+			// 订单金额异常
+			if (!totalPrice.equals(order.getTotalPrice())) {
+				return new Root("308");
 			}
 			// 生成订单号
 			order.setOrderNo(ComUtil.orderNo(++k));
 			// 填充购买人
 			order.setBuyerID(preOrderVO.getMember().getId());
-			// 计算商品总额
-			totalPrice += singleTotalPrice + Float.valueOf(order.getGoodsFreight());
 		}
 		
 		// 元转分
@@ -332,6 +331,16 @@ public class GoodsServiceImpl extends BaseIbatisServiceImpl implements GoodsServ
 			}
 		}
 		return new Root(map.get("trade_state"), "200");
+	}
+
+	@Override
+	public Root cancelOrder(OrderVO orderVO) throws Exception {
+		// TODO Auto-generated method stub
+		// 还原商品库存
+		update("goods.cancelGoods", orderVO);
+		// 取消支付订单
+		update("goods.cancelOrder", orderVO);
+		return new Root("200");
 	}
 	
 }

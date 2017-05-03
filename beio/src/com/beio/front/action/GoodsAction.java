@@ -196,6 +196,18 @@ public class GoodsAction extends BaseAction{
 		root = goodsService.payOrder(pay);
 		return JSON;
 	}
+	
+	/**
+	 * 取消订单
+	 * @return
+	 * @throws Exception
+	 */
+	public String cannelOrder() throws Exception{
+		orderVO.setModifier(sessionMemberID());
+		orderVO.setModifyTime(curTimeStr());
+		root = goodsService.cancelOrder(orderVO);
+		return JSON;
+	}
 
 	public GoodsService getGoodsService() {
 		return goodsService;

@@ -322,4 +322,17 @@
 		update gds_order set status = '1', modifier = #{modifier}, modifyTime = #{pay_time} where payID = #{id}
 	</update>
 	
+	<!-- 取消支付订单 -->
+	<update id="cancelOrder" parameterType="Object">
+		update gds_order set status = '5', modifier = #{modifier}, modifyTime = #{modifyTime} where id = #{id}
+	</update>
+	
+	<!-- 还原商品库存 -->
+	<update id="cancelGoods" parameterType="Object">
+		UPDATE gds_goods g INNER JOIN gds_order o ON g.id = o.goodsID AND o.id = #{id} 
+		SET g.salds = CONVERT( g.salds , SIGNED) - CONVERT( o.goodsQuantity , SIGNED),
+		    g.stock = CONVERT( g.stock , SIGNED) + CONVERT( o.goodsQuantity , SIGNED)
+		WHERE g.id = o.goodsID
+	</update>
+	
 </mapper>

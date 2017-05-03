@@ -110,6 +110,14 @@
 			<interceptor-ref name="identityStack"/>
 		</action>
 		
+		<!-- 取消订单 -->
+		<action name="cannelOrder" class="goodsAction" method="cannelOrder">
+			<result name="json" type="json">
+				<param name="root">root</param>
+			</result>
+			<interceptor-ref name="identityStack"/>
+		</action>
+		
 	</package>
 </struts>
 
