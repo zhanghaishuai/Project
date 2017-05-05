@@ -475,7 +475,7 @@ function preOrder(){
 		json.goodsPrice = $(item).find('.price').html();
 		json.goodsFreight = $(item).find('.freight').html();
 		json.goodsQuantity = $(item).find('.quantity').html();
-		json.totalPrice = $(item).find('.totalprices').html();
+		json.totalPrice = $(item).find('.totalprice').html();
 		jsonArr[i] = JSON.stringify(json);
 	});
 	$.ajax({
