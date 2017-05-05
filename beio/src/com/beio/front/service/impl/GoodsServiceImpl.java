@@ -14,6 +14,7 @@ import com.beio.base.vo.Root;
 import com.beio.front.entity.GdsBuycart;
 import com.beio.front.entity.GdsClassify;
 import com.beio.front.entity.GdsGoods;
+import com.beio.front.entity.GdsOrder;
 import com.beio.front.service.GoodsService;
 import com.beio.front.vo.BuycartVO;
 import com.beio.front.vo.CartInfoVO;
@@ -236,18 +237,15 @@ public class GoodsServiceImpl extends BaseIbatisServiceImpl implements GoodsServ
 			// 生成订单号
 			order.setOrderNo(ComUtil.orderNo(++k));
 			// 填充购买人
-			order.setBuyerID(preOrderVO.getMember().getId());
+			order.setBuyerID(preOrderVO.getCreator());
 		}
 		// 元转分
 		String total_fee = String.valueOf(BigDecimal.valueOf(totalPrice).multiply(new BigDecimal(100)).intValue());
-		// 创建支付对象
-		SysPay pay = new SysPay();
-		pay.setCategory("0");
+		preOrderVO.setCategory("0");
 		// 保存下单信息
-		insert("sys.pay", pay);
+		insert("sys.pay", preOrderVO);
 		// 获取支付标识
-		pay.setId(String.valueOf(selectOne("queryid")));
-		preOrderVO.setPayID(pay.getId());
+		preOrderVO.setId(String.valueOf(selectOne("queryid")));
 		// 微信统一下单参数
 		Map<String, String> param = new TreeMap<String, String>();
 		param.put("appid", ConfigUtil.getProperties("wx.appid"));
@@ -255,8 +253,8 @@ public class GoodsServiceImpl extends BaseIbatisServiceImpl implements GoodsServ
 		param.put("mch_id", ConfigUtil.getProperties("wx.mch_id"));
 		param.put("nonce_str", ComUtil.uuid());
 		param.put("notify_url", "http://localhost:8080/beio/pay/notify");
-		param.put("out_trade_no", preOrderVO.getPayID());
-		param.put("total_fee", total_fee);
+		param.put("out_trade_no", preOrderVO.getId());
+		param.put("total_fee", "1");
 		param.put("trade_type", "NATIVE");
 		param.put("sign", ComUtil.signWX(param, ConfigUtil.getProperties("wx.api_key")));
 		String sender_str = ComUtil.installXML(param);
@@ -264,15 +262,14 @@ public class GoodsServiceImpl extends BaseIbatisServiceImpl implements GoodsServ
 		// 解析响应参数
 		Map<String, String> map = ComUtil.parseXML(return_str);
 		// 填充订单参数
-		pay.setTotal_fee(total_fee);
-		pay.setSender_str(sender_str);
-		pay.setReturn_str(return_str);
-		pay.setCode_url(map.get("code_url"));
-		pay.setPrepay_id(map.get("prepay_id"));
-		pay.setReturn_msg(map.get("return_msg"));
-		pay.setReturn_code(map.get("return_code"));
-		pay.setPre_time(preOrderVO.getCurrentTime());
-		update("sys.unifiedorder", pay);
+		preOrderVO.setTotal_fee(total_fee);
+		preOrderVO.setSender_str(sender_str);
+		preOrderVO.setReturn_str(return_str);
+		preOrderVO.setCode_url(map.get("code_url"));
+		preOrderVO.setPrepay_id(map.get("prepay_id"));
+		preOrderVO.setReturn_msg(map.get("return_msg"));
+		preOrderVO.setReturn_code(map.get("return_code"));
+		update("sys.unifiedorder", preOrderVO);
 		// 商品下单
 		update("goods.preGoods", preOrderVO);
 		// 购物车下单
@@ -346,48 +343,19 @@ public class GoodsServiceImpl extends BaseIbatisServiceImpl implements GoodsServ
 		}
 		// 订单总额
 		Float totalPrice = 0f;
-		int k = 0;
 		// 校验商品准确性
 		for (OrderVO order : preOrderVO.getOrders()) {
-			// 查询订单对应商品
-			GdsGoods goods = (GdsGoods) selectOne("goods.queryGoodsByID", order.getGoodsID());
-			// 商品不存在
-			if (goods == null) {
-				return new Root("303");
-			}
-			// 价格不对等
-			if (!Float.valueOf(goods.getmPrice()).equals(Float.valueOf(order.getGoodsPrice()))) {
-				return new Root("304");
-			}
-			// 库存量不足
-			if (Integer.valueOf(goods.getStock()) < Integer.valueOf(order.getGoodsQuantity())) {
-				return new Root("305");
-			}
-			// 商品金额异常
-			if (!Float.valueOf(Float.valueOf(goods.getmPrice()) * Integer.valueOf(order.getGoodsQuantity())).equals(Float.valueOf(order.getTotalPrice()))) {
-				return new Root("306");
-			}
-			// 运费不对等
-			if (!Float.valueOf(order.getGoodsFreight()).equals(Float.valueOf(selectOne("goods.validFreight", order).toString()))) {
-				return new Root("307");
-			}
-			// 累计总费用
-			totalPrice += Float.valueOf(order.getTotalPrice()) + Float.valueOf(order.getGoodsFreight());
-			// 生成订单号
-			order.setOrderNo(ComUtil.orderNo(++k));
-			// 填充购买人
-			order.setBuyerID(preOrderVO.getMember().getId());
+			GdsOrder o = (GdsOrder) selectOne("goods.queryOrderByID", order.getId());
+			totalPrice += Float.valueOf(o.getTotalPrice()) + Float.valueOf(o.getGoodsFreight());
 		}
 		// 元转分
 		String total_fee = String.valueOf(BigDecimal.valueOf(totalPrice).multiply(new BigDecimal(100)).intValue());
 		// 创建支付对象
-		SysPay pay = new SysPay();
-		pay.setCategory("0");
+		preOrderVO.setCategory("0");
 		// 保存下单信息
-		insert("sys.pay", pay);
+		insert("sys.pay", preOrderVO);
 		// 获取支付标识
-		pay.setId(String.valueOf(selectOne("queryid")));
-		preOrderVO.setPayID(pay.getId());
+		preOrderVO.setId(String.valueOf(selectOne("queryid")));
 		// 微信统一下单参数
 		Map<String, String> param = new TreeMap<String, String>();
 		param.put("appid", ConfigUtil.getProperties("wx.appid"));
@@ -395,8 +363,8 @@ public class GoodsServiceImpl extends BaseIbatisServiceImpl implements GoodsServ
 		param.put("mch_id", ConfigUtil.getProperties("wx.mch_id"));
 		param.put("nonce_str", ComUtil.uuid());
 		param.put("notify_url", "http://localhost:8080/beio/pay/notify");
-		param.put("out_trade_no", preOrderVO.getPayID());
-		param.put("total_fee", total_fee);
+		param.put("out_trade_no", preOrderVO.getId());
+		param.put("total_fee", "1");
 		param.put("trade_type", "NATIVE");
 		param.put("sign", ComUtil.signWX(param, ConfigUtil.getProperties("wx.api_key")));
 		String sender_str = ComUtil.installXML(param);
@@ -404,21 +372,16 @@ public class GoodsServiceImpl extends BaseIbatisServiceImpl implements GoodsServ
 		// 解析响应参数
 		Map<String, String> map = ComUtil.parseXML(return_str);
 		// 填充订单参数
-		pay.setTotal_fee(total_fee);
-		pay.setSender_str(sender_str);
-		pay.setReturn_str(return_str);
-		pay.setCode_url(map.get("code_url"));
-		pay.setPrepay_id(map.get("prepay_id"));
-		pay.setReturn_msg(map.get("return_msg"));
-		pay.setReturn_code(map.get("return_code"));
-		pay.setPre_time(preOrderVO.getCurrentTime());
-		update("sys.unifiedorder", pay);
-		// 商品下单
-		update("goods.preGoods", preOrderVO);
-		// 购物车下单
-		update("goods.preBuycart", preOrderVO);
+		preOrderVO.setTotal_fee(total_fee);
+		preOrderVO.setSender_str(sender_str);
+		preOrderVO.setReturn_str(return_str);
+		preOrderVO.setCode_url(map.get("code_url"));
+		preOrderVO.setPrepay_id(map.get("prepay_id"));
+		preOrderVO.setReturn_msg(map.get("return_msg"));
+		preOrderVO.setReturn_code(map.get("return_code"));
+		update("sys.unifiedorder", preOrderVO);
 		// 购物订单下单
-		insert("goods.preOrder", preOrderVO);
+		insert("goods.mergeOrder", preOrderVO);
 		// 返回成功结果
 		return new Root(preOrderVO, "200");
 	}

@@ -97,17 +97,14 @@ public class SysServiceImpl extends BaseIbatisServiceImpl implements SysService 
 	}
 
 	@Override
-	public Root preMrfee(Member mr) throws Exception {
+	public Root preMrfee(SysPay sysPay) throws Exception {
 		// TODO Auto-generated method stub
 		// 创建支付对象
-		SysPay pay = new SysPay();
-		pay.setCategory("1");
+		sysPay.setCategory("1");
 		// 保存下单信息
-		insert("sys.pay", pay);
+		insert("sys.pay", sysPay);
 		// 获取支付标识
-		pay.setId(String.valueOf(selectOne("queryid")));
-		mr.setPayID(pay.getId());
-		
+		sysPay.setId(String.valueOf(selectOne("queryid")));
 		// 微信统一下单参数
 		Map<String, String> param = new TreeMap<String, String>();
 		param.put("appid", ConfigUtil.getProperties("wx.appid"));
@@ -115,27 +112,23 @@ public class SysServiceImpl extends BaseIbatisServiceImpl implements SysService 
 		param.put("mch_id", ConfigUtil.getProperties("wx.mch_id"));
 		param.put("nonce_str", ComUtil.uuid());
 		param.put("notify_url", "http://localhost:8080/beio/pay/notify");
-		param.put("out_trade_no", mr.getPayID());
+		param.put("out_trade_no", sysPay.getId());
 		param.put("total_fee", Constant.MEMBERYEARFEE);
 		param.put("trade_type", "NATIVE");
 		param.put("sign", ComUtil.signWX(param, ConfigUtil.getProperties("wx.api_key")));
 		String sender_str = ComUtil.installXML(param);
 		String return_str = ComUtil.httpPost("https://api.mch.weixin.qq.com/pay/unifiedorder", sender_str);
-		
 		// 解析下单响应参数
 		Map<String, String> map = ComUtil.parseXML(return_str);
-		
-		pay.setTotal_fee(Constant.MEMBERYEARFEE);
-		pay.setSender_str(sender_str);
-		pay.setReturn_str(return_str);
-		pay.setCode_url(map.get("code_url"));
-		pay.setPrepay_id(map.get("prepay_id"));
-		pay.setReturn_msg(map.get("return_msg"));
-		pay.setReturn_code(map.get("return_code"));
-		pay.setPre_time(mr.getModifyTime());
-		update("sys.unifiedorder", pay);
-		insert("sys.preMrfee", mr);
-		return new Root(pay, "200");
+		sysPay.setTotal_fee(Constant.MEMBERYEARFEE);
+		sysPay.setSender_str(sender_str);
+		sysPay.setReturn_str(return_str);
+		sysPay.setCode_url(map.get("code_url"));
+		sysPay.setPrepay_id(map.get("prepay_id"));
+		sysPay.setReturn_msg(map.get("return_msg"));
+		sysPay.setReturn_code(map.get("return_code"));
+		update("sys.unifiedorder", sysPay);
+		return new Root(sysPay, "200");
 	}
 
 	@Override

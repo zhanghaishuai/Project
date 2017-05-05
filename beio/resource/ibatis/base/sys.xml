@@ -194,7 +194,8 @@
 	
 	<!-- 支付 -->
 	<insert id="pay" parameterType="SysPay">
-		insert into sys_pay (category) values (#{category});
+		insert into sys_pay (category, creator, createTime, modifier, modifyTime) 
+		values (#{category}, #{creator}, #{createTime}, #{modifier}, #{modifyTime});
 	</insert>
 	
 	<!-- 统一下单 -->
@@ -231,7 +232,8 @@
 	
 	<!-- 查询订单 -->
 	<update id="orderquery" parameterType="SysPay">
-		update sys_pay set status = #{status}, trade_state = #{trade_state}, pay_str = #{pay_str}, pay_time = #{pay_time} where id = #{id}
+		update sys_pay set status = #{status}, trade_state = #{trade_state}, pay_str = #{pay_str}, 
+		pay_time = #{pay_time}, modifier = #{modifier}, modifyTime = #{modifyTime} where id = #{id}
 	</update>
 	
 	<!-- 统一下单 -->
@@ -274,15 +276,10 @@
 	</insert>
 	
 	<!-- 微信预下单 -->
-	<insert id="preMrfee" parameterType="SysMember">
-		insert into sys_mrfee (memberID, payID, category) values (#{member.id}, #{payID}, '1');
+	<insert id="payMrfee" parameterType="SysMember">
+		insert into sys_mrfee (memberID, payID, category, status, turnonTime, expireTime) 
+		values (#{member.id}, #{payID}, '1', '1', #{mrfeeTurnon}, #{expireTime});
 	</insert>
-	
-	<!-- 支付会员年费 -->
-	<update id="payMrfee" parameterType="SysMember">
-		update sys_mrfee set status = '1', turnonTime = #{mrfeeTurnon}, expireTime = #{expireTime} 
-			where payID = #{payID};
-	</update>
 	
 	<!--          后台                  -->
 	

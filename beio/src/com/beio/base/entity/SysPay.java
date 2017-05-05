@@ -36,8 +36,14 @@ public class SysPay {
 	
 	private String pay_time; // 支付时间
 	
-	private String modifier; // 修改人
+	private String creator; // 创建人
+	
+	private String createTime; // 创建时间
 
+	private String modifier; // 修改人
+	
+	private String modifyTime; // 修改时间
+	
 	public String getId() {
 		return id;
 	}
@@ -150,12 +156,36 @@ public class SysPay {
 		this.pay_time = pay_time;
 	}
 
+	public String getCreator() {
+		return creator;
+	}
+
+	public void setCreator(String creator) {
+		this.creator = creator;
+	}
+
+	public String getCreateTime() {
+		return createTime;
+	}
+
+	public void setCreateTime(String createTime) {
+		this.createTime = createTime;
+	}
+
 	public String getModifier() {
 		return modifier;
 	}
 
 	public void setModifier(String modifier) {
 		this.modifier = modifier;
+	}
+
+	public String getModifyTime() {
+		return modifyTime;
+	}
+
+	public void setModifyTime(String modifyTime) {
+		this.modifyTime = modifyTime;
 	}
 	
 }

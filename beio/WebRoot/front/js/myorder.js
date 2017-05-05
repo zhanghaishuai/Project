@@ -243,8 +243,7 @@ function mergePay(){
 		traditional : true,
 		success : function(data) {
 			if (data.status == '200') {
-				sessionStorage.removeItem('orderBuyIDs');
-				window.location.href = "pay.html?payno="+data.result.payID;
+				window.location.href = "pay.html?payno="+data.result.id;
 			} else if (data.status == '301' || data.status == '302' || data.status == '303' 
 				|| data.status == '304' || data.status == '305' || data.status == '306' 
 					|| data.status == '307' || data.status == '308' || data.status == '170') {
@@ -257,37 +256,40 @@ function mergePay(){
 			alert(tip('500'));
 		}
 	});
-	
-	
+}
+
+//合并支付
+function againOrder(ele, id){
+	var jsonArr = new Array();
+	var json = {};
+	json.id = id;
+	jsonArr[0] = JSON.stringify(json);
 	$.ajax({
 		url : '/beio/goods/mergePay',
-		data : {'orderVO.id' : id},
+		data : {'preOrderVO.orders.jsonStr' : jsonArr},
 		type : 'POST',
 		async : false,
 		cache : true,
 		dataType : 'json',
-		success : function(data){
+		traditional : true,
+		success : function(data) {
 			if (data.status == '200') {
-				$(ele).parent().prev().html('已关闭');
-				$(ele).parent().html('<button style="padding: 2px 10px;border:1px solid #bcbcbc;" onclick="detail('+id+')">查看详情</button>');
-			}
+				window.location.href = "pay.html?payno="+data.result.id;
+			} else if (data.status == '301' || data.status == '302' || data.status == '303' 
+				|| data.status == '304' || data.status == '305' || data.status == '306' 
+					|| data.status == '307' || data.status == '308' || data.status == '170') {
+				alert(tip(data.status));
+			} else {
+				alert(tip('400'));
+			};
 		},
-		error : function(){
+		error : function() {
 			alert(tip('500'));
 		}
 	});
 }
 
-
-
-
-
-// 商品展示
-function goods(id){
-	window.location.href = "goods.html?goods=" + id;
-}
-
-// 取消订单
+//取消订单
 function cannelOrder(ele, id){
 	$.ajax({
 		url : '/beio/goods/cannelOrder',
@@ -308,6 +310,13 @@ function cannelOrder(ele, id){
 		}
 	});
 };
+
+// 商品展示
+function goods(id){
+	window.location.href = "goods.html?goods=" + id;
+}
+
+
 
 // 显示详情
 function detail(id){

@@ -98,6 +98,7 @@ function inviteActive(){
 		success : function(data) {
 			if (data.status == '200') {
 				alert('开通/续费成功！会员到期时间'+dateMilliFormat(data.result.expireTime, 'Date'));
+				window.location.href = "myinfo.html";
 			}else {
 				alert(tip(data.status));
 			}
@@ -126,7 +127,7 @@ function feeActive(){
 		success : function(data) {
 			var payno = data.result.id;
 			if (data.status == '200') {
-				$('#descr').html('待支付金额&nbsp;<em style="font-size: 24px; color: #f00;">'+(data.result.total_fee/100).toFixed(2)+'</em>&nbsp;元，剩余支付时间&nbsp;<em id="timer" style="font-size: 18px; color: #f00;">10</em>&nbsp;秒。');
+				$('#descr').html('待支付金额&nbsp;<em style="font-size: 24px; color: #f00;">'+(data.result.total_fee/100).toFixed(2)+'</em>&nbsp;元，剩余支付时间&nbsp;<em id="timer" style="font-size: 18px; color: #f00;">600</em>&nbsp;秒。');
 				qrcode.makeCode(data.result.code_url);
 				interval = setInterval(function(){
 					$.ajax({
@@ -142,6 +143,7 @@ function feeActive(){
 									window.clearInterval(interval);
 									qrcode.makeCode('');
 									alert('开通/续费成功！会员到期时间'+dateMilliFormat(data.result.expireTime, 'Date'));
+									window.location.href = "myinfo.html";
 								}else if ('NOTPAY' == data.result.trade_state) {
 									var timer = $('#timer').html();
 									if(timer > 0){

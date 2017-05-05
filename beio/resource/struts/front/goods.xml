@@ -118,6 +118,14 @@
 			<interceptor-ref name="identityStack"/>
 		</action>
 		
+		<!-- 合并支付 -->
+		<action name="mergePay" class="goodsAction" method="mergePay">
+			<result name="json" type="json">
+				<param name="root">root</param>
+			</result>
+			<interceptor-ref name="identityStack"/>
+		</action>
+		
 	</package>
 </struts>
 

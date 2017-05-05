@@ -48,7 +48,7 @@ public interface SysService extends BaseIbaitsService{
 	 * @return
 	 * @throws Exception
 	 */
-	public Root preMrfee(Member member) throws Exception;
+	public Root preMrfee(SysPay sysPay) throws Exception;
 	
 	/**
 	 * 微信会员支付

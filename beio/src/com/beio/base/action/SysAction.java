@@ -558,9 +558,12 @@ public class SysAction extends BaseAction{
 	 * @throws Exception 
 	 */
 	public String preMrfee() throws Exception{
-		mr.setMember(sessionMember());
-		mr.setModifyTime(curTimeStr());
-		root = sysService.preMrfee(mr);
+		pay.setCreator(sessionMemberID());
+		pay.setCreateTime(curTimeStr());
+		pay.setModifier(sessionMemberID());
+		pay.setModifyTime(curTimeStr());
+		pay.setPre_time(curTimeStr());
+		root = sysService.preMrfee(pay);
 		return JSON;
 	}
 	
@@ -572,6 +575,9 @@ public class SysAction extends BaseAction{
 	public String payMrfee() throws Exception{
 		mr.setMember(sessionMember());
 		mr.setModifyTime(curTimeStr());
+		pay.setModifier(sessionMemberID());
+		pay.setModifyTime(curTimeStr());
+		pay.setPay_time(curTimeStr());
 		root = sysService.payMrfee(mr, pay);
 		SysMember m =queryMember(mr.getMember());
 		getSession().setAttribute(Constant.SESSIONUSERINFO, m);

@@ -241,8 +241,8 @@
 				WHEN #{item.goodsID} THEN CONVERT( salds , SIGNED) + CONVERT( #{item.goodsQuantity} , SIGNED)
 			</foreach>
 		    END,
-		    modifier = #{member.id},
-		    modifyTime = #{currentTime}
+		    modifier = #{modifier},
+		    modifyTime = #{modifyTime}
 		WHERE
 		    id IN 
 		<foreach collection="orders" index="index" item="item" open="(" separator="," close=")">
@@ -252,8 +252,8 @@
 	
 	<!-- 购物车下单 -->
 	<update id="preBuycart" parameterType="Object">
-		update gds_buycart set status = '1', modifier = #{member.id}, modifyTime = #{currentTime} 
-			where buyerID = #{member.id} and enable = '1' and exist = '1' and goodsID in 
+		update gds_buycart set status = '1', modifier = #{modifier}, modifyTime = #{modifyTime} 
+			where buyerID = #{modifier} and enable = '1' and exist = '1' and goodsID in 
 		<foreach collection="orders" index="index" item="item" open="(" separator="," close=")">
 			#{item.goodsID}
 		</foreach>
@@ -265,8 +265,26 @@
 			receiptStatus, receiptType, receiptTitle, goodsName, goodsPrice, goodsFreight, goodsQuantity, totalPrice, status, creator, createTime, modifier, modifyTime) values 
 		<foreach collection="orders" index="index" item="item" open="" separator="," close="">
 		(#{item.buyerID}, #{item.goodsID}, #{item.orderNo}, #{item.addrName}, #{item.addrMobile}, #{item.addrTelephone}, #{item.addrProvince}, #{item.addrCity}, 
-		 #{item.addrCounty}, #{item.addrZipcode}, #{item.addrAddress}, #{payID}, #{item.receiptStatus}, #{item.receiptType}, #{item.receiptTitle}, #{item.goodsName}, 
-		 #{item.goodsPrice}, #{item.goodsFreight}, #{item.goodsQuantity}, #{item.totalPrice}, #{item.status}, #{member.id}, #{currentTime}, #{member.id}, #{currentTime})
+		 #{item.addrCounty}, #{item.addrZipcode}, #{item.addrAddress}, #{id}, #{item.receiptStatus}, #{item.receiptType}, #{item.receiptTitle}, #{item.goodsName}, 
+		 #{item.goodsPrice}, #{item.goodsFreight}, #{item.goodsQuantity}, #{item.totalPrice}, #{item.status}, #{modifier}, #{modifyTime}, #{modifier}, #{modifyTime})
+		</foreach>
+	</insert>
+	
+	<!-- 购物订单合并 -->
+	<insert id="mergeOrder" parameterType="Object">
+		UPDATE gds_order 
+		SET 
+		    payID = CASE id
+		    <foreach collection="orders" index="index" item="item" open="" separator="" close="">
+				WHEN #{item.id} THEN #{id}
+			</foreach>
+		    END,
+		    modifier = #{modifier},
+		    modifyTime = #{modifyTime}
+		WHERE
+		    id IN 
+		<foreach collection="orders" index="index" item="item" open="(" separator="," close=")">
+			#{item.id}
 		</foreach>
 	</insert>
 	
@@ -295,6 +313,11 @@
 		</if>
 	</select>
 	
+	<!-- 查询订单 -->
+	<select id="queryOrderByID" parameterType="Object" resultType="GdsOrder">
+		select so.* from gds_order so where so.id = #{id}
+	</select>
+	
 	<!-- 查询运费 -->
 	<select id="freight" parameterType="Object" resultType="BuycartVO">
 		select cart.id, ifnull(fare.fee, 0) as fee from gds_buycart cart
@@ -319,7 +342,7 @@
 	
 	<!-- 购物支付订单 -->
 	<update id="payOrder" parameterType="Object">
-		update gds_order set status = '1', modifier = #{modifier}, modifyTime = #{pay_time} where payID = #{id}
+		update gds_order set status = '1', modifier = #{modifier}, modifyTime = #{modifyTime} where payID = #{id}
 	</update>
 	
 	<!-- 取消支付订单 -->

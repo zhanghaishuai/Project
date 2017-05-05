@@ -156,8 +156,11 @@ public class GoodsAction extends BaseAction{
 	 * @throws Exception
 	 */
 	public String preOrder() throws Exception{
-		preOrderVO.setMember(sessionMember());
-		preOrderVO.setCurrentTime(curTimeStr());
+		preOrderVO.setCreator(sessionMemberID());
+		preOrderVO.setCreateTime(curTimeStr());
+		preOrderVO.setModifier(sessionMemberID());
+		preOrderVO.setModifyTime(curTimeStr());
+		preOrderVO.setPre_time(curTimeStr());
 		root = goodsService.preOrder(preOrderVO);
 		return JSON;
 	}
@@ -191,8 +194,9 @@ public class GoodsAction extends BaseAction{
 	 * @throws Exception
 	 */
 	public String payOrder() throws Exception{
-		pay.setPay_time(curTimeStr());
 		pay.setModifier(sessionMemberID());
+		pay.setModifyTime(curTimeStr());
+		pay.setPay_time(curTimeStr());
 		root = goodsService.payOrder(pay);
 		return JSON;
 	}
@@ -215,9 +219,12 @@ public class GoodsAction extends BaseAction{
 	 * @throws Exception
 	 */
 	public String mergePay() throws Exception{
-		preOrderVO.setMember(sessionMember());
-		preOrderVO.setCurrentTime(curTimeStr());
-		root = goodsService.preOrder(preOrderVO);
+		preOrderVO.setCreator(sessionMemberID());
+		preOrderVO.setCreateTime(curTimeStr());
+		preOrderVO.setModifier(sessionMemberID());
+		preOrderVO.setModifyTime(curTimeStr());
+		preOrderVO.setPre_time(curTimeStr());
+		root = goodsService.mergePay(preOrderVO);
 		return JSON;
 	}
 
@@ -275,6 +282,22 @@ public class GoodsAction extends BaseAction{
 
 	public void setOrderVO(OrderVO orderVO) {
 		this.orderVO = orderVO;
+	}
+
+	public CartInfoVO getCartInfoVO() {
+		return cartInfoVO;
+	}
+
+	public void setCartInfoVO(CartInfoVO cartInfoVO) {
+		this.cartInfoVO = cartInfoVO;
+	}
+
+	public SysPay getPay() {
+		return pay;
+	}
+
+	public void setPay(SysPay pay) {
+		this.pay = pay;
 	}
 
 }

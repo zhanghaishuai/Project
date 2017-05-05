@@ -489,7 +489,7 @@ function preOrder(){
 		success : function(data) {
 			if (data.status == '200') {
 				sessionStorage.removeItem('orderBuyIDs');
-				window.location.href = "pay.html?payno="+data.result.payID;
+				window.location.href = "pay.html?payno="+data.result.id;
 			} else if (data.status == '301' || data.status == '302' || data.status == '303' 
 				|| data.status == '304' || data.status == '305' || data.status == '306' 
 					|| data.status == '307' || data.status == '308' || data.status == '170') {

@@ -63,6 +63,6 @@ public class Constant {
 	public static final Float TEMPORARYFREIGHT = 15.00f;
 	
 	/** 会员年费 **/
-	public static final String MEMBERYEARFEE = "36000";
+	public static final String MEMBERYEARFEE = "1";
 	
 }

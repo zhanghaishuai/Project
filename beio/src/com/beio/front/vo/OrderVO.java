@@ -20,24 +20,60 @@ public class OrderVO extends GdsOrder{
 	
 	public void setJsonStr(String jsonStr) {
 		JSONObject json = JSONObject.fromObject(jsonStr);
-		this.setId(json.getString("id"));
-		this.setAddrName(json.getString("addrName"));
-		this.setAddrMobile(json.getString("addrMobile"));
-		this.setAddrTelephone(json.getString("addrTelephone"));
-		this.setAddrProvince(json.getString("addrProvince"));
-		this.setAddrCity(json.getString("addrCity"));
-		this.setAddrCounty(json.getString("addrCounty"));
-		this.setAddrZipcode(json.getString("addrZipcode"));
-		this.setAddrAddress(json.getString("addrAddress"));
-		this.setReceiptStatus(json.getString("receiptStatus"));
-		this.setReceiptType(json.getString("receiptType"));
-		this.setReceiptTitle(json.getString("receiptTitle"));
-		this.setGoodsID(json.getString("goodsID"));
-		this.setGoodsName(json.getString("goodsName"));
-		this.setGoodsPrice(json.getString("goodsPrice"));
-		this.setGoodsFreight(json.getString("goodsFreight"));
-		this.setGoodsQuantity(json.getString("goodsQuantity"));
-		this.setTotalPrice(json.getString("totalPrice"));
+		if (json.containsKey("id")) {
+			this.setId(json.getString("id"));
+		}
+		if (json.containsKey("addrName")) {
+			this.setAddrName(json.getString("addrName"));
+		}
+		if (json.containsKey("addrMobile")) {
+			this.setAddrMobile(json.getString("addrMobile"));	
+		}
+		if (json.containsKey("addrTelephone")) {
+			this.setAddrTelephone(json.getString("addrTelephone"));
+		}
+		if (json.containsKey("addrProvince")) {
+			this.setAddrProvince(json.getString("addrProvince"));
+		}
+		if (json.containsKey("addrCity")) {
+			this.setAddrCity(json.getString("addrCity"));
+		}
+		if (json.containsKey("addrCounty")) {
+			this.setAddrCounty(json.getString("addrCounty"));
+		}
+		if (json.containsKey("addrZipcode")) {
+			this.setAddrZipcode(json.getString("addrZipcode"));
+		}
+		if (json.containsKey("addrAddress")) {
+			this.setAddrAddress(json.getString("addrAddress"));
+		}
+		if (json.containsKey("receiptStatus")) {
+			this.setReceiptStatus(json.getString("receiptStatus"));
+		}
+		if (json.containsKey("receiptType")) {
+			this.setReceiptType(json.getString("receiptType"));
+		}
+		if (json.containsKey("receiptTitle")) {
+			this.setReceiptTitle(json.getString("receiptTitle"));
+		}
+		if (json.containsKey("goodsID")) {
+			this.setGoodsID(json.getString("goodsID"));
+		}
+		if (json.containsKey("goodsName")) {
+			this.setGoodsName(json.getString("goodsName"));
+		}
+		if (json.containsKey("goodsPrice")) {
+			this.setGoodsPrice(json.getString("goodsPrice"));
+		}
+		if (json.containsKey("goodsFreight")) {
+			this.setGoodsFreight(json.getString("goodsFreight"));
+		}
+		if (json.containsKey("goodsQuantity")) {
+			this.setGoodsQuantity(json.getString("goodsQuantity"));
+		}
+		if (json.containsKey("totalPrice")) {
+			this.setTotalPrice(json.getString("totalPrice"));
+		}
 		this.setStatus(Constant.ORDERSTATUSUNPAID);
 	}
 
