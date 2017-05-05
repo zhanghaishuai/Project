@@ -199,9 +199,34 @@
 	
 	<!-- 统一下单 -->
 	<update id="unifiedorder" parameterType="SysPay">
-		update sys_pay set total_fee = #{total_fee}, return_code = #{return_code}, return_msg = #{return_msg}, 
-		code_url = #{code_url}, prepay_id = #{prepay_id}, sender_str = #{sender_str}, return_str = #{return_str}, 
-		pre_time = #{pre_time} where id = #{id}
+		update sys_pay 
+		<set>
+			<if test="total_fee != null and total_fee != ''">
+				total_fee = #{total_fee},
+			</if>
+			<if test="return_code != null and return_code != ''">
+				return_code = #{return_code},
+			</if>
+			<if test="return_msg != null and return_msg != ''">
+				return_msg = #{return_msg},
+			</if>
+			<if test="code_url != null and code_url != ''">
+				code_url = #{code_url},
+			</if>
+			<if test="prepay_id != null and prepay_id != ''">
+				prepay_id = #{prepay_id},
+			</if>
+			<if test="sender_str != null and sender_str != ''">
+				sender_str = #{sender_str},
+			</if>
+			<if test="return_str != null and return_str != ''">
+				return_str = #{return_str},
+			</if>
+			<if test="pre_time != null and pre_time != ''">
+				pre_time = #{pre_time},
+			</if>
+		</set>
+		where id = #{id}
 	</update>
 	
 	<!-- 查询订单 -->
