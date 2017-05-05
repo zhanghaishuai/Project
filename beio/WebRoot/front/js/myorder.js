@@ -69,7 +69,7 @@ function query(options){
 							<thead>\
 								<tr>\
 									<th style="width: 20px;"><input type="checkbox" name="checkAll" onchange="checkAll()"/></th>\
-									<th style="width: 70px;"><button style="border:1px solid #bcbcbc;">合并支付</button></th>\
+									<th style="width: 70px;"><button style="border:1px solid #bcbcbc;" onclick="mergePay()">合并支付</button></th>\
 									<th style="width: 340px;">商品信息</th>\
 									<th style="width: 150px;">下单时间</th>\
 									<th style="width: 100px;">订单总额</th>\
@@ -97,7 +97,7 @@ function query(options){
 							status = '未付款';
 							btn = '<button style="padding: 2px 10px;border:1px solid #bcbcbc;" onclick="againOrder(this, '+item.id+')">付款</button>\
 								</br><button style="padding: 2px 10px;border:1px solid #bcbcbc;" onclick="cannelOrder(this, '+item.id+')">取消</button>';
-							check = '<input type="checkbox" name="check" onclick="check()"/>';
+							check = '<input id="'+item.id+'" type="checkbox" name="check" onclick="check()"/>';
 						}else if (item.status == '1') {
 							status = '待发货';
 							btn = '<button style="padding: 2px 10px;border:1px solid #bcbcbc;" onclick="detail('+item.id+')">查看详情</button>';
@@ -221,15 +221,46 @@ function check(){
 	}
 }
 
-// 商品展示
-function goods(id){
-	window.location.href = "goods.html?goods=" + id;
-}
-
-// 重新支付
-function againOrder(id){
+// 合并支付
+function mergePay(){
+	if($('[name=check]:checked').size() < 1){
+		alert(tip('310'));
+		return;
+	}
+	var jsonArr = new Array();
+	$.each($('[name=check]:checked'), function(i, item){
+		var json = {};
+		json.id = $(this).attr('id');
+		jsonArr[i] = JSON.stringify(json);
+	});
 	$.ajax({
-		url : '/beio/goods/cannelOrder',
+		url : '/beio/goods/mergePay',
+		data : {'preOrderVO.orders.jsonStr' : jsonArr},
+		type : 'POST',
+		async : false,
+		cache : true,
+		dataType : 'json',
+		traditional : true,
+		success : function(data) {
+			if (data.status == '200') {
+				sessionStorage.removeItem('orderBuyIDs');
+				window.location.href = "pay.html?payno="+data.result.payID;
+			} else if (data.status == '301' || data.status == '302' || data.status == '303' 
+				|| data.status == '304' || data.status == '305' || data.status == '306' 
+					|| data.status == '307' || data.status == '308' || data.status == '170') {
+				alert(tip(data.status));
+			} else {
+				alert(tip('400'));
+			};
+		},
+		error : function() {
+			alert(tip('500'));
+		}
+	});
+	
+	
+	$.ajax({
+		url : '/beio/goods/mergePay',
 		data : {'orderVO.id' : id},
 		type : 'POST',
 		async : false,
@@ -245,6 +276,15 @@ function againOrder(id){
 			alert(tip('500'));
 		}
 	});
+}
+
+
+
+
+
+// 商品展示
+function goods(id){
+	window.location.href = "goods.html?goods=" + id;
 }
 
 // 取消订单
