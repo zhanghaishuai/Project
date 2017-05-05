@@ -208,6 +208,18 @@ public class GoodsAction extends BaseAction{
 		root = goodsService.cancelOrder(orderVO);
 		return JSON;
 	}
+	
+	/**
+	 * 合并支付
+	 * @return
+	 * @throws Exception
+	 */
+	public String mergePay() throws Exception{
+		preOrderVO.setMember(sessionMember());
+		preOrderVO.setCurrentTime(curTimeStr());
+		root = goodsService.preOrder(preOrderVO);
+		return JSON;
+	}
 
 	public GoodsService getGoodsService() {
 		return goodsService;

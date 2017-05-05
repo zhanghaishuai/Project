@@ -114,4 +114,12 @@ public interface GoodsService extends BaseIbaitsService{
 	 */
 	public Root cancelOrder(OrderVO orderVO) throws Exception;
 	
+	/**
+	 * 合并支付
+	 * @param member
+	 * @return
+	 * @throws Exception
+	 */
+	public Root mergePay(PreOrderVO preOrderVO) throws Exception;
+	
 }

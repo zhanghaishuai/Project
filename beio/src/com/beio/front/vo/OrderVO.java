@@ -20,6 +20,7 @@ public class OrderVO extends GdsOrder{
 	
 	public void setJsonStr(String jsonStr) {
 		JSONObject json = JSONObject.fromObject(jsonStr);
+		this.setId(json.getString("id"));
 		this.setAddrName(json.getString("addrName"));
 		this.setAddrMobile(json.getString("addrMobile"));
 		this.setAddrTelephone(json.getString("addrTelephone"));
