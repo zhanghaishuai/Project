@@ -258,7 +258,7 @@ function mergePay(){
 	});
 }
 
-//合并支付
+// 重新支付
 function againOrder(ele, id){
 	var jsonArr = new Array();
 	var json = {};
