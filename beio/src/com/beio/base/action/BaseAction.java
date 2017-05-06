@@ -337,6 +337,16 @@ public class BaseAction extends ActionSupport {
 		this.backRoot.setRows(rows);
 		this.backRoot.setStatus(status);
 	}
+	
+	public void setBackRoot(String status){
+		this.backRoot.setStatus(status);
+	}
+	
+	public void setBackRoot(Object result, String status, String message){
+		this.backRoot.setResult(result);
+		this.backRoot.setStatus(status);
+		this.backRoot.setMessage(message);
+	}
 
 	public SysMember getMember() {
 		return member;

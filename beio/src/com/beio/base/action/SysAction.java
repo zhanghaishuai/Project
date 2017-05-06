@@ -5,6 +5,7 @@ import javax.servlet.http.HttpServletRequest;
 import org.apache.struts2.ServletActionContext;
 
 import net.sf.json.JSONArray;
+import net.sf.json.JSONObject;
 
 import com.beio.base.entity.SysArea;
 import com.beio.base.entity.SysMember;
@@ -535,34 +536,32 @@ public class SysAction extends BaseAction{
 	 * @throws Exception
 	 */
 	public String userLogin() throws Exception{
-		if (ComUtil.isNotMatches(getRegex("empty").getRegex(), user.getUsername())) {
+		if(ComUtil.isNotMatches(getRegex("empty").getRegex(), user.getUsername())){
 			setRoot("120");
 			return JSON;
 		}
-		if (ComUtil.isNotMatches(getRegex("empty").getRegex(), user.getPassword())) {
+		if(ComUtil.isNotMatches(getRegex("empty").getRegex(), user.getPassword())){
 			setRoot("122");
 			return JSON;
 		}
-//		if (!Constant.AUTOLOGINMARK.equals(mr.getAutoLoginMark())) {
-			if (ComUtil.isNotMatches(getRegex("empty").getRegex(), user.getImgVerifyCode())) {
-				setRoot("124");
-				return JSON;
-			}
-			if (!user.getImgVerifyCode().toUpperCase().equals((String) getSession().getAttribute(Constant.SESSIONVERIFYCODE))) {
-				setRoot("125");
-				return JSON;
-			}
-//		}
-		SysUser u = (SysUser) getBaseIbaitsService().selectOne("sys.userLogin", user);
-		if (u == null) {
+		if(ComUtil.isNotMatches(getRegex("empty").getRegex(), user.getImgVerifyCode())){
+			setRoot("124");
+			return JSON;
+		}
+		if(!user.getImgVerifyCode().toUpperCase().equals((String) getSession().getAttribute(Constant.SESSIONVERIFYCODE))){
+			setRoot("125");
+			return JSON;
+		}
+		SysUser u = (SysUser)getBaseIbaitsService().selectOne("sys.userLogin", user);
+		if(u == null){
 			setRoot("195");
 			return JSON;
 		}
-		if (!Constant.ENABLE.equals(u.getEnable())) {
+		if(!Constant.ENABLE.equals(u.getEnable())){
 			setRoot("192");
 			return JSON;
 		}
-		if (!Constant.EXIST.equals(u.getExist())) {
+		if(!Constant.EXIST.equals(u.getExist())){
 			setRoot("193");
 			return JSON;
 		}
@@ -580,6 +579,68 @@ public class SysAction extends BaseAction{
 		user.setPage((Integer.valueOf(page) - 1) * Integer.valueOf(rows));
 		user.setRows(Integer.valueOf(rows));
 		setBackPageRoot((int)baseIbaitsService.selectOne("sys.countUser", user), JSONArray.fromObject(baseIbaitsService.selectList("sys.pageUser", user)), "200");
+		return JSON;
+	}
+	
+	/**
+	 * 删除用户
+	 * @return
+	 * @throws Exception
+	 */
+	public String delUser() throws Exception{
+		if(baseIbaitsService.delete("sys.delUser", user) < 1){
+			setBackRoot("100");
+			return JSON;
+		}
+		setBackRoot("200");
+		return JSON;
+	}
+	
+	/**
+	 * 增加后台用户
+	 * @return
+	 * @throws Exception
+	 */
+	public String addUser() throws Exception{
+		// 校验参数
+		if(baseIbaitsService.insert("sys.countUserByUsername", user) > 0){
+			setBackRoot("99");
+			return JSON;
+		}
+		user.setCreator(sessionUser().getId());
+		user.setCreateTime(curTimeStr());
+		if(baseIbaitsService.insert("sys.addUser", user) < 1){
+			setBackRoot("100");
+			return JSON;
+		}
+		setBackRoot("200");
+		return JSON;
+	}
+	
+	/**
+	 * 根据id获取后台用户信息
+	 * @return
+	 * @throws Exception
+	 */
+	public String getUserById() throws Exception{
+		SysUser u = (SysUser)baseIbaitsService.selectOne("sys.countUserByUsername", user);
+		if(null != u && !ComUtil.isEmpty(u.getId())){
+			setBackRoot(JSONObject.fromObject(u), "200", "OK");
+		}else{
+			setBackRoot("100");
+		}
+		return JSON;
+	}
+	
+	/**
+	 * 修改后台用户信息
+	 * @return
+	 * @throws Exception
+	 */
+	public String updateUser() throws Exception{
+		
+		user.setModifier(sessionUser().getId());
+		user.setModifyTime(curTimeStr());
 		return JSON;
 	}
 	

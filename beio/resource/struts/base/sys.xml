@@ -184,6 +184,38 @@
 			<interceptor-ref name="backIdentityStack"/>
 		</action>
 		
+		<!-- 增加后台用户 -->
+		<action name="addUser" class="sysAction" method="addUser">
+			<result name="json" type="json">
+				<param name="root">backRoot</param>
+			</result>
+			<interceptor-ref name="backIdentityStack"/>
+		</action>
+		
+		<!-- 根据id获取后台用户信息 -->
+		<action name="getUserById" class="sysAction" method="getUserById">
+			<result name="json" type="json">
+				<param name="root">backRoot</param>
+			</result>
+			<interceptor-ref name="backIdentityStack"/>
+		</action>
+		
+		<!-- 修改后台用户 -->
+		<action name="updateUser" class="sysAction" method="updateUser">
+			<result name="json" type="json">
+				<param name="root">backRoot</param>
+			</result>
+			<interceptor-ref name="backIdentityStack"/>
+		</action>
+		
+		<!-- 删除后台用户 -->
+		<action name="delUser" class="sysAction" method="delUser">
+			<result name="json" type="json">
+				<param name="root">backRoot</param>
+			</result>
+			<interceptor-ref name="backIdentityStack"/>
+		</action>
+		
 	</package>
 </struts>
 
