@@ -6,7 +6,7 @@
 .mc table{width: 100%; border: 1px solid #dcdcdc; line-height: 30px;text-align: center;}
 .mc table tr{border-bottom: 1px solid #dcdcdc;}
 .mc table tr th{border-right: 1px solid #dcdcdc; padding: 3px 5px; font-size: 16px; letter-spacing: 1px; 
-	background-color: #f6f6f6;}
+	background-color: #ededed;}
 .mc table tr td{border-right: 1px dashed #dcdcdc;}
 .mc table tr .orderNo{text-align: left;padding: 2px; 5px; background-color: #fcfcfc; font-size: 16px;}
 .paginating{height: 40px;text-align: center;}

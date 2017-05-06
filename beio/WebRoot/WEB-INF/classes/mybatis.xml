@@ -10,7 +10,8 @@
 		<typeAlias type="com.beio.base.entity.SysArea" alias="SysArea"/>
 		<typeAlias type="com.beio.base.entity.SysInvite" alias="SysInvite"/>
 		<typeAlias type="com.beio.base.entity.SysMember" alias="SysMember"/>
-		<typeAlias type="com.beio.base.entity.SysOrder" alias="SysOrder"/>
+		<typeAlias type="com.beio.base.entity.SysMrfee" alias="SysMrfee"/>
+		<typeAlias type="com.beio.base.entity.SysPay" alias="SysPay"/>
 		<typeAlias type="com.beio.base.entity.SysRegex" alias="SysRegex"/>
 		<typeAlias type="com.beio.base.entity.SysSmsLog" alias="SysSmsLog"/>
 		<typeAlias type="com.beio.base.entity.SysTipMsg" alias="SysTipMsg"/>
@@ -20,10 +21,10 @@
 		<typeAlias type="com.beio.front.entity.GdsBrand" alias="GdsBrand"/>
 		<typeAlias type="com.beio.front.entity.GdsBuycart" alias="GdsBuycart"/>
 		<typeAlias type="com.beio.front.entity.GdsClassify" alias="GdsClassify"/>
-		<typeAlias type="com.beio.front.entity.GdsDetails" alias="GdsDetails"/>
 		<typeAlias type="com.beio.front.entity.GdsGoods" alias="GdsGoods"/>
 		<typeAlias type="com.beio.front.entity.GdsImage" alias="GdsImage"/>
 		<typeAlias type="com.beio.front.entity.GdsNavbar" alias="GdsNavbar"/>
+		<typeAlias type="com.beio.front.entity.GdsOrder" alias="GdsOrder"/>
 		<typeAlias type="com.beio.front.entity.GdsSearch" alias="GdsSearch"/>
 		
 		<typeAlias type="com.beio.base.vo.Address" alias="Address"/>
@@ -32,14 +33,15 @@
 		<typeAlias type="com.beio.base.vo.Root" alias="Root"/>
 		
 		<typeAlias type="com.beio.front.vo.BuycartVO" alias="BuycartVO"/>
+		<typeAlias type="com.beio.front.vo.CartInfoVO" alias="CartInfoVO"/>
 		<typeAlias type="com.beio.front.vo.ClassifyVO" alias="ClassifyVO"/>
 		<typeAlias type="com.beio.front.vo.GoodsVO" alias="GoodsVO"/>
 		<typeAlias type="com.beio.front.vo.IndexInfoVO" alias="IndexInfoVO"/>
+		<typeAlias type="com.beio.front.vo.OrderVO" alias="OrderVO"/>
+		<typeAlias type="com.beio.front.vo.PreOrderVO" alias="PreOrderVO"/>
 		<typeAlias type="com.beio.front.vo.SearchInfoVO" alias="SearchInfoVO"/>
 		<typeAlias type="com.beio.front.vo.SettlementVO" alias="SettlementVO"/>
 		<typeAlias type="com.beio.front.vo.TopInfoVO" alias="TopInfoVO"/>
-		<typeAlias type="com.beio.front.vo.DetailsVO" alias="DetailsVO"/>
-		<typeAlias type="com.beio.front.vo.OrderVO" alias="OrderVO"/>
 		
 		
 		

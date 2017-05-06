@@ -1,14 +1,20 @@
 package com.beio.front.service.impl;
 
+import java.math.BigDecimal;
 import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
 
 import com.beio.base.entity.SysMember;
+import com.beio.base.entity.SysPay;
 import com.beio.base.service.impl.BaseIbatisServiceImpl;
 import com.beio.base.util.ComUtil;
+import com.beio.base.util.ConfigUtil;
 import com.beio.base.vo.Root;
 import com.beio.front.entity.GdsBuycart;
 import com.beio.front.entity.GdsClassify;
 import com.beio.front.entity.GdsGoods;
+import com.beio.front.entity.GdsOrder;
 import com.beio.front.service.GoodsService;
 import com.beio.front.vo.BuycartVO;
 import com.beio.front.vo.CartInfoVO;
@@ -120,24 +126,9 @@ public class GoodsServiceImpl extends BaseIbatisServiceImpl implements GoodsServ
 		selectPage("goods.queryOrder", orderVO);
 		if (ComUtil.isNotEmpty(orderVO.getPageList())) {
 			for (Object order : orderVO.getPageList()) {
-				queryOrderDetails((OrderVO)order);
+				((OrderVO)order).setShows(selectList("goods.queryShowsByGoods", ((OrderVO)order).getGoodsID()));
 			}
 		}
-		return orderVO;
-	}
-	
-	/**
-	 * 查询订单详情
-	 * @param orderVO
-	 * @throws Exception
-	 */
-	private OrderVO queryOrderDetails(OrderVO orderVO) throws Exception{
-//		orderVO.setDetails(selectList("goods.queryOrderDetails", orderVO));
-//		if (ComUtil.isNotEmpty(orderVO.getDetails())) {
-//			for (DetailsVO details : orderVO.getDetails()) {
-//				details.setGoods(queryGoods(details.getGoodsID()));
-//			}
-//		}
 		return orderVO;
 	}
 	
@@ -214,8 +205,8 @@ public class GoodsServiceImpl extends BaseIbatisServiceImpl implements GoodsServ
 		if (preOrderVO == null || ComUtil.isEmpty(preOrderVO.getOrders())) {
 			return new Root("301");
 		}
-		// 声明商品总额、总运费、订单总额
-		Float goodsPrice = 0f, freight = 0f, singleTotalPrice;
+		// 订单总额
+		Float totalPrice = 0f;
 		int k = 0;
 		// 校验商品准确性
 		for (OrderVO order : preOrderVO.getOrders()) {
@@ -225,29 +216,60 @@ public class GoodsServiceImpl extends BaseIbatisServiceImpl implements GoodsServ
 			if (goods == null) {
 				return new Root("303");
 			}
-			// 计算单个商品总价
-			singleTotalPrice = Float.valueOf(goods.getmPrice())*Integer.valueOf(order.getGoodsQuantity());
-			// 计算商品总额
-			goodsPrice += singleTotalPrice;
-			// 计算总运费
-			freight += Float.valueOf(goods.getFreight());
 			// 价格不对等
 			if (!Float.valueOf(goods.getmPrice()).equals(Float.valueOf(order.getGoodsPrice()))) {
 				return new Root("304");
 			}
-			// 库存不足
+			// 库存量不足
 			if (Integer.valueOf(goods.getStock()) < Integer.valueOf(order.getGoodsQuantity())) {
 				return new Root("305");
 			}
-			// 单个商品价格计算异常
-			if (!singleTotalPrice.equals(Float.valueOf(order.getTotalPrice()))) {
+			// 商品金额异常
+			if (!Float.valueOf(Float.valueOf(goods.getmPrice()) * Integer.valueOf(order.getGoodsQuantity())).equals(Float.valueOf(order.getTotalPrice()))) {
 				return new Root("306");
 			}
+			// 运费不对等
+			if (!Float.valueOf(order.getGoodsFreight()).equals(Float.valueOf(selectOne("goods.validFreight", order).toString()))) {
+				return new Root("307");
+			}
+			// 累计总费用
+			totalPrice += Float.valueOf(order.getTotalPrice()) + Float.valueOf(order.getGoodsFreight());
 			// 生成订单号
-			order.setOrderNo(ComUtil.generateOrderNO(++k));
+			order.setOrderNo(ComUtil.orderNo(++k));
 			// 填充购买人
-			order.setBuyerID(preOrderVO.getMember().getId());
+			order.setBuyerID(preOrderVO.getCreator());
 		}
+		// 元转分
+		String total_fee = String.valueOf(BigDecimal.valueOf(totalPrice).multiply(new BigDecimal(100)).intValue());
+		preOrderVO.setCategory("0");
+		// 保存下单信息
+		insert("sys.pay", preOrderVO);
+		// 获取支付标识
+		preOrderVO.setId(String.valueOf(selectOne("queryid")));
+		// 微信统一下单参数
+		Map<String, String> param = new TreeMap<String, String>();
+		param.put("appid", ConfigUtil.getProperties("wx.appid"));
+		param.put("body", "快客林-购买商品");
+		param.put("mch_id", ConfigUtil.getProperties("wx.mch_id"));
+		param.put("nonce_str", ComUtil.uuid());
+		param.put("notify_url", "http://localhost:8080/beio/pay/notify");
+		param.put("out_trade_no", preOrderVO.getId());
+		param.put("total_fee", "1");
+		param.put("trade_type", "NATIVE");
+		param.put("sign", ComUtil.signWX(param, ConfigUtil.getProperties("wx.api_key")));
+		String sender_str = ComUtil.installXML(param);
+		String return_str = ComUtil.httpPost("https://api.mch.weixin.qq.com/pay/unifiedorder", sender_str);
+		// 解析响应参数
+		Map<String, String> map = ComUtil.parseXML(return_str);
+		// 填充订单参数
+		preOrderVO.setTotal_fee(total_fee);
+		preOrderVO.setSender_str(sender_str);
+		preOrderVO.setReturn_str(return_str);
+		preOrderVO.setCode_url(map.get("code_url"));
+		preOrderVO.setPrepay_id(map.get("prepay_id"));
+		preOrderVO.setReturn_msg(map.get("return_msg"));
+		preOrderVO.setReturn_code(map.get("return_code"));
+		update("sys.unifiedorder", preOrderVO);
 		// 商品下单
 		update("goods.preGoods", preOrderVO);
 		// 购物车下单
@@ -258,4 +280,110 @@ public class GoodsServiceImpl extends BaseIbatisServiceImpl implements GoodsServ
 		return new Root(preOrderVO, "200");
 	}
 
+	@Override
+	public SettlementVO freight(SettlementVO settlementVO) throws Exception {
+		// TODO Auto-generated method stub
+		settlementVO.setCarts(selectList("goods.freight", settlementVO));
+		return settlementVO;
+	}
+
+	@Override
+	public Root payOrder(SysPay pay) throws Exception {
+		// TODO Auto-generated method stub
+		// 微信查询订单参数
+		Map<String, String> param = new TreeMap<String, String>();
+		param.put("appid", ConfigUtil.getProperties("wx.appid"));
+		param.put("mch_id", ConfigUtil.getProperties("wx.mch_id"));
+		param.put("out_trade_no", pay.getId());
+		param.put("nonce_str", ComUtil.uuid());
+		param.put("sign", ComUtil.signWX(param, ConfigUtil.getProperties("wx.api_key")));
+		String sender_str = ComUtil.installXML(param);
+		String return_str = ComUtil.httpPost("https://api.mch.weixin.qq.com/pay/orderquery", sender_str);
+		// 解析下单响应参数
+		Map<String, String> map = ComUtil.parseXML(return_str);
+		// 判断支付结果
+		if ("SUCCESS".equals(map.get("return_code"))) {
+			if ("SUCCESS".equals(map.get("result_code"))) {
+				// 支付成功
+				if ("SUCCESS".equals(map.get("trade_state")) || "REFUND".equals(map.get("trade_state"))
+						|| "CLOSED".equals(map.get("trade_state")) || "REVOKED".equals(map.get("trade_state"))
+						|| "PAYERROR".equals(map.get("trade_state"))) {
+					if ("SUCCESS".equals(map.get("trade_state"))) {
+						pay.setStatus("1");
+						update("goods.payOrder", pay);
+					}else {
+						pay.setStatus("2");
+					}
+					pay.setPay_str(return_str);
+					pay.setTrade_state(map.get("trade_state"));
+					// 更新支付状态
+					update("sys.orderquery", pay);
+				}
+			}
+		}
+		return new Root(map.get("trade_state"), "200");
+	}
+
+	@Override
+	public Root cancelOrder(OrderVO orderVO) throws Exception {
+		// TODO Auto-generated method stub
+		// 还原商品库存
+		update("goods.cancelGoods", orderVO);
+		// 取消支付订单
+		update("goods.cancelOrder", orderVO);
+		return new Root("200");
+	}
+
+	@Override
+	public Root mergePay(PreOrderVO preOrderVO) throws Exception {
+		// TODO Auto-generated method stub
+		// 订单为空
+		if (preOrderVO == null || ComUtil.isEmpty(preOrderVO.getOrders())) {
+			return new Root("301");
+		}
+		// 订单总额
+		Float totalPrice = 0f;
+		// 校验商品准确性
+		for (OrderVO order : preOrderVO.getOrders()) {
+			GdsOrder o = (GdsOrder) selectOne("goods.queryOrderByID", order.getId());
+			totalPrice += Float.valueOf(o.getTotalPrice()) + Float.valueOf(o.getGoodsFreight());
+		}
+		// 元转分
+		String total_fee = String.valueOf(BigDecimal.valueOf(totalPrice).multiply(new BigDecimal(100)).intValue());
+		// 创建支付对象
+		preOrderVO.setCategory("0");
+		// 保存下单信息
+		insert("sys.pay", preOrderVO);
+		// 获取支付标识
+		preOrderVO.setId(String.valueOf(selectOne("queryid")));
+		// 微信统一下单参数
+		Map<String, String> param = new TreeMap<String, String>();
+		param.put("appid", ConfigUtil.getProperties("wx.appid"));
+		param.put("body", "快客林-购买商品");
+		param.put("mch_id", ConfigUtil.getProperties("wx.mch_id"));
+		param.put("nonce_str", ComUtil.uuid());
+		param.put("notify_url", "http://localhost:8080/beio/pay/notify");
+		param.put("out_trade_no", preOrderVO.getId());
+		param.put("total_fee", "1");
+		param.put("trade_type", "NATIVE");
+		param.put("sign", ComUtil.signWX(param, ConfigUtil.getProperties("wx.api_key")));
+		String sender_str = ComUtil.installXML(param);
+		String return_str = ComUtil.httpPost("https://api.mch.weixin.qq.com/pay/unifiedorder", sender_str);
+		// 解析响应参数
+		Map<String, String> map = ComUtil.parseXML(return_str);
+		// 填充订单参数
+		preOrderVO.setTotal_fee(total_fee);
+		preOrderVO.setSender_str(sender_str);
+		preOrderVO.setReturn_str(return_str);
+		preOrderVO.setCode_url(map.get("code_url"));
+		preOrderVO.setPrepay_id(map.get("prepay_id"));
+		preOrderVO.setReturn_msg(map.get("return_msg"));
+		preOrderVO.setReturn_code(map.get("return_code"));
+		update("sys.unifiedorder", preOrderVO);
+		// 购物订单下单
+		insert("goods.mergeOrder", preOrderVO);
+		// 返回成功结果
+		return new Root(preOrderVO, "200");
+	}
+	
 }

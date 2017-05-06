@@ -11,38 +11,16 @@
     <script type="text/javascript" src="js/initcache.js"></script>
     <script type="text/javascript" src="js/base.js"></script>
     <script type="text/javascript" src="js/qrcode.js"></script>
+    <script type="text/javascript" src="js/pay.js"></script>
     <script type="text/javascript">
 		$(function(){
-			var qrcode = new QRCode($("#qrcode")[0], {
-				width : 200,
-				height : 200
-			});
-			qrcode.makeCode('http://www.baidu.com');
+			
 		});
 	</script>
 </head>
 <body>
-<div class="logo_line">
-	<div class="w960">
-		<div class="shopping_procedure"><span>我的购物车</span><span>填写订单</span><span class="current">完成订单</span></div>
-		<div class="logo1"><a href="index.html"><img src="image/logo1.png" height="72" style="margin-top: 10px;"></a></div>
-	</div>
-</div>
-<div class="payamount">
-    <div class="cashier">收银台</div>
-    <div class="order">
-		<span>订单编号：2017032412121200001</span>
-		<span>订单类型：购物</span>
-	</div>
-	<div>
-		<div class="wxpaylogo"><img alt="" src="image/WePayLogo.png" width="180px" height="50px"></div>
-		<div id="qrcode" class="wxqrcode"></div>
-		<div class="wxwordlogo"><img alt="" src="image/WeWordLogo.png" width="202px" height="66px"></div>
-	</div>
-</div>
-	
-<script type="text/javascript">	
-	window.document.write(base.btmHtml);
-</script>	
+<div id="hd1"></div>
+<div id="bd"></div>
+<div id="td"></div>
 </body>
 </html>

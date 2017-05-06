@@ -10,6 +10,8 @@ public class SysInvite {
 
 	private String invite; // 内邀码
 	
+	private String mobile; // 内邀码
+	
 	private String status; // 激活码状态（0：未使用、1：已使用）
 	
 	private String enable; // 是否启用（0：否、1：是）
@@ -30,6 +32,14 @@ public class SysInvite {
 
 	public void setInvite(String invite) {
 		this.invite = invite;
+	}
+
+	public String getMobile() {
+		return mobile;
+	}
+
+	public void setMobile(String mobile) {
+		this.mobile = mobile;
 	}
 
 	public String getStatus() {

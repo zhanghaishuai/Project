@@ -1,3 +1,8 @@
+/**
+ * 构建地址
+ * @param id
+ * @param callback
+ */
 function buildAddr(id, callback){
 	$('body').append(base.addrBox);
 	$('.addr_cancel,.addr_close').click(function(){
@@ -165,6 +170,11 @@ function buildAddr(id, callback){
 	});
 }
 
+/**
+ * 行政区划
+ * @param code
+ * @param callback
+ */
 function area(code, callback){
 	$.ajax({
 		url : '/beio/sys/queryArea',
@@ -187,4 +197,3 @@ function area(code, callback){
 		}
 	});
 }
-

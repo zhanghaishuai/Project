@@ -1,6 +1,7 @@
 package com.beio.front.action;
 
 import com.beio.base.action.BaseAction;
+import com.beio.base.entity.SysPay;
 import com.beio.base.util.ComUtil;
 import com.beio.front.service.GoodsService;
 import com.beio.front.vo.BuycartVO;
@@ -36,6 +37,8 @@ public class GoodsAction extends BaseAction{
 	private PreOrderVO preOrderVO = new PreOrderVO();
 	
 	private OrderVO orderVO = new OrderVO();
+	
+	private SysPay pay = new SysPay();
 	
 	/**
 	 * 头部信息
@@ -153,9 +156,23 @@ public class GoodsAction extends BaseAction{
 	 * @throws Exception
 	 */
 	public String preOrder() throws Exception{
-		preOrderVO.setMember(sessionMember());
-		preOrderVO.setCurrentTime(curTimeStr());
+		preOrderVO.setCreator(sessionMemberID());
+		preOrderVO.setCreateTime(curTimeStr());
+		preOrderVO.setModifier(sessionMemberID());
+		preOrderVO.setModifyTime(curTimeStr());
+		preOrderVO.setPre_time(curTimeStr());
 		root = goodsService.preOrder(preOrderVO);
+		return JSON;
+	}
+	
+	/**
+	 * 查询运费
+	 * @return
+	 * @throws Exception
+	 */
+	public String freight() throws Exception{
+		settlementVO.setMember(sessionMember());
+		setRoot(goodsService.freight(settlementVO), "200");
 		return JSON;
 	}
 	
@@ -167,8 +184,47 @@ public class GoodsAction extends BaseAction{
 	public String myOrder() throws Exception{
 		orderVO.setOrderNo(ComUtil.trim(orderVO.getOrderNo()));
 		orderVO.setBuyerID(sessionMemberID());
-		orderVO.setPageSize(5);
 		setRoot(goodsService.myOrder(orderVO), "200");
+		return JSON;
+	}
+	
+	/**
+	 * 支付订单
+	 * @return
+	 * @throws Exception
+	 */
+	public String payOrder() throws Exception{
+		pay.setModifier(sessionMemberID());
+		pay.setModifyTime(curTimeStr());
+		pay.setPay_time(curTimeStr());
+		root = goodsService.payOrder(pay);
+		return JSON;
+	}
+	
+	/**
+	 * 取消订单
+	 * @return
+	 * @throws Exception
+	 */
+	public String cannelOrder() throws Exception{
+		orderVO.setModifier(sessionMemberID());
+		orderVO.setModifyTime(curTimeStr());
+		root = goodsService.cancelOrder(orderVO);
+		return JSON;
+	}
+	
+	/**
+	 * 合并支付
+	 * @return
+	 * @throws Exception
+	 */
+	public String mergePay() throws Exception{
+		preOrderVO.setCreator(sessionMemberID());
+		preOrderVO.setCreateTime(curTimeStr());
+		preOrderVO.setModifier(sessionMemberID());
+		preOrderVO.setModifyTime(curTimeStr());
+		preOrderVO.setPre_time(curTimeStr());
+		root = goodsService.mergePay(preOrderVO);
 		return JSON;
 	}
 
@@ -226,6 +282,22 @@ public class GoodsAction extends BaseAction{
 
 	public void setOrderVO(OrderVO orderVO) {
 		this.orderVO = orderVO;
+	}
+
+	public CartInfoVO getCartInfoVO() {
+		return cartInfoVO;
+	}
+
+	public void setCartInfoVO(CartInfoVO cartInfoVO) {
+		this.cartInfoVO = cartInfoVO;
+	}
+
+	public SysPay getPay() {
+		return pay;
+	}
+
+	public void setPay(SysPay pay) {
+		this.pay = pay;
 	}
 
 }

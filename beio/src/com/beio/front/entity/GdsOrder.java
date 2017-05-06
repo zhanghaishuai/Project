@@ -12,11 +12,11 @@ public class GdsOrder extends Page {
 
 	private String id; // 主键
 
+	private String payID; // 付款ID
+
 	private String buyerID; // 买家ID
 
 	private String goodsID; // 商品ID
-
-	private String paymentID; // 付款ID
 
 	private String orderNo; // 订单编号
 
@@ -70,6 +70,14 @@ public class GdsOrder extends Page {
 		this.id = id;
 	}
 
+	public String getPayID() {
+		return payID;
+	}
+
+	public void setPayID(String payID) {
+		this.payID = payID;
+	}
+
 	public String getBuyerID() {
 		return buyerID;
 	}
@@ -84,14 +92,6 @@ public class GdsOrder extends Page {
 
 	public void setGoodsID(String goodsID) {
 		this.goodsID = goodsID;
-	}
-
-	public String getPaymentID() {
-		return paymentID;
-	}
-
-	public void setPaymentID(String paymentID) {
-		this.paymentID = paymentID;
 	}
 
 	public String getOrderNo() {

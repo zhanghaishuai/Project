@@ -1,6 +1,7 @@
 package com.beio.front.service;
 
 import com.beio.base.entity.SysMember;
+import com.beio.base.entity.SysPay;
 import com.beio.base.service.BaseIbaitsService;
 import com.beio.base.vo.Root;
 import com.beio.front.entity.GdsBuycart;
@@ -88,5 +89,37 @@ public interface GoodsService extends BaseIbaitsService{
 	 * @throws Exception
 	 */
 	public OrderVO myOrder(OrderVO orderVO) throws Exception;
+	
+	/**
+	 * 查询运费
+	 * @param member
+	 * @return
+	 * @throws Exception
+	 */
+	public SettlementVO freight(SettlementVO settlementVO) throws Exception;
+	
+	/**
+	 * 支付订单
+	 * @param member
+	 * @return
+	 * @throws Exception
+	 */
+	public Root payOrder(SysPay pay) throws Exception;
+	
+	/**
+	 * 取消订单
+	 * @param member
+	 * @return
+	 * @throws Exception
+	 */
+	public Root cancelOrder(OrderVO orderVO) throws Exception;
+	
+	/**
+	 * 合并支付
+	 * @param member
+	 * @return
+	 * @throws Exception
+	 */
+	public Root mergePay(PreOrderVO preOrderVO) throws Exception;
 	
 }

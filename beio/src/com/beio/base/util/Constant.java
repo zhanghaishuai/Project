@@ -62,4 +62,7 @@ public class Constant {
 	/** 临时常量（运费） **/
 	public static final Float TEMPORARYFREIGHT = 15.00f;
 	
+	/** 会员年费 **/
+	public static final String MEMBERYEARFEE = "1";
+	
 }
