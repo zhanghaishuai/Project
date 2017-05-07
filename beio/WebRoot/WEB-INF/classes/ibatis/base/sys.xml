@@ -72,7 +72,7 @@
 	
 	<!-- 修改个人信息 -->
 	<update id="modifyMemberInfo" parameterType="SysMember">
-		update sys_member  
+		update sys_member 
 		<set>
 			<if test="sex != null and sex != ''">
 				sex = #{sex},
@@ -290,12 +290,19 @@
 	
 	<!-- 分页后台用户 -->
 	<select id="pageUser" parameterType="SysUser" resultType="SysUser">
-		select * from sys_user where 1=1 order by id desc limit #{page}, #{rows};
+		select * from sys_user where 1=1 
+		<if test="username != null and username != ''">
+			and username like concat('%', #{username}, '%') 
+		</if>
+		order by id desc limit #{page}, #{rows};
 	</select>
 	
 	<!-- 查询后台用户总数 -->
 	<select id="countUser" parameterType="SysUser" resultType="int">
-		select count(id) from sys_user;
+		select count(id) from sys_user where 1 = 1
+		<if test="username != null and username != ''">
+			and username like concat('%', #{username}, '%');
+		</if>
 	</select>
 	
 	<!-- 查询用户名是否存在  -->
