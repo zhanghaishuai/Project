@@ -56,8 +56,6 @@ public class Page {
 		// 控制当前页
 		if (this.pageIndex < 1) {
 			this.pageIndex = 1;
-		} else if (this.pageIndex > this.pageCount) {
-			this.pageIndex = this.pageCount;
 		}
 	}
 

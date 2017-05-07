@@ -6,6 +6,7 @@ import com.beio.base.service.BaseIbaitsService;
 import com.beio.base.vo.Root;
 import com.beio.front.entity.GdsBuycart;
 import com.beio.front.vo.CartInfoVO;
+import com.beio.front.vo.DetailVO;
 import com.beio.front.vo.GoodsVO;
 import com.beio.front.vo.IndexInfoVO;
 import com.beio.front.vo.OrderVO;
@@ -121,5 +122,13 @@ public interface GoodsService extends BaseIbaitsService{
 	 * @throws Exception
 	 */
 	public Root mergePay(PreOrderVO preOrderVO) throws Exception;
+	
+	/**
+	 * 合并支付
+	 * @param member
+	 * @return
+	 * @throws Exception
+	 */
+	public Root detail(DetailVO detailVO) throws Exception;
 	
 }

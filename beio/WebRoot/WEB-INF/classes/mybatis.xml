@@ -26,6 +26,7 @@
 		<typeAlias type="com.beio.front.entity.GdsNavbar" alias="GdsNavbar"/>
 		<typeAlias type="com.beio.front.entity.GdsOrder" alias="GdsOrder"/>
 		<typeAlias type="com.beio.front.entity.GdsSearch" alias="GdsSearch"/>
+		<typeAlias type="com.beio.front.entity.GdsService" alias="GdsService"/>
 		
 		<typeAlias type="com.beio.base.vo.Address" alias="Address"/>
 		<typeAlias type="com.beio.base.vo.Member" alias="Member"/>
@@ -35,6 +36,7 @@
 		<typeAlias type="com.beio.front.vo.BuycartVO" alias="BuycartVO"/>
 		<typeAlias type="com.beio.front.vo.CartInfoVO" alias="CartInfoVO"/>
 		<typeAlias type="com.beio.front.vo.ClassifyVO" alias="ClassifyVO"/>
+		<typeAlias type="com.beio.front.vo.DetailVO" alias="DetailVO"/>
 		<typeAlias type="com.beio.front.vo.GoodsVO" alias="GoodsVO"/>
 		<typeAlias type="com.beio.front.vo.IndexInfoVO" alias="IndexInfoVO"/>
 		<typeAlias type="com.beio.front.vo.OrderVO" alias="OrderVO"/>

@@ -87,7 +87,7 @@ $(function(){
 									<span class="label">手机校验码：</span>\
 									<div class="fl">\
 										<input type="text" id="valid_code" class="itxt" maxlength="6" placeholder="请输入手机验证码"/>\
-										<a href="javascript:void(0);" id="mobileCode" class="btn btn-10 ml10"><s></s>获取短信校验码</a>\
+										<a href="javascript:void(0);" id="mobileCode" class="btn btn-10 ml10" style="width:90px;text-align:center;">获取短信校验码</a>\
 										<div class="clr"></div>\
 										<div class="input-tip" style="height: 18px;">\
 			                    			<span id="valid_code_s" class="errMsg"></span>\
@@ -275,36 +275,49 @@ $(function(){
 		$('.ftx-05').click(function(){
 			$('.verify-code').attr('src', '/beio/image/verifyCode?flushStr='+new Date().getTime());
 		});
-		$('#mobileCode').click(function(){
-			$.ajax({
-				url : '/beio/sys/sendSmsVerifyCode',
-				data : {'mr.mobile' : $('#find_mobile').val(), 'mr.exist' : '1'},
-				type : 'POST',
-				async : false,
-				cache : true,
-				dataType : 'json',
-				success : function(data) {
-					if (data.status == '200') {
-						$('#valid_code_s').removeClass('errMsg');
-						$('#valid_code_s').addClass('sucMsg');
-						$('#valid_code_s').html('<i class="i-def"></i>' + tip('202'));
-						$('#valid_code_s').removeClass('hide');
-					}else if (data.status == '121' || data.status == '190' || data.status == '191' || 
-							data.status == '192' || data.status == '193') {
-						alert(tip(data.status));
-					}else if (data.status == '128'){
-						$('#valid_code_s').removeClass('sucMsg');
-						$('#valid_code_s').addClass('errMsg');
-						$('#valid_code_s').html('<i class="i-def"></i>' + tip(data.status));
-						$('#valid_code_s').removeClass('hide');
-					}else {
-						alert(tip('400'));
-					}
-				},
-				error : function() {
-					alert(tip('500'));
-				}
-			});
-		});
+		$('#mobileCode').click(sendSms);
 	}, true, false);
 });
+
+function sendSms(){
+	$.ajax({
+		url : '/beio/sys/sendSmsVerifyCode',
+		data : {'mr.mobile' : $('#find_mobile').val(), 'mr.exist' : '1'},
+		type : 'POST',
+		async : false,
+		cache : true,
+		dataType : 'json',
+		success : function(data) {
+			if (data.status == '200') {
+				$('#mobileCode').unbind();
+				$('#mobileCode').html('60');
+				var timer = setInterval(function(){
+					var surplus = $('#mobileCode').html();
+					$('#mobileCode').html(--surplus);
+					if (surplus <= 0) {
+						window.clearInterval(timer);
+						$('#mobileCode').click(sendSms);
+						$('#mobileCode').html('获取短信校验码');
+					}
+				}, 1000);
+				$('#valid_code_s').removeClass('errMsg');
+				$('#valid_code_s').addClass('sucMsg');
+				$('#valid_code_s').html('<i class="i-def"></i>' + tip('202'));
+				$('#valid_code_s').removeClass('hide');
+			}else if (data.status == '121' || data.status == '190' || data.status == '191' || 
+					data.status == '192' || data.status == '193') {
+				alert(tip(data.status));
+			}else if (data.status == '128'){
+				$('#valid_code_s').removeClass('sucMsg');
+				$('#valid_code_s').addClass('errMsg');
+				$('#valid_code_s').html('<i class="i-def"></i>' + tip(data.status));
+				$('#valid_code_s').removeClass('hide');
+			}else {
+				alert(tip('400'));
+			}
+		},
+		error : function() {
+			alert(tip('500'));
+		}
+	});
+}

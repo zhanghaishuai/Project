@@ -125,6 +125,30 @@
 			</result>
 			<interceptor-ref name="identityStack"/>
 		</action>
+
+		<!-- 确认收货 -->
+		<action name="receive" class="goodsAction" method="receive">
+			<result name="json" type="json">
+				<param name="root">root</param>
+			</result>
+			<interceptor-ref name="identityStack"/>
+		</action>
+		
+		<!-- 售后服务 -->
+		<action name="service" class="goodsAction" method="service">
+			<result name="json" type="json">
+				<param name="root">root</param>
+			</result>
+			<interceptor-ref name="identityStack"/>
+		</action>
+		
+		<!-- 订单详情 -->
+		<action name="detail" class="goodsAction" method="detail">
+			<result name="json" type="json">
+				<param name="root">root</param>
+			</result>
+			<interceptor-ref name="identityStack"/>
+		</action>
 		
 	</package>
 </struts>

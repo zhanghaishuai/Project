@@ -32,8 +32,8 @@ $(function(){
 								<option value="1">待发货</option>\
 								<option value="2">已发货</option>\
 								<option value="3">已完成</option>\
+								<option value="4">售后中</option>\
 								<option value="5">已关闭</option>\
-								<option value="4">售后服务</option>\
 							</select>\
 							<label class="status">订单状态：</label>\
 							<label class="title">我的订单</label>\
@@ -42,21 +42,26 @@ $(function(){
 					</div>\
 				</div>\
 			</div>');
-		query();
 		$('.search_btn').click(function(){
-			query({
-				"orderVO.status":$('.search_status').val(), 
-				"orderVO.orderNo":$('.search_no').val()
-			});
+			$('.search_no').attr('data', $('.search_no').val());
+			$('.search_status').attr('data', $('.search_status').val());
+			query();
 		});
+		query();
 	}, true, false);
 });
 
-// 查询订单
-function query(options){
+// 变量
+var scrollFlag = true, pageIndex = 1;
+
+// 查询
+function query(){
 	$.ajax({
 		url : '/beio/goods/myOrder',
-		data : options,
+		data : {
+			'orderVO.status': $('.search_status').attr('data'),
+			'orderVO.orderNo': $('.search_no').attr('data')
+		},
 		type : 'POST',
 		async : false,
 		cache : true,
@@ -80,13 +85,7 @@ function query(options){
 							<tbody class="order_info"></tbody>\
 							<tfoot>\
 								<tr>\
-									<td colspan="7">\
-										<div class="con paginating clearfix">\
-						   					<div class="paging">\
-						       					<ul></ul>\
-											</div>\
-										</div>\
-									</td>\
+									<td colspan="7">向下滚动加载更多订单</td>\
 								</tr>\
 							</tfoot>\
 						</table>');
@@ -103,12 +102,12 @@ function query(options){
 							btn = '<button style="padding: 2px 10px;border:1px solid #bcbcbc;" onclick="detail('+item.id+')">查看详情</button>';
 						}else if (item.status == '2') {
 							status = '已发货';
-							btn = '<button style="padding: 2px 10px;border:1px solid #bcbcbc;" onclick="detail('+item.id+')">查看详情</button>';
+							btn = '<button style="padding: 2px 10px;border:1px solid #bcbcbc;" onclick="receive(this, '+item.id+')">确认收货</button>';
 						}else if (item.status == '3') {
 							status = '已完成';
-							btn = '<button style="padding: 2px 10px;border:1px solid #bcbcbc;">售后服务</button>';
+							btn = '<button style="padding: 2px 10px;border:1px solid #bcbcbc;" onclick="service(this, '+item.id+')">申请售后</button>';
 						}else if (item.status == '4') {
-							status = '售后服务';
+							status = '售后中';
 							btn = '<button style="padding: 2px 10px;border:1px solid #bcbcbc;" onclick="detail('+item.id+')">查看详情</button>';
 						}else if (item.status == '5') {
 							status = '已关闭';
@@ -128,64 +127,82 @@ function query(options){
 								<td>'+btn+'</td>\
 							</tr>');
 					});
-					$('.paging > ul').empty();
-					$('.paging > ul').append('<li class="prev"><a href="javascript:void(0);" title="上一页">上一页</a></li>');
-					var begin = data.result.pageIndex<4||data.result.pageCount<6
-						?1:data.result.pageCount-data.result.pageIndex<2
-							?data.result.pageCount-4:data.result.pageIndex-2;
-					var end = data.result.pageCount<6?data.result.pageCount:5;
-					for(var i = 0; i < end; i++){
-						$('.paging > ul').append('<li class="item"><a class='+(data.result.pageIndex==(begin+i)?"current":"1")+' href="javascript:void(0);">'+(begin+i)+'</a></li>');
-					}
-					$('.paging > ul').append('<li class="next"><a href="javascript:void(0);" title="下一页">下一页</a></li>');
-					$('.paging > ul').append('\
-						<li class="page_input">\
-            				<span>到第</span>\
-            				<input id="t__cp" type="text" class="number" value="'+data.result.pageIndex+'">\
-            				<span>页，共'+data.result.pageCount+'页</span>\
-            				<input class="button jump" value="确定" type="button">\
-            			</li>');
-					if (data.result.pageIndex != 1) {
-						$('.paging > ul > .prev').click(function(){
-							query({
-								"orderVO.status":$('.search_status').val(), 
-								"orderVO.orderNo":$('.search_no').val()
-							});
-						});
-					}
-					if (data.result.pageIndex != data.result.pageCount) {
-						$('.paging > ul > .next').click(function(){
-							query({
-								"orderVO.status":$('.search_status').val(), 
-								"orderVO.orderNo":$('.search_no').val(),
-								"orderVO.pageIndex":data.result.pageCount
-							});
-						});
-					}
-					$('.paging > ul > .item').click(function(){
-						if (data.result.pageIndex != $(this).find('a').html()) {
-							query({
-								"orderVO.status":$('.search_status').val(), 
-								"orderVO.orderNo":$('.search_no').val(),
-								"orderVO.pageIndex":$(this).find('a').html()
-							});
-						}
-					});
-					$('.paging > ul >li > .jump').click(function(){
-						if (new RegExp(regex('page')).test($('.number').val()) == false) {
-							$('.number').select();
-						}else {
-							query({
-								"orderVO.status":$('.search_status').val(), 
-								"orderVO.orderNo":$('.search_no').val(),
-								"orderVO.pageIndex":$('.number').val()
-							});
-						}
-					});
+	                $(window).scroll(function() { 
+	                    var scroll = ($(document.body).height() - $(window).height() - $(window).scrollTop()) / $(window).height();
+	                    if(scrollFlag == false){
+	                    	if (scroll == 0) {
+	                    		scrollFlag = true;
+	                    		$.ajax({
+	                    			url : '/beio/goods/myOrder',
+	                    			data : {
+	                    				'orderVO.status': $('.search_status').attr('data'),
+	                    				'orderVO.orderNo': $('.search_no').attr('data'),
+	                    				'orderVO.pageIndex': ++pageIndex
+	                    			},
+	                    			type : 'POST',
+	                    			async : false,
+	                    			cache : true,
+	                    			dataType : 'json',
+	                    			success : function(data) {
+	                    				if (data.status == '200') {
+	                    					if (data.result.pageList.length > 0) {
+	                    						$.each(data.result.pageList, function(i, item){
+	                    							var img = item.shows.length > 0 ? item.shows[0].smaPath : '';
+	                    							var status = '', btn = '', check = '';
+	                    							if (item.status == '0') {
+	                    								status = '未付款';
+	                    								btn = '<button style="padding: 2px 10px;border:1px solid #bcbcbc;" onclick="againOrder(this, '+item.id+')">付款</button>\
+	                    									</br><button style="padding: 2px 10px;border:1px solid #bcbcbc;" onclick="cannelOrder(this, '+item.id+')">取消</button>';
+	                    								check = '<input id="'+item.id+'" type="checkbox" name="check" onclick="check()"/>';
+	                    							}else if (item.status == '1') {
+	                    								status = '待发货';
+	                    								btn = '<button style="padding: 2px 10px;border:1px solid #bcbcbc;" onclick="detail('+item.id+')">查看详情</button>';
+	                    							}else if (item.status == '2') {
+	                    								status = '已发货';
+	                    								btn = '<button style="padding: 2px 10px;border:1px solid #bcbcbc;" onclick="receive(this, '+item.id+')">确认收货</button>';
+	                    							}else if (item.status == '3') {
+	                    								status = '已完成';
+	                    								btn = '<button style="padding: 2px 10px;border:1px solid #bcbcbc;" onclick="service(this, '+item.id+')">申请售后</button>';
+	                    							}else if (item.status == '4') {
+	                    								status = '售后中';
+	                    								btn = '<button style="padding: 2px 10px;border:1px solid #bcbcbc;" onclick="detail('+item.id+')">查看详情</button>';
+	                    							}else if (item.status == '5') {
+	                    								status = '已关闭';
+	                    								btn = '<button style="padding: 2px 10px;border:1px solid #bcbcbc;" onclick="detail('+item.id+')">查看详情</button>';
+	                    							}
+	                    							$('.order_info').append('\
+	                    								<tr>\
+	                    									<td colspan="7" class="orderNo">订单号：<a href="javascript:detail('+item.id+')">'+item.orderNo+'</a></td>\
+	                    								</tr>\
+	                    								<tr>\
+	                    									<th style="width: 10px;">'+check+'</th>\
+	                    									<td style="width: 70px;"><img onclick="goods('+item.goodsID+')" src="'+img+'" width="70" height="70"></td>\
+	                    									<td style="width: 360px;"><a href="javascript:goods('+item.goodsID+')">'+item.goodsName+'</a></td>\
+	                    									<td>'+dateMilliFormat(item.createTime, 'TIME')+'</td>\
+	                    									<td>￥'+item.totalPrice+'</td>\
+	                    									<td>'+status+'</td>\
+	                    									<td>'+btn+'</td>\
+	                    								</tr>');
+	                    						});
+	                    						scrollFlag = false;
+	                    					}else {  
+            	                                $("tfoot > tr > td").html('到底了');  
+            	                                return false;  
+            	                            }
+	                    				} else {
+	                    					alert(tip('400'));
+	                    				};
+	                    			},
+	                    			error : function() {
+	                    				alert(tip('500'));
+	                    			}
+	                    		});
+							}
+	                    }
+	                });
 				}else {
 					$('.mc').html('<div class="crumbs_fb clearfix" style="font-size:20px;margin-top:15px;">没有相关订单！</div>');
 				};
-				pageScroll();
 			} else {
 				alert(tip('400'));
 			};
@@ -194,7 +211,8 @@ function query(options){
 			alert(tip('500'));
 		}
 	});
-}
+	scrollFlag = false;
+};
 
 // 全选
 function checkAll(){
@@ -204,7 +222,7 @@ function checkAll(){
 	}else {
 		$('[name=check]').removeAttr('checked');
 	}
-}
+};
 
 // 单选
 function check(){
@@ -219,7 +237,7 @@ function check(){
 	}else {
 		$('[name=checkAll]').removeAttr('checked');
 	}
-}
+};
 
 // 合并支付
 function mergePay(){
@@ -256,7 +274,7 @@ function mergePay(){
 			alert(tip('500'));
 		}
 	});
-}
+};
 
 // 重新支付
 function againOrder(ele, id){
@@ -287,7 +305,7 @@ function againOrder(ele, id){
 			alert(tip('500'));
 		}
 	});
-}
+};
 
 //取消订单
 function cannelOrder(ele, id){
@@ -303,6 +321,8 @@ function cannelOrder(ele, id){
 				$(ele).parent().prev().html('已关闭');
 				$(ele).parent().parent().children().eq(0).html('');
 				$(ele).parent().html('<button style="padding: 2px 10px;border:1px solid #bcbcbc;" onclick="detail('+id+')">查看详情</button>');
+			}else {
+				alert(top('400'));
 			}
 		},
 		error : function(){
@@ -311,26 +331,136 @@ function cannelOrder(ele, id){
 	});
 };
 
+// 确认收货
+function receive(ele, id){
+	if (confirm("确定要收货吗？") == true) {
+		$.ajax({
+			url : '/beio/goods/receive',
+			data : {'orderVO.id' : id},
+			type : 'POST',
+			async : false,
+			cache : true,
+			dataType : 'json',
+			success : function(data){
+				if (data.status == '200') {
+					$(ele).parent().prev().html('已完成');
+					$(ele).parent().parent().children().eq(0).html('');
+					$(ele).parent().html('<button style="padding: 2px 10px;border:1px solid #bcbcbc;" onclick="service(this, '+id+')">申请售后</button>');
+				}else if (data.status == '100'){
+					alert(tip(data.status));
+				}else {
+					alert(top('400'));
+				}
+			},
+			error : function(){
+				alert(tip('500'));
+			}
+		});
+	}
+};
+
+// 申请售后
+function service(ele, id){
+	$('body').append(base.serviceBox);
+	$('.service_cancel,.service_close').click(function(){
+		$('.shadow').remove();
+	});
+	$('.service_submit').click(function(){
+		var flag = true;
+		$('.addr_address_s').addClass('hide');
+		if (new RegExp(regex('empty')).test($('.addr_address').val()) == false) {
+			$('.addr_address_s').html(tip('153'));
+			$('.addr_address_s').removeClass('hide');
+			flag = false;
+		}
+		if (flag == true) {
+			$.ajax({
+				url : '/beio/goods/service',
+				data : {
+					'service.orderID' : id,
+					'service.content' : $('#addr_address').val()
+				},
+				type : 'POST',
+				async : false,
+				cache : true,
+				dataType : 'json',
+				success : function(data){
+					if (data.status == '200') {
+						$('.shadow').remove();
+						$(ele).parent().prev().html('售后中');
+						$(ele).parent().parent().children().eq(0).html('');
+						$(ele).parent().html('<button style="padding: 2px 10px;border:1px solid #bcbcbc;" onclick="detail('+id+')">查看详情</button>');
+					}else if (data.status == '100'){
+						alert(tip(data.status));
+					}else {
+						alert(top('400'));
+					}
+				},
+				error : function(){
+					alert(tip('500'));
+				}
+			});
+		}
+	});
+};
+
+// 订单详情
+function detail(id){
+	$.ajax({
+		url : '/beio/goods/detail',
+		data : {'detailVO.id': id},
+		type : 'POST',
+		async : false,
+		cache : true,
+		dataType : 'json',
+		success : function(data) {
+			if (data.status == '200') {
+				console.log(data);
+				$('.mc').html('\
+					<div id="detail" style="border: 1px dashed #ccc; width: 920px; margin: 0 auto; padding: 5px 10px;">\
+						<button style="float: right; padding: 2px 10px;border:1px solid #bcbcbc;" onclick="query()">返回</button>\
+						<div style="border-bottom: 1px dashed #ccc;padding: 10px 0px;">\
+							<span style="padding: 0px 25px 10px 10px;">收&nbsp;&nbsp;货&nbsp;人：&nbsp;'+data.result.addrName+'&nbsp;&nbsp;'+data.result.addrMobile+'</span><br/><br/>\
+							<span style="padding: 0px 25px 10px 10px;">收货地址：&nbsp;'+data.result.provinceName+'&nbsp;'+data.result.cityName+'&nbsp;'+data.result.countyName+'&nbsp;'+data.result.addrAddress+'</span><br/>\
+						</div>\
+						<div style="border-bottom: 1px dashed #ccc;padding: 10px 0px;">\
+							<span style="padding: 0px 25px 10px 10px;">商品信息：\
+								<img src="'+data.result.showImg+'" width="70" height="70" onclick="goods('+data.result.goodsID+')"/>\
+								<a style="margin: 0px 10px -5px 0px; max-width: 500px; display: inline-block; white-space: nowrap; overflow: hidden; text-overflow:ellipsis; cursor: pointer;" onclick="goods('+data.result.goodsID+')">'+data.result.goodsName+'</a>\
+								<label style="padding: 0px 25px 10px 10px;">数量：&nbsp;'+data.result.goodsQuantity+'</label>\
+							</span><br/>\
+						</div>\
+						<div style="border-bottom: 1px dashed #ccc;padding: 10px 0px;">\
+							<span style="padding: 0px 25px 10px 10px;">订单状态：&nbsp;'+(data.result.status == '0' ? "付款" : data.result.status == '1' ? "待发货" : data.result.status == '2' ? "已发货" : data.result.status == '3' ? "已完成" : data.result.status == '4' ? "售后中" : "已关闭")+'</span><br/><br/>\
+							<span style="padding: 0px 25px 10px 10px;">订单编号：&nbsp;'+data.result.orderNo+'</span><br/><br/>\
+							<span style="padding: 0px 25px 10px 10px;">下单时间：&nbsp;'+dateMilliFormat(data.result.createTime, 'TIME')+'</span><br/><br/>\
+							<span style="padding: 0px 25px 10px 10px;">发票信息：&nbsp;'+(data.result.receiptStatus == '0' ? "不开发票" : (data.result.receiptType == '0' ? "个人" : "单位") + "&nbsp;&nbsp;" + data.result.receiptTitle)+'</span><br/><br/>\
+						</div>\
+						<div style="border-bottom: 1px dashed #ccc;padding: 10px 0px;">\
+							<span style="padding: 0px 25px 10px 10px;">商品总额：&nbsp;￥'+parseFloat(data.result.totalPrice).toFixed(2)+'</span><br/><br/>\
+							<span style="padding: 0px 25px 10px 10px;">运&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;费：&nbsp;￥'+parseFloat(data.result.goodsFreight).toFixed(2)+'</span><br/><br/>\
+							<span style="padding: 0px 25px 10px 10px;">'+(data.result.status == '0' || data.result.status == '5' ? "应" : "实")+'&nbsp;&nbsp;付&nbsp;款：&nbsp;<em>￥'+(parseFloat(data.result.totalPrice) + parseFloat(data.result.goodsFreight)).toFixed(2)+'</em></span><br/><br/>\
+						</div>\
+					</div>');
+				$.each(data.result.services, function(i, item){
+					$('#detail').append('\
+						<div style="border-bottom: 1px dashed #ccc;padding: 10px 0px;">\
+							<span style="padding: 0px 25px 10px 10px;">售后描述：&nbsp;'+item.content+'</span><br/><br/>\
+							<span style="padding: 0px 25px 10px 10px;">售后反馈：&nbsp;'+item.feedback+'</span><br/><br/>\
+						</div>');
+				});
+			} else {
+				alert(tip('400'));
+			};
+		},
+		error : function() {
+			alert(tip('500'));
+		}
+	});
+	scrollFlag = false;
+};
+
 // 商品展示
 function goods(id){
 	window.location.href = "goods.html?goods=" + id;
-}
-
-
-
-// 显示详情
-function detail(id){
-	alert('detail');
-};
-
-// 页面滚动
-function pageScroll(){
-    //把内容滚动指定的像素数（第一个参数是向右滚动的像素数，第二个参数是向下滚动的像素数）
-    window.scrollBy(0,-50);
-    //延时递归调用，模拟滚动向上效果
-    scrolldelay = setTimeout('pageScroll()',20);
-    //获取scrollTop值，声明了DTD的标准网页取document.documentElement.scrollTop，否则取document.body.scrollTop；因为二者只有一个会生效，另一个就恒为0，所以取和值可以得到网页的真正的scrollTop值
-    var sTop=document.documentElement.scrollTop+document.body.scrollTop;
-    //判断当页面到达顶部，取消延时代码（否则页面滚动到顶部会无法再向下正常浏览页面）
-    if(sTop==0) clearTimeout(scrolldelay);
 };

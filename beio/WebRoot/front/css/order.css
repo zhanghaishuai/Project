@@ -2618,3 +2618,9 @@ h1.title .title_tip {
 	background: url("../image/please_check.png") no-repeat;
 }
 
+#detail{
+	min-height: 480px;
+	width: 100% !important;
+	margin: 0 auto !important;
+	display: none;
+}

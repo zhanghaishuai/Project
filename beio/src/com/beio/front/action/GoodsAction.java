@@ -3,9 +3,11 @@ package com.beio.front.action;
 import com.beio.base.action.BaseAction;
 import com.beio.base.entity.SysPay;
 import com.beio.base.util.ComUtil;
+import com.beio.front.entity.GdsService;
 import com.beio.front.service.GoodsService;
 import com.beio.front.vo.BuycartVO;
 import com.beio.front.vo.CartInfoVO;
+import com.beio.front.vo.DetailVO;
 import com.beio.front.vo.GoodsVO;
 import com.beio.front.vo.OrderVO;
 import com.beio.front.vo.PreOrderVO;
@@ -39,6 +41,10 @@ public class GoodsAction extends BaseAction{
 	private OrderVO orderVO = new OrderVO();
 	
 	private SysPay pay = new SysPay();
+	
+	private GdsService service = new GdsService();
+	
+	private DetailVO detailVO = new DetailVO();
 	
 	/**
 	 * 头部信息
@@ -227,6 +233,50 @@ public class GoodsAction extends BaseAction{
 		root = goodsService.mergePay(preOrderVO);
 		return JSON;
 	}
+	
+	/**
+	 * 确认收货
+	 * @return
+	 * @throws Exception
+	 */
+	public String receive() throws Exception{
+		orderVO.setModifier(sessionMemberID());
+		orderVO.setModifyTime(curTimeStr());
+		if (baseIbaitsService.update("goods.receive", orderVO) < 1) {
+			setRoot("100");
+		}else {
+			setRoot("200");
+		}
+		return JSON;
+	}
+	
+	/**
+	 * 售后服务
+	 * @return
+	 * @throws Exception
+	 */
+	public String service() throws Exception{
+		service.setCreator(sessionMemberID());
+		service.setCreateTime(curTimeStr());
+		service.setModifier(sessionMemberID());
+		service.setModifyTime(curTimeStr());
+		if (baseIbaitsService.update("goods.service", service) < 1) {
+			setRoot("100");
+		}else {
+			setRoot("200");
+		}
+		return JSON;
+	}
+	
+	/**
+	 * 订单详情
+	 * @return
+	 * @throws Exception
+	 */
+	public String detail() throws Exception{
+		root = goodsService.detail(detailVO);
+		return JSON;
+	}
 
 	public GoodsService getGoodsService() {
 		return goodsService;
@@ -298,6 +348,22 @@ public class GoodsAction extends BaseAction{
 
 	public void setPay(SysPay pay) {
 		this.pay = pay;
+	}
+
+	public GdsService getService() {
+		return service;
+	}
+
+	public void setService(GdsService service) {
+		this.service = service;
+	}
+
+	public DetailVO getDetailVO() {
+		return detailVO;
+	}
+
+	public void setDetailVO(DetailVO detailVO) {
+		this.detailVO = detailVO;
 	}
 
 }

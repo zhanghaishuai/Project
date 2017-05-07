@@ -358,4 +358,48 @@
 		WHERE g.id = o.goodsID
 	</update>
 	
+	<!-- 确认收货 -->
+	<update id="receive" parameterType="Object">
+		update gds_order set status = '3', modifier = #{modifier}, modifyTime = #{modifyTime} where id = #{id}
+	</update>
+	
+	<!-- 售后服务 -->
+	<insert id="service" parameterType="Object">
+		insert into gds_service(orderID, content, creator, createTime, modifier, modifyTime) 
+		values (#{orderID}, #{content}, #{creator}, #{createTime}, #{modifier}, #{modifyTime});
+		update gds_order set status = '4', modifier = #{modifier}, modifyTime = #{modifyTime} where id = #{orderID};
+	</insert>
+	
+	<!-- 订单详情 -->
+	<select id="queryDetail" parameterType="Object" resultType="DetailVO">
+		SELECT 
+		    t0.*,
+		    a1.name AS provinceName,
+		    a2.name AS cityName,
+		    a3.name AS countyName
+		FROM
+		    (SELECT 
+		        go.*, gi.smaPath AS showImg
+		    FROM
+		        gds_order go
+		    LEFT JOIN gds_image gi ON go.goodsID = gi.goodsID
+		        AND gi.category = '0'
+		    WHERE
+		        go.id = #{id}
+		    ORDER BY sortNum + ''
+		    LIMIT 1) t0
+		        LEFT JOIN
+		    sys_area a1 ON t0.addrProvince = a1.code
+		        LEFT JOIN
+		    sys_area a2 ON t0.addrCity = a2.code
+		        LEFT JOIN
+		    sys_area a3 ON t0.addrCounty = a3.code
+		    LIMIT 1
+	</select>
+	
+	<!-- 售后服务 -->
+	<select id="queryService" parameterType="Object" resultType="GdsService">
+		SELECT * FROM gds_service WHERE orderID = #{id};
+	</select>
+	
 </mapper>

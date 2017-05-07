@@ -228,6 +228,28 @@ var base = {
 				</div>\
 			</div>\
 		</div>\
+		</div>',
+	serviceBox : '\
+		<div id="serviceBox" class="shadow">\
+		<div id="divDialog">\
+			<div class="pop">\
+				<a href="javascript:void(0)" class="service_close close"></a>\
+					<div class="pop_title">售后服务</div>\
+					<div class="pop_con info_list">\
+						<ul>\
+							<li>\
+								<span class="name">描述</span>\
+								<input id="addr_address" class="addr_filed addr_address" type="text" style="width:413px;" value="" maxlength="150"/>\
+								<div class="alart_tip addr_address_s hide"></div>\
+							</li>\
+						</ul>\
+					<div class="btn_bar">\
+					 	<a href="javascript:void(0)" class="btn_red service_submit">确认</a>\
+						<a href="javascript:void(0)" class="btn service_cancel">取消</a>\
+					</div>\
+				</div>\
+			</div>\
+		</div>\
 		</div>'
 };
 

@@ -29,13 +29,6 @@ $(function(){
 							</div>\
 							<div class="edit_message1">\
 								<div class="mesage_list">\
-									<div class="list_title">会员时间：</div>\
-									<div class="list_title" style="width: auto;">\
-										&nbsp;&nbsp;<span id="turnonTime"></span>&nbsp;&nbsp;——&nbsp;&nbsp;<span id="expireTime"></span>\
-									</div>\
-									<div class="empty_box_left"></div>\
-								</div>\
-								<div class="mesage_list">\
 									<div class="list_title">会员昵称：</div>\
 									<div class="list_edit">\
 										<input id="nickName" type="text" value="" maxlength="20" class="field nickname" />\
@@ -92,8 +85,18 @@ $(function(){
 					</div>\
 				</div>\
 			</div>');
-		$('#turnonTime').html(dateMilliFormat(member.turnonTime, 'Date'));
-		$('#expireTime').html(dateMilliFormat(member.expireTime, 'Date'));
+		if (member.level == '1') {
+			$('.edit_message1').prepend('\
+				<div class="mesage_list memberTime">\
+					<div class="list_title">会员时间：</div>\
+					<div class="list_title" style="width: auto;">\
+						&nbsp;&nbsp;<span id="turnonTime"></span>&nbsp;&nbsp;-&nbsp;&nbsp;<span id="expireTime"></span>\
+					</div>\
+					<div class="empty_box_left"></div>\
+				</div>');
+			$('#turnonTime').html(dateMilliFormat(member.turnonTime, 'Date'));
+			$('#expireTime').html(dateMilliFormat(member.expireTime, 'Date'));
+		}
 		$('#nickName').val(member.nickName);
 		$('#email').val(member.email);
 		$('input[name=sex][value='+member.sex+']').attr('checked','checked');

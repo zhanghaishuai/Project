@@ -115,6 +115,17 @@ $(function() {
 			dataType : 'json',
 			success : function(data) {
 				if (data.status == '200') {
+					$('.btn-phonecode').attr('disabled', 'disabled');
+					$('.btn-phonecode').html('60');
+					var timer = setInterval(function(){
+						var surplus = $('.btn-phonecode').html();
+						$('.btn-phonecode').html(--surplus);
+						if (surplus <= 0) {
+							window.clearInterval(timer);
+							$('.btn-phonecode').removeAttr('disabled');
+							$('.btn-phonecode').html('获取验证码');
+						}
+					}, 1000);
 					$('#reg_mobile_code_s').removeClass('errMsg');
 					$('#reg_mobile_code_s').addClass('sucMsg');
 					$('#reg_mobile_code_s').html('<i class="i-def"></i>' + tip('202'));

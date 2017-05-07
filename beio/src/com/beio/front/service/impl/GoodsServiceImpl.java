@@ -19,6 +19,7 @@ import com.beio.front.service.GoodsService;
 import com.beio.front.vo.BuycartVO;
 import com.beio.front.vo.CartInfoVO;
 import com.beio.front.vo.ClassifyVO;
+import com.beio.front.vo.DetailVO;
 import com.beio.front.vo.GoodsVO;
 import com.beio.front.vo.IndexInfoVO;
 import com.beio.front.vo.OrderVO;
@@ -384,6 +385,14 @@ public class GoodsServiceImpl extends BaseIbatisServiceImpl implements GoodsServ
 		insert("goods.mergeOrder", preOrderVO);
 		// 返回成功结果
 		return new Root(preOrderVO, "200");
+	}
+
+	@Override
+	public Root detail(DetailVO detailVO) throws Exception {
+		// TODO Auto-generated method stub
+		detailVO = (DetailVO) selectOne("goods.queryDetail", detailVO);
+		detailVO.setServices(selectList("goods.queryService", detailVO));
+		return new Root(detailVO, "200");
 	}
 	
 }
