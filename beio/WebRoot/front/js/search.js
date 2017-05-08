@@ -54,7 +54,7 @@ $(function(){
 							<div class="spacer"></div>\
 							<div class="filtrate_box clearfix">\
 					       		<ul class="filtrate_list first_sort" style="height: auto;">\
-					       			<li class="child_li" style="display:block;">\
+					       			<li class="child_li brandtop" style="display:block;">\
 					                   <div class="list_left" title="品牌">品牌</div>\
 					                   <div class="list_right">\
 					                       <div class="list_content fix_list">\
@@ -130,15 +130,19 @@ $(function(){
 					}else {
 						$('.classifytop').remove();
 					}
-					$.each(data.result.brands, function(i, item){
-						if (data.result.brand == item.id) {
-							$('.brands').append('<span><a style="border: 1px solid #35679a;background-color:#f5f5f5" href="search.html?brand='+item.id+'&category='+category+'&keyword='+
-									keyword+'" title="'+item.name+'"><em></em>'+item.name+'</a></span>');
-						}else {
-							$('.brands').append('<span><a href="search.html?brand='+item.id+'&category='+category+'&keyword='+
-									keyword+'" title="'+item.name+'"><em></em>'+item.name+'</a></span>');
-						}
-					});
+					if (data.result.brands.length > 0) {
+						$.each(data.result.brands, function(i, item){
+							if (data.result.brand == item.id) {
+								$('.brands').append('<span><a style="border: 1px solid #35679a;background-color:#f5f5f5" href="search.html?brand='+item.id+'&category='+category+'&keyword='+
+										keyword+'" title="'+item.name+'"><em></em>'+item.name+'</a></span>');
+							}else {
+								$('.brands').append('<span><a href="search.html?brand='+item.id+'&category='+category+'&keyword='+
+										keyword+'" title="'+item.name+'"><em></em>'+item.name+'</a></span>');
+							}
+						});
+					} else {
+						$('.brandtop').remove();
+					}
 					if(data.result.order == '1') {
 						$('.tools_to_float.price').addClass('top');
 					}else if(data.result.order == '2') {

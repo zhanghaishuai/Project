@@ -11,7 +11,11 @@
 
 	<!-- 查询品牌 -->
 	<select id="queryBrands" parameterType="Object" resultType="GdsBrand">
-		SELECT * FROM gds_brand WHERE enable = '1' AND exist = '1' ORDER BY sort + '' ASC;
+		SELECT * FROM gds_brand WHERE enable = '1' AND exist = '1' AND id IN 
+		<foreach collection="brands" index="index" item="item" open="(" separator="," close=")">
+			#{item} 
+		</foreach>
+		ORDER BY sort + '' ASC;
 	</select>
 	
 	<!-- 查询分类 -->

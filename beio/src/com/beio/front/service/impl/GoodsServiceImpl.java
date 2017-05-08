@@ -1,8 +1,12 @@
 package com.beio.front.service.impl;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.TreeMap;
 
 import com.beio.base.entity.SysMember;
@@ -11,6 +15,7 @@ import com.beio.base.service.impl.BaseIbatisServiceImpl;
 import com.beio.base.util.ComUtil;
 import com.beio.base.util.ConfigUtil;
 import com.beio.base.vo.Root;
+import com.beio.front.entity.GdsBrand;
 import com.beio.front.entity.GdsBuycart;
 import com.beio.front.entity.GdsClassify;
 import com.beio.front.entity.GdsGoods;
@@ -67,10 +72,25 @@ public class GoodsServiceImpl extends BaseIbatisServiceImpl implements GoodsServ
 	
 	@Override
 	public SearchInfoVO querySearchInfo(SearchInfoVO searchInfoVO) throws Exception {
-		searchInfoVO.setBrands(selectList("goods.queryBrands"));
+		Set<String> brands = new HashSet<String>();
 		searchInfoVO.setClassifys(selectList("goods.queryClassifysBySearch", searchInfoVO));
+		GdsClassify classify = new GdsClassify();
+		classify.setId("");
+		classify.setName("全部");
+		searchInfoVO.getClassifys().add(0, classify);
 		searchInfoVO.setNavClassifys(selectList("goods.queryClassifyNavBar", searchInfoVO));
-		queryGoods(searchInfoVO);
+		queryGoods(brands, searchInfoVO);
+		if (ComUtil.isNotEmpty(brands)) {
+			Map<String, Object> param = new HashMap<String, Object>();
+			param.put("brands", brands);
+			searchInfoVO.setBrands(selectList("goods.queryBrands", param));
+		}else {
+			searchInfoVO.setBrands(new ArrayList<GdsBrand>());
+		}
+		GdsBrand brand = new GdsBrand();
+		brand.setId("");
+		brand.setName("全部");
+		searchInfoVO.getBrands().add(0, brand);
 		return searchInfoVO;
 	}
 	
@@ -175,10 +195,11 @@ public class GoodsServiceImpl extends BaseIbatisServiceImpl implements GoodsServ
 	 * @return
 	 * @throws Exception
 	 */
-	private SearchInfoVO queryGoods(SearchInfoVO searchInfoVO) throws Exception{
+	private SearchInfoVO queryGoods(Set<String> brands, SearchInfoVO searchInfoVO) throws Exception{
 		selectPage("goods.queryGoodsBySearch", searchInfoVO);
 		if (ComUtil.isNotEmpty(searchInfoVO.getPageList())) {
 			for (Object goodsVO : searchInfoVO.getPageList()) {
+				brands.add(((GoodsVO)goodsVO).getBrandID());
 				((GoodsVO)goodsVO).setShows(selectList("goods.queryShowsByGoods", goodsVO));
 			}
 		}

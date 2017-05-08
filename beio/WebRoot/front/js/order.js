@@ -350,8 +350,13 @@ function editAddr(){
 		ele.find('.mobile').html(addr.mobile);
 		ele.find('.area').html(addr.provinceName + ' ' + addr.cityName + ' ' + addr.countyName);
 		ele.find('.address').html(addr.address);
+		ele.find('.provinceCode').val(addr.province);
+		ele.find('.cityCode').val(addr.city);
+		ele.find('.countyCode').val(addr.county);
+		ele.find('.telephone').val(addr.telephone);
+		ele.find('.zipcode').val(addr.zipcode);
+		freight();
 	});
-	freight();
 }
 
 // 删除收货地址
@@ -403,6 +408,7 @@ function defaultAddr(){
 				$('.addr .us,.addr .delete').css('display', 'inline-block');
 				ele.addClass('active');
 				ele.find('.delete,.us').css('display', 'none');
+				freight();
 			} else if (data.status == '170' || data.status == '100') {
 				alert(tip(data.status));
 			} else {
@@ -413,7 +419,6 @@ function defaultAddr(){
 			alert(tip('500'));
 		}
 	});
-	freight();
 }
 
 //快递运费

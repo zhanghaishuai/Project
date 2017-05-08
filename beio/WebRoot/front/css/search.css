@@ -26,7 +26,6 @@ textarea{resize:none; outline:none; overflow:auto;}
 .filtrate_box ul.list_show{height:auto;}
 .filtrate_list li.child_li{border-bottom:1px dotted #eeeceb;width: 1200px;position: relative;vertical-align: top;}
 .filtrate_list li.child_li a{color:#646464;}
-.filtrate_list li.child_li a:hover{text-decoration:underline;}
 .filtrate_list li.first_sort{border-bottom:1px solid #eeeceb;}
 .filtrate_list li.border_bottom0{border-bottom:0px;}
 .filtrate_list li .list_left{padding-left:21px;width:56px;float:left;color: #999;line-height:35px;overflow: hidden;height:35px;overflow: hidden;white-space: nowrap;text-overflow: ellipsis;}
@@ -35,7 +34,7 @@ textarea{resize:none; outline:none; overflow:auto;}
 .filtrate_list .list_right .list_content span{height: 22px;float: left;display:block;padding: 3px 10px 3px 0;}
 .filtrate_list .list_right .list_content span a{display:inline-block;padding:0px 19px 0 0;line-height:20px;height: 20px;border:1px solid #fff;color: #555;padding-right:0;margin-right:19px;white-space:nowrap;*vertical-align: baseline;}
 .filtrate_list .list_right .list_content span a em{display:none;height: 20px;width: 19px;background:url(../image/tools_box_bg.png) -37px -61px no-repeat;position: absolute;right: 12px; top:4px;}
-.filtrate_list .list_right .list_content span a:hover{color: #fd5115;text-decoration: underline;}
+.filtrate_list .list_right .list_content span a:hover{color: #fd5115;}
 .filtrate_list .list_right .list_content span a.on,.filtrate_list .list_right .list_content span a.on:hover{border-color: #ccc;color: #666;text-decoration: none;padding-right:19px;margin-right:0;}
 .filtrate_list .list_right .list_content span a.on:hover{border-color: #f3bfa1;color: #fd5115;}
 .filtrate_list .list_right .list_content span a.on em{cursor: pointer;display: block;}
@@ -43,7 +42,6 @@ textarea{resize:none; outline:none; overflow:auto;}
 .filtrate_list .list_right .fix_list span,.filtrate_list .list_right_open span{width: 125px;padding-right: 10px;overflow: hidden;position:relative;text-align: center;}
 .filtrate_list .list_right .fix_list span a,.filtrate_list .list_right_open .list_content span a{overflow:hidden;white-space: nowrap;text-overflow: ellipsis;display:block;width: 98px;}
 .filtrate_list .list_right .fix_list span a active,.filtrate_list .list_right_open span a active{background-color:#f5f5f5;}
-.filtrate_list .list_right .list_content{padding-right:85px;}
 .filtrate_list .list_right .list_content_select{background-color:#ffebde;border: 1px solid #ebebeb;padding:13px 18px 3px 18px;margin-bottom:7px;}
 .filtrate_list .list_right .list_content_select span{width:140px;}
 .filtrate_box .btn{display:block;background: url(../image/btn_bg.png) 0px 0px no-repeat;}
@@ -332,7 +330,7 @@ textarea{resize:none; outline:none; overflow:auto;}
 .crumbs_fb_left{float:left;width:auto;}
 .narrow_page .crumbs_fb_left{width:760px;_width:700px;}
 .crumbs_fb .a{color: #404040;display: block;float: left;}
-.crumbs_fb .a:hover{color: #fd5115;text-decoration: underline;}
+.crumbs_fb .a:hover{color: #fd5115;}
 .crumbs_fb .b{font-weight: bold;font-style: normal;}
 .crumbs_fb span.sp{font-family: 'Hiragino Sans GB',"Simsun";margin: 0 6px;display: block;float: left;_display:inline;}
 .crumbs_fb .search_box{float: left;margin: 4px 0;}
