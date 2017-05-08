@@ -6,7 +6,7 @@
 
 	<!-- 查询热搜 -->
 	<select id="querySearchs" parameterType="Object" resultType="GdsSearch">
-		SELECT * FROM gds_search ORDER BY sort + '' ASC LIMIT 8;
+		SELECT * FROM gds_search ORDER BY hot + '' DESC LIMIT 8;
 	</select>
 
 	<!-- 查询品牌 -->

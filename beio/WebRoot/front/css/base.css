@@ -347,11 +347,13 @@ input::-ms-reveal {
 
 #hd a {
 	color: #646464;
+	font-weight: bold;
 	text-decoration: none;
 }
 
 #hd a:hover {
 	color: #35679a;
+	font-weight: bold;
 	text-decoration: none;
 }
 
@@ -503,7 +505,8 @@ input::-ms-reveal {
 	line-height: 24px;
 	z-index: 6666;
 	font-size: 14px;
-	padding: 2px 10px;
+	font-weight: bold;
+	padding: 2px 0px;
 }
 
 #hd .logo_line .search_hot {
@@ -730,21 +733,26 @@ input::-ms-reveal {
 
 .home_nav_l .new_pub_nav li {
 	height: 30px;
+	background: #fafafa;
 	color: #323232;
 	font: 14px/30px "Microsoft Yahei";
 	position: relative;
-	z-index: 1px;
-	vertical-align: top;
+	z-index: 1;
+	border: 2px solid #fafafa;
+	border-right: 0;
 	text-align: center;
 }
 
 .home_nav_l .new_pub_nav li.on {
-	background: #fff;
+	height: 30px;
+	background: #ffffff;
 	color: #F07828;
+	font: 14px/30px "Microsoft Yahei";
+	position: relative;
 	z-index: 10;
-	margin: -2px -1px -2px 0;
 	border: 2px solid #35679a;
 	border-right: 0;
+	text-align: center;
 }
 
 .home_nav_l .new_pub_nav li a {
@@ -772,11 +780,11 @@ input::-ms-reveal {
 	border: 2px solid #35679a;
 	padding: 4px 18px;
 	overflow: hidden;
-	overflow: hidden;
 	font: 12px 'Hiragino Sans GB', "Simsun";
 	background-color: #fff;
 	border-top: none 0;;
 	min-height: 478px;
+	z-index: 5;
 }
 
 .new_pub_nav_pop .pop_column {
@@ -1039,4 +1047,14 @@ input::-ms-reveal {
 	width: 1200px;
 	margin: 0 auto;
 	background-color: #fff;
+}
+
+.i-def {
+	display: inline-block;
+	width: 16px;
+	height: 16px;
+	vertical-align: text-top;
+	margin-right: 8px;
+	background: url(../image/icon.png) no-repeat;
+	background-position: 0 -100px;
 }

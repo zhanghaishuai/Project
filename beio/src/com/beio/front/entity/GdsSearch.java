@@ -13,10 +13,6 @@ public class GdsSearch extends Page{
 	private String id; // 主键
 	
 	private String keyword; // 名称
-	
-	private String creator; // 创建人
-	
-	private String createTime; // 创建时间
 
 	public String getId() {
 		return id;
@@ -34,20 +30,4 @@ public class GdsSearch extends Page{
 		this.keyword = keyword;
 	}
 
-	public String getCreator() {
-		return creator;
-	}
-
-	public void setCreator(String creator) {
-		this.creator = creator;
-	}
-
-	public String getCreateTime() {
-		return createTime;
-	}
-
-	public void setCreateTime(String createTime) {
-		this.createTime = createTime;
-	}
-	
 }
