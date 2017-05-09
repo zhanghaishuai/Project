@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC
+    "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+    "http://struts.apache.org/dtds/struts-2.0.dtd">
+
+<struts>
+	<package name="backGoods" extends="beio-default" namespace="/backGoods">
+		<!-- <interceptor-ref name="backStack"/> -->
+		<!-- 后台分页查询商品信息 -->
+		<action name="pageGoods" class="backGoodsAction" method="pageGoods">
+			<result name="json" type="json">
+				<param name="root">backRoot</param>
+			</result>
+			<interceptor-ref name="backIdentityStack"/>
+		</action>
+		
+		<!-- 后台获取商品分类 -->
+		<action name="getAllClassify" class="backGoodsAction" method="getAllClassify">
+			<result name="json" type="json">
+				<param name="root">jsonArray</param>
+			</result>
+			<interceptor-ref name="backIdentityStack"/>
+		</action>
+		
+		<!-- 后台获取品牌 -->
+		<action name="getAllBrand" class="backGoodsAction" method="getAllBrand">
+			<result name="json" type="json">
+				<param name="root">jsonArray</param>
+			</result>
+			<interceptor-ref name="backIdentityStack"/>
+		</action>
+		
+		<!-- 增加商品 -->
+		<action name="addGoods" class="backGoodsAction" method="addGoods">
+			<result name="json" type="json">
+				<param name="root">backRoot</param>
+			</result>
+			<interceptor-ref name="backIdentityStack"/>
+		</action>
+		
+	</package>
+</struts>

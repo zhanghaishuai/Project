@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="backGoods">
+	
+	<!-- 后台查询商品总数 -->
+	<select id="countGoods" parameterType="BGV" resultType="int">
+		select 
+			count(g.id) 
+		from 
+			gds_goods g
+		where 
+			1 = 1
+			<if test="classifyID != null and classifyID != ''">
+				and g.classifyID = #{classifyID}
+			</if>
+			<if test="brandID != null and brandID != ''">
+				and g.brandID = #{brandID}
+			</if>
+			<if test="name != null and name != ''">
+				and g.name like concat('%', #{name}, '%')
+			</if>
+	</select>
+	
+	<!-- 后台分页查询商品信息 -->
+	<select id="pageGoods" parameterType="BGV" resultType="BGV">
+		select 
+			g.*
+		    , b.name as brand 
+		    , c.name as classify
+		from 
+			gds_goods g
+		    , gds_brand b
+		    , gds_classify c
+		where
+			1 = 1
+			<if test="classifyID != null and classifyID != ''">
+				and g.classifyID = #{classifyID}
+			</if>
+			<if test="brandID != null and brandID != ''">
+				and g.brandID = #{brandID}
+			</if>
+			<if test="name != null and name != ''">
+				and g.name like concat('%', #{name}, '%')
+			</if>
+			and g.brandID = b.id
+		    and g.classifyID = c.id
+		order by 
+			g.id desc
+		limit 
+			#{page}, #{rows};
+	</select>
+	
+	<!-- 根据pid获取全部分类 -->
+	<select id="getAllClassifyByPid" parameterType="BCV" resultType="COMBOBOX">
+		select c.id as val, c.name as text from gds_classify c where pid = #{pid};
+	</select>
+	
+	<!-- 获取所有品牌 -->
+	<select id="getAllBrand" resultType="COMBOBOX">
+		select b.id as val, b.name as text from gds_brand b
+	</select>
+	
+</mapper>
