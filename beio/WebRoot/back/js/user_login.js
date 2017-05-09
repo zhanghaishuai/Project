@@ -48,6 +48,7 @@ function login(){
 					data.status == '125' || data.status == '195' || data.status == '192' || data.status == '193') {
 				$('.msg-error').empty();
 				$('.msg-error').html('<b>'+tip(data.status)+'</b>');
+				$('.verify-code').attr('src', '/beio/image/verifyCode?flushStr'+new Date().getTime());
 			} else {
 				alert(tip('400'));
 			};

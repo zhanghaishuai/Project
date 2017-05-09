@@ -11,7 +11,7 @@
 		
 </head>
 <body>
-	<div id="goods_tb" style="padding:10px 10px;">
+	<div id="user_tb" style="padding:10px 10px;">
 		<div>
 			<a href="javascript:void(0);" onclick="$('#user_add').window('open')" class="easyui-linkbutton" plain="false" data-options="iconCls:'icon-add'">新增</a>
 			<a href="javascript:void(0);" onclick="updateUserWindowShow()" class="easyui-linkbutton" plain="false" data-options="iconCls:'icon-edit'">修改</a>
@@ -31,13 +31,13 @@
 			,pagination:true
 			,pagePosition:'bottom'
 			,pageNumber:1
-			,pageSize:10
+			,pageSize:30
 			,url:'/beio/sys/pageUsers'
 			,method:'post'
 			,loadFilter: function(data){if(data.status=='170'){alert('登录失效，请重新登录');window.location.href = 'login.html'}else{return data}}
 			" 
 			
-		toolbar="#goods_tb">
+		toolbar="#user_tb">
 		<!-- 设置默认行颜色 ,rowStyler:function(index,row){if('1' != row.enable){return 'background-color:#E0E0E0;color:blue;font-weight:bold';}} -->
 		<thead>
 			<tr>

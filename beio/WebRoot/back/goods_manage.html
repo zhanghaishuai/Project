@@ -1,118 +1,187 @@
-    <!DOCTYPE html>
-    <html>
-    <head>
-    	<meta charset="UTF-8">
-    	<title>商品管理</title>
-    	<link rel="stylesheet" type="text/css" href="js/jquery-easyui-1.5.2/themes/default/easyui.css">
-		<link rel="stylesheet" type="text/css" href="js/jquery-easyui-1.5.2/themes/icon.css">
-		<link rel="stylesheet" type="text/css" href="js/jquery-easyui-1.5.2/demo/demo.css">
-		<script type="text/javascript" src="js/jquery-easyui-1.5.2/jquery.min.js"></script>
-		<script type="text/javascript" src="js/jquery-easyui-1.5.2/jquery.easyui.min.js"></script>
-		<script type="text/javascript">
-			// 删除选中行
-			function delRow(){
-				var row = $('#goods_datagrid').datagrid('getSelected');
-				if(row){
-					// 访问后台删除数据
-					alert(row.itemid);
-		        	var rowIndex = $('#goods_datagrid').datagrid('getRowIndex', row);
-					$('#goods_datagrid').datagrid('deleteRow', rowIndex);  
-				}
-			}
-			// 修改选中行数据
-			function updateRow(){
-				
-			}
-		</script>
-    </head>
-    <body>
-		<div id="goods_tb" style="padding:10px 10px;">
-			<div>
-				<a href="javascript:void(0);" onclick="$('#goods_info').window('open')" class="easyui-linkbutton" plain="false" data-options="iconCls:'icon-add'">新增</a>
-				<a href="javascript:void(0);" class="easyui-linkbutton" plain="false" data-options="iconCls:'icon-edit'">修改</a>
-				<a href="javascript:void(0);" onclick="delRow();" class="easyui-linkbutton" plain="false" data-options="iconCls:'icon-remove'">删除</a>
-				<input id=""  style="margin-left: 200px;"/>
-				<a href="javascript:void(0);" onclick="delRow();" class="easyui-linkbutton" plain="false" data-options="iconCls:'icon-search'">搜索</a>
-			</div>
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>商品管理</title>
+	<link rel="stylesheet" type="text/css" href="js/jquery-easyui-1.5.2/themes/default/easyui.css">
+	<link rel="stylesheet" type="text/css" href="js/jquery-easyui-1.5.2/themes/icon.css">
+	<link rel="stylesheet" type="text/css" href="js/jquery-easyui-1.5.2/demo/demo.css">
+	<script type="text/javascript" src="js/jquery-easyui-1.5.2/jquery.min.js"></script>
+	<script type="text/javascript" src="js/jquery-easyui-1.5.2/jquery.easyui.min.js"></script>
+		
+</head>
+<body>
+	<div id="goods_tb" style="padding:10px 10px;">
+		<div>
+			<a href="javascript:void(0);" onclick="addGoodsWindowShow()" class="easyui-linkbutton" plain="false" data-options="iconCls:'icon-add'">新增</a>
+			<a href="javascript:void(0);" onclick="updateUserWindowShow()" class="easyui-linkbutton" plain="false" data-options="iconCls:'icon-edit'">修改</a>
+			<a href="javascript:void(0);" onclick="delRow();" class="easyui-linkbutton" plain="false" data-options="iconCls:'icon-remove'">删除</a>
+			<span style="margin-left: 200px;">分类：</span>
+			<input id="bgc_one" class="easyui-combobox"
+				data-options="
+					valueField:'val'
+					,textField:'text'
+					,url: '/beio/backGoods/getAllClassify'
+					,onChange : function(){loadBgc_two();}"/>
+			<input id="bgc_two" class="easyui-combobox"
+				data-options="
+					valueField:'val'
+					,textField:'text'
+					"/>
+			<span style="margin-left: 20px;">品牌：</span>
+			<input id="goodsbrand" class="easyui-combobox"
+				data-options="
+					valueField:'val'
+					,textField:'text'
+					,url: '/beio/backGoods/getAllBrand'
+					"/>
+			<span style="margin-left: 20px;">商品名称：</span>
+			<input id="goodsname"/>
+			<a href="javascript:void(0);" onclick="searchGoods();" class="easyui-linkbutton" plain="false" data-options="iconCls:'icon-search'">搜索</a>
 		</div>
-    	<table id="goods_datagrid" class="easyui-datagrid" style="width:100%;height:550px"
-    			data-options="fitColumns:true,striped:true,rownumbers:true,singleSelect:true,collapsible:true,url:'datagrid_data1.json',method:'post'" toolbar="#goods_tb">
-    		<thead>
-    			<tr>
-    				<th data-options="field:'itemid',width:120,align:'center',hidden:true">ID</th>
-    				<th data-options="field:'productid',width:120,align:'center'">商品名称</th>
-    				<th data-options="field:'listprice',width:120,align:'center'">List Price</th>
-    				<th data-options="field:'unitcost',width:120,align:'center'">Unit Cost</th>
-    				<th data-options="field:'attr1',width:250,align:'center'">Attribute</th>
-    				<th data-options="field:'status',width:60,align:'center'">Status</th>
-    			</tr>
-    		</thead>
-   			<tr>
-   				<td>123456789011</td>
-   				<td>123456789011</td>
-   				<td>123456789011</td>
-   				<td>123456789011</td>
-   				<td>123456789011</td>
-   				<td>123456789011</td>
-   			</tr>
-   			<tr>
-   				<td>123456789022</td>
-   				<td>123456789022</td>
-   				<td>123456789022</td>
-   				<td>123456789022</td>
-   				<td>123456789022</td>
-   				<td>123456789022</td>
-   			</tr>
-   			<tr>
-   				<td>123456789033</td>
-   				<td>123456789033</td>
-   				<td>123456789033</td>
-   				<td>123456789033</td>
-   				<td>123456789033</td>
-   				<td>123456789033</td>
-   			</tr>
-   			<tr>
-   				<td>123456789044</td>
-   				<td>123456789044</td>
-   				<td>123456789044</td>
-   				<td>123456789044</td>
-   				<td>123456789044</td>
-   				<td>123456789044</td>
-   			</tr>
-    	</table>
-    	<div style="margin:20px 0;"></div>
-		<div class="easyui-pagination" data-options="total:114"></div>
-    	<div id="goods_info" class="easyui-window" closed="true" title="商品信息" data-options="iconCls:'icon-save', collapsible: false, minimizable: false, maximizable: false, resizable: false,left: '100px', top: '100px'" style="width:500px; height:500px; padding:5px;">
-    		<form id="ff" method="post">
-		    	<table cellpadding="5">
-		    		<tr>
-		    			<td>Name:</td>
-		    			<td><input class="easyui-textbox" type="text" name="name" data-options="required:true"></input></td>
-		    		</tr>
-		    		<tr>
-		    			<td>Email:</td>
-		    			<td><input class="easyui-textbox" type="text" name="email" data-options="required:true,validType:'email'"></input></td>
-		    		</tr>
-		    		<tr>
-		    			<td>Subject:</td>
-		    			<td><input class="easyui-textbox" type="text" name="subject" data-options="required:true"></input></td>
-		    		</tr>
-		    		<tr>
-		    			<td>Message:</td>
-		    			<td><input class="easyui-textbox" name="message" data-options="multiline:true" style="height:60px"></input></td>
-		    		</tr>
-		    		<tr>
-		    			<td>Language:</td>
-		    			<td>
-		    				<select class="easyui-combobox" name="language"><option value="ar">Arabic</option><option value="bg">Bulgarian</option><option value="ca">Catalan</option><option value="zh-cht">Chinese Traditional</option><option value="cs">Czech</option><option value="da">Danish</option><option value="nl">Dutch</option><option value="en" selected="selected">English</option><option value="et">Estonian</option><option value="fi">Finnish</option><option value="fr">French</option><option value="de">German</option><option value="el">Greek</option><option value="ht">Haitian Creole</option><option value="he">Hebrew</option><option value="hi">Hindi</option><option value="mww">Hmong Daw</option><option value="hu">Hungarian</option><option value="id">Indonesian</option><option value="it">Italian</option><option value="ja">Japanese</option><option value="ko">Korean</option><option value="lv">Latvian</option><option value="lt">Lithuanian</option><option value="no">Norwegian</option><option value="fa">Persian</option><option value="pl">Polish</option><option value="pt">Portuguese</option><option value="ro">Romanian</option><option value="ru">Russian</option><option value="sk">Slovak</option><option value="sl">Slovenian</option><option value="es">Spanish</option><option value="sv">Swedish</option><option value="th">Thai</option><option value="tr">Turkish</option><option value="uk">Ukrainian</option><option value="vi">Vietnamese</option></select>
-		    			</td>
-		    		</tr>
-		    	</table>
-	    	</form>
-	    	<div style="text-align:center;padding:5px">
-		    	<a href="javascript:void(0)" class="easyui-linkbutton" onclick="submitForm()">Submit</a>
-		    	<a href="javascript:void(0)" class="easyui-linkbutton" onclick="clearForm()">Clear</a>
-	    	</div>
+	</div>
+	<table id="goods_datagrid" class="easyui-datagrid" style="width:100%; height: 98%;"
+		data-options="
+			fitColumns:true
+			,striped:true
+			,rownumbers:true
+			,singleSelect:true
+			,collapsible:true
+			,pagination:true
+			,pagePosition:'bottom'
+			,pageNumber:1
+			,pageSize:30
+			,url:'/beio/backGoods/pageGoods'
+			,method:'post'
+			,loadFilter: function(data){if(data.status=='170'){alert('登录失效，请重新登录');window.location.href = 'login.html'}else{return data}}
+			" 
+			
+		toolbar="#goods_tb">
+		<!-- 设置默认行颜色 ,rowStyler:function(index,row){if('1' != row.enable){return 'background-color:#E0E0E0;color:blue;font-weight:bold';}} -->
+		<thead>
+			<tr>
+				<th data-options="field:'id',width:100,align:'center',hidden:true">ID</th>
+				<th data-options="field:'classify',width:100,align:'center'">分类</th>
+				<th data-options="field:'brand',width:100,align:'center'">品牌</th>
+				<th data-options="field:'name',width:200,align:'center'">商品名称</th>
+				<th data-options="field:'descr',width:200,align:'center'">商品描述</th>
+				<th data-options="field:'mPrice',width:30,align:'right'">会员价</th>
+				<th data-options="field:'cPrice',width:30,align:'right'">普通价</th>
+				<th data-options="field:'weight',width:30,align:'right'">重量(KG)</th>
+				<th data-options="field:'salds',width:30,align:'right'">已售</th>
+				<th data-options="field:'stock',width:30,align:'right'">库存</th>
+			</tr>
+		</thead>
+	</table>
+	<div id="goods_add" class="easyui-window" closed="true" title="商品信息" data-options="iconCls:'icon-save', collapsible: false, minimizable: false, maximizable: false, resizable: true,left: '300px', top: '200px', draggable: true" style="width:800px; height:600px; padding:5px;">
+		<form id="goods_add_form" method="post" enctype="multipart/form-data">
+			<table cellpadding="5">
+				<tr>
+					<td><span>品牌:</span></td>
+					<td>
+						<input id="goodsbrand_add" name="gfv.brandID" class="easyui-combobox" data-options="required:true, valueField:'val', textField:'text', url: '/beio/backGoods/getAllBrand'" />
+					</td>
+				</tr>
+				<tr>
+					<td><span>商品分类:</span></td>
+					<td>
+						<input id="bgc_add_one" class="easyui-combobox" data-options="required:true, valueField:'val', textField:'text',url: '/beio/backGoods/getAllClassify', onChange : function(){loadBgc_add_two();}" />
+						<br/>
+						<input id="bgc_add_two" name="gfv.classifyID" class="easyui-combobox" data-options="required:true, valueField:'val', textField:'text'" />
+					</td>
+				</tr>
+				<tr>
+					<td><span>商品名称:</span></td>
+					<td><input  id="goods_add_name" name="gfv.name" class="easyui-textbox" type="text" multiline="true" data-options="required:true, validType:'length[0,100]'"></input></td>
+				</tr>
+				<tr>
+					<td><span>商品描述:</span></td>
+					<td><input id="goods_add_descr" name="gfv.descr" class="easyui-textbox" type="text" multiline="true" data-options="required:true, validType:'length[1,200]'"></input></td>
+				</tr>
+				<tr>
+					<td><span>会员价(元):</span></td>
+					<td><input id="goods_add_mPrice" name="gfv.mPrice" class="easyui-numberbox" data-options="required:true, validType:'length[3,10]'" precision="2"></input></td>
+				</tr>
+				<tr>
+					<td><span>普通价(元):</span></td>
+					<td><input id="goods_add_cPrice" name="gfv.cPrice" class="easyui-numberbox" data-options="required:true, validType:'length[3,10]'" precision="2"></input></td>
+				</tr>
+				<tr>
+					<td><span>重量(KG):</span></td>
+					<td><input id="goods_add_weight" name="gfv.weight" class="easyui-numberbox" data-options="required:true, validType:'length[3,10]'" precision="2"></input></td>
+				</tr>
+				<tr>
+					<td><span>数量(单个):</span></td>
+					<td><input id="goods_add_stock" name="gfv.stock" class="easyui-numberbox" data-options="required:true, validType:'length[1,10]'"></input></td>
+				</tr>
+				<tr>
+					<td><span>展示图1:</span></td>
+					<td><input  id="goods_add_show1" name="gfv.show1" class="easyui-filebox" data-options="required:true, buttonText:'选择文件', accept:'image/png.jpeg'"></input></td>
+				</tr>
+				<tr>
+					<td><span>展示图2:</span></td>
+					<td><input id="goods_add_show2" name="gfv.show2" class="easyui-filebox" data-options="buttonText:'选择文件', accept:'image/png.jpeg'"></input></td>
+				</tr>
+				<tr>
+					<td><span>展示图3:</span></td>
+					<td><input id="goods_add_show3" name="gfv.show3" class="easyui-filebox" data-options="buttonText:'选择文件', accept:'image/png.jpeg'"></input></td>
+				</tr>
+				<tr>
+					<td><span>展示图4:</span></td>
+					<td><input id="goods_add_show4" name="gfv.show4" class="easyui-filebox" data-options="buttonText:'选择文件', accept:'image/png.jpeg'"></input></td>
+				</tr>
+				<tr>
+					<td><span>展示图5:</span></td>
+					<td><input id="goods_add_show5" name="gfv.show5" class="easyui-filebox" data-options="buttonText:'选择文件', accept:'image/png.jpeg'"></input></td>
+				</tr>
+				<tr>
+					<td><span>详情图1:</span></td>
+					<td><input id="goods_add_detail1" name="gfv.detaile1" class="easyui-filebox" data-options="buttonText:'选择文件', accept:'image/png.jpeg'"></input></td>
+				</tr>
+			</table>
+		</form>
+		<div style="text-align:center;padding:5px">
+			<a href="javascript:void(0)" class="easyui-linkbutton" onclick="addGoods()">提交</a>
+			<a href="javascript:void(0)" class="easyui-linkbutton" onclick="clearUserAddForm()">取消</a>
 		</div>
-    </body>
-    </html>
+	</div>
+	
+	<div id="user_update" class="easyui-window" closed="true" title="用户信息" data-options="iconCls:'icon-save', collapsible: false, minimizable: false, maximizable: false, resizable: false,left: '300px', top: '200px', draggable: true" style="width:300px; height:300px; padding:5px;">
+		<form id="user_update_form" method="post">
+			<table cellpadding="5">
+				<tr>
+					
+					<td>用户名:</td>
+					<td>
+						<input id="user_update_id" type="text" hidden="hidden"/>
+						<input class="easyui-textbox" type="text" id="user_update_username" data-options="required:true" readonly="readonly"></input>
+					</td>
+				</tr>
+				<tr>
+					<td>密码:</td>
+					<td><input class="easyui-textbox" type="text" id="user_update_password" data-options="required:true" maxlength="20"></input></td>
+				</tr>
+				<tr>
+					<td>昵称:</td>
+					<td><input class="easyui-textbox" type="text" id="user_update_nickName" data-options="" maxlength="20"></input></td>
+				</tr>
+				<tr>
+					<td>邮箱:</td>
+					<td><input class="easyui-textbox" id="user_update_email" data-options="validType:'email'" maxlength="50"></input></td>
+				</tr>
+				<tr>
+					<td>可用状态:</td>
+					<td>
+						<input type="radio" name="user_update_enable" value="1"/>启用
+						<input type="radio" name="user_update_enable" value="0"/>禁用
+					</td>
+				</tr>
+			</table>
+		</form>
+		<div style="text-align:center;padding:5px">
+			<a href="javascript:void(0)" class="easyui-linkbutton" onclick="updateUser()">提交</a>
+			<a href="javascript:void(0)" class="easyui-linkbutton" onclick="clearUserUpdateForm()">取消</a>
+		</div>
+	</div>
+</body>
+</html>

@@ -23,13 +23,12 @@ public class BackIdentityInterceptor extends BaseAction implements Interceptor {
 	public String intercept(ActionInvocation invocation){
 		try {
 			if (sessionUser() == null) {
-				setRoot("170");
-				print(JSONObject.fromObject(root));
+				setBackRoot("170");
+				print(JSONObject.fromObject(backRoot));
 			}else {
 				return invocation.invoke();
 			}
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return JSON;

@@ -58,5 +58,6 @@
 	<include file="struts/base/sys.xml" />
 	
 	<include file="struts/front/goods.xml" />
+	<include file="struts/back/backGoods.xml" />
 	
 </struts>

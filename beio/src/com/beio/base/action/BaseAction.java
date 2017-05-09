@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import net.sf.ezmorph.object.DateMorpher;
+import net.sf.json.JSONObject;
 import net.sf.json.util.JSONUtils;
 
 import org.apache.struts2.ServletActionContext;
@@ -43,7 +44,7 @@ public class BaseAction extends ActionSupport {
 
 	// Json标识
 	protected static final String JSON = "json";
-
+	
 	// 文件
 	protected File file;
 
@@ -59,7 +60,7 @@ public class BaseAction extends ActionSupport {
 	// 接口反馈对象
 	protected Root root = new Root();
 	
-	// 后台借口返回值
+	// 后台接口返回值
 	protected BackRoot backRoot = new BackRoot();
 	
 	// 会员对象
@@ -347,7 +348,7 @@ public class BaseAction extends ActionSupport {
 		this.backRoot.setStatus(status);
 		this.backRoot.setMessage(message);
 	}
-
+	
 	public SysMember getMember() {
 		return member;
 	}
