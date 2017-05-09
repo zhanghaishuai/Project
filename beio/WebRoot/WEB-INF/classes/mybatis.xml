@@ -50,6 +50,11 @@
 		
 		
 		<typeAlias type="com.beio.base.entity.SysUser" alias="SysUser"/>
+		<typeAlias type="com.beio.back.vo.BackGdsGoodsVO" alias="BGV"/>
+		<typeAlias type="com.beio.back.vo.BackGdsClassifyVO" alias="BCV"/>
+		<typeAlias type="com.beio.back.vo.BackGdsBrandVO" alias="BBV"/>
+		<typeAlias type="com.beio.back.vo.BackComboboxVO" alias="COMBOBOX"/>
+		
 		
 		
 		
@@ -60,6 +65,8 @@
 		<mapper resource="ibatis/base/sys.xml"/>
 		
 		<mapper resource="ibatis/front/goods.xml"/>
+		
+		<mapper resource="ibatis/back/backGoods.xml"/>
 		
 	</mappers>
 </configuration> 

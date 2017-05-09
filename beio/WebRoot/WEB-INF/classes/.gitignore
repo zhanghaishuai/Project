@@ -1,3 +1,15 @@
+<<<<<<< HEAD
+/com
+/config
+/config.properties
+/ibatis
+/log4j.properties
+/mybatis.xml
+/spring
+/struts
+/struts.xml
+=======
 /com
 /ibatis
 /struts
+>>>>>>> refs/remotes/origin/master

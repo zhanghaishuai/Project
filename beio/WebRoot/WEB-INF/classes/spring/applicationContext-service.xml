@@ -10,4 +10,6 @@
 	
 	<bean id="goodsService" class="com.beio.front.service.impl.GoodsServiceImpl" singleton="true"></bean>
 	
+	<bean id="bgs" class="com.beio.back.service.impl.BackGdsGoodsServiceImpl" singleton="true"></bean>
+	
 </beans>

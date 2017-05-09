@@ -12,4 +12,6 @@
 	
 	<bean id="goodsAction" class="com.beio.front.action.GoodsAction" singleton="false"></bean>
 	
+	<bean id="backGoodsAction" class="com.beio.back.action.BackGoodsAction" singleton="false"></bean>
+	
 </beans>
