@@ -65,4 +65,9 @@ public class Constant {
 	/** 会员年费 **/
 	public static final String MEMBERYEARFEE = "1";
 	
+	/** 商品展示图数量 **/
+	public static final int SHOWFILE_LENGTH = 5;
+	
+	/** 图片存放地址 **/
+	public static final String IMGSPATH = "E:/Project/Beio/images/goods";
 }
