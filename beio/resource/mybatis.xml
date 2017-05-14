@@ -58,6 +58,27 @@
 		
 		
 		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		<typeAlias type="com.beio.base.vo.User" alias="User"/>
+		
+		<typeAlias type="com.beio.base.entity.SysRole" alias="SysRole"/>
+		<typeAlias type="com.beio.base.entity.SysMenu" alias="SysMenu"/>
+		
+		
+		
+		
+		
+		
 	</typeAliases>
 	
 	<mappers>

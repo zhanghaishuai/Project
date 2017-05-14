@@ -4,6 +4,7 @@ import com.beio.base.entity.SysAddr;
 import com.beio.base.entity.SysPay;
 import com.beio.base.vo.Member;
 import com.beio.base.vo.Root;
+import com.beio.base.vo.User;
 
 /**
  * 系统业务逻辑接口
@@ -57,5 +58,13 @@ public interface SysService extends BaseIbaitsService{
 	 * @throws Exception
 	 */
 	public Root payMrfee(Member member, SysPay sysPay) throws Exception;
+	
+	/**
+	 * 后台用户登录
+	 * @param user
+	 * @return
+	 * @throws Exception
+	 */
+	public User backLogin(User user) throws Exception;
 	
 }

@@ -13,6 +13,7 @@ import com.beio.base.util.Constant;
 import com.beio.base.util.DateUtil;
 import com.beio.base.vo.Member;
 import com.beio.base.vo.Root;
+import com.beio.base.vo.User;
 
 /**
  * 商品业务逻辑实现
@@ -193,6 +194,20 @@ public class SysServiceImpl extends BaseIbatisServiceImpl implements SysService 
 		}
 		mr.setTrade_state(map.get("trade_state"));
 		return new Root(mr, "200");
+	}
+
+	@Override
+	@SuppressWarnings("unchecked")
+	public User backLogin(User user) throws Exception {
+		// TODO Auto-generated method stub
+		// 用户登录
+		user = (User) selectOne("sys.userLogin", user);
+		// 用户角色
+		user.setRoles(selectList("sys.userRole", user));
+		// 用户菜单
+		user.setMenus(selectList("sys.userMenu", user));
+		// 返回用户
+		return user;
 	}
 
 }
