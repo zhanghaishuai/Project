@@ -38,5 +38,61 @@
 			<interceptor-ref name="backIdentityStack"/>
 		</action>
 		
+		<!-- 根据商品id获取商品信息 -->
+		<action name="getGoodsByID" class="backGoodsAction" method="getGoodsByID">
+			<result name="json" type="json">
+				<param name="root">backRoot</param>
+			</result>
+			<interceptor-ref name="backIdentityStack"/>
+		</action>
+		
+		<!-- 修改商品信息 -->
+		<action name="updateGoods" class="backGoodsAction" method="updateGoods">
+			<result name="json" type="json">
+				<param name="root">backRoot</param>
+			</result>
+			<interceptor-ref name="backIdentityStack"/>
+		</action>
+				
+		<!-- 启用/禁用商品 -->
+		<action name="controlGoodsEnable" class="backGoodsAction" method="controlGoodsEnable">
+			<result name="json" type="json">
+				<param name="root">backRoot</param>
+			</result>
+			<interceptor-ref name="backIdentityStack"/>
+		</action>
+		
+		<!-- 根据商品id获取商品图片 -->
+		<action name="getGoodsImagesByID" class="backGoodsAction" method="getGoodsImagesByID">
+			<result name="json" type="json">
+				<param name="root">backRoot</param>
+			</result>
+			<interceptor-ref name="backIdentityStack"/>
+		</action>
+		
+		<!-- 新增商品图片 -->
+		<action name="addGoodsImage" class="backGoodsAction" method="addGoodsImage">
+			<result name="json" type="json">
+				<param name="root">backRoot</param>
+			</result>
+			<interceptor-ref name="backIdentityStack"/>
+		</action>
+				
+		<!-- 修改商品图片信息 -->
+		<action name="updateGoodsImage" class="backGoodsAction" method="updateGoodsImage">
+			<result name="json" type="json">
+				<param name="root">backRoot</param>
+			</result>
+			<interceptor-ref name="backIdentityStack"/>
+		</action>
+		
+		<!-- 删除商品信息 -->
+		<action name="delGoodsImage" class="backGoodsAction" method="delGoodsImage">
+			<result name="json" type="json">
+				<param name="root">backRoot</param>
+			</result>
+			<interceptor-ref name="backIdentityStack"/>
+		</action>		
+		
 	</package>
 </struts>
