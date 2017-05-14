@@ -3,24 +3,22 @@
 <head>
 	<meta charset="UTF-8">
 	<title>商品管理</title>
-	<link rel="stylesheet" type="text/css" href="js/jquery-easyui-1.5.2/themes/default/easyui.css">
-	<link rel="stylesheet" type="text/css" href="js/jquery-easyui-1.5.2/themes/icon.css">
-	<link rel="stylesheet" type="text/css" href="js/jquery-easyui-1.5.2/demo/demo.css">
-	<script type="text/javascript" src="js/jquery-easyui-1.5.2/jquery.min.js"></script>
-	<script type="text/javascript" src="js/jquery-easyui-1.5.2/jquery.easyui.min.js"></script>
 		
 </head>
 <body>
 	<div id="goods_tb" style="padding:10px 10px;">
 		<div>
 			<a href="javascript:void(0);" onclick="addGoodsWindowShow()" class="easyui-linkbutton" plain="false" data-options="iconCls:'icon-add'">新增</a>
-			<a href="javascript:void(0);" onclick="updateUserWindowShow()" class="easyui-linkbutton" plain="false" data-options="iconCls:'icon-edit'">修改</a>
-			<a href="javascript:void(0);" onclick="delRow();" class="easyui-linkbutton" plain="false" data-options="iconCls:'icon-remove'">删除</a>
-			<span style="margin-left: 200px;">分类：</span>
+			<a href="javascript:void(0);" onclick="updateGoodsWindowShow()" class="easyui-linkbutton" plain="false" data-options="iconCls:'icon-edit'">修改商品信息</a>
+			<a href="javascript:void(0);" onclick="updateImagesWindowShow()" class="easyui-linkbutton" plain="false" data-options="iconCls:'icon-edit'">修改商品图片</a>
+			<a href="javascript:void(0);" onclick="activateGoods();" class="easyui-linkbutton" plain="false" data-options="iconCls:'icon-remove'">启用</a>
+			<a href="javascript:void(0);" onclick="forbiddenGoods();" class="easyui-linkbutton" plain="false" data-options="iconCls:'icon-remove'">禁用</a>
+			<span style="margin-left: 100px;">分类：</span>
 			<input id="bgc_one" class="easyui-combobox"
 				data-options="
 					valueField:'val'
 					,textField:'text'
+					,data: [{val : '', text : '全部'}]
 					,url: '/beio/backGoods/getAllClassify'
 					,onChange : function(){loadBgc_two();}"/>
 			<input id="bgc_two" class="easyui-combobox"
@@ -40,7 +38,7 @@
 			<a href="javascript:void(0);" onclick="searchGoods();" class="easyui-linkbutton" plain="false" data-options="iconCls:'icon-search'">搜索</a>
 		</div>
 	</div>
-	<table id="goods_datagrid" class="easyui-datagrid" style="width:100%; height: 98%;"
+	<table id="goods_datagrid" class="easyui-datagrid" style="width:100%; height: 100%;"
 		data-options="
 			fitColumns:true
 			,striped:true
@@ -60,130 +58,212 @@
 		<!-- 设置默认行颜色 ,rowStyler:function(index,row){if('1' != row.enable){return 'background-color:#E0E0E0;color:blue;font-weight:bold';}} -->
 		<thead>
 			<tr>
-				<th data-options="field:'id',width:100,align:'center',hidden:true">ID</th>
-				<th data-options="field:'classify',width:100,align:'center'">分类</th>
-				<th data-options="field:'brand',width:100,align:'center'">品牌</th>
+				<th data-options="field:'id',width:0,align:'center',hidden:true">ID</th>
+				<th data-options="field:'classifyPname',width:80,align:'center'">大类</th>
+				<th data-options="field:'classify',width:80,align:'center'">分类</th>
+				<th data-options="field:'brand',width:80,align:'center'">品牌</th>
 				<th data-options="field:'name',width:200,align:'center'">商品名称</th>
 				<th data-options="field:'descr',width:200,align:'center'">商品描述</th>
-				<th data-options="field:'mPrice',width:30,align:'right'">会员价</th>
-				<th data-options="field:'cPrice',width:30,align:'right'">普通价</th>
-				<th data-options="field:'weight',width:30,align:'right'">重量(KG)</th>
-				<th data-options="field:'salds',width:30,align:'right'">已售</th>
-				<th data-options="field:'stock',width:30,align:'right'">库存</th>
+				<th data-options="field:'mPrice',width:42,align:'right'">会员价(元)</th>
+				<th data-options="field:'cPrice',width:42,align:'right'">普通价(元)</th>
+				<th data-options="field:'weight',width:40,align:'right'">重量(KG)</th>
+				<th data-options="field:'salds',width:40,align:'right'">已售</th>
+				<th data-options="field:'stock',width:40,align:'right'">库存</th>
+				<th data-options="field:'enable',width:30,align:'center', formatter:function(value,row,index){if('1' == value){return '可用';}else{return '禁用';}}">状态</th>
 			</tr>
 		</thead>
 	</table>
-	<div id="goods_add" class="easyui-window" closed="true" title="商品信息" data-options="iconCls:'icon-save', collapsible: false, minimizable: false, maximizable: false, resizable: true,left: '300px', top: '200px', draggable: true" style="width:800px; height:600px; padding:5px;">
+	<div id="goods_add" class="easyui-window" closed="true" title="商品信息" data-options="iconCls:'icon-save', collapsible: false, minimizable: false, maximizable: false, resizable: true, draggable: true" style="width:580px; height:600px; padding:5px;">
 		<form id="goods_add_form" method="post" enctype="multipart/form-data">
 			<table cellpadding="5">
 				<tr>
 					<td><span>品牌:</span></td>
 					<td>
-						<input id="goodsbrand_add" name="gfv.brandID" class="easyui-combobox" data-options="required:true, valueField:'val', textField:'text', url: '/beio/backGoods/getAllBrand'" />
+						<input id="goodsbrand_add" name="bgfv.brandID" class="easyui-combobox" data-options="required:true, valueField:'val', textField:'text', url: '/beio/backGoods/getAllBrand'" />
 					</td>
+					<td><span>会员价(元):</span></td>
+					<td><input id="goods_add_mPrice" name="bgfv.mPrice" class="easyui-numberbox" data-options="required:true, min:0.01, max:9999999.99" precision="2"></input></td>
 				</tr>
 				<tr>
 					<td><span>商品分类:</span></td>
 					<td>
 						<input id="bgc_add_one" class="easyui-combobox" data-options="required:true, valueField:'val', textField:'text',url: '/beio/backGoods/getAllClassify', onChange : function(){loadBgc_add_two();}" />
 						<br/>
-						<input id="bgc_add_two" name="gfv.classifyID" class="easyui-combobox" data-options="required:true, valueField:'val', textField:'text'" />
+						<input id="bgc_add_two" name="bgfv.classifyID" class="easyui-combobox" data-options="required:true, valueField:'val', textField:'text'" />
+					</td>
+					<td><span>普通价(元):</span></td>
+					<td><input id="goods_add_cPrice" name="bgfv.cPrice" class="easyui-numberbox" data-options="required:true, min:0.01, max:9999999.99" precision="2"></input></td>
+				</tr>
+				<tr>
+					<td><span>商品名称:</span></td>
+					<td><input  id="goods_add_name" name="bgfv.name" class="easyui-textbox" type="text" multiline="true" data-options="required:true, validType:'length[0,100]'"></input></td>
+					<td><span>重量(KG):</span></td>
+					<td><input id="goods_add_weight" name="bgfv.weight" class="easyui-numberbox" data-options="required:true, min:0.01, max:9999999.99" precision="2"></input></td>
+					
+				</tr>
+				<tr>
+					<td><span>商品描述:</span></td>
+					<td><input id="goods_add_descr" name="bgfv.descr" class="easyui-textbox" type="text" multiline="true" data-options="required:true, validType:'length[1,200]'"></input></td>
+					<td><span>数量(单个):</span></td>
+					<td><input id="goods_add_stock" name="bgfv.stock" class="easyui-numberbox" data-options="required:true, min:1, max:9999999999"></input></td>
+				</tr>
+				<tr>
+					<td><span>展示图1:</span></td>
+					<td><input  id="goods_add_show1" name="bgfv.show" class="easyui-filebox" data-options="required:true, buttonText:'选择文件', accept:'image/png.jpeg'"></input></td>
+					<td><span>详情图1:</span></td>
+					<td>
+						<input id="goods_add_detail1" name="bgfv.detaile" class="easyui-filebox" data-options="required:true,buttonText:'选择文件', accept:'image/png.jpeg'"></input>
+					</td>
+				</tr>
+				<tr>
+					<td><span>展示图2:</span></td>
+					<td><input id="goods_add_show2" name="bgfv.show" class="easyui-filebox" data-options="buttonText:'选择文件', accept:'image/png.jpeg'"></input></td>
+					<td><span>详情图2:</span></td>
+					<td>
+						<input id="goods_add_detail1" name="bgfv.detaile" class="easyui-filebox" data-options="buttonText:'选择文件', accept:'image/png.jpeg'"></input>
+					</td>
+				</tr>
+				<tr>
+					<td><span>展示图3:</span></td>
+					<td><input id="goods_add_show3" name="bgfv.show" class="easyui-filebox" data-options="buttonText:'选择文件', accept:'image/png.jpeg'"></input></td>
+					<td><span>详情图3:</span></td>
+					<td>
+						<input id="goods_add_detail1" name="bgfv.detaile" class="easyui-filebox" data-options="buttonText:'选择文件', accept:'image/png.jpeg'"></input>
+					</td>
+				</tr>
+				<tr>
+					<td><span>展示图4:</span></td>
+					<td><input id="goods_add_show4" name="bgfv.show" class="easyui-filebox" data-options="buttonText:'选择文件', accept:'image/png.jpeg'"></input></td>
+					<td><span>详情图4:</span></td>
+					<td>
+						<input id="goods_add_detail1" name="bgfv.detaile" class="easyui-filebox" data-options="buttonText:'选择文件', accept:'image/png.jpeg'"></input>
+					</td>
+				</tr>
+				<tr>
+					<td><span>展示图5:</span></td>
+					<td><input id="goods_add_show5" name="bgfv.show" class="easyui-filebox" data-options="buttonText:'选择文件', accept:'image/png.jpeg'"></input></td>
+					<td><span>详情图5:</span></td>
+					<td>
+						<input id="goods_add_detail1" name="bgfv.detaile" class="easyui-filebox" data-options="buttonText:'选择文件', accept:'image/png.jpeg'"></input>
+					</td>
+				</tr>
+			</table>
+		</form>
+		<div style="text-align:center;padding:5px; margin-top: 20px;">
+			<a href="javascript:void(0)" class="easyui-linkbutton" onclick="addGoods()">提交</a>
+			<a href="javascript:void(0)" class="easyui-linkbutton" onclick="clearGoodsAddForm()">取消</a>
+		</div>
+	</div>
+	
+	<div id="goods_update" class="easyui-window" closed="true" title="商品信息" data-options="iconCls:'icon-save', collapsible: false, minimizable: false, maximizable: false, resizable: false, draggable: true" style="width:330px; height:460px; padding:5px;">
+		<form id="goods_update_form" method="post">
+			<table cellpadding="5">
+				<tr>
+					<td><span>品牌:</span></td>
+					<td>
+						<input id="goods_update_brand" name="bgv.brandID" class="easyui-combobox" data-options="required:true, valueField:'val', textField:'text', url: '/beio/backGoods/getAllBrand'" />
+					</td>
+				</tr>
+				<tr>
+					<td><span>商品分类:</span></td>
+					<td>
+						<input id="bgc_update_one" class="easyui-combobox" data-options="required:true, valueField:'val', textField:'text',url: '/beio/backGoods/getAllClassify', onChange : function(){loadBgc_update_two();}" />
+						<br/>
+						<input id="bgc_update_two" name="bgv.classifyID" class="easyui-combobox" data-options="required:true, valueField:'val', textField:'text'" />
 					</td>
 				</tr>
 				<tr>
 					<td><span>商品名称:</span></td>
-					<td><input  id="goods_add_name" name="gfv.name" class="easyui-textbox" type="text" multiline="true" data-options="required:true, validType:'length[0,100]'"></input></td>
+					<td>
+						<input type="text" id="goods_update_id" name="bgv.id" hidden="hidden"/>
+						<input id="goods_update_name" name="bgv.name" class="easyui-textbox" type="text" multiline="true" data-options="required:true, validType:'length[0,100]'"></input>
+					</td>
 				</tr>
 				<tr>
 					<td><span>商品描述:</span></td>
-					<td><input id="goods_add_descr" name="gfv.descr" class="easyui-textbox" type="text" multiline="true" data-options="required:true, validType:'length[1,200]'"></input></td>
+					<td><input id="goods_update_descr" name="bgv.descr" class="easyui-textbox" type="text" multiline="true" data-options="required:true, validType:'length[1,200]'"></input></td>
 				</tr>
 				<tr>
 					<td><span>会员价(元):</span></td>
-					<td><input id="goods_add_mPrice" name="gfv.mPrice" class="easyui-numberbox" data-options="required:true, validType:'length[3,10]'" precision="2"></input></td>
+					<td><input id="goods_update_mPrice" name="bgv.mPrice" class="easyui-numberbox" data-options="required:true, min:0.01, max:9999999.99" precision="2"></input></td>
 				</tr>
 				<tr>
 					<td><span>普通价(元):</span></td>
-					<td><input id="goods_add_cPrice" name="gfv.cPrice" class="easyui-numberbox" data-options="required:true, validType:'length[3,10]'" precision="2"></input></td>
+					<td><input id="goods_update_cPrice" name="bgv.cPrice" class="easyui-numberbox" data-options="required:true, min:0.01, max:9999999.99" precision="2"></input></td>
 				</tr>
 				<tr>
 					<td><span>重量(KG):</span></td>
-					<td><input id="goods_add_weight" name="gfv.weight" class="easyui-numberbox" data-options="required:true, validType:'length[3,10]'" precision="2"></input></td>
+					<td><input id="goods_update_weight" name="bgv.weight" class="easyui-numberbox" data-options="required:true, min:0.01, max:9999999.99" precision="2"></input></td>
 				</tr>
 				<tr>
 					<td><span>数量(单个):</span></td>
-					<td><input id="goods_add_stock" name="gfv.stock" class="easyui-numberbox" data-options="required:true, validType:'length[1,10]'"></input></td>
-				</tr>
-				<tr>
-					<td><span>展示图1:</span></td>
-					<td><input  id="goods_add_show1" name="gfv.show[0]" class="easyui-filebox" data-options="required:true, buttonText:'选择文件', accept:'image/png.jpeg'"></input></td>
-				</tr>
-				<tr>
-					<td><span>展示图2:</span></td>
-					<td><input id="goods_add_show2" name="gfv.show[1]" class="easyui-filebox" data-options="buttonText:'选择文件', accept:'image/png.jpeg'"></input></td>
-				</tr>
-				<tr>
-					<td><span>展示图3:</span></td>
-					<td><input id="goods_add_show3" name="gfv.show[2]" class="easyui-filebox" data-options="buttonText:'选择文件', accept:'image/png.jpeg'"></input></td>
-				</tr>
-				<tr>
-					<td><span>展示图4:</span></td>
-					<td><input id="goods_add_show4" name="gfv.show[3]" class="easyui-filebox" data-options="buttonText:'选择文件', accept:'image/png.jpeg'"></input></td>
-				</tr>
-				<tr>
-					<td><span>展示图5:</span></td>
-					<td><input id="goods_add_show5" name="gfv.show[4]" class="easyui-filebox" data-options="buttonText:'选择文件', accept:'image/png.jpeg'"></input></td>
-				</tr>
-				<tr>
-					<td><span>详情图:</span></td>
-					<td>
-						<input id="goods_add_detail1" name="gfv.detaile[0]" class="easyui-filebox" data-options="buttonText:'选择文件', accept:'image/png.jpeg'"></input>
-						<input id="goods_add_detail2" name="gfv.detaile[1]" class="easyui-filebox" data-options="buttonText:'选择文件', accept:'image/png.jpeg'"></input>
-					</td>
+					<td><input id="goods_update_stock" name="bgv.stock" class="easyui-numberbox" data-options="required:true, min:1, max:9999999999"></input></td>
+					
 				</tr>
 			</table>
 		</form>
 		<div style="text-align:center;padding:5px">
-			<a href="javascript:void(0)" class="easyui-linkbutton" onclick="addGoods()">提交</a>
-			<a href="javascript:void(0)" class="easyui-linkbutton" onclick="clearUserAddForm()">取消</a>
+			<a href="javascript:void(0)" class="easyui-linkbutton" onclick="updateGoods()">提交</a>
+			<a href="javascript:void(0)" class="easyui-linkbutton" onclick="clearGoodsUpdateForm()">取消</a>
 		</div>
 	</div>
 	
-	<div id="user_update" class="easyui-window" closed="true" title="用户信息" data-options="iconCls:'icon-save', collapsible: false, minimizable: false, maximizable: false, resizable: false,left: '300px', top: '200px', draggable: true" style="width:300px; height:300px; padding:5px;">
-		<form id="user_update_form" method="post">
-			<table cellpadding="5">
+	<div id="images_update" class="easyui-window" closed="true" title="商品信息" data-options="iconCls:'icon-save', collapsible: false, minimizable: false, maximizable: false, resizable: false, draggable: true" style="width:400px; height:600px; padding:5px;">
+		<div id="images_tb" style="padding:10px 10px;">
+			<div>
+				<a href="javascript:void(0);" onclick="showAddImage()" class="easyui-linkbutton" plain="false" data-options="iconCls:'icon-add'">新增图片</a>
+				<a href="javascript:void(0);" onclick="showUpdateImage()" class="easyui-linkbutton" plain="false" data-options="iconCls:'icon-edit'">修改图片</a>
+				<a href="javascript:void(0);" onclick="delImage()" class="easyui-linkbutton" plain="false" data-options="iconCls:'icon-edit'">删除</a>
+			</div>
+		</div>
+		<table id="images_datagrid" class="easyui-datagrid" style="width:100%; height: 100%;"
+			data-options="
+				fitColumns:true
+				,striped:true
+				,rownumbers:false
+				,singleSelect:true
+				,collapsible:true
+				,method:'post'
+				,loadFilter: function(data){if(data.status=='170'){alert('登录失效，请重新登录');window.location.href = 'login.html'}else{return data}}
+				" 
+				
+			toolbar="#images_tb">
+			<!-- 设置默认行颜色 ,rowStyler:function(index,row){if('1' != row.enable){return 'background-color:#E0E0E0;color:blue;font-weight:bold';}} -->
+			<thead>
 				<tr>
-					
-					<td>用户名:</td>
-					<td>
-						<input id="user_update_id" type="text" hidden="hidden"/>
-						<input class="easyui-textbox" type="text" id="user_update_username" data-options="required:true" readonly="readonly"></input>
-					</td>
+					<th data-options="field:'id',width:0, height: 80,align:'center',hidden:true">ID</th>
+					<th data-options="field:'orgPath',width:0, height: 80,align:'center',hidden:true">原图</th>
+					<th data-options="field:'bigPath',width:0, height: 80,align:'center',hidden:true">大图</th>
+					<th data-options="field:'midPath',width:0, height: 80,align:'center',hidden:true">中图</th>
+					<th data-options="field:'GoodsID',width:0, height: 80,align:'center',hidden:true">goodsID</th>
+					<th data-options="field:'category',width:80, height: 100,align:'center', formatter: function(value,row,index){if('0' == value){return '展示图';}else{return '详情图';}}">分类</th>
+					<th data-options="field:'sortNum',width:80, height: 100,align:'center', formatter: function(value, row, index){return value * 1 + 1;}">顺序</th>
+					<th data-options="field:'smaPath',width:100, height: 100,align:'center', formatter:function(value,row,index){return '<img width: '+100+' height: '+100+' src='+value+' />';}">图片</th>
 				</tr>
-				<tr>
-					<td>密码:</td>
-					<td><input class="easyui-textbox" type="text" id="user_update_password" data-options="required:true" maxlength="20"></input></td>
-				</tr>
-				<tr>
-					<td>昵称:</td>
-					<td><input class="easyui-textbox" type="text" id="user_update_nickName" data-options="" maxlength="20"></input></td>
-				</tr>
-				<tr>
-					<td>邮箱:</td>
-					<td><input class="easyui-textbox" id="user_update_email" data-options="validType:'email'" maxlength="50"></input></td>
-				</tr>
-				<tr>
-					<td>可用状态:</td>
-					<td>
-						<input type="radio" name="user_update_enable" value="1"/>启用
-						<input type="radio" name="user_update_enable" value="0"/>禁用
-					</td>
-				</tr>
-			</table>
+			</thead>
+		</table>
+	</div>
+	
+	<div id="images_add_file" class="easyui-window" closed="true" title="商品信息" data-options="iconCls:'icon-save', collapsible: false, minimizable: false, maximizable: false, resizable: false, draggable: true" style="width:250px; height:160px; padding:5px;">
+		<form id="images_add_file_form" method="post" enctype="multipart/form-data">
+			<input type="radio" name="biv_category" value="0"/>展示图
+			<input type="radio" name="biv_category" value="1"/>详情图
+			<br/><br/>
+			<input name="biv.img" class="easyui-filebox" data-options="required:true,buttonText:'选择文件', accept:'image/png.jpeg'"/>
 		</form>
-		<div style="text-align:center;padding:5px">
-			<a href="javascript:void(0)" class="easyui-linkbutton" onclick="updateUser()">提交</a>
-			<a href="javascript:void(0)" class="easyui-linkbutton" onclick="clearUserUpdateForm()">取消</a>
+		<div style="text-align:center;padding:5px; margin-top: 20px;">
+			<a href="javascript:void(0)" class="easyui-linkbutton" onclick="addImage()">提交</a>
+			<a href="javascript:void(0)" class="easyui-linkbutton" onclick="clearImageAddForm()">取消</a>
+		</div>
+	</div>
+	
+	<div id="images_update_file" class="easyui-window" closed="true" title="商品信息" data-options="iconCls:'icon-save', collapsible: false, minimizable: false, maximizable: false, resizable: false, draggable: true" style="width:250px; height:160px; padding:5px;">
+		<form id="images_update_file_form" method="post" enctype="multipart/form-data">
+			<input name="biv.img" class="easyui-filebox" data-options="required:true,buttonText:'选择文件', accept:'image/png.jpeg'"/>
+		</form>
+		<div style="text-align:center;padding:5px; margin-top: 20px;">
+			<a href="javascript:void(0)" class="easyui-linkbutton" onclick="updateImage()">提交</a>
+			<a href="javascript:void(0)" class="easyui-linkbutton" onclick="clearImageUpdateForm()">取消</a>
 		</div>
 	</div>
 </body>

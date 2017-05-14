@@ -69,5 +69,5 @@ public class Constant {
 	public static final int SHOWFILE_LENGTH = 5;
 	
 	/** 图片存放地址 **/
-	public static final String IMGSPATH = "E:/Project/Beio/images/goods";
+	public static final String IMGSPATH = "E:/Project/BeioResources/images/goods";
 }

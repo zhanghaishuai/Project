@@ -1,6 +1,7 @@
 package com.beio.back.service;
 
 import com.beio.back.vo.BackGdsGoodsFileVO;
+import com.beio.back.vo.BackGdsImageVO;
 import com.beio.base.service.BaseIbaitsService;
 
 /**
@@ -21,4 +22,35 @@ public interface BackGdsGoodsService extends BaseIbaitsService {
 	 * @throws Exception
 	 */
 	public boolean addGoods(BackGdsGoodsFileVO gfv)throws Exception;
+	
+	/**
+	 * 修改图片
+	 * @author Dashi
+	 * @version 1.0.0 
+	 * @date 
+	 * @param biv
+	 * @return
+	 * @throws Exception
+	 */
+	public boolean updateImage(BackGdsImageVO biv)throws Exception;
+	
+	/**
+	 * 新增图片
+	 * @author Dashi
+	 * @version 1.0.0 
+	 * @date 
+	 * @return
+	 * @throws Exception
+	 */
+	public boolean addImage(BackGdsImageVO biv)throws Exception;
+	
+	/**
+	 * 删除图片
+	 * @author Dashi
+	 * @version 1.0.0 
+	 * @date 
+	 * @return
+	 * @throws Exception
+	 */
+	public boolean delImage(BackGdsImageVO biv)throws Exception;
 }

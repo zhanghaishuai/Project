@@ -69,22 +69,6 @@ public class BackGdsGoods{
 		this.descr = descr;
 	}
 
-	public String getmPrice() {
-		return mPrice;
-	}
-
-	public void setmPrice(String mPrice) {
-		this.mPrice = mPrice;
-	}
-
-	public String getcPrice() {
-		return cPrice;
-	}
-
-	public void setcPrice(String cPrice) {
-		this.cPrice = cPrice;
-	}
-
 	public String getWeight() {
 		return weight;
 	}
@@ -187,6 +171,22 @@ public class BackGdsGoods{
 
 	public void setModifyTime(String modifyTime) {
 		this.modifyTime = modifyTime;
+	}
+
+	public String getmPrice() {
+		return mPrice;
+	}
+
+	public void setmPrice(String mPrice) {
+		this.mPrice = mPrice;
+	}
+
+	public String getcPrice() {
+		return cPrice;
+	}
+
+	public void setcPrice(String cPrice) {
+		this.cPrice = cPrice;
 	}
 
 }

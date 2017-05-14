@@ -1,13 +1,29 @@
 package com.beio.back.action;
 
 
-import net.sf.json.JSONArray;
+import java.util.ArrayList;
+import java.util.List;
 
+
+
+
+
+
+
+
+
+import net.sf.json.JSONArray;
+import net.sf.json.JSONObject;
+
+import com.beio.back.entity.BackGdsGoods;
+import com.beio.back.entity.BackGdsImage;
 import com.beio.back.service.BackGdsGoodsService;
+import com.beio.back.vo.BackComboboxVO;
 import com.beio.back.vo.BackGdsBrandVO;
 import com.beio.back.vo.BackGdsClassifyVO;
 import com.beio.back.vo.BackGdsGoodsFileVO;
 import com.beio.back.vo.BackGdsGoodsVO;
+import com.beio.back.vo.BackGdsImageVO;
 import com.beio.base.action.BaseAction;
 import com.beio.base.util.ComUtil;
 
@@ -21,19 +37,19 @@ public class BackGoodsAction extends BaseAction {
 
 	private static final long serialVersionUID = 1L;
 	
-	private final String imgspath = "E:/Project/Beio/images/goods/";
-	
 	private JSONArray jsonArray = new JSONArray();
 	
 	private BackGdsGoodsService bgs;
 	
-	private BackGdsGoodsVO gv = new BackGdsGoodsVO(); // 后台商品值对象
+	private BackGdsGoodsVO bgv = new BackGdsGoodsVO(); // 后台商品值对象
 	
-	private BackGdsGoodsFileVO gfv = new BackGdsGoodsFileVO(); // 后台商品带文件
+	private BackGdsGoodsFileVO bgfv = new BackGdsGoodsFileVO(); // 后台商品带文件
 	
-	private BackGdsClassifyVO cv = new BackGdsClassifyVO(); // 后台分类
+	private BackGdsClassifyVO bcv = new BackGdsClassifyVO(); // 后台分类
 	
-	private BackGdsBrandVO bv = new BackGdsBrandVO(); // 后台品牌
+	private BackGdsBrandVO bbv = new BackGdsBrandVO(); // 后台品牌
+	
+	private BackGdsImageVO biv = new BackGdsImageVO(); // 图片
 	
 	/**
 	 * 后台分页查询商品信息
@@ -41,12 +57,13 @@ public class BackGoodsAction extends BaseAction {
 	 * @throws Exception
 	 */
 	public String pageGoods()throws Exception{
-		gv.setPage((Integer.valueOf(page) - 1) * Integer.valueOf(rows));
-		gv.setRows(Integer.valueOf(rows));
-		gv.setClassifyID(getRequest().getParameter("classifyid"));
-		gv.setBrandID(getRequest().getParameter("brandid"));
-		gv.setName(getRequest().getParameter("goodsname"));
-		setBackPageRoot((int)bgs.selectOne("backGoods.countGoods", gv), JSONArray.fromObject(bgs.selectList("backGoods.pageGoods", gv)), "200");
+		bgv.setPage((Integer.valueOf(page) - 1) * Integer.valueOf(rows));
+		bgv.setRows(Integer.valueOf(rows));
+		bgv.setClassifyPID(getRequest().getParameter("classifyPID"));
+		bgv.setClassifyID(getRequest().getParameter("classifyid"));
+		bgv.setBrandID(getRequest().getParameter("brandid"));
+		bgv.setName(getRequest().getParameter("goodsname"));
+		setBackPageRoot((int)bgs.selectOne("backGoods.countGoods", bgv), JSONArray.fromObject(bgs.selectList("backGoods.pageGoods", bgv)), "200");
 		return JSON;
 	}
 	
@@ -56,10 +73,16 @@ public class BackGoodsAction extends BaseAction {
 	 * @throws Exception
 	 */
 	public String getAllClassify()throws Exception{
-		if(ComUtil.isEmpty(cv.getPid())){
-			cv.setPid("0");
+		if(ComUtil.isEmpty(bcv.getPid())){
+			bcv.setPid("0");
 		}
-		jsonArray = JSONArray.fromObject(bgs.selectList("backGoods.getAllClassifyByPid", cv));
+		@SuppressWarnings("unchecked")
+		List<BackComboboxVO> coms = bgs.selectList("backGoods.getAllClassifyByPid", bcv);
+		BackComboboxVO com = new BackComboboxVO();
+		com.setVal("");
+		com.setText("全部");
+		coms.add(0, com);
+		jsonArray = JSONArray.fromObject(coms);
 		return JSON;
 	}
 	
@@ -72,7 +95,13 @@ public class BackGoodsAction extends BaseAction {
 	 * @throws Exception
 	 */
 	public String getAllBrand()throws Exception{
-		jsonArray = JSONArray.fromObject(bgs.selectList("backGoods.getAllBrand"));
+		@SuppressWarnings("unchecked")
+		List<BackComboboxVO> coms = bgs.selectList("backGoods.getAllBrand");
+		BackComboboxVO com = new BackComboboxVO();
+		com.setVal("");
+		com.setText("全部");
+		coms.add(0, com);
+		jsonArray = JSONArray.fromObject(coms);
 		return JSON;
 	}
 	
@@ -88,8 +117,87 @@ public class BackGoodsAction extends BaseAction {
 		
 		// 展示图最少一张
 		
-		// 详情图最好一张
-		if(bgs.addGoods(gfv)){
+		// 详情图最少一张
+		
+		bgfv.setmPrice(getRequest().getParameter("bgfv.mPrice"));
+		bgfv.setcPrice(getRequest().getParameter("bgfv.cPrice"));
+		bgfv.setCreator(sessionUser().getId());
+		bgfv.setCreateTime(curTimeStr());
+		if(bgs.addGoods(bgfv)){
+			setBackRoot("200");
+		}else{
+			setBackRoot("100");
+		}
+		return JSON;
+	}
+	
+	/**
+	 * 根据id获取商品
+	 * @author Dashi
+	 * @version 1.0.0 
+	 * @date 
+	 * @return
+	 * @throws Exception
+	 */
+	public String getGoodsByID()throws Exception{
+		BackGdsGoods goods = (BackGdsGoods)bgs.selectOne("backGoods.getGoodsByID", bgv.getId());
+		if(null != goods && !ComUtil.isEmpty(goods.getId())){
+			setBackRoot(JSONObject.fromObject(goods), "200", "OK");
+		}else{
+			setBackRoot("100");
+		}
+		return JSON;
+	}
+	
+	/**
+	 * 修改商品信息
+	 * @author Dashi
+	 * @version 1.0.0 
+	 * @date 
+	 * @return
+	 * @throws Exception
+	 */
+	public String updateGoods()throws Exception{
+		bgv.setmPrice(getRequest().getParameter("bgv.mPrice"));
+		bgv.setcPrice(getRequest().getParameter("bgv.cPrice"));
+		bgv.setModifier(sessionUser().getId());
+		bgv.setModifyTime(curTimeStr());
+		if(1 > bgs.update("backGoods.updateGoods", bgv)){
+			setBackRoot("100");
+		}else{
+			setBackRoot("200");
+		}
+		return JSON;
+	}
+	
+	/**
+	 * 获取图片信息
+	 * @author Dashi
+	 * @version 1.0.0 
+	 * @date 
+	 * @return
+	 * @throws Exception
+	 */
+	public String getGoodsImagesByID()throws Exception{
+		@SuppressWarnings("unchecked")
+		List<BackGdsImage> imgs = bgs.selectList("backGoods.getGoodsImagesByID", bgv.getId());
+		setBackPageRoot(imgs.size(), JSONArray.fromObject(imgs), "200");
+		return JSON;
+	}
+	
+	
+	/**
+	 * 增加商品图片
+	 * @author Dashi
+	 * @version 1.0.0 
+	 * @date 
+	 * @return
+	 * @throws Exception
+	 */
+	public String addGoodsImage()throws Exception{
+		biv.setCreator(sessionUser().getId());
+		biv.setCreateTime(curTimeStr());
+		if(bgs.addImage(biv)){
 			setBackRoot("200");
 		}else{
 			setBackRoot("100");
@@ -98,56 +206,120 @@ public class BackGoodsAction extends BaseAction {
 	}
 	
 	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	public BackGdsGoodsVO getGv() {
-		return gv;
+	/**
+	 * 修改商品图片信息
+	 * @author Dashi
+	 * @version 1.0.0 
+	 * @date 
+	 * @return
+	 * @throws Exception
+	 */
+	public String updateGoodsImage()throws Exception{
+		biv.setModifier(sessionUser().getId());
+		biv.setModifyTime(curTimeStr());
+		if(bgs.updateImage(biv)){
+			setBackRoot("200");
+		}else{
+			setBackRoot("100");
+		}
+		return JSON;
 	}
-	public void setGv(BackGdsGoodsVO gv) {
-		this.gv = gv;
+	
+	/**
+	 * 删除商品图片
+	 * @author Dashi
+	 * @version 1.0.0 
+	 * @date 
+	 * @return
+	 * @throws Exception
+	 */
+	public String delGoodsImage()throws Exception{
+		biv.setModifier(sessionUser().getId());
+		biv.setModifyTime(curTimeStr());
+		if(bgs.delImage(biv)){
+			setBackRoot("200");
+		}else{
+			setBackRoot("100");
+		}
+		return JSON;
 	}
+	
+	
+	/**
+	 * 操作商品启用/禁用
+	 * @author Dashi
+	 * @version 1.0.0 
+	 * @date 
+	 * @return
+	 * @throws Exception
+	 */
+	public String controlGoodsEnable()throws Exception{
+		bgv.setModifier(sessionUser().getId());
+		bgv.setModifyTime(curTimeStr());
+		if(1 > bgs.update("backGoods.controlGoodsEnable", bgv)){
+			setBackRoot("100");
+		}else{
+			setBackRoot("200");
+		}
+		return JSON;
+		
+	}
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	public BackGdsGoodsService getBgs() {
 		return bgs;
 	}
 	public void setBgs(BackGdsGoodsService bgs) {
 		this.bgs = bgs;
 	}
-	public BackGdsClassifyVO getCv() {
-		return cv;
-	}
-	public void setCv(BackGdsClassifyVO cv) {
-		this.cv = cv;
-	}
-	public BackGdsBrandVO getBv() {
-		return bv;
-	}
-	public void setBv(BackGdsBrandVO bv) {
-		this.bv = bv;
-	}
-
 	public JSONArray getJsonArray() {
 		return jsonArray;
 	}
-
 	public void setJson(JSONArray jsonArray) {
 		this.jsonArray = jsonArray;
 	}
-
-	public BackGdsGoodsFileVO getGfv() {
-		return gfv;
+	public BackGdsGoodsVO getBgv() {
+		return bgv;
+	}
+	public void setBgv(BackGdsGoodsVO bgv) {
+		this.bgv = bgv;
+	}
+	public BackGdsGoodsFileVO getBgfv() {
+		return bgfv;
+	}
+	public void setBgfv(BackGdsGoodsFileVO bgfv) {
+		this.bgfv = bgfv;
+	}
+	public BackGdsClassifyVO getBcv() {
+		return bcv;
+	}
+	public void setBcv(BackGdsClassifyVO bcv) {
+		this.bcv = bcv;
+	}
+	public BackGdsBrandVO getBbv() {
+		return bbv;
+	}
+	public void setBbv(BackGdsBrandVO bbv) {
+		this.bbv = bbv;
 	}
 
-	public void setGfv(BackGdsGoodsFileVO gfv) {
-		this.gfv = gfv;
+	public BackGdsImageVO getBiv() {
+		return biv;
+	}
+
+	public void setBiv(BackGdsImageVO biv) {
+		this.biv = biv;
 	}
 
 	

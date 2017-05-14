@@ -7,11 +7,22 @@
 	<!-- 后台查询商品总数 -->
 	<select id="countGoods" parameterType="BGV" resultType="int">
 		select 
-			count(g.id) 
+			count(1)
 		from 
 			gds_goods g
-		where 
+		    , gds_brand b
+		    , gds_classify c
+		    , gds_classify cp
+		where
 			1 = 1
+			and g.brandID = b.id
+		    and g.classifyID = c.id
+		    and c.pid = cp.id
+		    
+		    <if test="classifyPID != null and classifyPID != ''">
+		    	and cp.id = #{classifyPID}
+		    </if>
+		    
 			<if test="classifyID != null and classifyID != ''">
 				and g.classifyID = #{classifyID}
 			</if>
@@ -29,12 +40,22 @@
 			g.*
 		    , b.name as brand 
 		    , c.name as classify
+		    , cp.name as classifyPname
 		from 
 			gds_goods g
 		    , gds_brand b
 		    , gds_classify c
+		    , gds_classify cp
 		where
 			1 = 1
+			and g.brandID = b.id
+		    and g.classifyID = c.id
+		    and c.pid = cp.id
+		    
+		    <if test="classifyPID != null and classifyPID != ''">
+		    	and cp.id = #{classifyPID}
+		    </if>
+		    
 			<if test="classifyID != null and classifyID != ''">
 				and g.classifyID = #{classifyID}
 			</if>
@@ -44,22 +65,152 @@
 			<if test="name != null and name != ''">
 				and g.name like concat('%', #{name}, '%')
 			</if>
-			and g.brandID = b.id
-		    and g.classifyID = c.id
+
 		order by 
-			g.id desc
+			cp.id asc
+		    , c.id asc
+		    , b.id asc
+		    , g.id desc
 		limit 
 			#{page}, #{rows};
 	</select>
 	
 	<!-- 根据pid获取全部分类 -->
 	<select id="getAllClassifyByPid" parameterType="BCV" resultType="COMBOBOX">
-		select c.id as val, c.name as text from gds_classify c where pid = #{pid};
+		select c.id as val, c.name as text from gds_classify c where pid = #{pid} order by id asc;
 	</select>
 	
 	<!-- 获取所有品牌 -->
 	<select id="getAllBrand" resultType="COMBOBOX">
-		select b.id as val, b.name as text from gds_brand b
+		select b.id as val, b.name as text from gds_brand b order by id asc;
 	</select>
 	
+	<!-- 插入商品信息并返回id -->
+	<insert id="addBackGoods" useGeneratedKeys="true" keyProperty="id" parameterType="BGV">
+		insert into 
+			gds_goods(
+				name
+				, descr
+				, mPrice
+				, cPrice
+				, weight
+				, salds
+				, stock
+				, brandID
+				, classifyID
+				, creator
+				, createTime
+			)
+			values(
+				#{name}
+				, #{descr}
+				, #{mPrice}
+				, #{cPrice}
+				, #{weight}
+				, 0
+				, #{stock}
+				, #{brandID}
+				, #{classifyID}
+				, #{creator}
+				, #{createTime}
+			);
+	</insert>
+	
+	<!-- 批量插入商品图片 -->
+	<insert id="batchInsertGdsImages" parameterType="BIV">
+		insert into 
+			gds_image(
+				orgPath
+				, smaPath
+				, midPath
+				, bigPath
+				, sortNum
+				, goodsID
+				, category
+				, creator
+				, createTime
+			)
+			values
+			<foreach collection="list" item="i" separator=",">
+				(
+					#{i.orgPath}
+					, #{i.smaPath}
+					, #{i.midPath}
+					, #{i.bigPath}
+					, #{i.sortNum}
+					, #{i.goodsID}
+					, #{i.category}
+					, #{i.creator}
+					, #{i.createTime}
+				)
+			</foreach>
+			;
+	</insert>
+	
+	<!-- 删除商品信息 -->
+	<delete id="delBackGdsGoods" parameterType="BGV" >
+		delete from gds_goods where id = #{id};
+	</delete>
+	
+	<!-- 根据商品id获取商品信息 -->
+	<select id="getGoodsByID" parameterType="String" resultType="BGV">
+		select t.*, c.pid as classifyPID from gds_goods t, gds_classify c where t.id = #{id} and t.classifyID = c.id;
+	</select>
+	
+	<!-- 修改商品信息 -->
+	<update id="updateGoods" parameterType="BGV">
+		update 
+			gds_goods
+		set
+			name = #{name}
+			, descr = #{descr}
+			, mPrice = #{mPrice}
+			, cPrice = #{cPrice}
+			, weight = #{weight}
+			, stock = #{stock}
+			, brandID = #{brandID}
+			, classifyID = #{classifyID}
+			, modifier = #{modifier}
+			, modifyTime = #{modifyTime}
+		where
+			id = #{id};
+	</update>
+	
+	<!-- 启用/禁用商品 -->
+	<update id="controlGoodsEnable" parameterType="BGV">
+		update gds_goods set enable = #{enable}, modifier = #{modifier}, modifyTime = #{modifyTime} where id = #{id}
+	</update>	
+		
+	<!-- 根据商品id获取图片信息 -->
+	<select id="getGoodsImagesByID" parameterType="String" resultType="BI">
+		select * from gds_image where goodsID = #{goodsID} order by category asc, sortNum asc;
+	</select>
+	
+	<!-- 修改图片路径 -->
+	<update id="updateGoodsImage" parameterType="BIV">
+		update 
+			gds_image 
+		set 
+			orgPath = #{orgPath}
+			, bigPath = #{bigPath}
+			, midPath = #{midPath}
+			, smaPath = #{smaPath}
+			, modifier = #{modifier} 
+			, modifyTime = #{modifyTime}
+		where id = #{id};
+	</update>
+	
+	<!-- 新增商品图片 -->
+	<insert id="addGoodsImage" parameterType="BIV">
+		insert into 
+			gds_image(orgPath, smaPath, midPath, bigPath, goodsID, category, creator, createTime, sortNum)
+			values(#{orgPath}, #{smaPath}, #{midPath}, #{bigPath}, #{goodsID}, #{category}, #{creator}, #{createTime}
+				, (select max(sortNum)+1 from gds_image t where goodsID = #{goodsID} and category = #{category}));
+		
+	</insert>
+	
+	<!-- 删除图片信息 -->
+	<delete id="delGoodsImage" parameterType="BIV">
+		delete from gds_image where id = #{id} and sortNum != '0';
+	</delete>
 </mapper>

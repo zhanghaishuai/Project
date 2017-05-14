@@ -5,12 +5,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.beio.back.entity.BackGdsGoods;
+import com.beio.base.util.Constant;
 
 public class BackGdsGoodsFileVO extends BackGdsGoods {
 	
-	private File[] show = new File[5];
+	private File[] show = new File[Constant.SHOWFILE_LENGTH];
 	
-	private String[] showFileName = new String[5];
+	private String[] showFileName = new String[Constant.SHOWFILE_LENGTH];
 	
 	private List<File> detaile = new ArrayList<File>();
 	

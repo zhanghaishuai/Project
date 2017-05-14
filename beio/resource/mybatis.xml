@@ -55,6 +55,9 @@
 		<typeAlias type="com.beio.back.vo.BackGdsBrandVO" alias="BBV"/>
 		<typeAlias type="com.beio.back.vo.BackComboboxVO" alias="COMBOBOX"/>
 		
+		<typeAlias type="com.beio.back.vo.BackGdsImageVO" alias="BIV"/>
+		<typeAlias type="com.beio.back.entity.BackGdsImage" alias="BI"/>
+		
 		
 		
 		

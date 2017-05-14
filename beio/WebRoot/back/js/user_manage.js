@@ -20,6 +20,9 @@ function delRow(){
 						$('#users_datagrid').datagrid('reload');
 					}else if('100' == data.status){
 						$.messager.alert('提示', '删除失败，请联系管理员。');
+					}else if('170' == data.status) {
+						$.messager.alert('提示', '登录失效，请重新登录');
+						window.location.href = 'login.html';
 					}else{
 						$.messager.alert('提示', tip('400'));
 					};
@@ -77,7 +80,7 @@ function addUser(){
 		success : function(data) {
 			if('200' == data.status){
 				clearUserAddForm();
-				$('#goods_add').window('close');
+				$('#user_add').window('close');
 				$.messager.alert('提示', '新增成功');
 				$('#users_datagrid').datagrid('reload');
 			}else if('97' == data.status){
@@ -94,6 +97,9 @@ function addUser(){
 				$.messager.alert('提示', tip('132'));
 			}else if('100' == data.status) {
 				$.messager.alert('提示', '删除失败，请联系管理员。');
+			}else if('170' == data.status) {
+				$.messager.alert('提示', '登录失效，请重新登录');
+				window.location.href = 'login.html';
 			}else{
 				$.messager.alert('提示', tip('400'));
 			};
@@ -150,6 +156,9 @@ function getUserById(id){
 				$('input:radio[name=user_update_enable][value='+user.enable+']').attr('checked', true);
 			}else if('100' == data.status) {
 				$.messager.alert('提示', '获取失败，请联系管理员。');
+			}else if('170' == data.status) {
+				$.messager.alert('提示', '登录失效，请重新登录');
+				window.location.href = 'login.html';
 			}else{
 				$.messager.alert('提示', '服务异常，请联系管理员。');
 			};
@@ -198,7 +207,6 @@ function updateUser(){
 		dataType : 'json',
 		success : function(data) {
 			if('200' == data.status){
-				clearUserAddForm();
 				$('#user_update').window('close');
 				$.messager.alert('提示', '修改成功');
 				$('#users_datagrid').datagrid('reload');
@@ -214,6 +222,9 @@ function updateUser(){
 				$.messager.alert('提示', '无效可用状态');
 			}else if('100' == data.status) {
 				$.messager.alert('提示', '修改失败，请联系管理员。');
+			}else if('170' == data.status) {
+				$.messager.alert('提示', '登录失效，请重新登录');
+				window.location.href = 'login.html';
 			}else{
 				$.messager.alert('提示', tip('400'));
 			};
