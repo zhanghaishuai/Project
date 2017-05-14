@@ -19,15 +19,12 @@ $(function(){
  * @returns {Boolean}
  */
 function login(){
-	$('.msg-error').empty();
 	if (new RegExp(regex('empty')).test($('#userLogin_username').val()) == false) {
-		$('.msg-error').empty();
-		$('.msg-error').html('<b>'+tip('120')+'</b>');
+		$.messager.alert('提示信息', tip('120'));
 		return false;
 	}
 	if (new RegExp(regex('empty')).test($('#userLogin_password').val()) == false) {
-		$('.msg-error').empty();
-		$('.msg-error').html('<b>'+tip('122')+'</b>');
+		$.messager.alert('提示信息', tip('122'));
 		return false;
 	}
 	$.ajax({
@@ -46,8 +43,7 @@ function login(){
 				window.location.href = 'main.html';
 			} else if (data.status == '120' || data.status == '122' || data.status == '124' || 
 					data.status == '125' || data.status == '195' || data.status == '192' || data.status == '193') {
-				$('.msg-error').empty();
-				$('.msg-error').html('<b>'+tip(data.status)+'</b>');
+				$.messager.alert('提示信息', tip(data.status));
 				$('.verify-code').attr('src', '/beio/image/verifyCode?flushStr'+new Date().getTime());
 			} else {
 				alert(tip('400'));

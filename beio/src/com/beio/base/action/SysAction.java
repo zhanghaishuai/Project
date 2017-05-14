@@ -34,6 +34,7 @@ public class SysAction extends BaseAction{
 	private SysPay pay = new SysPay();
 	
 	private SysMrfee mrfee = new SysMrfee();
+	
 	private User user = new User(); // 后台用户
 	
 	private SysService sysService;
@@ -609,21 +610,21 @@ public class SysAction extends BaseAction{
 			setRoot("125");
 			return JSON;
 		}
-		SysUser u = (SysUser)getBaseIbaitsService().selectOne("sys.userLogin", user);
-		if(u == null){
+		user = sysService.backLogin(user);
+		if(user == null){
 			setRoot("195");
 			return JSON;
 		}
-		if(!Constant.ENABLE.equals(u.getEnable())){
+		if(!Constant.ENABLE.equals(user.getEnable())){
 			setRoot("192");
 			return JSON;
 		}
-		if(!Constant.EXIST.equals(u.getExist())){
+		if(!Constant.EXIST.equals(user.getExist())){
 			setRoot("193");
 			return JSON;
 		}
-		getSession().setAttribute(Constant.SESSIONBACKUSERINFO, u);
-		setRoot(u, "200");
+		getSession().setAttribute(Constant.SESSIONBACKUSERINFO, user);
+		setRoot(user, "200");
 		return JSON;
 	}
 	
