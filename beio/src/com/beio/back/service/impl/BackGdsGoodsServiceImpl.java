@@ -15,6 +15,7 @@ import com.beio.back.service.BackGdsGoodsService;
 import com.beio.back.vo.BackGdsGoodsFileVO;
 import com.beio.back.vo.BackGdsImageVO;
 import com.beio.base.service.impl.BaseIbatisServiceImpl;
+import com.beio.base.util.ConfigUtil;
 import com.beio.base.util.Constant;
 import com.beio.base.util.DateUtil;
 import com.sun.image.codec.jpeg.JPEGCodec;
@@ -41,7 +42,7 @@ public class BackGdsGoodsServiceImpl extends BaseIbatisServiceImpl implements Ba
 		}
 		
 		// ……/goods/${date}
-		String imgsPath = Constant.IMGSPATH + "/" + DateUtil.formatDate(DateUtil.getDate(), DateUtil.PATTERNNONEDATE);
+		String imgsPath = ConfigUtil.getProperties("IMGSPATH") + "/" + DateUtil.formatDate(DateUtil.getDate(), DateUtil.PATTERNNONEDATE);
 		mkdirFolder(imgsPath);
 		
 		// ……/goods/${date}/org
@@ -82,12 +83,7 @@ public class BackGdsGoodsServiceImpl extends BaseIbatisServiceImpl implements Ba
 				img.setCreator(gfv.getCreator());
 				img.setCreateTime(gfv.getCreateTime());
 				imgs.add(img);
-				BackGdsImage s = new BackGdsImage();
-				s.setOrgPath(img.getOrgPath());
-				s.setBigPath(img.getBigPath());
-				s.setMidPath(img.getMidPath());
-				s.setSmaPath(img.getSmaPath());
-				show.add(s);
+				show.add(img);
 			}
 		}
 		
@@ -106,29 +102,21 @@ public class BackGdsGoodsServiceImpl extends BaseIbatisServiceImpl implements Ba
 				img.setCreator(gfv.getCreator());
 				img.setCreateTime(gfv.getCreateTime());
 				imgs.add(img);
-				BackGdsImage s = new BackGdsImage();
-				s.setOrgPath(img.getOrgPath());
-				s.setBigPath(img.getBigPath());
-				s.setMidPath(img.getMidPath());
-				s.setSmaPath(img.getSmaPath());
-				detaile.add(s);
+				detaile.add(img);
 			}
 		}
 		
 		// 插入商品图片信息
-		for(BackGdsImage i : imgs){
-			i.setOrgPath("/BeioResources" + i.getOrgPath().split("BeioResources")[1]);
-			i.setBigPath("/BeioResources" + i.getBigPath().split("BeioResources")[1]);
-			i.setMidPath("/BeioResources" + i.getMidPath().split("BeioResources")[1]);
-			i.setSmaPath("/BeioResources" + i.getSmaPath().split("BeioResources")[1]);
-		}
 		if(imgs.size() != insert("backGoods.batchInsertGdsImages", imgs)){
 			delete("delBackGdsGoods", gfv);
 			return false;
 		}
 		
 		File formerFile;
+		
+		
 		// 复制展示图
+		
 		for(int i = 0; i < gfv.getShow().length; i++){
 			if(null != gfv.getShow()[i]){
 				// 原图
@@ -144,9 +132,13 @@ public class BackGdsGoodsServiceImpl extends BaseIbatisServiceImpl implements Ba
 				// 小图 100*100
 				resizeFix(formerFile, show.get(i).getSmaPath(), 100, 100);
 			}
-		}	
+		}
 		
-		// 复制详情图
+		
+//		// 复制详情图
+		
+		
+		
 		for(int i = 0; i < gfv.getDetaile().size(); i++){
 			// 原图
 			formerFile = new File(detaile.get(i).getOrgPath());
@@ -162,7 +154,6 @@ public class BackGdsGoodsServiceImpl extends BaseIbatisServiceImpl implements Ba
 			resizeFix(formerFile, detaile.get(i).getSmaPath(), 100, 100);
 			
 		}
-		
 		return true;
 	}
 	
@@ -173,7 +164,7 @@ public class BackGdsGoodsServiceImpl extends BaseIbatisServiceImpl implements Ba
 		// 修改数据库地址
 		
 		// ……/goods/${date}
-		String imgsPath = Constant.IMGSPATH + "/" + DateUtil.formatDate(DateUtil.getDate(), DateUtil.PATTERNNONEDATE);
+		String imgsPath = ConfigUtil.getProperties("IMGSPATH") + "/" + DateUtil.formatDate(DateUtil.getDate(), DateUtil.PATTERNNONEDATE);
 		mkdirFolder(imgsPath);
 		
 		// ……/goods/${date}/org
@@ -199,52 +190,52 @@ public class BackGdsGoodsServiceImpl extends BaseIbatisServiceImpl implements Ba
 		former.setMidPath(biv.getMidPath());
 		former.setSmaPath(biv.getSmaPath());
 		
-		BackGdsImage temp = new BackGdsImage(); 
+//		BackGdsImage temp = new BackGdsImage(); 
 		
-		temp.setOrgPath(orgPath + "/" + getNewFileName(biv.getImgFileName()));
-		temp.setBigPath(bigPath + "/" + getNewFileName(biv.getImgFileName()));
-		temp.setMidPath(midPath + "/" + getNewFileName(biv.getImgFileName()));
-		temp.setSmaPath(smaPath + "/" + getNewFileName(biv.getImgFileName()));
+//		temp.setOrgPath(orgPath + "/" + getNewFileName(biv.getImgFileName()));
+//		temp.setBigPath(bigPath + "/" + getNewFileName(biv.getImgFileName()));
+//		temp.setMidPath(midPath + "/" + getNewFileName(biv.getImgFileName()));
+//		temp.setSmaPath(smaPath + "/" + getNewFileName(biv.getImgFileName()));
 		
-		biv.setOrgPath("/BeioResources" + temp.getOrgPath().split("BeioResources")[1]);
-		biv.setBigPath("/BeioResources" + temp.getBigPath().split("BeioResources")[1]);
-		biv.setMidPath("/BeioResources" + temp.getMidPath().split("BeioResources")[1]);
-		biv.setSmaPath("/BeioResources" + temp.getSmaPath().split("BeioResources")[1]);
+		biv.setOrgPath(orgPath + "/" + getNewFileName(biv.getImgFileName()));
+		biv.setBigPath(bigPath + "/" + getNewFileName(biv.getImgFileName()));
+		biv.setMidPath(midPath + "/" + getNewFileName(biv.getImgFileName()));
+		biv.setSmaPath(smaPath + "/" + getNewFileName(biv.getImgFileName()));
 		
 		if(1 > update("backGoods.updateGoodsImage", biv)){
 			return false;
 		}
 		
 		// 删除原图
-		File file = new File(Constant.IMGSPATH.split("/BeioResources")[0] + former.getOrgPath());
+		File file = new File(former.getOrgPath());
 		if(file.exists()){
 			file.delete();
 		}
-		file = new File(Constant.IMGSPATH.split("/BeioResources")[0] + former.getBigPath());
+		file = new File(former.getBigPath());
 		if(file.exists()){
 			file.delete();
 		}
-		file = new File(Constant.IMGSPATH.split("/BeioResources")[0] + former.getMidPath());
+		file = new File(former.getMidPath());
 		if(file.exists()){
 			file.delete();
 		}
-		file = new File(Constant.IMGSPATH.split("/BeioResources")[0] + former.getSmaPath());
+		file = new File(former.getSmaPath());
 		if(file.exists()){
 			file.delete();
 		}
 		
 		// 增加新图
-		File formerFile = new File(temp.getOrgPath());
+		File formerFile = new File(biv.getOrgPath());
 		biv.getImg().renameTo(formerFile);
 		
 		// 大图 400*400
-		resizeFix(formerFile, temp.getBigPath(), 400, 400);
+		resizeFix(formerFile, biv.getBigPath(), 400, 400);
 		
 		// 中图 200*200
-		resizeFix(formerFile, temp.getMidPath(), 200, 200);
+		resizeFix(formerFile, biv.getMidPath(), 200, 200);
 		
 		// 小图 100*100
-		resizeFix(formerFile, temp.getSmaPath(), 100, 100);
+		resizeFix(formerFile, biv.getSmaPath(), 100, 100);
 		
 		
 		return true;
@@ -253,7 +244,7 @@ public class BackGdsGoodsServiceImpl extends BaseIbatisServiceImpl implements Ba
 	@Override
 	public boolean addImage(BackGdsImageVO biv) throws Exception {
 		// ……/goods/${date}
-		String imgsPath = Constant.IMGSPATH + "/" + DateUtil.formatDate(DateUtil.getDate(), DateUtil.PATTERNNONEDATE);
+		String imgsPath = ConfigUtil.getProperties("IMGSPATH") + "/" + DateUtil.formatDate(DateUtil.getDate(), DateUtil.PATTERNNONEDATE);
 		mkdirFolder(imgsPath);
 		
 		// ……/goods/${date}/org
@@ -272,33 +263,26 @@ public class BackGdsGoodsServiceImpl extends BaseIbatisServiceImpl implements Ba
 		String smaPath = imgsPath + "/sma"; // 小图地址  100*100
 		mkdirFolder(smaPath);
 		
-		BackGdsImage temp = new BackGdsImage();
-		
-		temp.setOrgPath(orgPath + "/" + getNewFileName(biv.getImgFileName()));
-		temp.setBigPath(bigPath + "/" + getNewFileName(biv.getImgFileName()));
-		temp.setMidPath(midPath + "/" + getNewFileName(biv.getImgFileName()));
-		temp.setSmaPath(smaPath + "/" + getNewFileName(biv.getImgFileName()));
-		
-		biv.setOrgPath("/BeioResources" + temp.getOrgPath().split("BeioResources")[1]);
-		biv.setBigPath("/BeioResources" + temp.getBigPath().split("BeioResources")[1]);
-		biv.setMidPath("/BeioResources" + temp.getMidPath().split("BeioResources")[1]);
-		biv.setSmaPath("/BeioResources" + temp.getSmaPath().split("BeioResources")[1]);
+		biv.setOrgPath(orgPath + "/" + getNewFileName(biv.getImgFileName()));
+		biv.setBigPath(bigPath + "/" + getNewFileName(biv.getImgFileName()));
+		biv.setMidPath(midPath + "/" + getNewFileName(biv.getImgFileName()));
+		biv.setSmaPath(smaPath + "/" + getNewFileName(biv.getImgFileName()));
 		
 		if(1 > insert("backGoods.addGoodsImage", biv)){
 			return false;
 		}
 		
-		File formerFile = new File(temp.getOrgPath());
+		File formerFile = new File(biv.getOrgPath());
 		biv.getImg().renameTo(formerFile);
 		
 		// 大图 400*400
-		resizeFix(formerFile, temp.getBigPath(), 400, 400);
+		resizeFix(formerFile, biv.getBigPath(), 400, 400);
 		
 		// 中图 200*200
-		resizeFix(formerFile, temp.getMidPath(), 200, 200);
+		resizeFix(formerFile, biv.getMidPath(), 200, 200);
 		
 		// 小图 100*100
-		resizeFix(formerFile, temp.getSmaPath(), 100, 100);
+		resizeFix(formerFile, biv.getSmaPath(), 100, 100);
 		
 		return true;
 	}
@@ -308,19 +292,19 @@ public class BackGdsGoodsServiceImpl extends BaseIbatisServiceImpl implements Ba
 		if(1 > delete("backGoods.delGoodsImage", biv)){
 			return false;
 		}else{
-			File file = new File(Constant.IMGSPATH.split("/BeioResources")[0] + biv.getOrgPath());
+			File file = new File(biv.getOrgPath());
 			if(file.exists()){
 				file.delete();
 			}
-			file = new File(Constant.IMGSPATH.split("/BeioResources")[0] + biv.getBigPath());
+			file = new File(biv.getBigPath());
 			if(file.exists()){
 				file.delete();
 			}
-			file = new File(Constant.IMGSPATH.split("/BeioResources")[0] + biv.getMidPath());
+			file = new File(biv.getMidPath());
 			if(file.exists()){
 				file.delete();
 			}
-			file = new File(Constant.IMGSPATH.split("/BeioResources")[0] + biv.getSmaPath());
+			file = new File(biv.getSmaPath());
 			if(file.exists()){
 				file.delete();
 			}
@@ -338,7 +322,7 @@ public class BackGdsGoodsServiceImpl extends BaseIbatisServiceImpl implements Ba
 	private boolean mkdirFolder(String path){
 		File folder = new File(path);
 		if(!folder.exists() && !folder.isDirectory()){
-			return folder.mkdir();
+			return folder.mkdirs();
 		}
 		return false;
 	}

@@ -431,6 +431,10 @@ function updateImage(){
 	
 	var form = new FormData(document.getElementById("images_update_file_form"));
 	form.append('biv.id', $('#images_datagrid').datagrid('getSelected').id);
+	form.append('biv.orgPath', $('#images_datagrid').datagrid('getSelected').orgPath);
+	form.append('biv.bigPath', $('#images_datagrid').datagrid('getSelected').bigPath);
+	form.append('biv.midPath', $('#images_datagrid').datagrid('getSelected').midPath);
+	form.append('biv.smaPath', $('#images_datagrid').datagrid('getSelected').smaPath);
 	$.ajax({
 		url : '/beio/backGoods/updateGoodsImage',
 		data : form,
