@@ -255,6 +255,14 @@
 			<interceptor-ref name="backIdentityStack"/>
 		</action>
 		
+		<!-- 查询后台用户 -->
+		<action name="sessionBackUser" class="sysAction" method="sessionBackUser">
+			<result name="json" type="json">
+				<param name="root">backRoot</param>
+			</result>
+			<interceptor-ref name="backIdentityStack"/>
+		</action>
+		
 	</package>
 </struts>
 

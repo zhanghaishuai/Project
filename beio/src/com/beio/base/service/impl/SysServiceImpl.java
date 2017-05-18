@@ -209,5 +209,5 @@ public class SysServiceImpl extends BaseIbatisServiceImpl implements SysService 
 		// 返回用户
 		return user;
 	}
-
+	
 }

@@ -766,6 +766,19 @@ public class SysAction extends BaseAction{
 		return JSON;
 	}
 	
+	/**
+	 * 查询后台用户
+	 * @return
+	 */
+	public String sessionBackUser() {
+		if(sessionUser() != null){
+			setBackRoot(getSession().getAttribute(Constant.SESSIONBACKUSERINFO), "200", "");
+			return JSON;
+		}
+		setBackRoot("100");
+		return JSON;
+	}
+	
 	public Member getMr() {
 		return mr;
 	}
