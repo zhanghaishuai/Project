@@ -1,27 +1,21 @@
 package com.beio.back.vo;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.beio.back.entity.BackGdsClassify;
 
 public class BackGdsClassifyVO extends BackGdsClassify {
 	
-	private int page; // 页码
 	
-	private int rows; // 每页行数
+	private List<BackGdsClassify> children = new ArrayList<BackGdsClassify>();
 
-	public int getPage() {
-		return page;
+	public List<BackGdsClassify> getChildren() {
+		return children;
 	}
 
-	public void setPage(int page) {
-		this.page = page;
-	}
-
-	public int getRows() {
-		return rows;
-	}
-
-	public void setRows(int rows) {
-		this.rows = rows;
+	public void setChildren(List<BackGdsClassify> children) {
+		this.children = children;
 	}
 	
 }

@@ -13,6 +13,10 @@ public class BackGdsBrandVO extends BackGdsBrand {
 	private int page; // 页码
 	
 	private int rows; // 每页行数
+	
+	private String creatorName; // 创建人
+	
+	private String modifierName; // 修改人
 
 	public int getPage() {
 		return page;
@@ -28,6 +32,22 @@ public class BackGdsBrandVO extends BackGdsBrand {
 
 	public void setRows(int rows) {
 		this.rows = rows;
+	}
+
+	public String getCreatorName() {
+		return creatorName;
+	}
+
+	public void setCreatorName(String creatorName) {
+		this.creatorName = creatorName;
+	}
+
+	public String getModifierName() {
+		return modifierName;
+	}
+
+	public void setModifierName(String modifierName) {
+		this.modifierName = modifierName;
 	}
 	
 }

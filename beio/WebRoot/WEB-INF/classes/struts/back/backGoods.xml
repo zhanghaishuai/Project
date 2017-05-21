@@ -94,5 +94,51 @@
 			<interceptor-ref name="backIdentityStack"/>
 		</action>		
 		
+		
+		
+		<!-- 品牌管理 -->
+		
+		<!-- 分页查询品牌 -->
+		<action name="pageBrand" class="backGoodsAction" method="pageBrand">
+			<result name="json" type="json">
+				<param name="root">backRoot</param>
+			</result>
+			<interceptor-ref name="backIdentityStack"/>
+		</action>
+		
+		<!-- 保存品牌信息 -->
+		<action name="saveBrand" class="backGoodsAction" method="saveBrand">
+			<result name="json" type="json">
+				<param name="root">backRoot</param>
+			</result>
+			<interceptor-ref name="backIdentityStack"/>
+		</action>
+		
+		
+		<!-- 禁用/启用 品牌 -->	
+		<action name="enableBrand" class="backGoodsAction" method="enableBrand">
+			<result name="json" type="json">
+				<param name="root">backRoot</param>
+			</result>
+			<interceptor-ref name="backIdentityStack"/>
+		</action>
+		
+		<!-- 删除/恢复 品牌 -->
+		<action name="existBrand" class="backGoodsAction" method="existBrand">
+			<result name="json" type="json">
+				<param name="root">backRoot</param>
+			</result>
+			<interceptor-ref name="backIdentityStack"/>
+		</action>
+		
+		<!-- 分类管理 -->
+		<!-- 获取全部分类 -->
+		<action name="allClassify" class="backGoodsAction" method="allClassify">
+			<result name="json" type="json">
+				<param name="root">jsonArray</param>
+			</result>
+			<interceptor-ref name="backIdentityStack"/>
+		</action>
+		
 	</package>
 </struts>

@@ -12,9 +12,11 @@ import javax.imageio.ImageIO;
 
 import com.beio.back.entity.BackGdsImage;
 import com.beio.back.service.BackGdsGoodsService;
+import com.beio.back.vo.BackGdsClassifyVO;
 import com.beio.back.vo.BackGdsGoodsFileVO;
 import com.beio.back.vo.BackGdsImageVO;
 import com.beio.base.service.impl.BaseIbatisServiceImpl;
+import com.beio.base.util.ComUtil;
 import com.beio.base.util.ConfigUtil;
 import com.beio.base.util.Constant;
 import com.beio.base.util.DateUtil;
@@ -312,6 +314,27 @@ public class BackGdsGoodsServiceImpl extends BaseIbatisServiceImpl implements Ba
 		}
 	}
 	
+	@Override
+	public List<BackGdsClassifyVO> allClassify(BackGdsClassifyVO bcv)throws Exception {
+		List<BackGdsClassifyVO> dbList = selectList("backGoods.allClassify", bcv);
+		if(ComUtil.isEmpty(dbList) || 0 == dbList.size()){
+			return null;
+		}
+		List<BackGdsClassifyVO> resp = new ArrayList<BackGdsClassifyVO>();
+		for(BackGdsClassifyVO temp : dbList){
+			if("0".equals(temp.getPid())){
+				resp.add(temp);
+			}else{
+				for(BackGdsClassifyVO c : resp){
+					if(c.getId().equals(temp.getPid())){
+						c.getChildren().add(temp);
+					}
+				}
+			}
+		}
+		return resp;
+	}
+	
 	/**
 	 * 校验文件夹
 	 * @author Dashi
@@ -367,5 +390,6 @@ public class BackGdsGoodsServiceImpl extends BaseIbatisServiceImpl implements Ba
         encoder.encode(image); // JPEG编码  
         out.close(); 
 	}
-	
+
+
 }

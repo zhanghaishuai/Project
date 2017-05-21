@@ -213,4 +213,70 @@
 	<delete id="delGoodsImage" parameterType="BIV">
 		delete from gds_image where id = #{id} and sortNum != '0';
 	</delete>
+	
+	
+	<!-- 品牌管理 -->
+	<!-- 获取品牌总数 -->
+	<select id="countBrand" parameterType="BBV" resultType="int">
+		select 
+			count(1)
+		from 
+			gds_brand b
+		where
+			1 = 1
+		<if test="name != null and name != ''">
+			and b.name like concat('%', #{name}, '%')
+		</if>
+		;
+	</select>
+	
+	<!-- 分页查询品牌 -->
+	<select id="pageBrand" parameterType="BBV" resultType="BBV">
+		select 
+			b.*
+			, c.username as creatorName
+			, m.username as modifierName
+		from 
+		    gds_brand b
+		left join sys_user c on b.creator = c.id
+		left join sys_user m on b.modifier = m.id
+		where
+			1 = 1
+		<if test="name != null and name != ''">
+			and g.name like concat('%', #{name}, '%')
+		</if>
+		order by 
+		    cast(b.sort as unsigned int) asc
+		limit 
+			#{page}, #{rows};
+	</select>
+	
+	<!-- 增加品牌 -->
+	<insert id="addBrand" parameterType="BBV">
+		insert into 
+			gds_brand(name, sort, creator, createTime)
+			values(#{name}, (select max(cast(sort as unsigned int)) + 1 from gds_brand t), #{creator}, #{createTime});
+	</insert>
+	
+	<!-- 修改商品信息 -->
+	<update id="updateBrand" parameterType="BBV">
+		update gds_brand set name = #{name}, modifier = #{modifier}, modifyTime = #{modifyTime} where id = #{id};
+	</update>
+	
+	<!-- 禁用/启用 品牌 -->
+	<update id="enableBrand" parameterType="BBV">
+		update gds_brand set enable = #{enable} where id = #{id};
+	</update>
+	
+	<!-- 删除/恢复 品牌 -->
+	<update id="existBrand" parameterType="BBV">
+		update gds_brand set exist = #{exist} where id = #{id};
+	</update>	
+	
+	
+	
+	<!-- 全部分类 -->
+	<select id="allClassify" parameterType="BCV" resultType="BCV">
+		select c.* from gds_classify c order by cast(c.level as unsigned int) asc, cast(c.pid as unsigned int) asc;
+	</select>
 </mapper>
