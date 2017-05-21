@@ -11,8 +11,12 @@ import com.beio.base.entity.SysUser;
 import com.beio.base.service.SysService;
 import com.beio.base.util.ComUtil;
 import com.beio.base.util.Constant;
+import com.beio.base.util.VerifyUtil;
 import com.beio.base.vo.Address;
+import com.beio.base.vo.Invite;
 import com.beio.base.vo.Member;
+import com.beio.base.vo.Menu;
+import com.beio.base.vo.Role;
 import com.beio.base.vo.User;
 
 /**
@@ -36,6 +40,12 @@ public class SysAction extends BaseAction{
 	private SysMrfee mrfee = new SysMrfee();
 	
 	private User user = new User(); // 后台用户
+	
+	private Role role = new Role();
+	
+	private Menu menu = new Menu();
+	
+	private Invite invite = new Invite();
 	
 	private SysService sysService;
 	
@@ -766,6 +776,179 @@ public class SysAction extends BaseAction{
 		return JSON;
 	}
 	
+	/**
+	 * 查询后台用户
+	 * @return
+	 */
+	public String sessionBackUser() {
+		if(sessionUser() != null){
+			setBackRoot(getSession().getAttribute(Constant.SESSIONBACKUSERINFO), "200", "");
+			return JSON;
+		}
+		setBackRoot("100");
+		return JSON;
+	}
+	
+	public String queryRoleByUser() throws Exception{
+		setBackRoot(baseIbaitsService.selectList("sys.queryRoleByUser", user), "200", "");
+		return JSON;
+	}
+	
+	public String changeUserRole() throws Exception{
+		user.setCreator(sessionUserID());
+		user.setCreateTime(curTimeStr());
+		user.setModifier(sessionUserID());
+		user.setModifyTime(curTimeStr());
+		setBackRoot(baseIbaitsService.selectList("sys.changeUserRole", user), "200", "");
+		return JSON;
+	}
+	
+	/**
+	 * 查询全部角色
+	 * @return
+	 * @throws Exception
+	 */
+	public String queryRoles() throws Exception{
+		setBackRoot(baseIbaitsService.selectList("sys.queryRoles"), "200", "");
+		return JSON;
+	}
+	
+	/**
+	 * 新增角色
+	 * @return
+	 * @throws Exception
+	 */
+	public String addRole() throws Exception{
+		role.setCreator(sessionUserID());
+		role.setCreateTime(curTimeStr());
+		role.setModifier(sessionUserID());
+		role.setModifyTime(curTimeStr());
+		if (baseIbaitsService.insert("sys.addRole", role) < 1) {
+			setBackRoot("100");
+			return JSON;
+		}
+		setBackRoot("200");
+		return JSON;
+	}
+	
+	/**
+	 * 修改角色
+	 * @return
+	 * @throws Exception
+	 */
+	public String updRole() throws Exception{
+		role.setModifier(sessionUserID());
+		role.setModifyTime(curTimeStr());
+		if (baseIbaitsService.insert("sys.updRole", role) < 1) {
+			setBackRoot("100");
+			return JSON;
+		}
+		setBackRoot("200");
+		return JSON;
+	}
+	
+	/**
+	 * 删除角色
+	 * @return
+	 * @throws Exception
+	 */
+	public String delRole() throws Exception{
+		role.setModifier(sessionUserID());
+		role.setModifyTime(curTimeStr());
+		if (baseIbaitsService.insert("sys.delRole", role) < 1) {
+			setBackRoot("100");
+			return JSON;
+		}
+		setBackRoot("200");
+		return JSON;
+	}
+	
+	public String queryMenuByRole() throws Exception{
+		setBackRoot(baseIbaitsService.selectList("sys.queryMenuByRole", role), "200", "");
+		return JSON;
+	}
+	
+	public String changeRoleMenu() throws Exception{
+		role.setCreator(sessionUserID());
+		role.setCreateTime(curTimeStr());
+		role.setModifier(sessionUserID());
+		role.setModifyTime(curTimeStr());
+		setBackRoot(baseIbaitsService.selectList("sys.changeRoleMenu", role), "200", "");
+		return JSON;
+	}
+	
+	/**
+	 * 查询全部菜单
+	 * @return
+	 * @throws Exception
+	 */
+	public String queryMenus() throws Exception{
+		setBackRoot(baseIbaitsService.selectList("sys.queryMenus"), "200", "");
+		return JSON;
+	}
+	
+	public String addMenu() throws Exception{
+		menu.setCreator(sessionUserID());
+		menu.setCreateTime(curTimeStr());
+		menu.setModifier(sessionUserID());
+		menu.setModifyTime(curTimeStr());
+		if (baseIbaitsService.insert("sys.addMenu", menu) < 1) {
+			setBackRoot("100");
+			return JSON;
+		}
+		setBackRoot("200");
+		return JSON;
+	}
+	
+	public String updMenu() throws Exception{
+		menu.setModifier(sessionUserID());
+		menu.setModifyTime(curTimeStr());
+		if (baseIbaitsService.insert("sys.updMenu", menu) < 1) {
+			setBackRoot("100");
+			return JSON;
+		}
+		setBackRoot("200");
+		return JSON;
+	}
+	
+	public String delMenu() throws Exception{
+		menu.setModifier(sessionUserID());
+		menu.setModifyTime(curTimeStr());
+		if (baseIbaitsService.insert("sys.delMenu", menu) < 1) {
+			setBackRoot("100");
+			return JSON;
+		}
+		setBackRoot("200");
+		return JSON;
+	}
+	
+	/**
+	 * 分页查询内邀码
+	 * @return
+	 * @throws Exception
+	 */
+	public String pageInvites() throws Exception{
+		invite.setPage((Integer.valueOf(page) - 1) * Integer.valueOf(rows));
+		invite.setRows(Integer.valueOf(rows));
+		setBackPageRoot((int)baseIbaitsService.selectOne("sys.countInvite", invite), 
+				JSONArray.fromObject(baseIbaitsService.selectList("sys.pageInvite", invite)), "200");
+		return JSON;
+	}
+	
+	public String addInvite() throws Exception{
+		invite.setCreator(sessionUserID());
+		invite.setCreateTime(curTimeStr());
+		invite.setModifier(sessionUserID());
+		invite.setModifyTime(curTimeStr());
+		invite.setInvite(VerifyUtil.generateVerifyCode(8));
+		if (baseIbaitsService.insert("sys.addInvite", invite) < 1) {
+			setBackRoot("100");
+			return JSON;
+		}
+		setBackRoot("200");
+		return JSON;
+	}
+	
 	public Member getMr() {
 		return mr;
 	}
@@ -821,4 +1004,29 @@ public class SysAction extends BaseAction{
 	public void setUser(User user) {
 		this.user = user;
 	}
+
+	public Role getRole() {
+		return role;
+	}
+
+	public void setRole(Role role) {
+		this.role = role;
+	}
+
+	public Menu getMenu() {
+		return menu;
+	}
+
+	public void setMenu(Menu menu) {
+		this.menu = menu;
+	}
+
+	public Invite getInvite() {
+		return invite;
+	}
+
+	public void setInvite(Invite invite) {
+		this.invite = invite;
+	}
+
 }

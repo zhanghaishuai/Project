@@ -73,6 +73,9 @@
 		
 		
 		<typeAlias type="com.beio.base.vo.User" alias="User"/>
+		<typeAlias type="com.beio.base.vo.Role" alias="Role"/>
+		<typeAlias type="com.beio.base.vo.Menu" alias="Menu"/>
+		<typeAlias type="com.beio.base.vo.Invite" alias="Invite"/>
 		
 		<typeAlias type="com.beio.base.entity.SysRole" alias="SysRole"/>
 		<typeAlias type="com.beio.base.entity.SysMenu" alias="SysMenu"/>

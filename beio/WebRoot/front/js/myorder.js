@@ -415,7 +415,6 @@ function detail(id){
 		dataType : 'json',
 		success : function(data) {
 			if (data.status == '200') {
-				console.log(data);
 				$('.mc').html('\
 					<div id="detail" style="border: 1px dashed #ccc; width: 920px; margin: 0 auto; padding: 5px 10px;">\
 						<button style="float: right; padding: 2px 10px;border:1px solid #bcbcbc;" onclick="query()">返回</button>\

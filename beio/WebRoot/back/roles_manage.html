@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>角色管理</title>
+	<link rel="stylesheet" type="text/css" href="js/jquery-easyui-1.5.2/themes/default/easyui.css">
+	<link rel="stylesheet" type="text/css" href="js/jquery-easyui-1.5.2/themes/icon.css">
+	<link rel="stylesheet" type="text/css" href="js/jquery-easyui-1.5.2/demo/demo.css">
+	<script type="text/javascript" src="js/jquery-easyui-1.5.2/jquery.min.js"></script>
+	<script type="text/javascript" src="js/jquery-easyui-1.5.2/jquery.easyui.min.js"></script>
+</head>
+<body>
+	<div class="easyui-layout" style="width:100%;height:100%;">
+		<div data-options="region:'west'" style="width:50%;">
+			<div class="easyui-panel" style="width:100%;" title="角色列表" data-options="tools:'#tools'">
+				<ul id="role" class="easyui-tree" data-options="url:'/beio/sys/queryRoles',loadFilter:initRole,animate:true,lines:true,onClick:showMenus"></ul>
+			</div>
+			<div id="tools">
+				<a href="javascript:void(0)" class="icon-add" onclick="openAddRole()"></a>
+				<a href="javascript:void(0)" class="icon-edit" onclick="openUpdRole()"></a>
+				<a href="javascript:void(0)" class="icon-cut" onclick="delRole()"></a>
+			</div>
+		</div>
+		<div data-options="region:'center'">
+			<div class="easyui-panel" style="width:100%;" title="角色菜单" data-options="tools:'#menutools'">
+				<ul id="roleMenu" class="easyui-tree"></ul>
+			</div>
+			<div id="menutools">
+				<a href="javascript:void(0)" class="icon-save" onclick="menusave()"></a>
+			</div>
+		</div>
+		
+		<div id="role_add" class="easyui-window" closed="true" title="新增角色" data-options="collapsible: false, minimizable: false, maximizable: false, resizable: false,left: '400px', top: '200px', draggable: true" style="width:280px; height:150px; padding:5px;">
+			<table cellpadding="10">
+				<tr>
+					<td>角色名称:</td>
+					<td>
+						<input class="easyui-textbox" type="text" id="add_role_name" name="role.name" maxlength="20"></input>
+					</td>
+				</tr>
+			</table>
+			<div style="text-align:center;padding:5px">
+				<a href="javascript:void(0)" class="easyui-linkbutton" onclick="addRole()">提交</a>
+				<a href="javascript:void(0)" class="easyui-linkbutton" onclick="$('#role_add').form('clear');$('#role_add').window('close');">取消</a>
+			</div>
+		</div>
+		
+		<div id="role_upd" class="easyui-window" closed="true" title="修改角色" data-options="collapsible: false, minimizable: false, maximizable: false, resizable: false,left: '400px', top: '200px', draggable: true" style="width:280px; height:150px; padding:5px;">
+			<table cellpadding="10">
+				<tr>
+					<td>角色名称:</td>
+					<td>
+						<input type="hidden" id="upd_role_id" name="role.id"></input>
+						<input class="easyui-textbox" type="text" id="upd_role_name" name="role.name" maxlength="20"></input>
+					</td>
+				</tr>
+			</table>
+			<div style="text-align:center;padding:5px">
+				<a href="javascript:void(0)" class="easyui-linkbutton" onclick="updRole()">提交</a>
+				<a href="javascript:void(0)" class="easyui-linkbutton" onclick="$('#role_upd').form('clear');$('#role_upd').window('close');">取消</a>
+			</div>
+		</div>
+	</div>
+	<script type="text/javascript">
+	
+		function initRole(data){
+			if (data.status == '200') {
+				var array = new Array();
+				var root = {'id':'0','text':'角色'};
+				root.children = new Array();
+				$.each(data.result, function(i, item){
+					var role = {};
+					role.id = this.id;
+					role.text = this.name;
+					role.remark = this.remark;
+					role.enable = this.enable;
+					role.exist = this.exist;
+					root.children[root.children.length] = role;
+				});
+				array[0] = root;
+				return array;
+			}else if('170' == data.status) {
+				$.messager.alert('提示', '登录失效，请重新登录');
+				window.location.href = 'login.html';
+			}else{
+				$.messager.alert('提示', tip('400'));
+			};
+		}
+		
+		function openAddRole(){
+			$('#role_add').form('clear');
+			$('#role_add').window('open');
+		}
+		
+		function addRole(){
+			if ($('#add_role_name').val() == '' || $('#add_role_name').val() == null) {
+				$.messager.alert('提示', '角色名称不能为空');
+				return;
+			}
+			$.ajax({
+				url : '/beio/sys/addRole',
+				data : {'role.name' : $('#add_role_name').val()},
+				type : 'POST',
+				async : false,
+				cache : true,
+				dataType : 'json',
+				success : function(data) {
+					if('200' == data.status){
+						$('#role_add').form('clear');
+						$('#role_add').window('close');
+						$.messager.alert('提示', '新增成功');
+						$('#role').tree('reload');
+					}else if('170' == data.status) {
+						$.messager.alert('提示', '登录失效，请重新登录');
+						window.location.href = 'login.html';
+					}else{
+						$.messager.alert('提示', tip('400'));
+					};
+				},
+				error : function() {
+					$.messager.alert('提示', tip('500'));
+				}
+			});
+		}
+		
+		function openUpdRole(){
+			var node = $('#role').tree('getSelected');
+			if(node == null || node.id == '0'){
+				alert('请选择一个角色');
+			}else {
+				$('#role_upd').form('clear');
+				$('#role_upd').window('open');
+				$('#upd_role_id').val(node.id);
+				$('#upd_role_name').textbox('setValue', node.text);
+			}
+		}
+		
+		function updRole(){
+			if ($('#upd_role_name').val() == '' || $('#upd_role_name').val() == null) {
+				$.messager.alert('提示', '角色名称不能为空');
+				return;
+			}
+			$.ajax({
+				url : '/beio/sys/updRole',
+				data : {'role.id' : $('#upd_role_id').val(), 'role.name' : $('#upd_role_name').val()},
+				type : 'POST',
+				async : false,
+				cache : true,
+				dataType : 'json',
+				success : function(data) {
+					if('200' == data.status){
+						$('#role_upd').form('clear');
+						$('#role_upd').window('close');
+						$.messager.alert('提示', '修改成功');
+						$('#role').tree('reload');
+					}else if('170' == data.status) {
+						$.messager.alert('提示', '登录失效，请重新登录');
+						window.location.href = 'login.html';
+					}else{
+						$.messager.alert('提示', tip('400'));
+					};
+				},
+				error : function() {
+					$.messager.alert('提示', tip('500'));
+				}
+			});
+		}
+		
+		function delRole(){
+			var node = $('#role').tree('getSelected');
+			if(node == null || node.id == '0'){
+				alert('请选择一个角色');
+			}else {
+				$.messager.confirm('提示：', '确定要删除该角色吗?', function(r){
+					if (r){
+						$.ajax({
+							url : '/beio/sys/delRole',
+							data : {'role.id' : node.id},
+							type : 'POST',
+							async : false,
+							cache : true,
+							dataType : 'json',
+							success : function(data) {
+								if('200' == data.status){
+									$.messager.alert('提示', '删除成功');
+									$('#role').tree('reload');
+								}else if('170' == data.status) {
+									$.messager.alert('提示', '登录失效，请重新登录');
+									window.location.href = 'login.html';
+								}else{
+									$.messager.alert('提示', tip('400'));
+								};
+							},
+							error : function() {
+								$.messager.alert('提示', tip('500'));
+							}
+						});
+					}
+				});
+			}
+		}
+		
+		function showMenus(){
+			var node = $('#role').tree('getSelected');
+			if(node != null && node.id != '0'){
+				$.ajax({
+					url : '/beio/sys/queryMenuByRole',
+					data : {'role.id' : node.id},
+					type : 'POST',
+					async : false,
+					cache : true,
+					dataType : 'json',
+					success : function(data) {
+						if('200' == data.status){
+							var array = new Array();
+							$.each(data.result, function(i, item){
+								if(this.pid == '0') {
+									var root = {};
+									root.id = this.id;
+									root.text = this.name;
+									array[array.length] = root;
+								}
+							});
+							$.each(array, function(i, item){
+								recurRoleMenu(data.result, this);
+							});
+							$('#roleMenu').tree({
+								data : array,
+								animate : true,
+								checkbox: true
+							});
+						}else if('170' == data.status) {
+							$.messager.alert('提示', '登录失效，请重新登录');
+							window.location.href = 'login.html';
+						}else{
+							$.messager.alert('提示', tip('400'));
+						};
+					},
+					error : function() {
+						$.messager.alert('提示', tip('500'));
+					}
+				});
+			}
+		}
+		
+		function recurRoleMenu(data, root){
+			$.each(data, function(i, item){
+				if (this.pid == root.id) {
+					var checked = true;
+					if(this.roleID == null){
+						checked = false;
+					}
+					if (root.children == undefined) {
+						root.children = new Array();
+					}
+					var child = {};
+					child.id = this.id;
+					child.text = this.name;
+					child.checked = checked;
+					root.children[root.children.length] = child;
+					recurRoleMenu(data, child);
+				}
+			});
+		}
+		
+		function menusave(){
+			var node = $('#role').tree('getSelected');
+			if(node != null && node.id != '0'){
+				var arr = new Array();
+				$.each($('#roleMenu').tree('getChecked',['checked','indeterminate']), function(){
+					arr[arr.length] = this.id;
+				});
+				$.ajax({
+					url : '/beio/sys/changeRoleMenu',
+					data : {'role.id' : node.id, 'role.menus.id' : arr},
+					type : 'POST',
+					async : false,
+					cache : true,
+					dataType : 'json',
+					traditional : true,
+					success : function(data) {
+						if (data.status == '200') {
+							$.messager.alert('提示', '角色菜单修改成功');
+						}else if('170' == data.status) {
+							$.messager.alert('提示', '登录失效，请重新登录');
+							window.location.href = 'login.html';
+						}else{
+							$.messager.alert('提示', tip('400'));
+						};
+					},
+					error : function() {
+						$.messager.alert('提示', tip('500'));
+					}
+				});
+			}
+		}
+	</script>
+</body>
+</html>
