@@ -11,7 +11,9 @@ import com.beio.base.entity.SysUser;
 import com.beio.base.service.SysService;
 import com.beio.base.util.ComUtil;
 import com.beio.base.util.Constant;
+import com.beio.base.util.VerifyUtil;
 import com.beio.base.vo.Address;
+import com.beio.base.vo.Invite;
 import com.beio.base.vo.Member;
 import com.beio.base.vo.Menu;
 import com.beio.base.vo.Role;
@@ -42,6 +44,8 @@ public class SysAction extends BaseAction{
 	private Role role = new Role();
 	
 	private Menu menu = new Menu();
+	
+	private Invite invite = new Invite();
 	
 	private SysService sysService;
 	
@@ -918,6 +922,33 @@ public class SysAction extends BaseAction{
 		return JSON;
 	}
 	
+	/**
+	 * 分页查询内邀码
+	 * @return
+	 * @throws Exception
+	 */
+	public String pageInvites() throws Exception{
+		invite.setPage((Integer.valueOf(page) - 1) * Integer.valueOf(rows));
+		invite.setRows(Integer.valueOf(rows));
+		setBackPageRoot((int)baseIbaitsService.selectOne("sys.countInvite", invite), 
+				JSONArray.fromObject(baseIbaitsService.selectList("sys.pageInvite", invite)), "200");
+		return JSON;
+	}
+	
+	public String addInvite() throws Exception{
+		invite.setCreator(sessionUserID());
+		invite.setCreateTime(curTimeStr());
+		invite.setModifier(sessionUserID());
+		invite.setModifyTime(curTimeStr());
+		invite.setInvite(VerifyUtil.generateVerifyCode(8));
+		if (baseIbaitsService.insert("sys.addInvite", invite) < 1) {
+			setBackRoot("100");
+			return JSON;
+		}
+		setBackRoot("200");
+		return JSON;
+	}
+	
 	public Member getMr() {
 		return mr;
 	}
@@ -989,5 +1020,13 @@ public class SysAction extends BaseAction{
 	public void setMenu(Menu menu) {
 		this.menu = menu;
 	}
-	
+
+	public Invite getInvite() {
+		return invite;
+	}
+
+	public void setInvite(Invite invite) {
+		this.invite = invite;
+	}
+
 }
