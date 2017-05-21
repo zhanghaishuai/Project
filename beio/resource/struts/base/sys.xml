@@ -263,6 +263,94 @@
 			<interceptor-ref name="backIdentityStack"/>
 		</action>
 		
+		<action name="queryRoleByUser" class="sysAction" method="queryRoleByUser">
+			<result name="json" type="json">
+				<param name="root">backRoot</param>
+			</result>
+			<interceptor-ref name="backIdentityStack"/>
+		</action>
+		
+		<action name="changeUserRole" class="sysAction" method="changeUserRole">
+			<result name="json" type="json">
+				<param name="root">backRoot</param>
+			</result>
+			<interceptor-ref name="backIdentityStack"/>
+		</action>
+		
+		<!-- 查询角色 -->
+		<action name="queryRoles" class="sysAction" method="queryRoles">
+			<result name="json" type="json">
+				<param name="root">backRoot</param>
+			</result>
+			<interceptor-ref name="backIdentityStack"/>
+		</action>
+		
+		<!-- 新增角色 -->
+		<action name="addRole" class="sysAction" method="addRole">
+			<result name="json" type="json">
+				<param name="root">backRoot</param>
+			</result>
+			<interceptor-ref name="backIdentityStack"/>
+		</action>
+		
+		<!-- 修改角色 -->
+		<action name="updRole" class="sysAction" method="updRole">
+			<result name="json" type="json">
+				<param name="root">backRoot</param>
+			</result>
+			<interceptor-ref name="backIdentityStack"/>
+		</action>
+		
+		<!-- 删除角色 -->
+		<action name="delRole" class="sysAction" method="delRole">
+			<result name="json" type="json">
+				<param name="root">backRoot</param>
+			</result>
+			<interceptor-ref name="backIdentityStack"/>
+		</action>
+		
+		<action name="queryMenuByRole" class="sysAction" method="queryMenuByRole">
+			<result name="json" type="json">
+				<param name="root">backRoot</param>
+			</result>
+			<interceptor-ref name="backIdentityStack"/>
+		</action>
+		
+		<action name="changeRoleMenu" class="sysAction" method="changeRoleMenu">
+			<result name="json" type="json">
+				<param name="root">backRoot</param>
+			</result>
+			<interceptor-ref name="backIdentityStack"/>
+		</action>
+		
+		<action name="queryMenus" class="sysAction" method="queryMenus">
+			<result name="json" type="json">
+				<param name="root">backRoot</param>
+			</result>
+			<interceptor-ref name="backIdentityStack"/>
+		</action>
+		
+		<action name="addMenu" class="sysAction" method="addMenu">
+			<result name="json" type="json">
+				<param name="root">backRoot</param>
+			</result>
+			<interceptor-ref name="backIdentityStack"/>
+		</action>
+		
+		<action name="updMenu" class="sysAction" method="updMenu">
+			<result name="json" type="json">
+				<param name="root">backRoot</param>
+			</result>
+			<interceptor-ref name="backIdentityStack"/>
+		</action>
+		
+		<action name="delMenu" class="sysAction" method="delMenu">
+			<result name="json" type="json">
+				<param name="root">backRoot</param>
+			</result>
+			<interceptor-ref name="backIdentityStack"/>
+		</action>
+		
 	</package>
 </struts>
 

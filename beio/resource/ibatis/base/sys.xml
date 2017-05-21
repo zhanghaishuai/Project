@@ -559,4 +559,91 @@
 		ORDER BY menu.id
 	</select>
 	
+	<select id="queryRoleByUser" parameterType="Object" resultType="Role">
+		SELECT 
+		    role.*, urmap.userID AS userID
+		FROM
+		    sys_role role
+		        LEFT JOIN
+		    sys_urmap urmap ON role.id = urmap.roleID
+		        AND urmap.enable = '1'
+		        AND urmap.exist = '1'
+		        AND urmap.userID = #{id}
+		WHERE
+		    role.enable = '1' AND role.exist = '1'
+	</select>
+	
+	<insert id="changeUserRole" parameterType="Object">
+		delete from sys_urmap where userID = #{id};
+		<if test="roles != null and roles.size() > 0">
+			insert into sys_urmap (roleID, userID, creator, createTime, modifier, modifyTime) values 
+			<foreach collection="roles" index="index" item="item" open="" separator="," close="">
+			(#{item.id}, #{id}, #{creator}, #{createTime}, #{modifier}, #{modifyTime})
+			</foreach>
+		</if>
+	</insert>
+	
+	<!-- 查询角色 -->
+	<select id="queryRoles" parameterType="Object" resultType="SysRole">
+		select * from sys_role where enable = '1' and exist = '1';
+	</select>
+	
+	<!-- 新增角色 -->
+	<insert id="addRole" parameterType="Object" >
+		insert into sys_role(name, creator, createTime, modifier, modifyTime)
+			values(#{name}, #{creator}, #{createTime}, #{modifier}, #{modifyTime});
+	</insert>
+	
+	<!-- 修改角色 -->
+	<update id="updRole" parameterType="Object" >
+		update sys_role set name = #{name}, modifier = #{modifier}, modifyTime = #{modifyTime} where id = #{id};
+	</update>
+	
+	<!-- 删除角色 -->
+	<update id="delRole" parameterType="Object" >
+		delete from sys_role where id = #{id};
+	</update>
+	
+	<select id="queryMenuByRole" parameterType="Object" resultType="Menu">
+		SELECT 
+		    menu.*, mrmap.roleID AS roleID
+		FROM
+		    sys_menu menu
+		        LEFT JOIN
+		    sys_mrmap mrmap ON menu.id = mrmap.menuID
+		        AND mrmap.enable = '1'
+		        AND mrmap.exist = '1'
+		        AND mrmap.roleID = #{id}
+		WHERE
+		    menu.enable = '1' AND menu.exist = '1'
+	</select>
+	
+	<insert id="changeRoleMenu" parameterType="Object">
+		delete from sys_mrmap where roleID = #{id};
+		<if test="menus != null and menus.size() > 0">
+			insert into sys_mrmap (menuID, roleID, creator, createTime, modifier, modifyTime) values 
+			<foreach collection="menus" index="index" item="item" open="" separator="," close="">
+			(#{item.id}, #{id}, #{creator}, #{createTime}, #{modifier}, #{modifyTime})
+			</foreach>
+		</if>
+	</insert>
+	
+	<!-- 查询菜单 -->
+	<select id="queryMenus" parameterType="Object" resultType="SysMenu">
+		select * from sys_Menu where enable = '1' and exist = '1';
+	</select>
+	
+	<insert id="addMenu" parameterType="Object" >
+		insert into sys_menu(name, url, pid, creator, createTime, modifier, modifyTime)
+			values(#{name}, #{url}, #{pid}, #{creator}, #{createTime}, #{modifier}, #{modifyTime});
+	</insert>
+	
+	<update id="updMenu" parameterType="Object" >
+		update sys_menu set name = #{name}, url = #{url}, modifier = #{modifier}, modifyTime = #{modifyTime} where id = #{id};
+	</update>
+	
+	<update id="delMenu" parameterType="Object" >
+		delete from sys_menu where id = #{id};
+	</update>
+	
 </mapper>

@@ -11,110 +11,202 @@
 		
 </head>
 <body>
-	<div id="user_tb" style="padding:10px 10px;">
-		<div>
-			<a href="javascript:void(0);" onclick="$('#user_add').window('open')" class="easyui-linkbutton" plain="false" data-options="iconCls:'icon-add'">新增</a>
-			<a href="javascript:void(0);" onclick="updateUserWindowShow()" class="easyui-linkbutton" plain="false" data-options="iconCls:'icon-edit'">修改</a>
-			<a href="javascript:void(0);" onclick="delRow();" class="easyui-linkbutton" plain="false" data-options="iconCls:'icon-remove'">删除</a>
-			<span style="margin-left: 200px;">用户名：</span>
-			<input id="search_username"/>
-			<a href="javascript:void(0);" onclick="searchUsers();" class="easyui-linkbutton" plain="false" data-options="iconCls:'icon-search'">搜索</a>
-		</div>
-	</div>
-	<table id="users_datagrid" class="easyui-datagrid" style="width:100%; height: 100%;"
-		data-options="
-			fitColumns:true
-			,striped:true
-			,rownumbers:true
-			,singleSelect:true
-			,collapsible:true
-			,pagination:true
-			,pagePosition:'bottom'
-			,pageNumber:1
-			,pageSize:30
-			,url:'/beio/sys/pageUsers'
-			,method:'post'
-			,loadFilter: function(data){if(data.status=='170'){alert('登录失效，请重新登录');window.location.href = 'login.html'}else{return data}}
-			" 
-			
-		toolbar="#user_tb">
-		<!-- 设置默认行颜色 ,rowStyler:function(index,row){if('1' != row.enable){return 'background-color:#E0E0E0;color:blue;font-weight:bold';}} -->
-		<thead>
-			<tr>
-				<th data-options="field:'id',width:120,align:'center',hidden:true">ID</th>
-				<th data-options="field:'username',width:120,align:'center'">用户名</th>
-				<th data-options="field:'password',width:120,align:'center'">密码</th>
-				<th data-options="field:'nickName',width:120,align:'center'">昵称</th>
-				<th data-options="field:'email',width:120,align:'center'">邮箱</th>
-				<th data-options="field:'enable',width:60,align:'center', formatter:function(value,row,index){if('1' == value){return '可用';}else{return '禁用';}}">可用状态</th>
-			</tr>
-		</thead>
-	</table>
-	<div id="user_add" class="easyui-window" closed="true" title="用户信息" data-options="iconCls:'icon-save', collapsible: false, minimizable: false, maximizable: false, resizable: false,left: '300px', top: '200px', draggable: true" style="width:300px; height:300px; padding:5px;">
-		<form id="user_add_form" method="post">
-			<table cellpadding="5">
-				<tr>
-					<td>用户名:</td>
-					<td>
-						<input class="easyui-textbox" type="text" id="user_add_username" name="user.username" data-options="required:true" maxlength="20"></input>
-					</td>
-				</tr>
-				<tr>
-					<td>密码:</td>
-					<td><input class="easyui-textbox" type="text" id="user_add_password" name="user.password" data-options="required:true"  maxlength="20"></input></td>
-				</tr>
-				<tr>
-					<td>昵称:</td>
-					<td><input class="easyui-textbox" type="text" id="user_add_nickName" name="user.nickName" data-options="" maxlength="20"></input></td>
-				</tr>
-				<tr>
-					<td>邮箱:</td>
-					<td><input class="easyui-textbox" id="user_add_email" name="user.email" data-options="validType:'email'" maxlength="50"></input></td>
-				</tr>
+	<div class="easyui-layout" style="width:100%;height:100%;">
+		<div data-options="region:'west'" style="width:50%;height:100%;">
+			<table id="users_datagrid" class="easyui-datagrid" style="width:100%;height:100%;" title="用户列表"
+				data-options="
+					fitColumns:true
+					,striped:true
+					,rownumbers:true
+					,singleSelect:true
+					,collapsible:false
+					,pagination:true
+					,pagePosition:'bottom'
+					,pageNumber:1
+					,pageSize:30
+					,url:'/beio/sys/pageUsers'
+					,method:'post'
+					,loadFilter: function(data){if(data.status=='170'){alert('登录失效，请重新登录');window.location.href = 'login.html'}else{return data}}
+					,onSelect : userRole
+					" toolbar="#user_tb">
+				<!-- 设置默认行颜色 ,rowStyler:function(index,row){if('1' != row.enable){return 'background-color:#E0E0E0;color:blue;font-weight:bold';}} -->
+				<thead>
+					<tr>
+						<th data-options="field:'id',width:120,align:'center',hidden:true">ID</th>
+						<th data-options="field:'username',width:120,align:'center'">用户名</th>
+						<th data-options="field:'password',width:120,align:'center'">密码</th>
+						<th data-options="field:'nickName',width:120,align:'center'">昵称</th>
+						<th data-options="field:'email',width:120,align:'center'">邮箱</th>
+						<th data-options="field:'enable',width:60,align:'center', formatter:function(value,row,index){if('1' == value){return '可用';}else{return '禁用';}}">可用状态</th>
+					</tr>
+				</thead>
 			</table>
-		</form>
-		<div style="text-align:center;padding:5px">
-			<a href="javascript:void(0)" class="easyui-linkbutton" onclick="addUser()">提交</a>
-			<a href="javascript:void(0)" class="easyui-linkbutton" onclick="clearUserAddForm()">取消</a>
+			<div id="user_tb" style="padding:10px 10px;">
+				<div>
+					<a href="javascript:void(0);" onclick="$('#user_add').window('open')" class="easyui-linkbutton" plain="false" data-options="iconCls:'icon-add'">新增</a>
+					<a href="javascript:void(0);" onclick="updateUserWindowShow()" class="easyui-linkbutton" plain="false" data-options="iconCls:'icon-edit'">修改</a>
+					<a href="javascript:void(0);" onclick="delRow();" class="easyui-linkbutton" plain="false" data-options="iconCls:'icon-remove'">删除</a>
+					<span style="margin-left: 200px;">用户名：</span>
+					<input id="search_username"/>
+					<a href="javascript:void(0);" onclick="searchUsers();" class="easyui-linkbutton" plain="false" data-options="iconCls:'icon-search'">搜索</a>
+				</div>
+			</div>
+		</div>
+		
+		<div data-options="region:'center'">
+			<div class="easyui-panel" style="width:100%;" title="用户角色" data-options="tools:'#roletools'">
+				<ul id="userRole" class="easyui-tree"></ul>
+			</div>
+			<div id="roletools">
+				<a href="javascript:void(0)" class="icon-save" onclick="rolesave()"></a>
+			</div>
+		</div>
+		
+		<div id="user_add" class="easyui-window" closed="true" title="用户信息" data-options="iconCls:'icon-save', collapsible: false, minimizable: false, maximizable: false, resizable: false,left: '300px', top: '200px', draggable: true" style="width:300px; height:300px; padding:5px;">
+			<form id="user_add_form" method="post">
+				<table cellpadding="5">
+					<tr>
+						<td>用户名:</td>
+						<td>
+							<input class="easyui-textbox" type="text" id="user_add_username" name="user.username" data-options="required:true" maxlength="20"></input>
+						</td>
+					</tr>
+					<tr>
+						<td>密码:</td>
+						<td><input class="easyui-textbox" type="text" id="user_add_password" name="user.password" data-options="required:true"  maxlength="20"></input></td>
+					</tr>
+					<tr>
+						<td>昵称:</td>
+						<td><input class="easyui-textbox" type="text" id="user_add_nickName" name="user.nickName" data-options="" maxlength="20"></input></td>
+					</tr>
+					<tr>
+						<td>邮箱:</td>
+						<td><input class="easyui-textbox" id="user_add_email" name="user.email" data-options="validType:'email'" maxlength="50"></input></td>
+					</tr>
+				</table>
+			</form>
+			<div style="text-align:center;padding:5px">
+				<a href="javascript:void(0)" class="easyui-linkbutton" onclick="addUser()">提交</a>
+				<a href="javascript:void(0)" class="easyui-linkbutton" onclick="clearUserAddForm()">取消</a>
+			</div>
+		</div>
+		
+		<div id="user_update" class="easyui-window" closed="true" title="用户信息" data-options="iconCls:'icon-save', collapsible: false, minimizable: false, maximizable: false, resizable: false,left: '300px', top: '200px', draggable: true" style="width:300px; height:300px; padding:5px;">
+			<form id="user_update_form" method="post">
+				<table cellpadding="5">
+					<tr>
+						
+						<td>用户名:</td>
+						<td>
+							<input id="user_update_id" type="text" hidden="hidden"/>
+							<input class="easyui-textbox" type="text" id="user_update_username" data-options="required:true" readonly="readonly"></input>
+						</td>
+					</tr>
+					<tr>
+						<td>密码:</td>
+						<td><input class="easyui-textbox" type="text" id="user_update_password" data-options="required:true" maxlength="20"></input></td>
+					</tr>
+					<tr>
+						<td>昵称:</td>
+						<td><input class="easyui-textbox" type="text" id="user_update_nickName" data-options="" maxlength="20"></input></td>
+					</tr>
+					<tr>
+						<td>邮箱:</td>
+						<td><input class="easyui-textbox" id="user_update_email" data-options="validType:'email'" maxlength="50"></input></td>
+					</tr>
+					<tr>
+						<td>可用状态:</td>
+						<td>
+							<input type="radio" name="user_update_enable" value="1"/>启用
+							<input type="radio" name="user_update_enable" value="0"/>禁用
+						</td>
+					</tr>
+				</table>
+			</form>
+			<div style="text-align:center;padding:5px">
+				<a href="javascript:void(0)" class="easyui-linkbutton" onclick="updateUser()">提交</a>
+				<a href="javascript:void(0)" class="easyui-linkbutton" onclick="clearUserUpdateForm()">取消</a>
+			</div>
 		</div>
 	</div>
+	<script type="text/javascript">
 	
-	<div id="user_update" class="easyui-window" closed="true" title="用户信息" data-options="iconCls:'icon-save', collapsible: false, minimizable: false, maximizable: false, resizable: false,left: '300px', top: '200px', draggable: true" style="width:300px; height:300px; padding:5px;">
-		<form id="user_update_form" method="post">
-			<table cellpadding="5">
-				<tr>
-					
-					<td>用户名:</td>
-					<td>
-						<input id="user_update_id" type="text" hidden="hidden"/>
-						<input class="easyui-textbox" type="text" id="user_update_username" data-options="required:true" readonly="readonly"></input>
-					</td>
-				</tr>
-				<tr>
-					<td>密码:</td>
-					<td><input class="easyui-textbox" type="text" id="user_update_password" data-options="required:true" maxlength="20"></input></td>
-				</tr>
-				<tr>
-					<td>昵称:</td>
-					<td><input class="easyui-textbox" type="text" id="user_update_nickName" data-options="" maxlength="20"></input></td>
-				</tr>
-				<tr>
-					<td>邮箱:</td>
-					<td><input class="easyui-textbox" id="user_update_email" data-options="validType:'email'" maxlength="50"></input></td>
-				</tr>
-				<tr>
-					<td>可用状态:</td>
-					<td>
-						<input type="radio" name="user_update_enable" value="1"/>启用
-						<input type="radio" name="user_update_enable" value="0"/>禁用
-					</td>
-				</tr>
-			</table>
-		</form>
-		<div style="text-align:center;padding:5px">
-			<a href="javascript:void(0)" class="easyui-linkbutton" onclick="updateUser()">提交</a>
-			<a href="javascript:void(0)" class="easyui-linkbutton" onclick="clearUserUpdateForm()">取消</a>
-		</div>
-	</div>
+		function userRole(i, data){
+			$.ajax({
+				url : '/beio/sys/queryRoleByUser',
+				data : {'user.id' : data.id},
+				type : 'POST',
+				async : false,
+				cache : true,
+				dataType : 'json',
+				success : function(data) {
+					if('200' == data.status){
+						var array = new Array();
+						$.each(data.result, function(i, item){
+							var checked = true;
+							if(this.userID == null){
+								checked = false;
+							}
+							var role = {};
+							role.id = this.id;
+							role.name = this.name;
+							role.text = this.name;
+							role.remark = this.remark;
+							role.enable = this.enable;
+							role.exist = this.exist;
+							role.checked = checked;
+							array[array.length] = role;
+						});
+						$('#userRole').tree({
+							data : array,
+							animate : true,
+							checkbox: true
+						});
+					}else if('170' == data.status) {
+						$.messager.alert('提示', '登录失效，请重新登录');
+						window.location.href = 'login.html';
+					}else{
+						$.messager.alert('提示', tip('400'));
+					};
+				},
+				error : function() {
+					$.messager.alert('提示', tip('500'));
+				}
+			});
+		}
+		
+		function rolesave(){
+			var node = $('#users_datagrid').datagrid('getSelected');
+			if(node){
+				var arr = new Array();
+				$.each($('#userRole').tree('getChecked'), function(){
+					arr[arr.length] = this.id;
+				});
+				$.ajax({
+					url : '/beio/sys/changeUserRole',
+					data : {'user.id' : node.id, 'user.roles.id' : arr},
+					type : 'POST',
+					async : false,
+					cache : true,
+					dataType : 'json',
+					traditional : true,
+					success : function(data) {
+						if (data.status == '200') {
+							$.messager.alert('提示', '用户角色修改成功');
+						}else if('170' == data.status) {
+							$.messager.alert('提示', '登录失效，请重新登录');
+							window.location.href = 'login.html';
+						}else{
+							$.messager.alert('提示', tip('400'));
+						};
+					},
+					error : function() {
+						$.messager.alert('提示', tip('500'));
+					}
+				});
+			}
+		}
+		
+	</script>
 </body>
 </html>

@@ -224,6 +224,17 @@ public class BaseAction extends ActionSupport {
 	}
 	
 	/**
+	 * 会话后台用户
+	 * @return
+	 */
+	public String sessionUserID() {
+		if (getSession().getAttribute(Constant.SESSIONBACKUSERINFO) != null) {
+			return ((SysUser) getSession().getAttribute(Constant.SESSIONBACKUSERINFO)).getId();
+		}
+		return "";
+	}
+	
+	/**
 	 * 当前时间
 	 * @return
 	 * @throws Exception
