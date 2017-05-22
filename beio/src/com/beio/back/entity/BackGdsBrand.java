@@ -2,28 +2,29 @@ package com.beio.back.entity;
 
 /**
  * 后台商品品牌
+ * 
  * @author Dashi
  * @version 1.0.0
  * @date 2017-05-06
  */
 public class BackGdsBrand {
-	
+
 	private String id; // 主键
-	
+
 	private String name; // 名称
-	
+
 	private String sort; // 排序号码
-	
+
 	private String enable; // 是否启用（0：否、1：是）
-	
+
 	private String exist; // 是否删除（0：否、1：是）
-	
+
 	private String creator; // 创建人
-	
+
 	private String createTime; // 创建时间
-	
+
 	private String modifier; // 修改人
-	
+
 	private String modifyTime; // 修改时间
 
 	public String getId() {
@@ -97,6 +98,5 @@ public class BackGdsBrand {
 	public void setModifyTime(String modifyTime) {
 		this.modifyTime = modifyTime;
 	}
-	
-	
+
 }

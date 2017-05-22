@@ -2,38 +2,39 @@ package com.beio.back.entity;
 
 /**
  * 后台商品图片
+ * 
  * @author Dashi
  * @version 1.0.0
  * @date
  */
 public class BackGdsImage {
-	
+
 	private String id; // id
-	
+
 	private String orgPath; // 原图地址
-	
+
 	private String bigPath; // 大图地址
-	
+
 	private String midPath; // 中图地址
-	
+
 	private String smaPath; // 小图地址
-	
+
 	private String sortNum; // 排序号码
-	
+
 	private String goodsID; // 商品ID
-	
+
 	private String category; // 类型（0：预览、1：详情）
-	
+
 	private String enable; // 是否启用（0：否、1：是）
-	
+
 	private String exist; // 是否删除（0：否、1：是）
-	
+
 	private String creator; // 创建人
-	
+
 	private String createTime; // 创建时间
-	
+
 	private String modifier; // 修改人
-	
+
 	private String modifyTime; // 修改时间
 
 	public String getId() {
@@ -147,6 +148,5 @@ public class BackGdsImage {
 	public void setModifyTime(String modifyTime) {
 		this.modifyTime = modifyTime;
 	}
-	
-	
+
 }

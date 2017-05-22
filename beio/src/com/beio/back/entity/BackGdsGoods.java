@@ -1,48 +1,48 @@
 package com.beio.back.entity;
 
-
 /**
  * 商品详情
+ * 
  * @author Dashi
  * @version 1.0.0
  * @date 2017-05-06
  */
-public class BackGdsGoods{
+public class BackGdsGoods {
 
 	private String id; // 主键
-	
+
 	private String name; // 名称
-	
+
 	private String descr; // 描述
-	
+
 	private String mPrice; // 会员价
-	
+
 	private String cPrice; // 普通价
-	
+
 	private String weight; // 重量
-	
+
 	private String salds; // 已售数量
-	
+
 	private String stock; // 库存数量
-	
+
 	private String heatUp; // 热度
-	
+
 	private String brandID; // 品牌ID
-	
+
 	private String classifyID; // 分类ID
-	
+
 	private String remark; // 备注
-	
+
 	private String enable; // 是否启用（0：否、1：是）
-	
+
 	private String exist; // 是否删除（0：否、1：是）
-	
+
 	private String creator; // 创建人
-	
+
 	private String createTime; // 创建时间
-	
+
 	private String modifier; // 修改人
-	
+
 	private String modifyTime; // 修改时间
 
 	public String getId() {

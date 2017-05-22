@@ -45,10 +45,6 @@
 		<typeAlias type="com.beio.front.vo.SettlementVO" alias="SettlementVO"/>
 		<typeAlias type="com.beio.front.vo.TopInfoVO" alias="TopInfoVO"/>
 		
-		
-		
-		
-		
 		<typeAlias type="com.beio.base.entity.SysUser" alias="SysUser"/>
 		<typeAlias type="com.beio.back.vo.BackGdsGoodsVO" alias="BGV"/>
 		<typeAlias type="com.beio.back.vo.BackGdsClassifyVO" alias="BCV"/>
@@ -59,19 +55,6 @@
 		<typeAlias type="com.beio.back.entity.BackGdsImage" alias="BI"/>
 		
 		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
 		<typeAlias type="com.beio.base.vo.User" alias="User"/>
 		<typeAlias type="com.beio.base.vo.Role" alias="Role"/>
 		<typeAlias type="com.beio.base.vo.Menu" alias="Menu"/>
@@ -79,11 +62,6 @@
 		
 		<typeAlias type="com.beio.base.entity.SysRole" alias="SysRole"/>
 		<typeAlias type="com.beio.base.entity.SysMenu" alias="SysMenu"/>
-		
-		
-		
-		
-		
 		
 	</typeAliases>
 	

@@ -2,37 +2,38 @@ package com.beio.back.entity;
 
 /**
  * 后台商品分类
+ * 
  * @author Dashi
  * @version 1.0.0
  * @date 2017-05-06
  */
 public class BackGdsClassify {
-	
+
 	private String id; // 主键
-	
+
 	private String pid; // 上级
-	
+
 	private String sort; // 排序
-	
+
 	private String name; // 名称
-	
+
 	private String level; // 等级
-	
+
 	private String showIndex; // 首页展示（0：否、1：是）
-	
+
 	private String showAbeam; // 横向展示（0：否、1：是）
-	
+
 	private String enable; // 是否启用（0：否、1：是）
-	
+
 	private String exist; // 是否删除（0：否、1：是）
-	
+
 	private String creator; // 创建人
-	
+
 	private String createTime; // 创建时间
-	
+
 	private String modifier; // 修改人
-	
-	private String modifyTime; // 修改时间	
+
+	private String modifyTime; // 修改时间
 
 	public String getId() {
 		return id;
@@ -137,6 +138,5 @@ public class BackGdsClassify {
 	public void setModifyTime(String modifyTime) {
 		this.modifyTime = modifyTime;
 	}
-	
-	
+
 }

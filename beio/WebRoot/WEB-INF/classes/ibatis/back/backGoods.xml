@@ -273,8 +273,6 @@
 		update gds_brand set exist = #{exist} where id = #{id};
 	</update>	
 	
-	
-	
 	<!-- 全部分类 -->
 	<select id="allClassify" parameterType="BCV" resultType="BCV">
 		select c.* from gds_classify c order by cast(c.level as unsigned int) asc, cast(c.pid as unsigned int) asc;

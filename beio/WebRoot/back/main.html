@@ -2,7 +2,7 @@
 <html>
 <head>
 	<meta charset="UTF-8">
-	<title>后台管理</title>
+	<title>快客林运营平台</title>
 	<link rel="stylesheet" type="text/css" href="js/jquery-easyui-1.5.2/themes/default/easyui.css">
 	<link rel="stylesheet" type="text/css" href="js/jquery-easyui-1.5.2/themes/icon.css">
 	<link rel="stylesheet" type="text/css" href="js/jquery-easyui-1.5.2/demo/demo.css">
@@ -16,49 +16,15 @@
 </head>
     <body class="easyui-layout">
         <div data-options="region:'north',split:true" style="height:50px;">
-        	<span style="line-height: 40px; font-size: 18px; padding-left: 5px;">快客林后台管理</span>
+        	<span style="line-height: 40px; font-size: 18px; padding-left: 5px;">快客林运营平台</span>
         </div>
 		<div data-options="region:'west',split:true" style="width:200px;">
-			<ul id="tt" class="easyui-tree">
-				<li>
-					<span>首页</span>
-					<ul>
-						<li><span><a href="#">代办</a></span></li>
-						<li><span>统计</span></li>
-					</ul>
-				</li>
-				<li>
-					<span>供应商管理</span>
-					<ul>
-						<li><span><a href="javascript:void(0);" onclick="addTab('用户管理', 'users_manage.html');">帐号</a></span></li>
-						<li><span>发货管理</span></li>
-						<li><span>异常处理</span></li>
-						<li><span>结算</span></li>
-					</ul>
-				</li>
-				<li>
-					<span>商品管理</span>
-					<ul>
-						<li><span><a href="javascript:void(0);" onclick="addTab('商品管理', 'goods_manage.html');">商品列表</a></span></li>
-						<li><span><a href="javascript:void(0);" onclick="addTab('品牌管理', 'brand_manage.html');">品牌管理</a></span></li>
-						<li><span><a href="javascript:void(0);" onclick="addTab('分类管理', 'classify_manage.html');">分类管理</a></span></li>
-						<li><span>标签管理</span></li>
-					</ul>
-				</li>
-				<li>
-					<span>订单管理</span>
-					<ul>
-						<li><span><a href="#">正常订单</a></span></li>
-						<li><span>退货退款</span></li>
-					</ul>
-				</li>
-			</ul>
 			<ul id="menu"></ul>
 		</div>
 		<div data-options="region:'center'" style="background:#eee;">
        	    <div id="tabs" class="easyui-tabs" data-options="tabWidth:112" style="height:100%">
 				<div title="Home" style="padding:10px">
-					<p>这里面放一个图片，不能被关闭.</p>
+					<img src="js/jquery-easyui-1.5.2/themes/icons/timg.jpeg" width="100%" height="100%"/>
 				</div>
 			</div>
         </div>
