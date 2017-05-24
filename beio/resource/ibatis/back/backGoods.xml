@@ -3,6 +3,162 @@
 	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="backGoods">
+
+	<!-- 品牌总数 -->
+	<select id="countBrand" parameterType="BBV" resultType="int">
+		select 
+			count(1)
+		from 
+			gds_brand b
+		where
+			1 = 1
+		<if test="name != null and name != ''">
+			and b.name like concat('%', #{name}, '%')
+		</if>
+	</select>
+	
+	<!-- 查询品牌 -->
+	<select id="pageBrand" parameterType="BBV" resultType="BBV">
+		select 
+			b.*
+			, c.username as creatorName
+			, m.username as modifierName
+		from 
+		    gds_brand b
+		left join sys_user c on b.creator = c.id
+		left join sys_user m on b.modifier = m.id
+		where
+			1 = 1
+		<if test="name != null and name != ''">
+			and b.name like concat('%', #{name}, '%')
+		</if>
+		order by 
+		    cast(b.sort as unsigned int) asc
+		limit 
+			#{page}, #{rows};
+	</select>
+	
+	<!-- 增加品牌 -->
+	<insert id="addBrand" parameterType="BBV">
+		insert into gds_brand(name, sort, creator, createTime, modifier, modifyTime) 
+			values(#{name}, (select max(cast(sort as unsigned int)) + 2 from gds_brand t), #{creator}, #{createTime}, #{modifier}, #{modifyTime});
+	</insert>
+	
+	<!-- 修改品牌 -->
+	<update id="updBrand" parameterType="BBV">
+		update gds_brand set name = #{name}, modifier = #{modifier}, modifyTime = #{modifyTime} where id = #{id};
+	</update>
+	
+	<!-- 删除品牌 -->
+	<update id="delBrand" parameterType="BBV">
+		delete from gds_brand where id = #{id};
+	</update>
+	
+	<!-- 刷新品牌 -->
+	<update id="flushBrand" parameterType="BBV">
+		UPDATE gds_brand b
+		        INNER JOIN
+		    (SELECT 
+		        @rowno:=@rowno + 2 AS rowno, r.*
+		    FROM
+		        beio.gds_brand r, (SELECT @rowno:=0) t
+		    ORDER BY CAST(r.sort AS UNSIGNED INT) ASC) t ON b.id = t.id 
+		SET 
+		    b.sort = t.rowno;
+	</update>
+	
+	<!-- 向上品牌 -->
+	<update id="upBrand" parameterType="BBV">
+		update gds_brand set sort = sort - 3, modifier = #{modifier}, modifyTime = #{modifyTime} where id = #{id};
+	</update>
+	
+	<!-- 向下品牌 -->
+	<update id="downBrand" parameterType="BBV">
+		update gds_brand set sort = sort + 3, modifier = #{modifier}, modifyTime = #{modifyTime} where id = #{id};
+	</update>
+	
+	<!-- 分类总数 -->
+	<select id="countClassify" parameterType="BCV" resultType="int">
+		select 
+			count(1)
+		from 
+			gds_classify b
+		where
+			b.level = #{level} 
+		<if test="pid != null and pid != ''">
+			and b.pid = #{pid}
+		</if>
+		<if test="name != null and name != ''">
+			and b.name like concat('%', #{name}, '%')
+		</if>
+	</select>
+	
+	<!-- 查询分类 -->
+	<select id="pageClassify" parameterType="BCV" resultType="BCV">
+		select 
+			b.*
+			, c.username as creatorName
+			, m.username as modifierName
+		from 
+		    gds_classify b
+		left join sys_user c on b.creator = c.id
+		left join sys_user m on b.modifier = m.id
+		where
+			b.level = #{level} 
+		<if test="pid != null and pid != ''">
+			and b.pid = #{pid}
+		</if>
+		<if test="name != null and name != ''">
+			and b.name like concat('%', #{name}, '%')
+		</if>
+		order by 
+		    cast(b.sort as unsigned int) asc
+		limit 
+			#{page}, #{rows};
+	</select>
+	
+	<!-- 增加分类 -->
+	<insert id="addClassify" parameterType="BCV">
+		insert into gds_brand(name, sort, creator, createTime, modifier, modifyTime) 
+			values(#{name}, (select max(cast(sort as unsigned int)) + 2 from gds_brand t), #{creator}, #{createTime}, #{modifier}, #{modifyTime});
+	</insert>
+	
+	<!-- 修改分类 -->
+	<update id="updClassify" parameterType="BCV">
+		update gds_brand set name = #{name}, modifier = #{modifier}, modifyTime = #{modifyTime} where id = #{id};
+	</update>
+	
+	<!-- 删除分类 -->
+	<update id="delClassify" parameterType="BCV">
+		delete from gds_brand where id = #{id};
+	</update>
+	
+	<!-- 刷新分类 -->
+	<update id="flushClassify" parameterType="BCV">
+		UPDATE gds_brand b
+		        INNER JOIN
+		    (SELECT 
+		        @rowno:=@rowno + 2 AS rowno, r.*
+		    FROM
+		        beio.gds_brand r, (SELECT @rowno:=0) t
+		    ORDER BY CAST(r.sort AS UNSIGNED INT) ASC) t ON b.id = t.id 
+		SET 
+		    b.sort = t.rowno;
+	</update>
+	
+	<!-- 向上分类 -->
+	<update id="upClassify" parameterType="BCV">
+		update gds_brand set sort = sort - 3, modifier = #{modifier}, modifyTime = #{modifyTime} where id = #{id};
+	</update>
+	
+	<!-- 向下分类 -->
+	<update id="downClassify" parameterType="BCV">
+		update gds_brand set sort = sort + 3, modifier = #{modifier}, modifyTime = #{modifyTime} where id = #{id};
+	</update>
+
+
+
+
 	
 	<!-- 后台查询商品总数 -->
 	<select id="countGoods" parameterType="BGV" resultType="int">
@@ -216,62 +372,7 @@
 	
 	
 	<!-- 品牌管理 -->
-	<!-- 获取品牌总数 -->
-	<select id="countBrand" parameterType="BBV" resultType="int">
-		select 
-			count(1)
-		from 
-			gds_brand b
-		where
-			1 = 1
-		<if test="name != null and name != ''">
-			and b.name like concat('%', #{name}, '%')
-		</if>
-		;
-	</select>
 	
-	<!-- 分页查询品牌 -->
-	<select id="pageBrand" parameterType="BBV" resultType="BBV">
-		select 
-			b.*
-			, c.username as creatorName
-			, m.username as modifierName
-		from 
-		    gds_brand b
-		left join sys_user c on b.creator = c.id
-		left join sys_user m on b.modifier = m.id
-		where
-			1 = 1
-		<if test="name != null and name != ''">
-			and g.name like concat('%', #{name}, '%')
-		</if>
-		order by 
-		    cast(b.sort as unsigned int) asc
-		limit 
-			#{page}, #{rows};
-	</select>
-	
-	<!-- 增加品牌 -->
-	<insert id="addBrand" parameterType="BBV">
-		insert into 
-			gds_brand(name, sort, creator, createTime)
-			values(#{name}, (select max(cast(sort as unsigned int)) + 1 from gds_brand t), #{creator}, #{createTime});
-	</insert>
-	
-	<!-- 修改商品信息 -->
-	<update id="updateBrand" parameterType="BBV">
-		update gds_brand set name = #{name}, modifier = #{modifier}, modifyTime = #{modifyTime} where id = #{id};
-	</update>
-	
-	<!-- 禁用/启用 品牌 -->
-	<update id="enableBrand" parameterType="BBV">
-		update gds_brand set enable = #{enable} where id = #{id};
-	</update>
-	
-	<!-- 删除/恢复 品牌 -->
-	<update id="existBrand" parameterType="BBV">
-		update gds_brand set exist = #{exist} where id = #{id};
-	</update>	
 	
 	<!-- 全部分类 -->
 	<select id="allClassify" parameterType="BCV" resultType="BCV">

@@ -5,6 +5,93 @@
 
 <struts>
 	<package name="backGoods" extends="beio-default" namespace="/backGoods">
+	
+		<!-- 查询品牌 -->
+		<action name="pageBrand" class="backGoodsAction" method="pageBrand">
+			<result name="json" type="json">
+				<param name="root">backRoot</param>
+			</result>
+			<interceptor-ref name="backIdentityStack"/>
+		</action>
+		
+		<!-- 保存品牌 -->
+		<action name="saveBrand" class="backGoodsAction" method="saveBrand">
+			<result name="json" type="json">
+				<param name="root">backRoot</param>
+			</result>
+			<interceptor-ref name="backIdentityStack"/>
+		</action>
+		
+		<!-- 删除品牌 -->
+		<action name="delBrand" class="backGoodsAction" method="delBrand">
+			<result name="json" type="json">
+				<param name="root">backRoot</param>
+			</result>
+			<interceptor-ref name="backIdentityStack"/>
+		</action>
+		
+		<!-- 向上品牌 -->
+		<action name="upBrand" class="backGoodsAction" method="upBrand">
+			<result name="json" type="json">
+				<param name="root">backRoot</param>
+			</result>
+			<interceptor-ref name="backIdentityStack"/>
+		</action>
+		
+		<!-- 向下品牌 -->
+		<action name="downBrand" class="backGoodsAction" method="downBrand">
+			<result name="json" type="json">
+				<param name="root">backRoot</param>
+			</result>
+			<interceptor-ref name="backIdentityStack"/>
+		</action>
+		
+		<!-- 查询分类 -->
+		<action name="pageClassify" class="backGoodsAction" method="pageClassify">
+			<result name="json" type="json">
+				<param name="root">backRoot</param>
+			</result>
+			<interceptor-ref name="backIdentityStack"/>
+		</action>
+		
+		<!-- 保存分类 -->
+		<action name="saveClassify" class="backGoodsAction" method="saveClassify">
+			<result name="json" type="json">
+				<param name="root">backRoot</param>
+			</result>
+			<interceptor-ref name="backIdentityStack"/>
+		</action>
+		
+		<!-- 删除分类 -->
+		<action name="delClassify" class="backGoodsAction" method="delClassify">
+			<result name="json" type="json">
+				<param name="root">backRoot</param>
+			</result>
+			<interceptor-ref name="backIdentityStack"/>
+		</action>
+		
+		<!-- 向上分类 -->
+		<action name="upClassify" class="backGoodsAction" method="upClassify">
+			<result name="json" type="json">
+				<param name="root">backRoot</param>
+			</result>
+			<interceptor-ref name="backIdentityStack"/>
+		</action>
+		
+		<!-- 向下分类 -->
+		<action name="downClassify" class="backGoodsAction" method="downClassify">
+			<result name="json" type="json">
+				<param name="root">backRoot</param>
+			</result>
+			<interceptor-ref name="backIdentityStack"/>
+		</action>
+		
+		
+	
+	
+	
+	
+	
 		<!-- <interceptor-ref name="backStack"/> -->
 		<!-- 后台分页查询商品信息 -->
 		<action name="pageGoods" class="backGoodsAction" method="pageGoods">
@@ -98,38 +185,7 @@
 		
 		<!-- 品牌管理 -->
 		
-		<!-- 分页查询品牌 -->
-		<action name="pageBrand" class="backGoodsAction" method="pageBrand">
-			<result name="json" type="json">
-				<param name="root">backRoot</param>
-			</result>
-			<interceptor-ref name="backIdentityStack"/>
-		</action>
 		
-		<!-- 保存品牌信息 -->
-		<action name="saveBrand" class="backGoodsAction" method="saveBrand">
-			<result name="json" type="json">
-				<param name="root">backRoot</param>
-			</result>
-			<interceptor-ref name="backIdentityStack"/>
-		</action>
-		
-		
-		<!-- 禁用/启用 品牌 -->	
-		<action name="enableBrand" class="backGoodsAction" method="enableBrand">
-			<result name="json" type="json">
-				<param name="root">backRoot</param>
-			</result>
-			<interceptor-ref name="backIdentityStack"/>
-		</action>
-		
-		<!-- 删除/恢复 品牌 -->
-		<action name="existBrand" class="backGoodsAction" method="existBrand">
-			<result name="json" type="json">
-				<param name="root">backRoot</param>
-			</result>
-			<interceptor-ref name="backIdentityStack"/>
-		</action>
 		
 		<!-- 分类管理 -->
 		<!-- 获取全部分类 -->

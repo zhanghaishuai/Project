@@ -29,18 +29,214 @@ public class BackGoodsAction extends BaseAction {
 	private static final long serialVersionUID = 1L;
 
 	private JSONArray jsonArray = new JSONArray();
+	
+	private BackGdsBrandVO bbv = new BackGdsBrandVO(); // 后台品牌
+	
+	private BackGdsClassifyVO bcv = new BackGdsClassifyVO(); // 后台分类
 
 	private BackGdsGoodsService bgs;
+	
+	
+	
+	
 
 	private BackGdsGoodsVO bgv = new BackGdsGoodsVO(); // 后台商品值对象
 
 	private BackGdsGoodsFileVO bgfv = new BackGdsGoodsFileVO(); // 后台商品带文件
 
-	private BackGdsClassifyVO bcv = new BackGdsClassifyVO(); // 后台分类
-
-	private BackGdsBrandVO bbv = new BackGdsBrandVO(); // 后台品牌
+	
 
 	private BackGdsImageVO biv = new BackGdsImageVO(); // 图片
+	
+	/**
+	 * 查询品牌
+	 * @return
+	 * @throws Exception
+	 */
+	public String pageBrand() throws Exception {
+		bbv.setPage((Integer.valueOf(page) - 1) * Integer.valueOf(rows));
+		bbv.setRows(Integer.valueOf(rows));
+		setBackPageRoot(
+				(int) bgs.selectOne("backGoods.countBrand", bbv), 
+				JSONArray.fromObject(bgs.selectList("backGoods.pageBrand", bbv)), 
+				"200"
+				);
+		return JSON;
+	}
+
+	/**
+	 * 保存品牌
+	 * @return
+	 * @throws Exception
+	 */
+	public String saveBrand() throws Exception {
+		bbv.setCreator(sessionUserID());
+		bbv.setCreateTime(curTimeStr());
+		bbv.setModifier(sessionUserID());
+		bbv.setModifyTime(curTimeStr());
+		if (ComUtil.isEmpty(bbv.getId())) { // 新增
+			if (1 > bgs.insert("backGoods.addBrand", bbv)) {
+				setBackRoot("100");
+			} else {
+				setBackRoot("200");
+			}
+		} else { // 修改
+			if (1 > bgs.update("backGoods.updBrand", bbv)) {
+				setBackRoot("100");
+			} else {
+				setBackRoot("200");
+			}
+		}
+		return JSON;
+	}
+
+	/**
+	 * 删除品牌
+	 * @return
+	 * @throws Exception
+	 */
+	public String delBrand() throws Exception {
+		bbv.setModifier(sessionUserID());
+		bbv.setModifyTime(curTimeStr());
+		if (1 > bgs.update("backGoods.delBrand", bbv)) {
+			setBackRoot("100");
+		} else {
+			baseIbaitsService.update("flushBrand");
+			setBackRoot("200");
+		}
+		return JSON;
+	}
+	
+	/**
+	 * 品牌向上
+	 * @return
+	 * @throws Exception
+	 */
+	public String upBrand() throws Exception {
+		bbv.setModifier(sessionUserID());
+		bbv.setModifyTime(curTimeStr());
+		if (1 > bgs.update("backGoods.upBrand", bbv)) {
+			setBackRoot("100");
+		} else {
+			baseIbaitsService.update("flushBrand");
+			setBackRoot("200");
+		}
+		return JSON;
+	}
+	
+	/**
+	 * 品牌向下
+	 * @return
+	 * @throws Exception
+	 */
+	public String downBrand() throws Exception {
+		bbv.setModifier(sessionUserID());
+		bbv.setModifyTime(curTimeStr());
+		if (1 > bgs.update("backGoods.downBrand", bbv)) {
+			setBackRoot("100");
+		} else {
+			baseIbaitsService.update("flushBrand");
+			setBackRoot("200");
+		}
+		return JSON;
+	}
+	
+	/**
+	 * 查询分类
+	 * @return
+	 * @throws Exception
+	 */
+	public String pageClassify() throws Exception {
+		System.out.println(bcv.getPid());
+		bcv.setPage((Integer.valueOf(page) - 1) * Integer.valueOf(rows));
+		bcv.setRows(Integer.valueOf(rows));
+		setBackPageRoot(
+				(int) bgs.selectOne("backGoods.countClassify", bcv), 
+				JSONArray.fromObject(bgs.selectList("backGoods.pageClassify", bcv)), 
+				"200"
+				);
+		return JSON;
+	}
+
+	/**
+	 * 保存分类
+	 * @return
+	 * @throws Exception
+	 */
+	public String saveClassify() throws Exception {
+		bcv.setCreator(sessionUserID());
+		bcv.setCreateTime(curTimeStr());
+		bcv.setModifier(sessionUserID());
+		bcv.setModifyTime(curTimeStr());
+		if (ComUtil.isEmpty(bcv.getId())) { // 新增
+			if (1 > bgs.insert("backGoods.addClassify", bcv)) {
+				setBackRoot("100");
+			} else {
+				setBackRoot("200");
+			}
+		} else { // 修改
+			if (1 > bgs.update("backGoods.updClassify", bcv)) {
+				setBackRoot("100");
+			} else {
+				setBackRoot("200");
+			}
+		}
+		return JSON;
+	}
+
+	/**
+	 * 删除分类
+	 * @return
+	 * @throws Exception
+	 */
+	public String delClassify() throws Exception {
+		bcv.setModifier(sessionUserID());
+		bcv.setModifyTime(curTimeStr());
+		if (1 > bgs.update("backGoods.delClassify", bcv)) {
+			setBackRoot("100");
+		} else {
+			baseIbaitsService.update("flushClassify");
+			setBackRoot("200");
+		}
+		return JSON;
+	}
+	
+	/**
+	 * 分类向上
+	 * @return
+	 * @throws Exception
+	 */
+	public String upClassify() throws Exception {
+		bcv.setModifier(sessionUserID());
+		bcv.setModifyTime(curTimeStr());
+		if (1 > bgs.update("backGoods.upClassify", bcv)) {
+			setBackRoot("100");
+		} else {
+			baseIbaitsService.update("flushClassify");
+			setBackRoot("200");
+		}
+		return JSON;
+	}
+	
+	/**
+	 * 分类向下
+	 * @return
+	 * @throws Exception
+	 */
+	public String downClassify() throws Exception {
+		bcv.setModifier(sessionUserID());
+		bcv.setModifyTime(curTimeStr());
+		if (1 > bgs.update("backGoods.downClassify", bcv)) {
+			setBackRoot("100");
+		} else {
+			baseIbaitsService.update("flushClassify");
+			setBackRoot("200");
+		}
+		return JSON;
+	}
+	
+	
+	
 
 	/**
 	 * 后台分页查询商品信息
@@ -268,100 +464,6 @@ public class BackGoodsAction extends BaseAction {
 		}
 		return JSON;
 
-	}
-
-	/********************************************************************************************/
-	/***************************** 品牌管理 *********************************************/
-	/********************************************************************************************/
-
-	/**
-	 * 分页查询品牌
-	 * 
-	 * @author Dashi
-	 * @version 1.0.0
-	 * @date 2017-05-18
-	 * @return
-	 * @throws Exception
-	 */
-	public String pageBrand() throws Exception {
-		bbv.setPage((Integer.valueOf(page) - 1) * Integer.valueOf(rows));
-		bbv.setRows(Integer.valueOf(rows));
-		bbv.setName(getRequest().getParameter("brandName"));
-		setBackPageRoot(
-				(int) bgs.selectOne("backGoods.countBrand", bbv),
-				JSONArray.fromObject(bgs.selectList("backGoods.pageBrand", bbv)),
-				"200");
-		return JSON;
-	}
-
-	/**
-	 * 保存品牌信息
-	 * 
-	 * @author Dashi
-	 * @version 1.0.0
-	 * @date 2017-05-20
-	 * @return
-	 * @throws Exception
-	 */
-	public String saveBrand() throws Exception {
-		if (ComUtil.isEmpty(bbv.getId())) { // 新增
-			bbv.setCreator(sessionUser().getId());
-			bbv.setCreateTime(curTimeStr());
-			if (1 > bgs.insert("backGoods.addBrand", bbv)) {
-				setBackRoot("100");
-			} else {
-				setBackRoot("200");
-			}
-		} else { // 修改
-			bbv.setModifier(sessionUser().getId());
-			bbv.setModifyTime(curTimeStr());
-			if (1 > bgs.update("backGoods.updateBrand", bbv)) {
-				setBackRoot("100");
-			} else {
-				setBackRoot("200");
-			}
-		}
-		return JSON;
-	}
-
-	/**
-	 * 禁用/启用 品牌
-	 * 
-	 * @author Dashi
-	 * @version 1.0.0
-	 * @date
-	 * @return
-	 * @throws Exception
-	 */
-	public String enableBrand() throws Exception {
-		bbv.setModifier(sessionUser().getId());
-		bbv.setModifyTime(curTimeStr());
-		if (1 > bgs.update("backGoods.enableBrand", bbv)) {
-			setBackRoot("100");
-		} else {
-			setBackRoot("200");
-		}
-		return JSON;
-	}
-
-	/**
-	 * 删除/恢复
-	 * 
-	 * @author Dashi
-	 * @version 1.0.0
-	 * @date
-	 * @return
-	 * @throws Exception
-	 */
-	public String existBrand() throws Exception {
-		bbv.setModifier(sessionUser().getId());
-		bbv.setModifyTime(curTimeStr());
-		if (1 > bgs.update("backGoods.existBrand", bbv)) {
-			setBackRoot("100");
-		} else {
-			setBackRoot("200");
-		}
-		return JSON;
 	}
 
 	/**

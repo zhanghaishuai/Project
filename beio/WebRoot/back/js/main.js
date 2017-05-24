@@ -79,3 +79,23 @@ function addTab(title, url){
 		});
 	}
 }
+
+function logout(){
+	$.ajax({
+		url : '/beio/sys/backLogout',
+		type : 'POST',
+		async : false,
+		cache : true,
+		dataType : 'json',
+		success : function(data) {
+			if (data.status == '200' || data.status == '170') {
+				window.location.href = 'login.html';
+			} else {
+				alert(tip('400'));
+			};
+		},
+		error : function() {
+			alert(tip('500'));
+		}
+	});
+}

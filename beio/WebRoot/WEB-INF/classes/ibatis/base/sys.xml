@@ -307,13 +307,16 @@
 	
 	<!-- 查询用户名是否存在  -->
 	<select id="countUserByUsername" parameterType="SysUser" resultType="int">
-		select count(id) from sys_user where username = #{username};
+		select count(id) from sys_user where username = #{username}
+		<if test="id != null and id != ''">
+			and id != #{id}
+		</if>
 	</select>
 	
 	<!-- 新增后台用户 -->
 	<insert id="addUser" parameterType="SysUser" >
-		insert into sys_user(username, password, nickName, email, creator, createTime)
-			values(#{username}, #{password}, #{nickName}, #{email}, #{creator}, #{createTime})
+		insert into sys_user(username, password, nickName, email, creator, createTime, modifier, modifyTime)
+			values(#{username}, #{password}, #{nickName}, #{email}, #{creator}, #{createTime}, #{modifier}, #{modifyTime})
 	</insert>
 	
 	<!-- 根据id查询后台用户 -->
@@ -322,14 +325,14 @@
 	</select>
 	
 	<!-- 修改后台用户信息 -->
-	<update id="updateUser" parameterType="SysUser">
+	<update id="updUser" parameterType="SysUser">
 		update 
 			sys_user 
 		set
+			username = #{username},
 			password = #{password},
 			nickName = #{nickName},
 			email = #{email},
-			enable = #{enable},
 			modifier = #{modifier},
 			modifyTime = #{modifyTime}
 		where

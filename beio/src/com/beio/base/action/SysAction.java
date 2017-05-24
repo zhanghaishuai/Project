@@ -646,7 +646,6 @@ public class SysAction extends BaseAction{
 	public String pageUsers() throws Exception{
 		user.setPage((Integer.valueOf(page) - 1) * Integer.valueOf(rows));
 		user.setRows(Integer.valueOf(rows));
-		user.setUsername(getRequest().getParameter("username"));
 		setBackPageRoot((int)baseIbaitsService.selectOne("sys.countUser", user), JSONArray.fromObject(baseIbaitsService.selectList("sys.pageUser", user)), "200");
 		return JSON;
 	}
@@ -671,43 +670,14 @@ public class SysAction extends BaseAction{
 	 * @throws Exception
 	 */
 	public String addUser() throws Exception{
-		
-		// 校验参数
-		if (ComUtil.isNotMatches(getRegex("empty").getRegex(), user.getUsername())) {
-			setBackRoot("98");
+		if((int) baseIbaitsService.selectOne("sys.countUserByUsername", user) > 0){
+			setBackRoot("101");
 			return JSON;
 		}
-		if (ComUtil.isNotMatches(getRegex("password").getRegex(), user.getUsername())) {
-			setBackRoot("97");
-			return JSON;
-		}
-		if (ComUtil.isNotMatches(getRegex("empty").getRegex(), user.getPassword())) {
-			setBackRoot("122");
-			return JSON;
-		}
-		if (ComUtil.isNotMatches(getRegex("password").getRegex(), user.getPassword())) {
-			setBackRoot("123");
-			return JSON;
-		}
-		if (!ComUtil.isNotMatches(getRegex("empty").getRegex(), user.getNickName())) {
-			if (ComUtil.isNotMatches(getRegex("nickName").getRegex(), user.getNickName())) {
-				setBackRoot("133");
-				return JSON;
-			}
-		}
-		if (!ComUtil.isNotMatches(getRegex("empty").getRegex(), user.getEmail())) {
-			if (ComUtil.isNotMatches(getRegex("email").getRegex(), user.getEmail())) {
-				setBackRoot("132");
-				return JSON;
-			}
-		}
-		// 校验用户名是否可用
-		if(baseIbaitsService.insert("sys.countUserByUsername", user) > 0){
-			setBackRoot("99");
-			return JSON;
-		}
-		user.setCreator(sessionUser().getId());
+		user.setCreator(sessionUserID());
 		user.setCreateTime(curTimeStr());
+		user.setModifier(sessionUserID());
+		user.setModifyTime(curTimeStr());
 		if(baseIbaitsService.insert("sys.addUser", user) < 1){
 			setBackRoot("100");
 			return JSON;
@@ -736,43 +706,18 @@ public class SysAction extends BaseAction{
 	 * @return
 	 * @throws Exception
 	 */
-	public String updateUser() throws Exception{
-		
-		if (ComUtil.isNotMatches(getRegex("empty").getRegex(), user.getPassword())) {
-			setBackRoot("122");
+	public String updUser() throws Exception{
+		if((int) baseIbaitsService.selectOne("sys.countUserByUsername", user) > 0){
+			setBackRoot("101");
 			return JSON;
 		}
-		
-		if (ComUtil.isNotMatches(getRegex("password").getRegex(), user.getPassword())) {
-			setBackRoot("123");
-			return JSON;
-		}
-		
-		if (!ComUtil.isNotMatches(getRegex("empty").getRegex(), user.getEmail())) {
-			if (ComUtil.isNotMatches(getRegex("email").getRegex(), user.getEmail())) {
-				setBackRoot("132");
-				return JSON;
-			}
-		}
-		
-		if(ComUtil.isNotMatches(getRegex("empty").getRegex(), user.getEnable())){
-			setBackRoot("111");
-			return JSON;
-		}
-		
-		if(!"1".equals(user.getEnable()) && !"0".equals(user.getEnable())){
-			setBackRoot("112");
-			return JSON;
-		}
-		
-		user.setModifier(sessionUser().getId());
+		user.setModifier(sessionUserID());
 		user.setModifyTime(curTimeStr());
-		if(baseIbaitsService.update("sys.updateUser", user) < 1){
+		if(baseIbaitsService.update("sys.updUser", user) < 1){
 			setBackRoot("100");
 			return JSON;
 		}
 		setBackRoot("200");
-		
 		return JSON;
 	}
 	
@@ -945,6 +890,12 @@ public class SysAction extends BaseAction{
 			setBackRoot("100");
 			return JSON;
 		}
+		setBackRoot("200");
+		return JSON;
+	}
+	
+	public String backLogout(){
+		getSession().removeAttribute(Constant.SESSIONBACKUSERINFO);
 		setBackRoot("200");
 		return JSON;
 	}

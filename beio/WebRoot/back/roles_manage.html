@@ -12,7 +12,7 @@
 <body>
 	<div class="easyui-layout" style="width:100%;height:100%;">
 		<div data-options="region:'west'" style="width:50%;">
-			<div class="easyui-panel" style="width:100%;" title="角色列表" data-options="tools:'#tools'">
+			<div class="easyui-panel" style="width:100%;height:100%;" title="角色列表" data-options="tools:'#tools'">
 				<ul id="role" class="easyui-tree" data-options="url:'/beio/sys/queryRoles',loadFilter:initRole,animate:true,lines:true,onClick:showMenus"></ul>
 			</div>
 			<div id="tools">
@@ -22,7 +22,7 @@
 			</div>
 		</div>
 		<div data-options="region:'center'">
-			<div class="easyui-panel" style="width:100%;" title="角色菜单" data-options="tools:'#menutools'">
+			<div class="easyui-panel" style="width:100%;height:100%;" title="角色菜单" data-options="tools:'#menutools'">
 				<ul id="roleMenu" class="easyui-tree"></ul>
 			</div>
 			<div id="menutools">

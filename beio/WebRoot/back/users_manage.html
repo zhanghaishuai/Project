@@ -12,124 +12,329 @@
 </head>
 <body>
 	<div class="easyui-layout" style="width:100%;height:100%;">
-		<div data-options="region:'west'" style="width:50%;height:100%;">
+		<div data-options="region:'west'" style="width:70%;height:100%;">
 			<table id="users_datagrid" class="easyui-datagrid" style="width:100%;height:100%;" title="用户列表"
 				data-options="
-					fitColumns:true
-					,striped:true
-					,rownumbers:true
-					,singleSelect:true
-					,collapsible:false
-					,pagination:true
-					,pagePosition:'bottom'
-					,pageNumber:1
-					,pageSize:30
-					,url:'/beio/sys/pageUsers'
-					,method:'post'
-					,loadFilter: function(data){if(data.status=='170'){alert('登录失效，请重新登录');window.location.href = 'login.html'}else{return data}}
-					,onSelect : userRole
-					" toolbar="#user_tb">
-				<!-- 设置默认行颜色 ,rowStyler:function(index,row){if('1' != row.enable){return 'background-color:#E0E0E0;color:blue;font-weight:bold';}} -->
+					url:'/beio/sys/pageUsers',
+					fitColumns:true,
+					striped:true,
+					rownumbers:true,
+					singleSelect:true,
+					collapsible:false,
+					pagination:true,
+					pagePosition:'bottom',
+					pageNumber:1,
+					pageSize:30,
+					method:'post',
+					loadFilter: function(data){if(data.status=='170'){alert('登录失效，请重新登录');window.location.href = 'login.html'}else{return data}},
+					onSelect : userRole,
+					toolbar: '#user_tb'">
 				<thead>
 					<tr>
-						<th data-options="field:'id',width:120,align:'center',hidden:true">ID</th>
+						<th data-options="field:'id',width:60,align:'center'">编号</th>
 						<th data-options="field:'username',width:120,align:'center'">用户名</th>
 						<th data-options="field:'password',width:120,align:'center'">密码</th>
 						<th data-options="field:'nickName',width:120,align:'center'">昵称</th>
 						<th data-options="field:'email',width:120,align:'center'">邮箱</th>
-						<th data-options="field:'enable',width:60,align:'center', formatter:function(value,row,index){if('1' == value){return '可用';}else{return '禁用';}}">可用状态</th>
 					</tr>
 				</thead>
 			</table>
-			<div id="user_tb" style="padding:10px 10px;">
+			<div id="user_tb" style="padding:5px 5px;">
 				<div>
-					<a href="javascript:void(0);" onclick="$('#user_add').window('open')" class="easyui-linkbutton" plain="false" data-options="iconCls:'icon-add'">新增</a>
-					<a href="javascript:void(0);" onclick="updateUserWindowShow()" class="easyui-linkbutton" plain="false" data-options="iconCls:'icon-edit'">修改</a>
-					<a href="javascript:void(0);" onclick="delRow();" class="easyui-linkbutton" plain="false" data-options="iconCls:'icon-remove'">删除</a>
-					<span style="margin-left: 200px;">用户名：</span>
-					<input id="search_username"/>
-					<a href="javascript:void(0);" onclick="searchUsers();" class="easyui-linkbutton" plain="false" data-options="iconCls:'icon-search'">搜索</a>
+					<a href="javascript:void(0);" onclick="openAddUser()" class="easyui-linkbutton" data-options="iconCls:'icon-add'">新增</a>
+					<a href="javascript:void(0);" onclick="openUpdUser()" class="easyui-linkbutton" data-options="iconCls:'icon-edit'">修改</a>
+					<a href="javascript:void(0);" onclick="delUser()" class="easyui-linkbutton" data-options="iconCls:'icon-cut'">删除</a>
+					<div style="float: right;">
+						<input id="search_username" class="easyui-textbox" data-options="prompt:'用户名'" style="width:250px;height:24px;">
+						<a href="javascript:void(0);" onclick="searchUsers();" class="easyui-linkbutton" data-options="iconCls:'icon-search'">搜索</a>
+					</div>
 				</div>
 			</div>
 		</div>
 		
 		<div data-options="region:'center'">
-			<div class="easyui-panel" style="width:100%;" title="用户角色" data-options="tools:'#roletools'">
+			<div class="easyui-panel" style="width:100%;height:100%;" title="用户角色" 
+				data-options="tools:[{iconCls:'icon-save',handler:rolesave}]">
 				<ul id="userRole" class="easyui-tree"></ul>
 			</div>
-			<div id="roletools">
-				<a href="javascript:void(0)" class="icon-save" onclick="rolesave()"></a>
-			</div>
 		</div>
 		
-		<div id="user_add" class="easyui-window" closed="true" title="用户信息" data-options="iconCls:'icon-save', collapsible: false, minimizable: false, maximizable: false, resizable: false,left: '300px', top: '200px', draggable: true" style="width:300px; height:300px; padding:5px;">
-			<form id="user_add_form" method="post">
-				<table cellpadding="5">
-					<tr>
-						<td>用户名:</td>
-						<td>
-							<input class="easyui-textbox" type="text" id="user_add_username" name="user.username" data-options="required:true" maxlength="20"></input>
-						</td>
-					</tr>
-					<tr>
-						<td>密码:</td>
-						<td><input class="easyui-textbox" type="text" id="user_add_password" name="user.password" data-options="required:true"  maxlength="20"></input></td>
-					</tr>
-					<tr>
-						<td>昵称:</td>
-						<td><input class="easyui-textbox" type="text" id="user_add_nickName" name="user.nickName" data-options="" maxlength="20"></input></td>
-					</tr>
-					<tr>
-						<td>邮箱:</td>
-						<td><input class="easyui-textbox" id="user_add_email" name="user.email" data-options="validType:'email'" maxlength="50"></input></td>
-					</tr>
-				</table>
-			</form>
+		<div id="user_add" class="easyui-window" title="新增用户" style="width:280px; height:300px; padding:10px;"
+			data-options="
+				closed: true, 
+				closable: true, 
+				resizable: false, 
+				collapsible: false, 
+				minimizable: false, 
+				maximizable: false, 
+				left: '500px', 
+				top: '210px', 
+				modal:true, 
+				draggable: true">
+			<table cellpadding="10" style="width: 100%">
+				<tr>
+					<td>用户名:</td>
+					<td><input class="easyui-textbox" type="text" id="user_add_username" name="user.username" maxlength="20"></input></td>
+				</tr>
+				<tr>
+					<td>密码:</td>
+					<td><input class="easyui-textbox" type="text" id="user_add_password" name="user.password" maxlength="20"></input></td>
+				</tr>
+				<tr>
+					<td>昵称:</td>
+					<td><input class="easyui-textbox" type="text" id="user_add_nickName" name="user.nickName" maxlength="20"></input></td>
+				</tr>
+				<tr>
+					<td>邮箱:</td>
+					<td><input class="easyui-textbox" type="text" id="user_add_email" name="user.email" maxlength="50"></input></td>
+				</tr>
+			</table>
 			<div style="text-align:center;padding:5px">
 				<a href="javascript:void(0)" class="easyui-linkbutton" onclick="addUser()">提交</a>
-				<a href="javascript:void(0)" class="easyui-linkbutton" onclick="clearUserAddForm()">取消</a>
+				<a href="javascript:void(0)" class="easyui-linkbutton" onclick="$('#user_add').form('clear');$('#user_add').window('close');">取消</a>
 			</div>
 		</div>
 		
-		<div id="user_update" class="easyui-window" closed="true" title="用户信息" data-options="iconCls:'icon-save', collapsible: false, minimizable: false, maximizable: false, resizable: false,left: '300px', top: '200px', draggable: true" style="width:300px; height:300px; padding:5px;">
-			<form id="user_update_form" method="post">
-				<table cellpadding="5">
-					<tr>
-						
-						<td>用户名:</td>
-						<td>
-							<input id="user_update_id" type="text" hidden="hidden"/>
-							<input class="easyui-textbox" type="text" id="user_update_username" data-options="required:true" readonly="readonly"></input>
-						</td>
-					</tr>
-					<tr>
-						<td>密码:</td>
-						<td><input class="easyui-textbox" type="text" id="user_update_password" data-options="required:true" maxlength="20"></input></td>
-					</tr>
-					<tr>
-						<td>昵称:</td>
-						<td><input class="easyui-textbox" type="text" id="user_update_nickName" data-options="" maxlength="20"></input></td>
-					</tr>
-					<tr>
-						<td>邮箱:</td>
-						<td><input class="easyui-textbox" id="user_update_email" data-options="validType:'email'" maxlength="50"></input></td>
-					</tr>
-					<tr>
-						<td>可用状态:</td>
-						<td>
-							<input type="radio" name="user_update_enable" value="1"/>启用
-							<input type="radio" name="user_update_enable" value="0"/>禁用
-						</td>
-					</tr>
-				</table>
-			</form>
+		<div id="user_upd" class="easyui-window" title="修改用户" style="width:280px; height:300px; padding:10px;"
+			data-options="
+				closed: true, 
+				closable: true, 
+				resizable: false, 
+				collapsible: false, 
+				minimizable: false, 
+				maximizable: false, 
+				left: '500px', 
+				top: '210px', 
+				modal:true, 
+				draggable: true">
+			<table cellpadding="10" style="width: 100%">
+				<tr>
+					<td>用户名:</td>
+					<td>
+						<input type="hidden" id="user_upd_id" name="user.id"></input>
+						<input class="easyui-textbox" type="text" id="user_upd_username" name="user.username" maxlength="20"></input>
+					</td>
+				</tr>
+				<tr>
+					<td>密码:</td>
+					<td><input class="easyui-textbox" type="text" id="user_upd_password" name="user.password" maxlength="20"></input></td>
+				</tr>
+				<tr>
+					<td>昵称:</td>
+					<td><input class="easyui-textbox" type="text" id="user_upd_nickName" name="user.nickName" maxlength="20"></input></td>
+				</tr>
+				<tr>
+					<td>邮箱:</td>
+					<td><input class="easyui-textbox" type="text" id="user_upd_email" name="user.email" maxlength="50"></input></td>
+				</tr>
+			</table>
 			<div style="text-align:center;padding:5px">
-				<a href="javascript:void(0)" class="easyui-linkbutton" onclick="updateUser()">提交</a>
-				<a href="javascript:void(0)" class="easyui-linkbutton" onclick="clearUserUpdateForm()">取消</a>
+				<a href="javascript:void(0)" class="easyui-linkbutton" onclick="updUser()">提交</a>
+				<a href="javascript:void(0)" class="easyui-linkbutton" onclick="$('#user_upd').form('clear');$('#user_upd').window('close');">取消</a>
 			</div>
 		</div>
+		
 	</div>
 	<script type="text/javascript">
+	
+		function searchUsers(){
+			$('#users_datagrid').datagrid('load',{
+				'user.username': $('#search_username').val()
+			});
+		}
+	
+		function openAddUser(){
+			$('#user_add').form('clear');
+			$('#user_add').window('open');
+		}
+	
+		function addUser(){
+			if (new RegExp(regex('empty')).test($('#user_add_username').val()) == false) {
+				$.messager.alert('提示', '用户名不能为空');
+				return;
+			}
+			if (new RegExp(regex('username')).test($('#user_add_username').val()) == false) {
+				$.messager.alert('提示', '用户名只能输入数字、字母，长度3-20位');
+				return;
+			}
+			if (new RegExp(regex('empty')).test($('#user_add_password').val()) == false) {
+				$.messager.alert('提示', '密码不能为空');
+				return;
+			}
+			if (new RegExp(regex('password')).test($('#user_add_password').val()) == false) {
+				$.messager.alert('提示', '密码只能输入数字、字母及特殊符号，长度6-20位');
+				return;
+			}
+			if (new RegExp(regex('empty')).test($('#user_add_nickName').val()) == false) {
+				$.messager.alert('提示', '昵称不能为空');
+				return;
+			}
+			if (new RegExp(regex('nickName')).test($('#user_add_nickName').val()) == false) {
+				$.messager.alert('提示', '昵称只能输入中英文、数字及下划线，长度不超过20位');
+				return;
+			}
+			if (new RegExp(regex('empty')).test($('#user_add_email').val()) == true) {
+				if (new RegExp(regex('email')).test($('#user_add_email').val()) == false) {
+					$.messager.alert('提示', '邮箱格式不正确');
+					return;
+				}
+			}
+			$.ajax({
+				url : '/beio/sys/addUser',
+				data : {
+					'user.username' : $('#user_add_username').val(),
+					'user.password' : $('#user_add_password').val(),
+					'user.nickName' : $('#user_add_nickName').val(),
+					'user.email' : $('#user_add_email').val()
+				},
+				type : 'POST',
+				async : false,
+				cache : true,
+				dataType : 'json',
+				success : function(data) {
+					if('200' == data.status){
+						$('#user_add').form('clear');
+						$('#user_add').window('close');
+						$.messager.alert('提示', '新增成功');
+						$('#users_datagrid').datagrid('reload');
+					}else if('100' == data.status) {
+						$.messager.alert('提示', '操作失败');
+					}else if('101' == data.status) {
+						$.messager.alert('提示', '用户名已存在');
+					}else if('170' == data.status) {
+						$.messager.alert('提示', '登录失效，请重新登录');
+						window.location.href = 'login.html';
+					}else{
+						$.messager.alert('提示', tip('400'));
+					};
+				},
+				error : function() {
+					$.messager.alert('提示', tip('500'));
+				}
+			});
+		}
+		
+		function openUpdUser(){
+			var row = $('#users_datagrid').datagrid('getSelected');
+			if(!row){
+				$.messager.alert('提示', '请选中后操作');
+				return;
+			}
+			$('#user_upd').form('clear');
+			$('#user_upd').window('open');
+			$('#user_upd_id').val(row.id);
+			$('#user_upd_username').textbox('setValue', row.username);
+			$('#user_upd_password').textbox('setValue', row.password);
+			$('#user_upd_nickName').textbox('setValue', row.nickName);
+			$('#user_upd_email').textbox('setValue', row.email);
+		}
+		
+		function updUser(){
+			if (new RegExp(regex('empty')).test($('#user_upd_username').val()) == false) {
+				$.messager.alert('提示', '用户名不能为空');
+				return;
+			}
+			if (new RegExp(regex('username')).test($('#user_upd_username').val()) == false) {
+				$.messager.alert('提示', '用户名只能输入数字、字母，长度3-20位');
+				return;
+			}
+			if (new RegExp(regex('empty')).test($('#user_upd_password').val()) == false) {
+				$.messager.alert('提示', '密码不能为空');
+				return;
+			}
+			if (new RegExp(regex('password')).test($('#user_upd_password').val()) == false) {
+				$.messager.alert('提示', '密码只能输入数字、字母及特殊符号，长度6-20位');
+				return;
+			}
+			if (new RegExp(regex('empty')).test($('#user_upd_nickName').val()) == false) {
+				$.messager.alert('提示', '昵称不能为空');
+				return;
+			}
+			if (new RegExp(regex('nickName')).test($('#user_upd_nickName').val()) == false) {
+				$.messager.alert('提示', '昵称只能输入中英文、数字及下划线，长度不超过20位');
+				return;
+			}
+			if (new RegExp(regex('empty')).test($('#user_upd_email').val()) == true) {
+				if (new RegExp(regex('email')).test($('#user_upd_email').val()) == false) {
+					$.messager.alert('提示', '邮箱格式不正确');
+					return;
+				}
+			}
+			$.ajax({
+				url : '/beio/sys/updUser',
+				data : {
+					'user.id' : $('#user_upd_id').val(),
+					'user.username' : $('#user_upd_username').val(),
+					'user.password' : $('#user_upd_password').val(),
+					'user.nickName' : $('#user_upd_nickName').val(),
+					'user.email' : $('#user_upd_email').val()
+				},
+				type : 'POST',
+				async : false,
+				cache : true,
+				dataType : 'json',
+				success : function(data) {
+					if('200' == data.status){
+						$('#user_upd').form('clear');
+						$('#user_upd').window('close');
+						$.messager.alert('提示', '修改成功');
+						$('#users_datagrid').datagrid('reload');
+					}else if('100' == data.status) {
+						$.messager.alert('提示', '操作失败');
+					}else if('101' == data.status) {
+						$.messager.alert('提示', '用户名已存在');
+					}else if('170' == data.status) {
+						$.messager.alert('提示', '登录失效，请重新登录');
+						window.location.href = 'login.html';
+					}else{
+						$.messager.alert('提示', tip('400'));
+					};
+				},
+				error : function() {
+					$.messager.alert(tip('500'));
+				}
+			});
+		}
+		
+		function delUser(){
+			var row = $('#users_datagrid').datagrid('getSelected');
+			if(!row){
+				$.messager.alert('提示', '请选中后操作');
+				return;
+			}
+			$.messager.confirm('提示', '确定要删除此记录吗？', function(flag){
+				if(flag){
+					$.ajax({
+						url : '/beio/sys/delUser',
+						data : {
+							'user.id' : row.id
+						},
+						type : 'POST',
+						async : false,
+						cache : true,
+						dataType : 'json',
+						success : function(data) {
+							if('200' == data.status){
+								$.messager.alert('提示', '删除成功');
+								$('#users_datagrid').datagrid('reload');
+								$('#userRole').empty();
+							}else if('100' == data.status){
+								$.messager.alert('提示', '操作失败');
+							}else if('170' == data.status) {
+								$.messager.alert('提示', '登录失效，请重新登录');
+								window.location.href = 'login.html';
+							}else{
+								$.messager.alert('提示', tip('400'));
+							};
+						},
+						error : function() {
+							$.messager.alert('提示', tip('500'));
+						}
+					});
+				}
+			});
+			
+		}
 	
 		function userRole(i, data){
 			$.ajax({

@@ -240,7 +240,7 @@
 		</action>
 		
 		<!-- 修改后台用户 -->
-		<action name="updateUser" class="sysAction" method="updateUser">
+		<action name="updUser" class="sysAction" method="updUser">
 			<result name="json" type="json">
 				<param name="root">backRoot</param>
 			</result>
@@ -359,6 +359,13 @@
 		</action>
 		
 		<action name="addInvite" class="sysAction" method="addInvite">
+			<result name="json" type="json">
+				<param name="root">backRoot</param>
+			</result>
+			<interceptor-ref name="backIdentityStack"/>
+		</action>
+		
+		<action name="backLogout" class="sysAction" method="backLogout">
 			<result name="json" type="json">
 				<param name="root">backRoot</param>
 			</result>
