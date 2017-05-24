@@ -1,3 +1,5 @@
 This is a test file.
 
 This is a new line by master branch.
+
+This is a new line by dev branch.
