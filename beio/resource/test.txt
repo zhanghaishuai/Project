@@ -5,3 +5,5 @@ This is a new line by master branch.
 This is a new line by dev branch.
 
 This is a new line by feature branch.
+
+In the dev branch add this line.
