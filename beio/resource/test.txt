@@ -1,1 +1,5 @@
 This is a test file.
+
+This is a new line by feature branch.
+
+And I will test the diff line.
