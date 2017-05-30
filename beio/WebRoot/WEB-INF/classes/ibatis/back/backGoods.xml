@@ -41,7 +41,7 @@
 	<!-- 增加品牌 -->
 	<insert id="addBrand" parameterType="BBV">
 		insert into gds_brand(name, sort, creator, createTime, modifier, modifyTime) 
-			values(#{name}, (select max(cast(sort as unsigned int)) + 2 from gds_brand t), #{creator}, #{createTime}, #{modifier}, #{modifyTime});
+			values(#{name}, (select ifnull(max(cast(sort as unsigned int)), 0) + 2 from gds_brand t), #{creator}, #{createTime}, #{modifier}, #{modifyTime});
 	</insert>
 	
 	<!-- 修改品牌 -->
@@ -61,7 +61,7 @@
 		    (SELECT 
 		        @rowno:=@rowno + 2 AS rowno, r.*
 		    FROM
-		        beio.gds_brand r, (SELECT @rowno:=0) t
+		        gds_brand r, (SELECT @rowno:=0) t
 		    ORDER BY CAST(r.sort AS UNSIGNED INT) ASC) t ON b.id = t.id 
 		SET 
 		    b.sort = t.rowno;
@@ -119,41 +119,43 @@
 	
 	<!-- 增加分类 -->
 	<insert id="addClassify" parameterType="BCV">
-		insert into gds_brand(name, sort, creator, createTime, modifier, modifyTime) 
-			values(#{name}, (select max(cast(sort as unsigned int)) + 2 from gds_brand t), #{creator}, #{createTime}, #{modifier}, #{modifyTime});
+		insert into gds_classify(name, level, pid, sort, showIndex, showAbeam, creator, createTime, modifier, modifyTime) 
+			values(#{name}, #{level}, #{pid}, (select ifnull(max(cast(sort as unsigned int)), 0) + 2 from gds_classify t where pid = #{pid}), #{showIndex}, #{showAbeam}, #{creator}, #{createTime}, #{modifier}, #{modifyTime});
 	</insert>
 	
 	<!-- 修改分类 -->
 	<update id="updClassify" parameterType="BCV">
-		update gds_brand set name = #{name}, modifier = #{modifier}, modifyTime = #{modifyTime} where id = #{id};
+		update gds_classify set name = #{name}, showIndex = #{showIndex}, showAbeam = #{showAbeam}, modifier = #{modifier}, modifyTime = #{modifyTime} where id = #{id};
 	</update>
 	
 	<!-- 删除分类 -->
 	<update id="delClassify" parameterType="BCV">
-		delete from gds_brand where id = #{id};
+		delete from gds_classify where id = #{id};
 	</update>
 	
 	<!-- 刷新分类 -->
 	<update id="flushClassify" parameterType="BCV">
-		UPDATE gds_brand b
+		UPDATE gds_classify b
 		        INNER JOIN
 		    (SELECT 
 		        @rowno:=@rowno + 2 AS rowno, r.*
 		    FROM
-		        beio.gds_brand r, (SELECT @rowno:=0) t
+		        gds_classify r, (SELECT @rowno:=0) t
+		    WHERE
+		        r.pid = #{pid}
 		    ORDER BY CAST(r.sort AS UNSIGNED INT) ASC) t ON b.id = t.id 
 		SET 
-		    b.sort = t.rowno;
+		    b.sort = t.rowno
 	</update>
 	
 	<!-- 向上分类 -->
 	<update id="upClassify" parameterType="BCV">
-		update gds_brand set sort = sort - 3, modifier = #{modifier}, modifyTime = #{modifyTime} where id = #{id};
+		update gds_classify set sort = sort - 3, modifier = #{modifier}, modifyTime = #{modifyTime} where id = #{id};
 	</update>
 	
 	<!-- 向下分类 -->
 	<update id="downClassify" parameterType="BCV">
-		update gds_brand set sort = sort + 3, modifier = #{modifier}, modifyTime = #{modifyTime} where id = #{id};
+		update gds_classify set sort = sort + 3, modifier = #{modifier}, modifyTime = #{modifyTime} where id = #{id};
 	</update>
 
 
@@ -174,11 +176,9 @@
 			and g.brandID = b.id
 		    and g.classifyID = c.id
 		    and c.pid = cp.id
-		    
 		    <if test="classifyPID != null and classifyPID != ''">
 		    	and cp.id = #{classifyPID}
 		    </if>
-		    
 			<if test="classifyID != null and classifyID != ''">
 				and g.classifyID = #{classifyID}
 			</if>
@@ -194,9 +194,10 @@
 	<select id="pageGoods" parameterType="BGV" resultType="BGV">
 		select 
 			g.*
-		    , b.name as brand 
-		    , c.name as classify
-		    , cp.name as classifyPname
+		    , b.name as brandName 
+		    , c.name as classifyName
+		    , cp.id as classifyPID 
+		    , cp.name as classifyPName
 		from 
 			gds_goods g
 		    , gds_brand b
@@ -207,7 +208,6 @@
 			and g.brandID = b.id
 		    and g.classifyID = c.id
 		    and c.pid = cp.id
-		    
 		    <if test="classifyPID != null and classifyPID != ''">
 		    	and cp.id = #{classifyPID}
 		    </if>
@@ -221,12 +221,8 @@
 			<if test="name != null and name != ''">
 				and g.name like concat('%', #{name}, '%')
 			</if>
-
 		order by 
-			cp.id asc
-		    , c.id asc
-		    , b.id asc
-		    , g.id desc
+			g.createTime desc
 		limit 
 			#{page}, #{rows};
 	</select>
@@ -240,6 +236,179 @@
 	<select id="getAllBrand" resultType="COMBOBOX">
 		select b.id as val, b.name as text from gds_brand b order by id asc;
 	</select>
+	
+	<!-- 增加商品 -->
+	<insert id="addGoods" parameterType="BGV">
+		INSERT INTO gds_goods (name, descr, mPrice, cPrice, weight, salds, stock, heatUp, brandID, classifyID, remark, creator, createTime, modifier, modifyTime) 
+			VALUES (#{name}, #{descr}, #{mPrice}, #{cPrice}, #{weight}, #{salds}, #{stock}, #{heatUp}, #{brandID}, #{classifyID}, #{remark}, #{creator}, #{createTime}, #{modifier}, #{modifyTime});
+	</insert>
+	
+	<!-- 修改商品 -->
+	<update id="updGoods" parameterType="BGV">
+		update gds_goods 
+		<set>
+			<if test="name != null and name != ''">
+				name = #{name}, 
+			</if>
+			<if test="descr != null and descr != ''">
+				descr = #{descr}, 
+			</if>
+			<if test="mPrice != null and mPrice != ''">
+				mPrice = #{mPrice}, 
+			</if>
+			<if test="cPrice != null and cPrice != ''">
+				cPrice = #{cPrice}, 
+			</if>
+			<if test="weight != null and weight != ''">
+				weight = #{weight}, 
+			</if>
+			<if test="salds != null and salds != ''">
+				salds = #{salds}, 
+			</if>
+			<if test="stock != null and stock != ''">
+				stock = #{stock}, 
+			</if>
+			<if test="heatUp != null and heatUp != ''">
+				heatUp = #{heatUp}, 
+			</if>
+			<if test="brandID != null and brandID != ''">
+				brandID = #{brandID}, 
+			</if>
+			<if test="classifyID != null and classifyID != ''">
+				classifyID = #{classifyID}, 
+			</if>
+			<if test="remark != null and remark != ''">
+				remark = #{remark}, 
+			</if>
+			modifier = #{modifier}, 
+			modifyTime = #{modifyTime}, 
+		</set>
+		where id = #{id};
+	</update>
+	
+	<update id="delGoods" parameterType="BBV">
+		delete from gds_goods where id = #{id};
+	</update>
+	
+	<select id="queryGoodsImg" parameterType="BGV" resultType="BI">
+		SELECT 
+		    *
+		FROM
+		    gds_image
+		WHERE
+		    goodsID = #{goodsID} AND category = #{category}
+		ORDER BY CAST(sortNum AS UNSIGNED INT);
+	</select>
+	
+	<insert id="addGoodsImg" parameterType="BIV">
+		INSERT INTO gds_image (orgPath, smaPath, midPath, bigPath, sortNum, goodsID, category, creator, createTime, modifier, modifyTime) 
+			VALUES (#{orgPath}, #{smaPath}, #{midPath}, #{bigPath}, (select ifnull(max(cast(sortNum as unsigned int)), 0) + 2 from gds_image t where goodsID = #{goodsID} and category = #{category}), #{goodsID}, #{category}, #{creator}, #{createTime}, #{modifier}, #{modifyTime});
+	</insert>
+	
+	<update id="updGoodsImg" parameterType="BIV">
+		update gds_image 
+		<set>
+			<if test="orgPath != null and orgPath != ''">
+				orgPath = #{orgPath}, 
+			</if>
+			<if test="smaPath != null and smaPath != ''">
+				smaPath = #{smaPath}, 
+			</if>
+			<if test="midPath != null and midPath != ''">
+				midPath = #{midPath}, 
+			</if>
+			<if test="bigPath != null and bigPath != ''">
+				bigPath = #{bigPath}, 
+			</if>
+			modifier = #{modifier}, 
+			modifyTime = #{modifyTime}, 
+		</set>
+		where id = #{id};
+	</update>
+	
+	<update id="delGoodsImg" parameterType="BIV">
+		delete from gds_image where id = #{id};
+	</update>
+	
+	<update id="flushImage" parameterType="BIV">
+		UPDATE gds_image b
+		        INNER JOIN
+		    (SELECT 
+		        @rowno:=@rowno + 2 AS rowno, r.*
+		    FROM
+		        gds_image r, (SELECT @rowno:=0) t
+		    WHERE
+		        r.goodsID = #{goodsID} AND r.category = #{category}
+		    ORDER BY CAST(r.sortNum AS UNSIGNED INT) ASC) t ON b.id = t.id 
+		SET 
+		    b.sortNum = t.rowno;
+	</update>
+	
+	<update id="upGoodsImg" parameterType="BIV">
+		update gds_image set sortNum = sortNum - 3, modifier = #{modifier}, modifyTime = #{modifyTime} where id = #{id};
+	</update>
+	
+	<update id="downGoodsImg" parameterType="BIV">
+		update gds_image set sortNum = sortNum + 3, modifier = #{modifier}, modifyTime = #{modifyTime} where id = #{id};
+	</update>
+	
+	<select id="countOrder" parameterType="BOV" resultType="int">
+		SELECT 
+		    COUNT(1) 
+		FROM
+		    gds_order b
+		WHERE
+		    1 = 1
+		<if test="payID != null and payID != ''">
+			AND b.payID = #{payID} 
+		</if>
+		<if test="orderNo != null and orderNo != ''">
+			AND b.orderNo = #{orderNo} 
+		</if>
+	</select>
+	
+	<!-- 查询品牌 -->
+	<select id="pageOrder" parameterType="BOV" resultType="BOV">
+		SELECT 
+		    b.*,
+		    m.nickName AS buyerName,
+		    a1.name AS addrProvinceName,
+		    a2.name AS addrCityName,
+		    a3.name AS addrCountyName
+		FROM
+		    gds_order b
+		        LEFT JOIN
+		    sys_member m ON b.buyerID = m.id
+		        LEFT JOIN
+		    sys_area a1 ON b.addrProvince = a1.code
+		        LEFT JOIN
+		    sys_area a2 ON b.addrCity = a2.code
+		        LEFT JOIN
+		    sys_area a3 ON b.addrCounty = a3.code
+		WHERE
+		    1 = 1
+		<if test="payID != null and payID != ''">
+			AND b.payID = #{payID} 
+		</if>
+		<if test="orderNo != null and orderNo != ''">
+			AND b.orderNo = #{orderNo} 
+		</if>
+		ORDER BY 
+		    b.createTime DESC 
+		LIMIT 
+			#{page}, #{rows};
+	</select>
+	
+	<update id="sendGoods" parameterType="BOV">
+		update gds_order set status = '2', waybillNo = #{waybillNo}, modifier = #{modifier}, modifyTime = #{modifyTime} where id = #{id};
+	</update>
+	
+	<update id="cancelOrder" parameterType="BOV">
+		update gds_order set status = '5', modifier = #{modifier}, modifyTime = #{modifyTime} where id = #{id};
+	</update>
+	
+	
+	
 	
 	<!-- 插入商品信息并返回id -->
 	<insert id="addBackGoods" useGeneratedKeys="true" keyProperty="id" parameterType="BGV">
@@ -357,13 +526,7 @@
 	</update>
 	
 	<!-- 新增商品图片 -->
-	<insert id="addGoodsImage" parameterType="BIV">
-		insert into 
-			gds_image(orgPath, smaPath, midPath, bigPath, goodsID, category, creator, createTime, sortNum)
-			values(#{orgPath}, #{smaPath}, #{midPath}, #{bigPath}, #{goodsID}, #{category}, #{creator}, #{createTime}
-				, (select max(sortNum)+1 from gds_image t where goodsID = #{goodsID} and category = #{category}));
-		
-	</insert>
+	
 	
 	<!-- 删除图片信息 -->
 	<delete id="delGoodsImage" parameterType="BIV">

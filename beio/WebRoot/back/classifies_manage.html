@@ -36,6 +36,8 @@
 						<th data-options="field:'id',width:120,align:'center'">编号</th>
 						<th data-options="field:'name',width:120,align:'center', editor:'text'">分类名称</th>
 						<th data-options="field:'sort',width:120,align:'center', formatter:function(value,row,index){return value / 2}">顺序</th>
+						<th data-options="field:'showIndex',width:120,align:'center', formatter:function(value,row,index){if(value == '1'){return '是';}else{return '否';}}">首页展示</th>
+						<th data-options="field:'showAbeam',width:120,align:'center', formatter:function(value,row,index){if(value == '1'){return '是';}else{return '否';}}">横向展示</th>
 						<th data-options="field:'creatorName',width:120,align:'center'">创建人</th>
 						<th data-options="field:'createTime',width:120,align:'center', formatter:function(value,row,index){return dateMilliFormat(value, 'TIME')}">创建时间</th>
 					</tr>
@@ -49,7 +51,7 @@
 					<a href="javascript:void(0);" onclick="upClassify1()" class="easyui-linkbutton">向上排序</a>
 					<a href="javascript:void(0);" onclick="downClassify1()" class="easyui-linkbutton">向下排序</a>
 					<div style="float: right;">
-						<input id="search1_name" class="easyui-textbox" data-options="prompt:'分类名称'" style="width:250px;height:24px;">
+						<input id="search1_name" class="easyui-textbox" data-options="prompt:'一级分类名称'" style="width:250px;height:24px;">
 						<a href="javascript:void(0);" onclick="searchclassifies1();" class="easyui-linkbutton" data-options="iconCls:'icon-search'">搜索</a>
 					</div>
 				</div>
@@ -90,14 +92,14 @@
 					<a href="javascript:void(0);" onclick="upClassify2()" class="easyui-linkbutton">向上排序</a>
 					<a href="javascript:void(0);" onclick="downClassify2()" class="easyui-linkbutton">向下排序</a>
 					<div style="float: right;">
-						<input id="search2_name" class="easyui-textbox" data-options="prompt:'品牌名称'" style="width:250px;height:24px;">
+						<input id="search2_name" class="easyui-textbox" data-options="prompt:'二级分类名称'" style="width:250px;height:24px;">
 						<a href="javascript:void(0);" onclick="searchclassifies2();" class="easyui-linkbutton" data-options="iconCls:'icon-search'">搜索</a>
 					</div>
 				</div>
 			</div>
 		</div>
 		
-		<div id="classify_save" class="easyui-window" title="编辑分类" style="width:280px; height:150px; padding:10px;"
+		<div id="classify_save" class="easyui-window" title="编辑分类" style="width:300px; height:250px; padding:10px;"
 			data-options="
 				closed: true, 
 				closable: true, 
@@ -117,6 +119,24 @@
 						<input type="hidden" id="classify_pid" name="classify.pid"></input>
 						<input type="hidden" id="classify_level" name="classify.level"></input>
 						<input class="easyui-textbox" type="text" id="classify_name" name="classify.name" maxlength="20"></input>
+					</td>
+				</tr>
+				<tr>
+					<td>首页展示:</td>
+					<td>
+						<span class="easyui-radio">
+			                <input type="radio" name="classify_showIndex" value="0" />否
+			                <input type="radio" name="classify_showIndex" value="1" />是
+			            </span>
+					</td>
+				</tr>
+				<tr>
+					<td>横向展示:</td>
+					<td>
+						<span class="">
+			                <input type="radio" name="classify_showAbeam" value="0" />否
+			                <input type="radio" name="classify_showAbeam" value="1" />是
+			            </span>
 					</td>
 				</tr>
 			</table>
@@ -159,55 +179,100 @@
 			$('#classifies2_datagrid').datagrid('load',{
 				'bcv.pid' : row.id,
 				'bcv.level' : '2',
-				'bcv.name' : $('#search1_name').val()
+				'bcv.name' : $('#search2_name').val()
 			});
 		}
 		
-		function openAddBrand(){
-			$('#brand_save').form('clear');
-			$('#brand_save').window('open');
+		function openAddClassify1(){
+			$('#classify_save').form('clear');
+			$('#classify_save').window('open');
+			$('#classify_pid').val('0');
+			$('#classify_level').val('1');
+			$('input[name=classify_showIndex][value=1]').prop('checked', 'checked');
+			$('input[name=classify_showAbeam][value=1]').prop('checked', 'checked');
 		}
 		
-		function openUpdBrand(){
-			var row = $('#brands_datagrid').datagrid('getSelected');
+		function openUpdClassify1(){
+			var row = $('#classifies1_datagrid').datagrid('getSelected');
 			if(!row){
 				$.messager.alert('提示', '请选中后操作');
 				return;
 			}
-			$('#brand_save').form('clear');
-			$('#brand_save').window('open');
-			$('#brand_id').val(row.id);
-			$('#brand_name').textbox('setValue', row.name);
+			$('#classify_save').form('clear');
+			$('#classify_save').window('open');
+			$('#classify_id').val(row.id);
+			$('#classify_pid').val('0');
+			$('#classify_level').val('1');
+			$('#classify_name').textbox('setValue', row.name);
+			$('input[name=classify_showIndex][value='+row.showIndex+']').prop('checked','checked');
+			$('input[name=classify_showAbeam][value='+row.showAbeam+']').prop('checked','checked');
 		}
-	
-		function saveBrand(){
-			if (new RegExp(regex('empty')).test($('#brand_name').val()) == false) {
-				$.messager.alert('提示', '品牌名称不能为空');
+		
+		function openAddClassify2(){
+			var row = $('#classifies1_datagrid').datagrid('getSelected');
+			if(!row){
+				$.messager.alert('提示', '请选择一个一级分类');
 				return;
 			}
-			if (new RegExp(regex('brandName')).test($('#brand_name').val()) == false) {
-				$.messager.alert('提示', '品牌名称只能输入中英文、数字及下划线，长度不超过20位');
+			$('#classify_save').form('clear');
+			$('#classify_save').window('open');
+			$('#classify_pid').val(row.id);
+			$('#classify_level').val('2');
+			$('input[name=classify_showIndex][value=1]').prop('checked', 'checked');
+			$('input[name=classify_showAbeam][value=1]').prop('checked', 'checked');
+		}
+		
+		function openUpdClassify2(){
+			var row = $('#classifies2_datagrid').datagrid('getSelected');
+			if(!row){
+				$.messager.alert('提示', '请选中后操作');
+				return;
+			}
+			$('#classify_save').form('clear');
+			$('#classify_save').window('open');
+			$('#classify_id').val(row.id);
+			$('#classify_pid').val(row.pid);
+			$('#classify_level').val('2');
+			$('#classify_name').textbox('setValue', row.name);
+			$('input[name=classify_showIndex][value='+row.showIndex+']').prop('checked','checked');
+			$('input[name=classify_showAbeam][value='+row.showAbeam+']').prop('checked','checked');
+		}
+		
+		function saveClassify(){
+			if (new RegExp(regex('empty')).test($('#classify_name').val()) == false) {
+				$.messager.alert('提示', '分类名称不能为空');
+				return;
+			}
+			if (new RegExp(regex('classifyName')).test($('#classify_name').val()) == false) {
+				$.messager.alert('提示', '分类名称只能输入中英文、数字及下划线，长度不超过20位');
 				return;
 			}
 			$.ajax({
-				url : '/beio/backGoods/saveBrand',
-				data : {'bbv.id' : $('#brand_id').val(),'bbv.name' : $('#brand_name').val()},
+				url : '/beio/backGoods/saveClassify',
+				data : {
+					'bcv.id' : $('#classify_id').val(), 
+					'bcv.pid' : $('#classify_pid').val(), 
+					'bcv.level' : $('#classify_level').val(), 
+					'bcv.name' : $('#classify_name').val(),
+					'bcv.showIndex' : $('input[name=classify_showIndex]:checked').val(),
+					'bcv.showAbeam' : $('input[name=classify_showAbeam]:checked').val()
+				},
 				type : 'POST',
 				async : false,
 				cache : true,
 				dataType : 'json',
 				success : function(data) {
 					if('200' == data.status){
-						$('#user_add').form('clear');
-						$('#user_add').window('close');
+						$('#classify_save').form('clear');
+						$('#classify_save').window('close');
 						$.messager.alert('提示', '操作成功');
-						$('#brand_save').form('clear');
-						$('#brand_save').window('close');
-						$('#brands_datagrid').datagrid('reload');
+						if(data.result.level == '1'){
+							$('#classifies1_datagrid').datagrid('reload');
+						}else {
+							$('#classifies2_datagrid').datagrid('reload');
+						}
 					}else if('100' == data.status) {
 						$.messager.alert('提示', '操作失败');
-					}else if('101' == data.status) {
-						$.messager.alert('提示', '用户名已存在');
 					}else if('170' == data.status) {
 						$.messager.alert('提示', '登录失效，请重新登录');
 						window.location.href = 'login.html';
@@ -221,8 +286,9 @@
 			});
 		}
 		
-		function delBrand(){
-			var row = $('#brands_datagrid').datagrid('getSelected');
+	
+		function delClassify1(){
+			var row = $('#classifies1_datagrid').datagrid('getSelected');
 			if(!row){
 				$.messager.alert('提示', '请选中后操作');
 				return;
@@ -230,8 +296,8 @@
 			$.messager.confirm('提示', '确定要删除此记录吗？', function(flag){
 				if(flag){
 					$.ajax({
-						url : '/beio/backGoods/delBrand',
-						data : {'bbv.id' : row.id},
+						url : '/beio/backGoods/delClassify',
+						data : {'bcv.id' : row.id, 'bcv.pid' : row.pid},
 						type : 'POST',
 						async : false,
 						cache : true,
@@ -239,7 +305,7 @@
 						success : function(data) {
 							if('200' == data.status){
 								$.messager.alert('提示', '删除成功');
-								$('#brands_datagrid').datagrid('reload');
+								$('#classifies1_datagrid').datagrid('reload');
 							}else if('100' == data.status){
 								$.messager.alert('提示', '操作失败');
 							}else if('170' == data.status) {
@@ -257,22 +323,58 @@
 			});
 		}
 		
-		function upBrand(){
-			var row = $('#brands_datagrid').datagrid('getSelected');
+		function delClassify2(){
+			var row = $('#classifies2_datagrid').datagrid('getSelected');
+			if(!row){
+				$.messager.alert('提示', '请选中后操作');
+				return;
+			}
+			$.messager.confirm('提示', '确定要删除此记录吗？', function(flag){
+				if(flag){
+					$.ajax({
+						url : '/beio/backGoods/delClassify',
+						data : {'bcv.id' : row.id, 'bcv.pid' : row.pid},
+						type : 'POST',
+						async : false,
+						cache : true,
+						dataType : 'json',
+						success : function(data) {
+							if('200' == data.status){
+								$.messager.alert('提示', '删除成功');
+								$('#classifies2_datagrid').datagrid('reload');
+							}else if('100' == data.status){
+								$.messager.alert('提示', '操作失败');
+							}else if('170' == data.status) {
+								$.messager.alert('提示', '登录失效，请重新登录');
+								window.location.href = 'login.html';
+							}else{
+								$.messager.alert('提示', tip('400'));
+							};
+						},
+						error : function() {
+							$.messager.alert('提示', tip('500'));
+						}
+					});
+				}
+			});
+		}
+		
+		function upClassify1(){
+			var row = $('#classifies1_datagrid').datagrid('getSelected');
 			if(!row){
 				$.messager.alert('提示', '请选中后操作');
 				return;
 			}
 			$.ajax({
-				url : '/beio/backGoods/upBrand',
-				data : {'bbv.id' : row.id},
+				url : '/beio/backGoods/upClassify',
+				data : {'bcv.id' : row.id, 'bcv.pid' : row.pid},
 				type : 'POST',
 				async : false,
 				cache : true,
 				dataType : 'json',
 				success : function(data) {
 					if('200' == data.status){
-						$('#brands_datagrid').datagrid('reload');
+						$('#classifies1_datagrid').datagrid('reload');
 					}else if('100' == data.status){
 						$.messager.alert('提示', '操作失败');
 					}else if('170' == data.status) {
@@ -288,22 +390,84 @@
 			});
 		}
 		
-		function downBrand(){
-			var row = $('#brands_datagrid').datagrid('getSelected');
+		function upClassify2(){
+			var row = $('#classifies2_datagrid').datagrid('getSelected');
 			if(!row){
 				$.messager.alert('提示', '请选中后操作');
 				return;
 			}
 			$.ajax({
-				url : '/beio/backGoods/downBrand',
-				data : {'bbv.id' : row.id},
+				url : '/beio/backGoods/upClassify',
+				data : {'bcv.id' : row.id, 'bcv.pid' : row.pid},
 				type : 'POST',
 				async : false,
 				cache : true,
 				dataType : 'json',
 				success : function(data) {
 					if('200' == data.status){
-						$('#brands_datagrid').datagrid('reload');
+						$('#classifies2_datagrid').datagrid('reload');
+					}else if('100' == data.status){
+						$.messager.alert('提示', '操作失败');
+					}else if('170' == data.status) {
+						$.messager.alert('提示', '登录失效，请重新登录');
+						window.location.href = 'login.html';
+					}else{
+						$.messager.alert('提示', tip('400'));
+					};
+				},
+				error : function() {
+					$.messager.alert('提示', tip('500'));
+				}
+			});
+		}
+		
+		function downClassify1(){
+			var row = $('#classifies1_datagrid').datagrid('getSelected');
+			if(!row){
+				$.messager.alert('提示', '请选中后操作');
+				return;
+			}
+			$.ajax({
+				url : '/beio/backGoods/downClassify',
+				data : {'bcv.id' : row.id, 'bcv.pid' : row.pid},
+				type : 'POST',
+				async : false,
+				cache : true,
+				dataType : 'json',
+				success : function(data) {
+					if('200' == data.status){
+						$('#classifies1_datagrid').datagrid('reload');
+					}else if('100' == data.status){
+						$.messager.alert('提示', '操作失败');
+					}else if('170' == data.status) {
+						$.messager.alert('提示', '登录失效，请重新登录');
+						window.location.href = 'login.html';
+					}else{
+						$.messager.alert('提示', tip('400'));
+					};
+				},
+				error : function() {
+					$.messager.alert('提示', tip('500'));
+				}
+			});
+		}
+		
+		function downClassify2(){
+			var row = $('#classifies2_datagrid').datagrid('getSelected');
+			if(!row){
+				$.messager.alert('提示', '请选中后操作');
+				return;
+			}
+			$.ajax({
+				url : '/beio/backGoods/downClassify',
+				data : {'bcv.id' : row.id, 'bcv.pid' : row.pid},
+				type : 'POST',
+				async : false,
+				cache : true,
+				dataType : 'json',
+				success : function(data) {
+					if('200' == data.status){
+						$('#classifies2_datagrid').datagrid('reload');
 					}else if('100' == data.status){
 						$.messager.alert('提示', '操作失败');
 					}else if('170' == data.status) {

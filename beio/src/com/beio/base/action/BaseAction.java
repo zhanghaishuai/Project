@@ -10,7 +10,6 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import net.sf.ezmorph.object.DateMorpher;
-import net.sf.json.JSONObject;
 import net.sf.json.util.JSONUtils;
 
 import org.apache.struts2.ServletActionContext;

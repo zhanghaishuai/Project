@@ -11,6 +11,7 @@ import com.beio.back.entity.BackGdsImage;
  * @date
  */
 public class BackGdsImageVO extends BackGdsImage {
+	
 	private File img;
 	
 	private String imgFileName;
@@ -30,6 +31,5 @@ public class BackGdsImageVO extends BackGdsImage {
 	public void setImgFileName(String imgFileName) {
 		this.imgFileName = imgFileName;
 	}
-	
 	
 }

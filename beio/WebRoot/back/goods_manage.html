@@ -3,268 +3,809 @@
 <head>
 	<meta charset="UTF-8">
 	<title>商品管理</title>
+	<link rel="stylesheet" type="text/css" href="js/jquery-easyui-1.5.2/themes/default/easyui.css">
+	<link rel="stylesheet" type="text/css" href="js/jquery-easyui-1.5.2/themes/icon.css">
+	<link rel="stylesheet" type="text/css" href="js/jquery-easyui-1.5.2/demo/demo.css">
+	<script type="text/javascript" src="js/jquery-easyui-1.5.2/jquery.min.js"></script>
+	<script type="text/javascript" src="js/jquery-easyui-1.5.2/jquery.easyui.min.js"></script>
 		
 </head>
 <body>
-	<div id="goods_tb" style="padding:10px 10px;">
-		<div>
-			<a href="javascript:void(0);" onclick="addGoodsWindowShow()" class="easyui-linkbutton" plain="false" data-options="iconCls:'icon-add'">新增</a>
-			<a href="javascript:void(0);" onclick="updateGoodsWindowShow()" class="easyui-linkbutton" plain="false" data-options="iconCls:'icon-edit'">修改商品信息</a>
-			<a href="javascript:void(0);" onclick="updateImagesWindowShow()" class="easyui-linkbutton" plain="false" data-options="iconCls:'icon-edit'">修改商品图片</a>
-			<a href="javascript:void(0);" onclick="activateGoods();" class="easyui-linkbutton" plain="false" data-options="iconCls:'icon-remove'">启用</a>
-			<a href="javascript:void(0);" onclick="forbiddenGoods();" class="easyui-linkbutton" plain="false" data-options="iconCls:'icon-remove'">禁用</a>
-			<span style="margin-left: 100px;">分类：</span>
-			<input id="bgc_one" class="easyui-combobox"
-				data-options="
-					valueField:'val'
-					,textField:'text'
-					,data: [{val : '', text : '全部'}]
-					,url: '/beio/backGoods/getAllClassify'
-					,onChange : function(){loadBgc_two();}"/>
-			<input id="bgc_two" class="easyui-combobox"
-				data-options="
-					valueField:'val'
-					,textField:'text'
-					"/>
-			<span style="margin-left: 20px;">品牌：</span>
-			<input id="goodsbrand" class="easyui-combobox"
-				data-options="
-					valueField:'val'
-					,textField:'text'
-					,url: '/beio/backGoods/getAllBrand'
-					"/>
-			<span style="margin-left: 20px;">商品名称：</span>
-			<input id="goodsname"/>
-			<a href="javascript:void(0);" onclick="searchGoods();" class="easyui-linkbutton" plain="false" data-options="iconCls:'icon-search'">搜索</a>
-		</div>
-	</div>
-	<table id="goods_datagrid" class="easyui-datagrid" style="width:100%; height: 100%;"
+	<table id="goods_datagrid" class="easyui-datagrid" style="width:100%;height:60%;" title="商品列表"
 		data-options="
-			fitColumns:true
-			,striped:true
-			,rownumbers:true
-			,singleSelect:true
-			,collapsible:true
-			,pagination:true
-			,pagePosition:'bottom'
-			,pageNumber:1
-			,pageSize:30
-			,url:'/beio/backGoods/pageGoods'
-			,method:'post'
-			,loadFilter: function(data){if(data.status=='170'){alert('登录失效，请重新登录');window.location.href = 'login.html'}else{return data}}
-			" 
-			
-		toolbar="#goods_tb">
-		<!-- 设置默认行颜色 ,rowStyler:function(index,row){if('1' != row.enable){return 'background-color:#E0E0E0;color:blue;font-weight:bold';}} -->
+			url:'/beio/backGoods/pageGoods',
+			fitColumns:true,
+			striped:true,
+			rownumbers:true,
+			singleSelect:true,
+			collapsible:false,
+			pagination:true,
+			pagePosition:'bottom',
+			pageNumber:1,
+			pageSize:30,
+			method:'post',
+			loadFilter: function(data){if(data.status=='170'){alert('登录失效，请重新登录');window.location.href = 'login.html'}else{return data}},
+			onSelect : loadImgs,
+			toolbar: '#goods_tb'">
 		<thead>
 			<tr>
-				<th data-options="field:'id',width:0,align:'center',hidden:true">ID</th>
-				<th data-options="field:'classifyPname',width:80,align:'center'">大类</th>
-				<th data-options="field:'classify',width:80,align:'center'">分类</th>
-				<th data-options="field:'brand',width:80,align:'center'">品牌</th>
-				<th data-options="field:'name',width:200,align:'center'">商品名称</th>
-				<th data-options="field:'descr',width:200,align:'center'">商品描述</th>
-				<th data-options="field:'mPrice',width:42,align:'right'">会员价(元)</th>
-				<th data-options="field:'cPrice',width:42,align:'right'">普通价(元)</th>
-				<th data-options="field:'weight',width:40,align:'right'">重量(KG)</th>
+				<th data-options="field:'id',width:0,align:'center'">编号</th>
+				<th data-options="field:'classifyPName',width:60,align:'center'">一级分类</th>
+				<th data-options="field:'classifyName',width:60,align:'center'">二级分类</th>
+				<th data-options="field:'brandName',width:60,align:'center'">品牌</th>
+				<th data-options="field:'name',width:150,align:'center'">商品名称</th>
+				<th data-options="field:'descr',width:150,align:'center'">商品描述</th>
+				<th data-options="field:'mPrice',width:50,align:'right'">会员价(元)</th>
+				<th data-options="field:'cPrice',width:50,align:'right'">普通价(元)</th>
+				<th data-options="field:'weight',width:50,align:'right'">重量(KG)</th>
 				<th data-options="field:'salds',width:40,align:'right'">已售</th>
 				<th data-options="field:'stock',width:40,align:'right'">库存</th>
-				<th data-options="field:'enable',width:30,align:'center', formatter:function(value,row,index){if('1' == value){return '可用';}else{return '禁用';}}">状态</th>
 			</tr>
 		</thead>
 	</table>
-	<div id="goods_add" class="easyui-window" closed="true" title="商品信息" data-options="iconCls:'icon-save', collapsible: false, minimizable: false, maximizable: false, resizable: true, draggable: true" style="width:580px; height:600px; padding:5px;">
-		<form id="goods_add_form" method="post" enctype="multipart/form-data">
-			<table cellpadding="5">
-				<tr>
-					<td><span>品牌:</span></td>
-					<td>
-						<input id="goodsbrand_add" name="bgfv.brandID" class="easyui-combobox" data-options="required:true, valueField:'val', textField:'text', url: '/beio/backGoods/getAllBrand'" />
-					</td>
-					<td><span>会员价(元):</span></td>
-					<td><input id="goods_add_mPrice" name="bgfv.mPrice" class="easyui-numberbox" data-options="required:true, min:0.01, max:9999999.99" precision="2"></input></td>
-				</tr>
-				<tr>
-					<td><span>商品分类:</span></td>
-					<td>
-						<input id="bgc_add_one" class="easyui-combobox" data-options="required:true, valueField:'val', textField:'text',url: '/beio/backGoods/getAllClassify', onChange : function(){loadBgc_add_two();}" />
-						<br/>
-						<input id="bgc_add_two" name="bgfv.classifyID" class="easyui-combobox" data-options="required:true, valueField:'val', textField:'text'" />
-					</td>
-					<td><span>普通价(元):</span></td>
-					<td><input id="goods_add_cPrice" name="bgfv.cPrice" class="easyui-numberbox" data-options="required:true, min:0.01, max:9999999.99" precision="2"></input></td>
-				</tr>
-				<tr>
-					<td><span>商品名称:</span></td>
-					<td><input  id="goods_add_name" name="bgfv.name" class="easyui-textbox" type="text" multiline="true" data-options="required:true, validType:'length[0,100]'"></input></td>
-					<td><span>重量(KG):</span></td>
-					<td><input id="goods_add_weight" name="bgfv.weight" class="easyui-numberbox" data-options="required:true, min:0.01, max:9999999.99" precision="2"></input></td>
-					
-				</tr>
-				<tr>
-					<td><span>商品描述:</span></td>
-					<td><input id="goods_add_descr" name="bgfv.descr" class="easyui-textbox" type="text" multiline="true" data-options="required:true, validType:'length[1,200]'"></input></td>
-					<td><span>数量(单个):</span></td>
-					<td><input id="goods_add_stock" name="bgfv.stock" class="easyui-numberbox" data-options="required:true, min:1, max:9999999999"></input></td>
-				</tr>
-				<tr>
-					<td><span>展示图1:</span></td>
-					<td><input  id="goods_add_show1" name="bgfv.show" class="easyui-filebox" data-options="required:true, buttonText:'选择文件', accept:'image/png.jpeg'"></input></td>
-					<td><span>详情图1:</span></td>
-					<td>
-						<input id="goods_add_detail1" name="bgfv.detaile" class="easyui-filebox" data-options="required:true,buttonText:'选择文件', accept:'image/png.jpeg'"></input>
-					</td>
-				</tr>
-				<tr>
-					<td><span>展示图2:</span></td>
-					<td><input id="goods_add_show2" name="bgfv.show" class="easyui-filebox" data-options="buttonText:'选择文件', accept:'image/png.jpeg'"></input></td>
-					<td><span>详情图2:</span></td>
-					<td>
-						<input id="goods_add_detail1" name="bgfv.detaile" class="easyui-filebox" data-options="buttonText:'选择文件', accept:'image/png.jpeg'"></input>
-					</td>
-				</tr>
-				<tr>
-					<td><span>展示图3:</span></td>
-					<td><input id="goods_add_show3" name="bgfv.show" class="easyui-filebox" data-options="buttonText:'选择文件', accept:'image/png.jpeg'"></input></td>
-					<td><span>详情图3:</span></td>
-					<td>
-						<input id="goods_add_detail1" name="bgfv.detaile" class="easyui-filebox" data-options="buttonText:'选择文件', accept:'image/png.jpeg'"></input>
-					</td>
-				</tr>
-				<tr>
-					<td><span>展示图4:</span></td>
-					<td><input id="goods_add_show4" name="bgfv.show" class="easyui-filebox" data-options="buttonText:'选择文件', accept:'image/png.jpeg'"></input></td>
-					<td><span>详情图4:</span></td>
-					<td>
-						<input id="goods_add_detail1" name="bgfv.detaile" class="easyui-filebox" data-options="buttonText:'选择文件', accept:'image/png.jpeg'"></input>
-					</td>
-				</tr>
-				<tr>
-					<td><span>展示图5:</span></td>
-					<td><input id="goods_add_show5" name="bgfv.show" class="easyui-filebox" data-options="buttonText:'选择文件', accept:'image/png.jpeg'"></input></td>
-					<td><span>详情图5:</span></td>
-					<td>
-						<input id="goods_add_detail1" name="bgfv.detaile" class="easyui-filebox" data-options="buttonText:'选择文件', accept:'image/png.jpeg'"></input>
-					</td>
-				</tr>
-			</table>
-		</form>
-		<div style="text-align:center;padding:5px; margin-top: 20px;">
-			<a href="javascript:void(0)" class="easyui-linkbutton" onclick="addGoods()">提交</a>
-			<a href="javascript:void(0)" class="easyui-linkbutton" onclick="clearGoodsAddForm()">取消</a>
+	<div id="goods_tb" style="padding:5px 5px;">
+		<div>
+			<a href="javascript:void(0);" onclick="openAddGoods()" class="easyui-linkbutton" data-options="iconCls:'icon-add'">新增</a>
+			<a href="javascript:void(0);" onclick="openUpdGoods()" class="easyui-linkbutton" data-options="iconCls:'icon-edit'">修改</a>
+			<a href="javascript:void(0);" onclick="delGoods()" class="easyui-linkbutton" data-options="iconCls:'icon-cut'">删除</a>
+			<div style="float: right;">
+				<span style="margin-left: 100px;">分类：</span>
+				<input id="goodsclassify1" class="easyui-combobox"
+					data-options="
+						valueField:'val'
+						,textField:'text'
+						,data: [{val : '', text : '全部'}]
+						,url: '/beio/backGoods/getAllClassify'
+						,onChange : function(){loadClassify2();}
+						,editable:false"/>
+				<input id="goodsclassify2" class="easyui-combobox"
+					data-options="
+						valueField:'val'
+						,textField:'text'
+						,editable:false"/>
+				<span style="margin-left: 20px;">品牌：</span>
+				<input id="goodsbrand" class="easyui-combobox"
+					data-options="
+						valueField:'val'
+						,textField:'text'
+						,url: '/beio/backGoods/getAllBrand'
+						,editable:false"/>
+				<input id="goodsname" class="easyui-textbox" data-options="prompt:'商品名称'" style="width:250px;height:24px;">
+				<a href="javascript:void(0);" onclick="searchGoods();" class="easyui-linkbutton" data-options="iconCls:'icon-search'">搜索</a>
+			</div>
 		</div>
 	</div>
 	
-	<div id="goods_update" class="easyui-window" closed="true" title="商品信息" data-options="iconCls:'icon-save', collapsible: false, minimizable: false, maximizable: false, resizable: false, draggable: true" style="width:330px; height:460px; padding:5px;">
-		<form id="goods_update_form" method="post">
-			<table cellpadding="5">
+	<div class="easyui-layout" style="width:100%;height:40%;">
+		<div data-options="region:'west'" style="width:50%;">
+			<table id="show_datagrid" class="easyui-datagrid" style="width:100%;height:100%;" title="展示图列表"
+				data-options="
+					url:'/beio/backGoods/queryGoodsImg',
+					queryParams: {'bgv.category':'0'},
+					fitColumns:true,
+					striped:true,
+					rownumbers:true,
+					singleSelect:true,
+					collapsible:false,
+					method:'post',
+					loadFilter: function(data){if(data.status=='170'){alert('登录失效，请重新登录');window.location.href = 'login.html'}else{return data}},
+					toolbar: '#show_tb'">
+				<thead>
+					<tr>
+						<th data-options="field:'id',width:120,align:'center'">编号</th>
+						<th data-options="field:'httpSmaPath',width:120,align:'center', formatter:function(value,row,index){return '<img style=\'width:80px; height:80px\' src=' + value + '>'}">图片</th>
+						<th data-options="field:'sortNum',width:120,align:'center', formatter:function(value,row,index){return value / 2}">顺序</th>
+					</tr>
+				</thead>
+			</table>
+			<div id="show_tb" style="padding:5px 5px;">
+				<div>
+					<a href="javascript:void(0);" onclick="openAddShow()" class="easyui-linkbutton" data-options="iconCls:'icon-add'">新增</a>
+					<a href="javascript:void(0);" onclick="openUpdShow()" class="easyui-linkbutton" data-options="iconCls:'icon-edit'">修改</a>
+					<a href="javascript:void(0);" onclick="delShow()" class="easyui-linkbutton" data-options="iconCls:'icon-cut'">删除</a>
+					<a href="javascript:void(0);" onclick="upShow()" class="easyui-linkbutton">向上排序</a>
+					<a href="javascript:void(0);" onclick="downShow()" class="easyui-linkbutton">向下排序</a>
+				</div>
+			</div>
+		</div>
+		<div data-options="region:'center'" style="width:50%;">
+			<table id="detail_datagrid" class="easyui-datagrid" style="width:100%;height:100%;" title="详情图列表"
+				data-options="
+					url:'/beio/backGoods/queryGoodsImg',
+					queryParams: {'bgv.category':'1'},
+					fitColumns:true,
+					striped:true,
+					rownumbers:true,
+					singleSelect:true,
+					collapsible:false,
+					method:'post',
+					loadFilter: function(data){if(data.status=='170'){alert('登录失效，请重新登录');window.location.href = 'login.html'}else{return data}},
+					toolbar: '#detail_tb'">
+				<thead>
+					<tr>
+						<th data-options="field:'id',width:120,align:'center'">编号</th>
+						<th data-options="field:'httpSmaPath',width:120,align:'center', formatter:function(value,row,index){return '<img style=\'width:100px; height:100px\' src=' + value + '>'}">图片</th>
+						<th data-options="field:'sortNum',width:120,align:'center', formatter:function(value,row,index){return value / 2}">顺序</th>
+					</tr>
+				</thead>
+			</table>
+			<div id="detail_tb" style="padding:5px 5px;">
+				<div>
+					<a href="javascript:void(0);" onclick="openAddDetail()" class="easyui-linkbutton" data-options="iconCls:'icon-add'">新增</a>
+					<a href="javascript:void(0);" onclick="openUpdDetail()" class="easyui-linkbutton" data-options="iconCls:'icon-edit'">修改</a>
+					<a href="javascript:void(0);" onclick="delDetail()" class="easyui-linkbutton" data-options="iconCls:'icon-cut'">删除</a>
+					<a href="javascript:void(0);" onclick="upDetail()" class="easyui-linkbutton">向上排序</a>
+					<a href="javascript:void(0);" onclick="downDetail()" class="easyui-linkbutton">向下排序</a>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+	<div id="goods_save" class="easyui-window" title="编辑商品" style="width:580px; height:350px; padding:10px;"
+		data-options="
+			closed: true, 
+			closable: true, 
+			resizable: false, 
+			collapsible: false, 
+			minimizable: false, 
+			maximizable: false, 
+			left: '500px', 
+			top: '210px', 
+			modal:true, 
+			draggable: true">
+		<table cellpadding="7" style="width: 100%">
+			<tr>
+				<td><span>商品名称:</span></td>
+				<td>
+					<input type="hidden" id="goods_id" name="goods.id"></input>
+					<input id="goods_name" name="bgv.name" class="easyui-textbox" type="text" />
+				</td>
+				<td><span>商品描述:</span></td>
+				<td>
+					<input id="goods_desc" name="bgv.descr" class="easyui-textbox" type="text" />
+				</td>
+			</tr>
+			<tr>
+				<td><span>会员价格:</span></td>
+				<td>
+					<input id="goods_mPrice" name="bgv.mPrice" class="easyui-numberbox" data-options="min:0.01, max:9999999.99" precision="2" />
+				</td>
+				<td><span>普通价格:</span></td>
+				<td>
+					<input id="goods_cPrice" name="bgv.cPrice" class="easyui-numberbox" data-options="min:0.01, max:9999999.99" precision="2" />
+				</td>
+			</tr>
+			<tr>
+				<td><span>一级分类:</span></td>
+				<td>
+					<input id="goods_classifyPID" name="bgv.classifyPID" class="easyui-combobox" data-options="valueField:'val', textField:'text', url:'/beio/backGoods/getAllClassify', onChange : function(){loadSaveClassify2();}, editable:false" />
+				</td>
+				<td><span>二级分类:</span></td>
+				<td>
+					<input id="goods_classifyID" name="bgv.classifyID" class="easyui-combobox" data-options="valueField:'val', textField:'text', editable:false" />
+				</td>
+			</tr>
+			<tr>
+				<td><span>商品品牌:</span></td>
+				<td>
+					<input id="goods_brandID" name="bgv.brandID" class="easyui-combobox" data-options="valueField:'val', textField:'text', url:'/beio/backGoods/getAllBrand', editable:false" />
+				</td>
+				<td><span>重量(KG):</span></td>
+				<td>
+					<input id="goods_weight" name="bgv.weight" class="easyui-numberbox" data-options="min:0.01, max:9999999.99" precision="2" />
+				</td>
+			</tr>
+			<tr>
+				<td><span>商品销量:</span></td>
+				<td>
+					<input id="goods_salds" name="bgv.salds" class="easyui-numberbox" data-options="min:0, max:999999999"  precision="0"/>
+				</td>
+				<td><span>商品库存:</span></td>
+				<td>
+					<input id="goods_stock" name="bgv.stock" class="easyui-numberbox" data-options="min:0, max:999999999"  precision="0" />
+				</td>
+			</tr>
+			<tr>
+				<td><span>商品热度:</span></td>
+				<td>
+					<input id="goods_heatUp" name="bgv.heatUp" class="easyui-numberbox" data-options="min:0, max:999999999"  precision="0" />
+				</td>
+				<td><span>商品备注:</span></td>
+				<td>
+					<input id="goods_remark" name="bgv.remark" class="easyui-textbox" type="text" />
+				</td>
+			</tr>
+		</table>
+		<div style="text-align:center;padding:5px">
+			<a href="javascript:void(0)" class="easyui-linkbutton" onclick="saveGoods()">提交</a>
+			<a href="javascript:void(0)" class="easyui-linkbutton" onclick="$('#goods_save').form('clear');$('#goods_save').window('close');">取消</a>
+		</div>
+	</div>
+	
+	<div id="image_save" class="easyui-window" title="编辑图片" style="width:300px; height:150px; padding:10px;"
+		data-options="
+			closed: true, 
+			closable: true, 
+			resizable: false, 
+			collapsible: false, 
+			minimizable: false, 
+			maximizable: false, 
+			left: '500px', 
+			top: '210px', 
+			modal:true, 
+			draggable: true">
+		<form id="ff" method="post" enctype="multipart/form-data">
+			<table cellpadding="10" style="width: 100%">
 				<tr>
-					<td><span>品牌:</span></td>
+					<td>图片地址:</td>
 					<td>
-						<input id="goods_update_brand" name="bgv.brandID" class="easyui-combobox" data-options="required:true, valueField:'val', textField:'text', url: '/beio/backGoods/getAllBrand'" />
+						<input type="hidden" id="image_id" name="biv.id"></input>
+						<input type="hidden" id="image_goodsID" name="biv.goodsID"></input>
+						<input type="hidden" id="image_category" name="biv.category"></input>
+						<input id="image_file" name="biv.img" class="easyui-filebox" data-options="required:true,buttonText:'选择文件', accept:'image/png.jpeg'"/>
 					</td>
-				</tr>
-				<tr>
-					<td><span>商品分类:</span></td>
-					<td>
-						<input id="bgc_update_one" class="easyui-combobox" data-options="required:true, valueField:'val', textField:'text',url: '/beio/backGoods/getAllClassify', onChange : function(){loadBgc_update_two();}" />
-						<br/>
-						<input id="bgc_update_two" name="bgv.classifyID" class="easyui-combobox" data-options="required:true, valueField:'val', textField:'text'" />
-					</td>
-				</tr>
-				<tr>
-					<td><span>商品名称:</span></td>
-					<td>
-						<input type="text" id="goods_update_id" name="bgv.id" hidden="hidden"/>
-						<input id="goods_update_name" name="bgv.name" class="easyui-textbox" type="text" multiline="true" data-options="required:true, validType:'length[0,100]'"></input>
-					</td>
-				</tr>
-				<tr>
-					<td><span>商品描述:</span></td>
-					<td><input id="goods_update_descr" name="bgv.descr" class="easyui-textbox" type="text" multiline="true" data-options="required:true, validType:'length[1,200]'"></input></td>
-				</tr>
-				<tr>
-					<td><span>会员价(元):</span></td>
-					<td><input id="goods_update_mPrice" name="bgv.mPrice" class="easyui-numberbox" data-options="required:true, min:0.01, max:9999999.99" precision="2"></input></td>
-				</tr>
-				<tr>
-					<td><span>普通价(元):</span></td>
-					<td><input id="goods_update_cPrice" name="bgv.cPrice" class="easyui-numberbox" data-options="required:true, min:0.01, max:9999999.99" precision="2"></input></td>
-				</tr>
-				<tr>
-					<td><span>重量(KG):</span></td>
-					<td><input id="goods_update_weight" name="bgv.weight" class="easyui-numberbox" data-options="required:true, min:0.01, max:9999999.99" precision="2"></input></td>
-				</tr>
-				<tr>
-					<td><span>数量(单个):</span></td>
-					<td><input id="goods_update_stock" name="bgv.stock" class="easyui-numberbox" data-options="required:true, min:1, max:9999999999"></input></td>
-					
 				</tr>
 			</table>
 		</form>
 		<div style="text-align:center;padding:5px">
-			<a href="javascript:void(0)" class="easyui-linkbutton" onclick="updateGoods()">提交</a>
-			<a href="javascript:void(0)" class="easyui-linkbutton" onclick="clearGoodsUpdateForm()">取消</a>
+			<a href="javascript:void(0)" class="easyui-linkbutton" onclick="saveImage()">提交</a>
+			<a href="javascript:void(0)" class="easyui-linkbutton" onclick="$('#image_save').form('clear');$('#image_save').window('close');">取消</a>
 		</div>
 	</div>
 	
-	<div id="images_update" class="easyui-window" closed="true" title="商品信息" data-options="iconCls:'icon-save', collapsible: false, minimizable: false, maximizable: false, resizable: false, draggable: true" style="width:400px; height:600px; padding:5px;">
-		<div id="images_tb" style="padding:10px 10px;">
-			<div>
-				<a href="javascript:void(0);" onclick="showAddImage()" class="easyui-linkbutton" plain="false" data-options="iconCls:'icon-add'">新增图片</a>
-				<a href="javascript:void(0);" onclick="showUpdateImage()" class="easyui-linkbutton" plain="false" data-options="iconCls:'icon-edit'">修改图片</a>
-				<a href="javascript:void(0);" onclick="delImage()" class="easyui-linkbutton" plain="false" data-options="iconCls:'icon-edit'">删除</a>
-			</div>
-		</div>
-		<table id="images_datagrid" class="easyui-datagrid" style="width:100%; height: 100%;"
-			data-options="
-				fitColumns:true
-				,striped:true
-				,rownumbers:false
-				,singleSelect:true
-				,collapsible:true
-				,method:'post'
-				,loadFilter: function(data){if(data.status=='170'){alert('登录失效，请重新登录');window.location.href = 'login.html'}else{return data}}
-				" 
-				
-			toolbar="#images_tb">
-			<!-- 设置默认行颜色 ,rowStyler:function(index,row){if('1' != row.enable){return 'background-color:#E0E0E0;color:blue;font-weight:bold';}} -->
-			<thead>
-				<tr>
-					<th data-options="field:'id',width:0, height: 80,align:'center',hidden:true">ID</th>
-					<th data-options="field:'orgPath',width:0, height: 80,align:'center',hidden:true">原图</th>
-					<th data-options="field:'bigPath',width:0, height: 80,align:'center',hidden:true">大图</th>
-					<th data-options="field:'midPath',width:0, height: 80,align:'center',hidden:true">中图</th>
-					<th data-options="field:'GoodsID',width:0, height: 80,align:'center',hidden:true">goodsID</th>
-					<th data-options="field:'category',width:80, height: 100,align:'center', formatter: function(value,row,index){if('0' == value){return '展示图';}else{return '详情图';}}">分类</th>
-					<th data-options="field:'sortNum',width:80, height: 100,align:'center', formatter: function(value, row, index){return value * 1 + 1;}">顺序</th>
-					<th data-options="field:'smaPath',width:100, height: 100,align:'center', formatter:function(value,row,index){return '<img width: '+100+' height: '+100+' src='+value+' />';}">图片</th>
-				</tr>
-			</thead>
-		</table>
-	</div>
+	<script type="text/javascript">
 	
-	<div id="images_add_file" class="easyui-window" closed="true" title="商品信息" data-options="iconCls:'icon-save', collapsible: false, minimizable: false, maximizable: false, resizable: false, draggable: true" style="width:250px; height:160px; padding:5px;">
-		<form id="images_add_file_form" method="post" enctype="multipart/form-data">
-			<input type="radio" name="biv_category" value="0"/>展示图
-			<input type="radio" name="biv_category" value="1"/>详情图
-			<br/><br/>
-			<input name="biv.img" class="easyui-filebox" data-options="required:true,buttonText:'选择文件', accept:'image/png.jpeg'"/>
-		</form>
-		<div style="text-align:center;padding:5px; margin-top: 20px;">
-			<a href="javascript:void(0)" class="easyui-linkbutton" onclick="addImage()">提交</a>
-			<a href="javascript:void(0)" class="easyui-linkbutton" onclick="clearImageAddForm()">取消</a>
-		</div>
-	</div>
-	
-	<div id="images_update_file" class="easyui-window" closed="true" title="商品信息" data-options="iconCls:'icon-save', collapsible: false, minimizable: false, maximizable: false, resizable: false, draggable: true" style="width:250px; height:160px; padding:5px;">
-		<form id="images_update_file_form" method="post" enctype="multipart/form-data">
-			<input name="biv.img" class="easyui-filebox" data-options="required:true,buttonText:'选择文件', accept:'image/png.jpeg'"/>
-		</form>
-		<div style="text-align:center;padding:5px; margin-top: 20px;">
-			<a href="javascript:void(0)" class="easyui-linkbutton" onclick="updateImage()">提交</a>
-			<a href="javascript:void(0)" class="easyui-linkbutton" onclick="clearImageUpdateForm()">取消</a>
-		</div>
-	</div>
+		function loadClassify2(){
+			var pid = $('#goodsclassify1').combobox('getValue');
+			$('#goodsclassify2').combobox({
+			    url:'/beio/backGoods/getAllClassify?bcv.pid=' + pid,
+			    valueField:'val',
+			    textField:'text'
+			});
+		}
+		
+		function loadImgs(){
+			var row = $('#goods_datagrid').datagrid('getSelected');
+			if(!row){
+				return;
+			}
+			$('#show_datagrid').datagrid('load',{
+				'biv.goodsID' : row.id,
+				'biv.category' : '0'
+			});
+			$('#detail_datagrid').datagrid('load',{
+				'biv.goodsID' : row.id,
+				'biv.category' : '1'
+			});
+		}
+		
+		function searchGoods(){
+			$('#goods_datagrid').datagrid('load',{
+				'bgv.name' : $('#goodsname').val(),
+				'bgv.classifyPID' : $('#goodsclassify1').val(),
+				'bgv.classifyID' : $('#goodsclassify2').val(),
+				'bgv.brandID' : $('#goodsbrand').val(),
+			});
+			$('#show_datagrid').datagrid('load',{});
+			$('#detail_datagrid').datagrid('load',{});
+		}
+		
+		function openAddGoods(){
+			$('#goods_save').form('clear');
+			$('#goods_save').window('open');
+		}
+		
+		function openUpdGoods(){
+			var row = $('#goods_datagrid').datagrid('getSelected');
+			if(!row){
+				$.messager.alert('提示', '请选中后操作');
+				return;
+			}
+			$('#goods_save').form('clear');
+			$('#goods_save').window('open');
+			$('#goods_id').val(row.id);
+			$('#goods_name').textbox('setValue', row.name);
+			$('#goods_desc').textbox('setValue', row.descr);
+			$('#goods_mPrice').numberbox('setValue', row.mPrice);
+			$('#goods_cPrice').numberbox('setValue', row.cPrice);
+			$('#goods_classifyPID').combobox('setValue', row.classifyPID);
+			$('#goods_classifyID').combobox('setValue', row.classifyID);
+			$('#goods_brandID').combobox('setValue', row.brandID);
+			$('#goods_weight').numberbox('setValue', row.weight);
+			$('#goods_salds').numberbox('setValue', row.salds);
+			$('#goods_stock').numberbox('setValue', row.stock);
+			$('#goods_heatUp').numberbox('setValue', row.heatUp);
+			$('#goods_remark').textbox('setValue', row.remark);
+		}
+		
+		function loadSaveClassify2(){
+			var pid = $('#goods_classifyPID').combobox('getValue');
+			$('#goods_classifyID').combobox({
+			    url:'/beio/backGoods/getAllClassify?bcv.pid=' + pid,
+			    valueField:'val',
+			    textField:'text'
+			});
+		}
+		
+		function saveGoods(){
+			if (new RegExp(regex('empty')).test($('#goods_name').val()) == false) {
+				$.messager.alert('提示', '商品名称不能为空');
+				return;
+			}
+			if (new RegExp(regex('goodsName')).test($('#goods_name').val()) == false) {
+				$.messager.alert('提示', '商品名称只能输入中英文、数字及下划线，长度不超过100位');
+				return;
+			}
+			if (new RegExp(regex('descrName')).test($('#goods_desc').val()) == false) {
+				$.messager.alert('提示', '商品描述只能输入中英文、数字及下划线，长度不超过200位');
+				return;
+			}
+			if (new RegExp(regex('empty')).test($('#goods_mPrice').val()) == false) {
+				$.messager.alert('提示', '会员价格不能为空');
+				return;
+			}
+			if (new RegExp(regex('empty')).test($('#goods_cPrice').val()) == false) {
+				$.messager.alert('提示', '普通价格不能为空');
+				return;
+			}
+			if ($('#goods_classifyPID').val() == null || $('#goods_classifyPID').val() == '' ) {
+				$.messager.alert('提示', '请选择商品一级分类');
+				return;
+			}
+			if ($('#goods_classifyID').val() == null || $('#goods_classifyID').val() == '' ) {
+				$.messager.alert('提示', '请选择商品二级分类');
+				return;
+			}
+			if ($('#goods_brandID').val() == null || $('#goods_brandID').val() == '' ) {
+				$.messager.alert('提示', '请选择商品品牌');
+				return;
+			}
+			if (new RegExp(regex('empty')).test($('#goods_weight').val()) == false) {
+				$.messager.alert('提示', '重量（KG）不能为空');
+				return;
+			}
+			if (new RegExp(regex('empty')).test($('#goods_salds').val()) == false) {
+				$.messager.alert('提示', '商品销量不能为空');
+				return;
+			}
+			if (new RegExp(regex('empty')).test($('#goods_stock').val()) == false) {
+				$.messager.alert('提示', '商品库存不能为空');
+				return;
+			}
+			if (new RegExp(regex('empty')).test($('#goods_heatUp').val()) == false) {
+				$.messager.alert('提示', '商品热度不能为空');
+				return;
+			}
+			if (new RegExp(regex('remark')).test($('#goods_remark').val()) == false) {
+				$.messager.alert('提示', '商品备注只能输入中英文、数字及下划线，长度不超过200位');
+				return;
+			}
+			$.ajax({
+				url : '/beio/backGoods/saveGoods',
+				data : {
+					'bgv.id' : $('#goods_id').val(), 
+					'bgv.name' : $('#goods_name').val(), 
+					'bgv.descr' : $('#goods_desc').val(), 
+					'bgv.mPrice' : $('#goods_mPrice').val(), 
+					'bgv.cPrice' : $('#goods_cPrice').val(), 
+					'bgv.classifyPID' : $('#goods_classifyPID').val(), 
+					'bgv.classifyID' : $('#goods_classifyID').val(), 
+					'bgv.brandID' : $('#goods_brandID').val(), 
+					'bgv.weight' : $('#goods_weight').val(), 
+					'bgv.salds' : $('#goods_salds').val(), 
+					'bgv.stock' : $('#goods_stock').val(), 
+					'bgv.heatUp' : $('#goods_heatUp').val(), 
+					'bgv.remark' : $('#goods_remark').val() 
+				},
+				type : 'POST',
+				async : false,
+				cache : true,
+				dataType : 'json',
+				success : function(data) {
+					if('200' == data.status){
+						$('#goods_save').form('clear');
+						$('#goods_save').window('close');
+						$.messager.alert('提示', '操作成功');
+						$('#goods_datagrid').datagrid('reload');
+					}else if('100' == data.status) {
+						$.messager.alert('提示', '操作失败');
+					}else if('170' == data.status) {
+						$.messager.alert('提示', '登录失效，请重新登录');
+						window.location.href = 'login.html';
+					}else{
+						$.messager.alert('提示', tip('400'));
+					};
+				},
+				error : function() {
+					$.messager.alert('提示', tip('500'));
+				}
+			});
+		}
+		
+		function delGoods(){
+			var row = $('#goods_datagrid').datagrid('getSelected');
+			if(!row){
+				$.messager.alert('提示', '请选中 商品后操作');
+				return;
+			}
+			$.messager.confirm('提示', '确定要删除此记录吗？', function(flag){
+				if(flag){
+					$.ajax({
+						url : '/beio/backGoods/delGoods',
+						data : {'bgv.id' : row.id},
+						type : 'POST',
+						async : false,
+						cache : true,
+						dataType : 'json',
+						success : function(data) {
+							if('200' == data.status){
+								$.messager.alert('提示', '删除成功');
+								$('#goods_datagrid').datagrid('reload');
+							}else if('100' == data.status){
+								$.messager.alert('提示', '操作失败');
+							}else if('170' == data.status) {
+								$.messager.alert('提示', '登录失效，请重新登录');
+								window.location.href = 'login.html';
+							}else{
+								$.messager.alert('提示', tip('400'));
+							};
+						},
+						error : function() {
+							$.messager.alert('提示', tip('500'));
+						}
+					});
+				}
+			});
+		}
+		
+		
+		function openAddShow(){
+			var row = $('#goods_datagrid').datagrid('getSelected');
+			if(!row){
+				$.messager.alert('提示', '请选中商品后操作');
+				return;
+			}
+			$('#image_save').form('clear');
+			$('#image_save').window('open');
+			$('#image_goodsID').val(row.id);
+			$('#image_category').val('0');
+		}
+		
+		function openUpdShow(){
+			var row = $('#goods_datagrid').datagrid('getSelected');
+			if(!row){
+				$.messager.alert('提示', '请选中商品后操作');
+				return;
+			}
+			var show = $('#show_datagrid').datagrid('getSelected');
+			if(!show){
+				$.messager.alert('提示', '请选中展示图后操作');
+				return;
+			}
+			$('#image_save').form('clear');
+			$('#image_save').window('open');
+			$('#image_id').val(show.id);
+			$('#image_goodsID').val(row.id);
+			$('#image_category').val('0');
+		}
+		
+		function openAddDetail(){
+			var row = $('#goods_datagrid').datagrid('getSelected');
+			if(!row){
+				$.messager.alert('提示', '请选中商品后操作');
+				return;
+			}
+			$('#image_save').form('clear');
+			$('#image_save').window('open');
+			$('#image_goodsID').val(row.id);
+			$('#image_category').val('1');
+		}
+		
+		function openUpdDetail(){
+			var row = $('#goods_datagrid').datagrid('getSelected');
+			if(!row){
+				$.messager.alert('提示', '请选中商品后操作');
+				return;
+			}
+			var detail = $('#detail_datagrid').datagrid('getSelected');
+			if(!detail){
+				$.messager.alert('提示', '请选中详情图图后操作');
+				return;
+			}
+			$('#image_save').form('clear');
+			$('#image_save').window('open');
+			$('#image_id').val(detail.id);
+			$('#image_goodsID').val(row.id);
+			$('#image_category').val('1');
+		}
+		
+		function saveImage(){
+			var validate = $('#ff').form('validate');
+			if (!validate) {
+				$.messager.alert('提示', '请选择图片');
+			}else {
+				var formData = new FormData($("#ff")[0]);
+	            $.ajax({
+	                url: '/beio/backGoods/saveGoodsImg',
+	                type: 'POST',
+	                data: formData,
+	                async: false,
+	                cache: false,
+	                contentType: false,
+	                processData: false,
+	                success : function(data) {
+						if('200' == data.status){
+							$('#image_save').form('clear');
+							$('#image_save').window('close');
+							$.messager.alert('提示', '操作成功');
+							$('#show_datagrid').datagrid('reload');
+							$('#detail_datagrid').datagrid('reload');
+						}else if('100' == data.status) {
+							$.messager.alert('提示', '操作失败');
+						}else if('170' == data.status) {
+							$.messager.alert('提示', '登录失效，请重新登录');
+							window.location.href = 'login.html';
+						}else{
+							$.messager.alert('提示', tip('400'));
+						};
+					},
+					error : function() {
+						$.messager.alert('提示', tip('500'));
+					}
+	            });
+			}
+		}
+		
+		function delShow(){
+			var row = $('#goods_datagrid').datagrid('getSelected');
+			if(!row){
+				$.messager.alert('提示', '请选中商品后操作');
+				return;
+			}
+			var show = $('#show_datagrid').datagrid('getSelected');
+			if(!show){
+				$.messager.alert('提示', '请选中展示图后操作');
+				return;
+			}
+			$.messager.confirm('提示', '确定要删除此记录吗？', function(flag){
+				if(flag){
+					$.ajax({
+						url : '/beio/backGoods/delGoodsImg',
+						data : {
+							'biv.id' : show.id, 
+							'biv.goodsID' : row.id, 
+							'biv.category' : '0' 
+						},
+						type : 'POST',
+						async : false,
+						cache : true,
+						dataType : 'json',
+						success : function(data) {
+							if('200' == data.status){
+								$.messager.alert('提示', '删除成功');
+								$('#show_datagrid').datagrid('reload');
+							}else if('100' == data.status){
+								$.messager.alert('提示', '操作失败');
+							}else if('170' == data.status) {
+								$.messager.alert('提示', '登录失效，请重新登录');
+								window.location.href = 'login.html';
+							}else{
+								$.messager.alert('提示', tip('400'));
+							};
+						},
+						error : function() {
+							$.messager.alert('提示', tip('500'));
+						}
+					});
+				}
+			});
+		}
+		
+		function delDetail(){
+			var row = $('#goods_datagrid').datagrid('getSelected');
+			if(!row){
+				$.messager.alert('提示', '请选中商品后操作');
+				return;
+			}
+			var detail = $('#detail_datagrid').datagrid('getSelected');
+			if(!detail){
+				$.messager.alert('提示', '请选中详情图后操作');
+				return;
+			}
+			$.messager.confirm('提示', '确定要删除此记录吗？', function(flag){
+				if(flag){
+					$.ajax({
+						url : '/beio/backGoods/delGoodsImg',
+						data : {
+							'biv.id' : detail.id, 
+							'biv.goodsID' : row.id, 
+							'biv.category' : '1' 
+						},
+						type : 'POST',
+						async : false,
+						cache : true,
+						dataType : 'json',
+						success : function(data) {
+							if('200' == data.status){
+								$.messager.alert('提示', '删除成功');
+								$('#detail_datagrid').datagrid('reload');
+							}else if('100' == data.status){
+								$.messager.alert('提示', '操作失败');
+							}else if('170' == data.status) {
+								$.messager.alert('提示', '登录失效，请重新登录');
+								window.location.href = 'login.html';
+							}else{
+								$.messager.alert('提示', tip('400'));
+							};
+						},
+						error : function() {
+							$.messager.alert('提示', tip('500'));
+						}
+					});
+				}
+			});
+		}
+		
+		function upShow(){
+			var row = $('#goods_datagrid').datagrid('getSelected');
+			if(!row){
+				$.messager.alert('提示', '请选中商品后操作');
+				return;
+			}
+			var show = $('#show_datagrid').datagrid('getSelected');
+			if(!show){
+				$.messager.alert('提示', '请选中展示图后操作');
+				return;
+			}
+			$.ajax({
+				url : '/beio/backGoods/upGoodsImg',
+				data : {
+					'biv.id' : show.id, 
+					'biv.goodsID' : row.id, 
+					'biv.category' : '0' 
+				},
+				type : 'POST',
+				async : false,
+				cache : true,
+				dataType : 'json',
+				success : function(data) {
+					if('200' == data.status){
+						$('#show_datagrid').datagrid('reload');
+					}else if('100' == data.status){
+						$.messager.alert('提示', '操作失败');
+					}else if('170' == data.status) {
+						$.messager.alert('提示', '登录失效，请重新登录');
+						window.location.href = 'login.html';
+					}else{
+						$.messager.alert('提示', tip('400'));
+					};
+				},
+				error : function() {
+					$.messager.alert('提示', tip('500'));
+				}
+			});
+		}
+		
+		function downShow(){
+			var row = $('#goods_datagrid').datagrid('getSelected');
+			if(!row){
+				$.messager.alert('提示', '请选中商品后操作');
+				return;
+			}
+			var show = $('#show_datagrid').datagrid('getSelected');
+			if(!show){
+				$.messager.alert('提示', '请选中展示图后操作');
+				return;
+			}
+			$.ajax({
+				url : '/beio/backGoods/downGoodsImg',
+				data : {
+					'biv.id' : show.id, 
+					'biv.goodsID' : row.id, 
+					'biv.category' : '0' 
+				},
+				type : 'POST',
+				async : false,
+				cache : true,
+				dataType : 'json',
+				success : function(data) {
+					if('200' == data.status){
+						$('#show_datagrid').datagrid('reload');
+					}else if('100' == data.status){
+						$.messager.alert('提示', '操作失败');
+					}else if('170' == data.status) {
+						$.messager.alert('提示', '登录失效，请重新登录');
+						window.location.href = 'login.html';
+					}else{
+						$.messager.alert('提示', tip('400'));
+					};
+				},
+				error : function() {
+					$.messager.alert('提示', tip('500'));
+				}
+			});
+		}
+		
+		function upDetail(){
+			var row = $('#goods_datagrid').datagrid('getSelected');
+			if(!row){
+				$.messager.alert('提示', '请选中商品后操作');
+				return;
+			}
+			var detail = $('#detail_datagrid').datagrid('getSelected');
+			if(!detail){
+				$.messager.alert('提示', '请选中详情图后操作');
+				return;
+			}
+			$.ajax({
+				url : '/beio/backGoods/upGoodsImg',
+				data : {
+					'biv.id' : detail.id, 
+					'biv.goodsID' : row.id, 
+					'biv.category' : '1' 
+				},
+				type : 'POST',
+				async : false,
+				cache : true,
+				dataType : 'json',
+				success : function(data) {
+					if('200' == data.status){
+						$('#detail_datagrid').datagrid('reload');
+					}else if('100' == data.status){
+						$.messager.alert('提示', '操作失败');
+					}else if('170' == data.status) {
+						$.messager.alert('提示', '登录失效，请重新登录');
+						window.location.href = 'login.html';
+					}else{
+						$.messager.alert('提示', tip('400'));
+					};
+				},
+				error : function() {
+					$.messager.alert('提示', tip('500'));
+				}
+			});
+		}
+		
+		function downDetail(){
+			var row = $('#goods_datagrid').datagrid('getSelected');
+			if(!row){
+				$.messager.alert('提示', '请选中商品后操作');
+				return;
+			}
+			var detail = $('#detail_datagrid').datagrid('getSelected');
+			if(!detail){
+				$.messager.alert('提示', '请选中详情图后操作');
+				return;
+			}
+			$.ajax({
+				url : '/beio/backGoods/downGoodsImg',
+				data : {
+					'biv.id' : detail.id, 
+					'biv.goodsID' : row.id, 
+					'biv.category' : '1' 
+				},
+				type : 'POST',
+				async : false,
+				cache : true,
+				dataType : 'json',
+				success : function(data) {
+					if('200' == data.status){
+						$('#detail_datagrid').datagrid('reload');
+					}else if('100' == data.status){
+						$.messager.alert('提示', '操作失败');
+					}else if('170' == data.status) {
+						$.messager.alert('提示', '登录失效，请重新登录');
+						window.location.href = 'login.html';
+					}else{
+						$.messager.alert('提示', tip('400'));
+					};
+				},
+				error : function() {
+					$.messager.alert('提示', tip('500'));
+				}
+			});
+		}
+		
+	</script>
 </body>
 </html>

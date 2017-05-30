@@ -86,14 +86,10 @@
 			<interceptor-ref name="backIdentityStack"/>
 		</action>
 		
-		
 	
 	
 	
 	
-	
-		<!-- <interceptor-ref name="backStack"/> -->
-		<!-- 后台分页查询商品信息 -->
 		<action name="pageGoods" class="backGoodsAction" method="pageGoods">
 			<result name="json" type="json">
 				<param name="root">backRoot</param>
@@ -101,7 +97,6 @@
 			<interceptor-ref name="backIdentityStack"/>
 		</action>
 		
-		<!-- 后台获取商品分类 -->
 		<action name="getAllClassify" class="backGoodsAction" method="getAllClassify">
 			<result name="json" type="json">
 				<param name="root">jsonArray</param>
@@ -109,7 +104,6 @@
 			<interceptor-ref name="backIdentityStack"/>
 		</action>
 		
-		<!-- 后台获取品牌 -->
 		<action name="getAllBrand" class="backGoodsAction" method="getAllBrand">
 			<result name="json" type="json">
 				<param name="root">jsonArray</param>
@@ -117,81 +111,76 @@
 			<interceptor-ref name="backIdentityStack"/>
 		</action>
 		
-		<!-- 增加商品 -->
-		<action name="addGoods" class="backGoodsAction" method="addGoods">
+		<action name="saveGoods" class="backGoodsAction" method="saveGoods">
 			<result name="json" type="json">
 				<param name="root">backRoot</param>
 			</result>
 			<interceptor-ref name="backIdentityStack"/>
 		</action>
 		
-		<!-- 根据商品id获取商品信息 -->
-		<action name="getGoodsByID" class="backGoodsAction" method="getGoodsByID">
+		<action name="delGoods" class="backGoodsAction" method="delGoods">
 			<result name="json" type="json">
 				<param name="root">backRoot</param>
 			</result>
 			<interceptor-ref name="backIdentityStack"/>
 		</action>
 		
-		<!-- 修改商品信息 -->
-		<action name="updateGoods" class="backGoodsAction" method="updateGoods">
-			<result name="json" type="json">
-				<param name="root">backRoot</param>
-			</result>
-			<interceptor-ref name="backIdentityStack"/>
-		</action>
-				
-		<!-- 启用/禁用商品 -->
-		<action name="controlGoodsEnable" class="backGoodsAction" method="controlGoodsEnable">
-			<result name="json" type="json">
-				<param name="root">backRoot</param>
-			</result>
-			<interceptor-ref name="backIdentityStack"/>
-		</action>
-		
-		<!-- 根据商品id获取商品图片 -->
-		<action name="getGoodsImagesByID" class="backGoodsAction" method="getGoodsImagesByID">
-			<result name="json" type="json">
-				<param name="root">backRoot</param>
-			</result>
-			<interceptor-ref name="backIdentityStack"/>
-		</action>
-		
-		<!-- 新增商品图片 -->
-		<action name="addGoodsImage" class="backGoodsAction" method="addGoodsImage">
-			<result name="json" type="json">
-				<param name="root">backRoot</param>
-			</result>
-			<interceptor-ref name="backIdentityStack"/>
-		</action>
-				
-		<!-- 修改商品图片信息 -->
-		<action name="updateGoodsImage" class="backGoodsAction" method="updateGoodsImage">
-			<result name="json" type="json">
-				<param name="root">backRoot</param>
-			</result>
-			<interceptor-ref name="backIdentityStack"/>
-		</action>
-		
-		<!-- 删除商品信息 -->
-		<action name="delGoodsImage" class="backGoodsAction" method="delGoodsImage">
-			<result name="json" type="json">
-				<param name="root">backRoot</param>
-			</result>
-			<interceptor-ref name="backIdentityStack"/>
-		</action>		
-		
-		
-		
-		<!-- 品牌管理 -->
-		
-		
-		
-		<!-- 分类管理 -->
-		<!-- 获取全部分类 -->
-		<action name="allClassify" class="backGoodsAction" method="allClassify">
+		<action name="queryGoodsImg" class="backGoodsAction" method="queryGoodsImg">
 			<result name="json" type="json">
 				<param name="root">jsonArray</param>
+			</result>
+			<interceptor-ref name="backIdentityStack"/>
+		</action>
+		
+		<action name="saveGoodsImg" class="backGoodsAction" method="saveGoodsImg">
+			<result name="json" type="json">
+				<param name="root">backRoot</param>
+			</result>
+			<interceptor-ref name="backIdentityStack"/>
+		</action>
+		
+		<action name="delGoodsImg" class="backGoodsAction" method="delGoodsImg">
+			<result name="json" type="json">
+				<param name="root">backRoot</param>
+			</result>
+			<interceptor-ref name="backIdentityStack"/>
+		</action>
+		
+		<action name="upGoodsImg" class="backGoodsAction" method="upGoodsImg">
+			<result name="json" type="json">
+				<param name="root">backRoot</param>
+			</result>
+			<interceptor-ref name="backIdentityStack"/>
+		</action>
+		
+		<action name="downGoodsImg" class="backGoodsAction" method="downGoodsImg">
+			<result name="json" type="json">
+				<param name="root">backRoot</param>
+			</result>
+			<interceptor-ref name="backIdentityStack"/>
+		</action>
+		
+		
+		
+		
+		
+		<action name="pageOrder" class="backGoodsAction" method="pageOrder">
+			<result name="json" type="json">
+				<param name="root">backRoot</param>
+			</result>
+			<interceptor-ref name="backIdentityStack"/>
+		</action>
+		
+		<action name="sendGoods" class="backGoodsAction" method="sendGoods">
+			<result name="json" type="json">
+				<param name="root">backRoot</param>
+			</result>
+			<interceptor-ref name="backIdentityStack"/>
+		</action>
+		
+		<action name="cancelOrder" class="backGoodsAction" method="cancelOrder">
+			<result name="json" type="json">
+				<param name="root">backRoot</param>
 			</result>
 			<interceptor-ref name="backIdentityStack"/>
 		</action>

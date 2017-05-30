@@ -3,17 +3,14 @@ package com.beio.back.action;
 import java.util.List;
 
 import net.sf.json.JSONArray;
-import net.sf.json.JSONObject;
 
-import com.beio.back.entity.BackGdsGoods;
-import com.beio.back.entity.BackGdsImage;
 import com.beio.back.service.BackGdsGoodsService;
 import com.beio.back.vo.BackComboboxVO;
 import com.beio.back.vo.BackGdsBrandVO;
 import com.beio.back.vo.BackGdsClassifyVO;
-import com.beio.back.vo.BackGdsGoodsFileVO;
 import com.beio.back.vo.BackGdsGoodsVO;
 import com.beio.back.vo.BackGdsImageVO;
+import com.beio.back.vo.BackGdsOrderVO;
 import com.beio.base.action.BaseAction;
 import com.beio.base.util.ComUtil;
 
@@ -33,20 +30,14 @@ public class BackGoodsAction extends BaseAction {
 	private BackGdsBrandVO bbv = new BackGdsBrandVO(); // 后台品牌
 	
 	private BackGdsClassifyVO bcv = new BackGdsClassifyVO(); // 后台分类
-
-	private BackGdsGoodsService bgs;
 	
-	
-	
-	
-
 	private BackGdsGoodsVO bgv = new BackGdsGoodsVO(); // 后台商品值对象
 
-	private BackGdsGoodsFileVO bgfv = new BackGdsGoodsFileVO(); // 后台商品带文件
-
-	
-
 	private BackGdsImageVO biv = new BackGdsImageVO(); // 图片
+	
+	private BackGdsOrderVO bov = new BackGdsOrderVO(); // 订单
+
+	private BackGdsGoodsService bgs;
 	
 	/**
 	 * 查询品牌
@@ -147,7 +138,6 @@ public class BackGoodsAction extends BaseAction {
 	 * @throws Exception
 	 */
 	public String pageClassify() throws Exception {
-		System.out.println(bcv.getPid());
 		bcv.setPage((Integer.valueOf(page) - 1) * Integer.valueOf(rows));
 		bcv.setRows(Integer.valueOf(rows));
 		setBackPageRoot(
@@ -172,13 +162,13 @@ public class BackGoodsAction extends BaseAction {
 			if (1 > bgs.insert("backGoods.addClassify", bcv)) {
 				setBackRoot("100");
 			} else {
-				setBackRoot("200");
+				setBackRoot(bcv, "200", "");
 			}
 		} else { // 修改
 			if (1 > bgs.update("backGoods.updClassify", bcv)) {
 				setBackRoot("100");
 			} else {
-				setBackRoot("200");
+				setBackRoot(bcv, "200", "");
 			}
 		}
 		return JSON;
@@ -195,7 +185,7 @@ public class BackGoodsAction extends BaseAction {
 		if (1 > bgs.update("backGoods.delClassify", bcv)) {
 			setBackRoot("100");
 		} else {
-			baseIbaitsService.update("flushClassify");
+			baseIbaitsService.update("flushClassify", bcv);
 			setBackRoot("200");
 		}
 		return JSON;
@@ -212,7 +202,7 @@ public class BackGoodsAction extends BaseAction {
 		if (1 > bgs.update("backGoods.upClassify", bcv)) {
 			setBackRoot("100");
 		} else {
-			baseIbaitsService.update("flushClassify");
+			baseIbaitsService.update("flushClassify", bcv);
 			setBackRoot("200");
 		}
 		return JSON;
@@ -229,7 +219,7 @@ public class BackGoodsAction extends BaseAction {
 		if (1 > bgs.update("backGoods.downClassify", bcv)) {
 			setBackRoot("100");
 		} else {
-			baseIbaitsService.update("flushClassify");
+			baseIbaitsService.update("flushClassify", bcv);
 			setBackRoot("200");
 		}
 		return JSON;
@@ -237,40 +227,24 @@ public class BackGoodsAction extends BaseAction {
 	
 	
 	
+	
 
-	/**
-	 * 后台分页查询商品信息
-	 * 
-	 * @return
-	 * @throws Exception
-	 */
 	public String pageGoods() throws Exception {
 		bgv.setPage((Integer.valueOf(page) - 1) * Integer.valueOf(rows));
 		bgv.setRows(Integer.valueOf(rows));
-		bgv.setClassifyPID(getRequest().getParameter("classifyPID"));
-		bgv.setClassifyID(getRequest().getParameter("classifyid"));
-		bgv.setBrandID(getRequest().getParameter("brandid"));
-		bgv.setName(getRequest().getParameter("goodsname"));
 		setBackPageRoot(
 				(int) bgs.selectOne("backGoods.countGoods", bgv),
 				JSONArray.fromObject(bgs.selectList("backGoods.pageGoods", bgv)),
 				"200");
 		return JSON;
 	}
-
-	/**
-	 * 获取全部分类
-	 * 
-	 * @return
-	 * @throws Exception
-	 */
+	
+	@SuppressWarnings("unchecked")
 	public String getAllClassify() throws Exception {
 		if (ComUtil.isEmpty(bcv.getPid())) {
 			bcv.setPid("0");
 		}
-		@SuppressWarnings("unchecked")
-		List<BackComboboxVO> coms = bgs.selectList(
-				"backGoods.getAllClassifyByPid", bcv);
+		List<BackComboboxVO> coms = bgs.selectList("backGoods.getAllClassifyByPid", bcv);
 		BackComboboxVO com = new BackComboboxVO();
 		com.setVal("");
 		com.setText("全部");
@@ -279,17 +253,8 @@ public class BackGoodsAction extends BaseAction {
 		return JSON;
 	}
 
-	/**
-	 * 获取所有品牌
-	 * 
-	 * @author Dashi
-	 * @version 1.0.0
-	 * @date 2017-05-06
-	 * @return
-	 * @throws Exception
-	 */
+	@SuppressWarnings("unchecked")
 	public String getAllBrand() throws Exception {
-		@SuppressWarnings("unchecked")
 		List<BackComboboxVO> coms = bgs.selectList("backGoods.getAllBrand");
 		BackComboboxVO com = new BackComboboxVO();
 		com.setVal("");
@@ -298,185 +263,139 @@ public class BackGoodsAction extends BaseAction {
 		jsonArray = JSONArray.fromObject(coms);
 		return JSON;
 	}
-
-	/**
-	 * 增加商品
-	 * 
-	 * @author Dashi
-	 * @version 1.0.0
-	 * @date 2017-05-07
-	 * @return
-	 * @throws Exception
-	 */
-	public String addGoods() throws Exception {
-
-		// 展示图最少一张
-
-		// 详情图最少一张
-
-		bgfv.setmPrice(getRequest().getParameter("bgfv.mPrice"));
-		bgfv.setcPrice(getRequest().getParameter("bgfv.cPrice"));
-		bgfv.setCreator(sessionUser().getId());
-		bgfv.setCreateTime(curTimeStr());
-		if (bgs.addGoods(bgfv)) {
-			setBackRoot("200");
-		} else {
-			setBackRoot("100");
-		}
-		return JSON;
-	}
-
-	/**
-	 * 根据id获取商品
-	 * 
-	 * @author Dashi
-	 * @version 1.0.0
-	 * @date
-	 * @return
-	 * @throws Exception
-	 */
-	public String getGoodsByID() throws Exception {
-		BackGdsGoods goods = (BackGdsGoods) bgs.selectOne(
-				"backGoods.getGoodsByID", bgv.getId());
-		if (null != goods && !ComUtil.isEmpty(goods.getId())) {
-			setBackRoot(JSONObject.fromObject(goods), "200", "OK");
-		} else {
-			setBackRoot("100");
-		}
-		return JSON;
-	}
-
-	/**
-	 * 修改商品信息
-	 * 
-	 * @author Dashi
-	 * @version 1.0.0
-	 * @date
-	 * @return
-	 * @throws Exception
-	 */
-	public String updateGoods() throws Exception {
+	
+	public String saveGoods() throws Exception {
+		bgv.setCreator(sessionUserID());
+		bgv.setCreateTime(curTimeStr());
+		bgv.setModifier(sessionUserID());
+		bgv.setModifyTime(curTimeStr());
 		bgv.setmPrice(getRequest().getParameter("bgv.mPrice"));
 		bgv.setcPrice(getRequest().getParameter("bgv.cPrice"));
-		bgv.setModifier(sessionUser().getId());
+		if (ComUtil.isEmpty(bgv.getDescr())) {
+			bgv.setDescr("");
+		}
+		if (ComUtil.isEmpty(bgv.getRemark())) {
+			bgv.setRemark("");
+		}
+		if (ComUtil.isEmpty(bgv.getId())) { // 新增
+			if (1 > bgs.insert("backGoods.addGoods", bgv)) {
+				setBackRoot("100");
+			} else {
+				setBackRoot("200");
+			}
+		} else { // 修改
+			if (1 > bgs.update("backGoods.updGoods", bgv)) {
+				setBackRoot("100");
+			} else {
+				setBackRoot("200");
+			}
+		}
+		return JSON;
+	}
+	
+	public String delGoods() throws Exception {
+		bgv.setModifier(sessionUserID());
 		bgv.setModifyTime(curTimeStr());
-		if (1 > bgs.update("backGoods.updateGoods", bgv)) {
+		if (1 > bgs.update("backGoods.delGoods", bgv)) {
 			setBackRoot("100");
 		} else {
 			setBackRoot("200");
 		}
 		return JSON;
 	}
-
-	/**
-	 * 获取图片信息
-	 * 
-	 * @author Dashi
-	 * @version 1.0.0
-	 * @date
-	 * @return
-	 * @throws Exception
-	 */
-	public String getGoodsImagesByID() throws Exception {
-		@SuppressWarnings("unchecked")
-		List<BackGdsImage> imgs = bgs.selectList(
-				"backGoods.getGoodsImagesByID", bgv.getId());
-		setBackPageRoot(imgs.size(), JSONArray.fromObject(imgs), "200");
+	
+	public String queryGoodsImg() throws Exception{
+		jsonArray = JSONArray.fromObject(bgs.selectList("backGoods.queryGoodsImg", biv));
 		return JSON;
 	}
-
-	/**
-	 * 增加商品图片
-	 * 
-	 * @author Dashi
-	 * @version 1.0.0
-	 * @date
-	 * @return
-	 * @throws Exception
-	 */
-	public String addGoodsImage() throws Exception {
-		biv.setCreator(sessionUser().getId());
+	
+	public String saveGoodsImg() throws Exception {
+		biv.setCreator(sessionUserID());
 		biv.setCreateTime(curTimeStr());
-		if (bgs.addImage(biv)) {
-			setBackRoot("200");
-		} else {
-			setBackRoot("100");
-		}
-		return JSON;
-	}
-
-	/**
-	 * 修改商品图片信息
-	 * 
-	 * @author Dashi
-	 * @version 1.0.0
-	 * @date
-	 * @return
-	 * @throws Exception
-	 */
-	public String updateGoodsImage() throws Exception {
-		biv.setModifier(sessionUser().getId());
+		biv.setModifier(sessionUserID());
 		biv.setModifyTime(curTimeStr());
-		if (bgs.updateImage(biv)) {
+		if (bgs.saveImage(biv) > 0) {
 			setBackRoot("200");
 		} else {
 			setBackRoot("100");
 		}
 		return JSON;
 	}
-
-	/**
-	 * 删除商品图片
-	 * 
-	 * @author Dashi
-	 * @version 1.0.0
-	 * @date
-	 * @return
-	 * @throws Exception
-	 */
-	public String delGoodsImage() throws Exception {
-		biv.setModifier(sessionUser().getId());
+	
+	public String delGoodsImg() throws Exception {
+		biv.setModifier(sessionUserID());
 		biv.setModifyTime(curTimeStr());
-		if (bgs.delImage(biv)) {
-			setBackRoot("200");
-		} else {
-			setBackRoot("100");
-		}
-		return JSON;
-	}
-
-	/**
-	 * 操作商品启用/禁用
-	 * 
-	 * @author Dashi
-	 * @version 1.0.0
-	 * @date
-	 * @return
-	 * @throws Exception
-	 */
-	public String controlGoodsEnable() throws Exception {
-		bgv.setModifier(sessionUser().getId());
-		bgv.setModifyTime(curTimeStr());
-		if (1 > bgs.update("backGoods.controlGoodsEnable", bgv)) {
+		if (1 > bgs.update("backGoods.delGoodsImg", biv)) {
 			setBackRoot("100");
 		} else {
+			baseIbaitsService.update("flushImage", biv);
 			setBackRoot("200");
 		}
 		return JSON;
-
 	}
-
-	/**
-	 * 获取全部分类
-	 * 
-	 * @author Dashi
-	 * @version 1.0.0
-	 * @date
-	 * @return
-	 * @throws Exception
-	 */
-	public String allClassify() throws Exception {
-		jsonArray = JSONArray.fromObject(bgs.allClassify(bcv));
+	
+	public String upGoodsImg() throws Exception {
+		biv.setModifier(sessionUserID());
+		biv.setModifyTime(curTimeStr());
+		if (1 > bgs.update("backGoods.upGoodsImg", biv)) {
+			setBackRoot("100");
+		} else {
+			baseIbaitsService.update("flushImage", biv);
+			setBackRoot("200");
+		}
+		return JSON;
+	}
+	
+	public String downGoodsImg() throws Exception {
+		biv.setModifier(sessionUserID());
+		biv.setModifyTime(curTimeStr());
+		if (1 > bgs.update("backGoods.downGoodsImg", biv)) {
+			setBackRoot("100");
+		} else {
+			baseIbaitsService.update("flushImage", biv);
+			setBackRoot("200");
+		}
+		return JSON;
+	}
+	
+	
+	
+	
+	
+	public String pageOrder() throws Exception {
+		bov.setPage((Integer.valueOf(page) - 1) * Integer.valueOf(rows));
+		bov.setRows(Integer.valueOf(rows));
+		setBackPageRoot(
+				(int) bgs.selectOne("backGoods.countOrder", bov), 
+				JSONArray.fromObject(bgs.selectList("backGoods.pageOrder", bov)), 
+				"200"
+				);
+		return JSON;
+	}
+	
+	public String sendGoods() throws Exception {
+		bov.setCreator(sessionUserID());
+		bov.setCreateTime(curTimeStr());
+		bov.setModifier(sessionUserID());
+		bov.setModifyTime(curTimeStr());
+		if (1 > bgs.insert("backGoods.sendGoods", bov)) {
+			setBackRoot("100");
+		} else {
+			setBackRoot("200");
+		}
+		return JSON;
+	}
+	
+	public String cancelOrder() throws Exception {
+		bov.setCreator(sessionUserID());
+		bov.setCreateTime(curTimeStr());
+		bov.setModifier(sessionUserID());
+		bov.setModifyTime(curTimeStr());
+		if (1 > bgs.insert("backGoods.cancelOrder", bov)) {
+			setBackRoot("100");
+		} else {
+			setBackRoot("200");
+		}
 		return JSON;
 	}
 
@@ -504,14 +423,6 @@ public class BackGoodsAction extends BaseAction {
 		this.bgv = bgv;
 	}
 
-	public BackGdsGoodsFileVO getBgfv() {
-		return bgfv;
-	}
-
-	public void setBgfv(BackGdsGoodsFileVO bgfv) {
-		this.bgfv = bgfv;
-	}
-
 	public BackGdsClassifyVO getBcv() {
 		return bcv;
 	}
@@ -534,6 +445,14 @@ public class BackGoodsAction extends BaseAction {
 
 	public void setBiv(BackGdsImageVO biv) {
 		this.biv = biv;
+	}
+
+	public BackGdsOrderVO getBov() {
+		return bov;
+	}
+
+	public void setBov(BackGdsOrderVO bov) {
+		this.bov = bov;
 	}
 
 }

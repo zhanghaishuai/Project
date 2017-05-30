@@ -54,6 +54,8 @@
 		<typeAlias type="com.beio.back.vo.BackGdsImageVO" alias="BIV"/>
 		<typeAlias type="com.beio.back.entity.BackGdsImage" alias="BI"/>
 		
+		<typeAlias type="com.beio.back.vo.BackGdsOrderVO" alias="BOV"/>
+		<typeAlias type="com.beio.back.entity.BackGdsOrder" alias="BO"/>
 		
 		<typeAlias type="com.beio.base.vo.User" alias="User"/>
 		<typeAlias type="com.beio.base.vo.Role" alias="Role"/>

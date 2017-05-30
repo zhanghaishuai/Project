@@ -118,16 +118,12 @@
 				dataType : 'json',
 				success : function(data) {
 					if('200' == data.status){
-						$('#user_add').form('clear');
-						$('#user_add').window('close');
-						$.messager.alert('提示', '操作成功');
 						$('#brand_save').form('clear');
 						$('#brand_save').window('close');
+						$.messager.alert('提示', '操作成功');
 						$('#brands_datagrid').datagrid('reload');
 					}else if('100' == data.status) {
 						$.messager.alert('提示', '操作失败');
-					}else if('101' == data.status) {
-						$.messager.alert('提示', '用户名已存在');
 					}else if('170' == data.status) {
 						$.messager.alert('提示', '登录失效，请重新登录');
 						window.location.href = 'login.html';

@@ -1,6 +1,5 @@
 package com.beio.back.vo;
 
-
 import com.beio.back.entity.BackGdsGoods;
 
 /**
@@ -17,12 +16,11 @@ public class BackGdsGoodsVO extends BackGdsGoods{
 	
 	private String classifyPID; // 父级分类
 	
-	private String classifyPname; // 父级分类名称
+	private String classifyPName; // 父级分类名称
 	
-	private String brand; // 品牌名称
+	private String brandName; // 品牌名称
 	
-	private String classify; // 分类名称
-	
+	private String classifyName; // 分类名称
 	
 	public int getPage() {
 		return page;
@@ -40,22 +38,6 @@ public class BackGdsGoodsVO extends BackGdsGoods{
 		this.rows = rows;
 	}
 
-	public String getBrand() {
-		return brand;
-	}
-
-	public void setBrand(String brand) {
-		this.brand = brand;
-	}
-
-	public String getClassify() {
-		return classify;
-	}
-
-	public void setClassify(String classify) {
-		this.classify = classify;
-	}
-
 	public String getClassifyPID() {
 		return classifyPID;
 	}
@@ -64,14 +46,28 @@ public class BackGdsGoodsVO extends BackGdsGoods{
 		this.classifyPID = classifyPID;
 	}
 
-	public String getClassifyPname() {
-		return classifyPname;
+	public String getClassifyPName() {
+		return classifyPName;
 	}
 
-	public void setClassifyPname(String classifyPname) {
-		this.classifyPname = classifyPname;
+	public void setClassifyPName(String classifyPName) {
+		this.classifyPName = classifyPName;
 	}
 
-	
-	
+	public String getBrandName() {
+		return brandName;
+	}
+
+	public void setBrandName(String brandName) {
+		this.brandName = brandName;
+	}
+
+	public String getClassifyName() {
+		return classifyName;
+	}
+
+	public void setClassifyName(String classifyName) {
+		this.classifyName = classifyName;
+	}
+
 }

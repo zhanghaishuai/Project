@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>订单管理</title>
+	<link rel="stylesheet" type="text/css" href="js/jquery-easyui-1.5.2/themes/default/easyui.css">
+	<link rel="stylesheet" type="text/css" href="js/jquery-easyui-1.5.2/themes/icon.css">
+	<link rel="stylesheet" type="text/css" href="js/jquery-easyui-1.5.2/demo/demo.css">
+	<script type="text/javascript" src="js/jquery-easyui-1.5.2/jquery.min.js"></script>
+	<script type="text/javascript" src="js/jquery-easyui-1.5.2/jquery.easyui.min.js"></script>
+		
+</head>
+<body>
+	<table id="orders_datagrid" class="easyui-datagrid" style="width:100%;height:100%;" title="订单列表"
+		data-options="
+			url:'/beio/backGoods/pageOrder',
+			fitColumns:true,
+			striped:true,
+			rownumbers:true,
+			singleSelect:true,
+			collapsible:false,
+			pagination:true,
+			pagePosition:'bottom',
+			pageNumber:1,
+			pageSize:30,
+			method:'post',
+			loadFilter: function(data){if(data.status=='170'){alert('登录失效，请重新登录');window.location.href = 'login.html'}else{return data}},
+			toolbar: '#order_tb'">
+		<thead>
+			<tr>
+				<th data-options="field:'id',width:120,align:'center'">编号</th>
+				<th data-options="field:'payID',width:120,align:'center', editor:'text'">支付编号</th>
+				<th data-options="field:'orderNo',width:120,align:'center', editor:'text'">订单编号</th>
+				<th data-options="field:'buyerName',width:120,align:'center', editor:'text'">买家昵称</th>
+				<th data-options="field:'addrName',width:120,align:'center', editor:'text'">收货人姓名</th>
+				<th data-options="field:'addrMobile',width:120,align:'center', editor:'text'">收货人手机号码</th>
+				<th data-options="field:'addrProvinceName',width:120,align:'center', editor:'text'">收货省份</th>
+				<th data-options="field:'addrCityName',width:120,align:'center', editor:'text'">收货城市</th>
+				<th data-options="field:'addrCountyName',width:120,align:'center', editor:'text'">收货区县</th>
+				<th data-options="field:'addrAddress',width:120,align:'center', editor:'text'">详细地址</th>
+				<th data-options="field:'receiptStatus',width:120,align:'center', editor:'text', formatter:function(value,row,index){if(value == '1'){return '是';}else if(value == '0'){return '否';}}">是否开发票</th>
+				<th data-options="field:'receiptType',width:120,align:'center', editor:'text', formatter:function(value,row,index){if(value == '1'){return '单位';}else if(value == '0'){return '个人';}}">发票类型</th>
+				<th data-options="field:'receiptTitle',width:120,align:'center', editor:'text'">发票抬头</th>
+				<th data-options="field:'goodsName',width:120,align:'center', editor:'text'">商品名称</th>
+				<th data-options="field:'goodsPrice',width:120,align:'center', editor:'text'">商品价格</th>
+				<th data-options="field:'goodsFreight',width:120,align:'center', editor:'text'">快递运费</th>
+				<th data-options="field:'goodsQuantity',width:120,align:'center', editor:'text'">购买数量</th>
+				<th data-options="field:'totalPrice',width:120,align:'center', editor:'text'">费用总额</th>
+				<th data-options="field:'status',width:120,align:'center', editor:'text', formatter:function(value,row,index){if(value == '0'){return '未付款';}else if(value == '1'){return '待发货';}else if(value == '2'){return '已发货';}else if(value == '3'){return '已完成';}else if(value == '4'){return '售后中';}else if(value == '5'){return '已关闭';}}">订单状态</th>
+				<th data-options="field:'waybillNo',width:120,align:'center', editor:'text'">运单号</th>
+				<th data-options="field:'createTime',width:120,align:'center', formatter:function(value,row,index){return dateMilliFormat(value, 'TIME')}">下单时间</th>
+			</tr>
+		</thead>
+	</table>
+	<div id="order_tb" style="padding:5px 5px;">
+		<div>
+			<a href="javascript:void(0);" onclick="openSendGoods()" class="easyui-linkbutton">商品发货</a>
+			<a href="javascript:void(0);" onclick="cancelOrder()" class="easyui-linkbutton">取消订单</a>
+			<div style="float: right;">
+				<input id="search_payID" class="easyui-textbox" data-options="prompt:'支付编号'" style="width:250px;height:24px;">
+				<input id="search_orderNo" class="easyui-textbox" data-options="prompt:'订单编号'" style="width:250px;height:24px;">
+				<a href="javascript:void(0);" onclick="searchorders();" class="easyui-linkbutton" data-options="iconCls:'icon-search'">搜索</a>
+			</div>
+		</div>
+	</div>
+	<div id="send_goods" class="easyui-window" title="商品发货" style="width:280px; height:150px; padding:10px;"
+		data-options="
+			closed: true, 
+			closable: true, 
+			resizable: false, 
+			collapsible: false, 
+			minimizable: false, 
+			maximizable: false, 
+			left: '500px', 
+			top: '210px', 
+			modal:true, 
+			draggable: true">
+		<table cellpadding="10" style="width: 100%">
+			<tr>
+				<td>运单号:</td>
+				<td>
+					<input type="hidden" id="order_id" name="order.id"></input>
+					<input class="easyui-textbox" type="text" id="order_waybillNo" name="order.waybillNo" maxlength="50"></input>
+				</td>
+			</tr>
+		</table>
+		<div style="text-align:center;padding:5px">
+			<a href="javascript:void(0)" class="easyui-linkbutton" onclick="sendGoods()">提交</a>
+			<a href="javascript:void(0)" class="easyui-linkbutton" onclick="$('#send_goods').form('clear');$('#send_goods').window('close');">取消</a>
+		</div>
+	</div>
+	<script type="text/javascript">
+		
+		function searchorders(){
+			$('#orders_datagrid').datagrid('load',{
+				'bov.payID' : $('#search_payID').val(),
+				'bov.orderNo' : $('#search_orderNo').val()
+			});
+		}
+		
+		function openSendGoods(){
+			var row = $('#orders_datagrid').datagrid('getSelected');
+			if(!row || row.status != '1'){
+				$.messager.alert('提示', '请选中待发货订单后操作');
+				return;
+			}
+			$('#send_goods').form('clear');
+			$('#send_goods').window('open');
+			$('#order_id').val(row.id);
+		}
+		
+		function sendGoods(){
+			if (new RegExp(regex('empty')).test($('#order_waybillNo').val()) == false) {
+				$.messager.alert('提示', '运单号不能为空');
+				return;
+			}
+			$.ajax({
+				url : '/beio/backGoods/sendGoods',
+				data : {
+					'bov.id' : $('#order_id').val(), 
+					'bov.waybillNo' : $('#order_waybillNo').val()
+				},
+				type : 'POST',
+				async : false,
+				cache : true,
+				dataType : 'json',
+				success : function(data) {
+					if('200' == data.status){
+						$('#send_goods').form('clear');
+						$('#send_goods').window('close');
+						$.messager.alert('提示', '操作成功');
+						$('#orders_datagrid').datagrid('reload');
+					}else if('100' == data.status) {
+						$.messager.alert('提示', '操作失败');
+					}else if('170' == data.status) {
+						$.messager.alert('提示', '登录失效，请重新登录');
+						window.location.href = 'login.html';
+					}else{
+						$.messager.alert('提示', tip('400'));
+					};
+				},
+				error : function() {
+					$.messager.alert('提示', tip('500'));
+				}
+			});
+		}
+		
+		function cancelOrder(){
+			var row = $('#orders_datagrid').datagrid('getSelected');
+			if(!row || row.status == '5'){
+				$.messager.alert('提示', '请选中未关闭订单后操作');
+				return;
+			}
+			$.ajax({
+				url : '/beio/backGoods/cancelOrder',
+				data : {
+					'bov.id' : row.id, 
+				},
+				type : 'POST',
+				async : false,
+				cache : true,
+				dataType : 'json',
+				success : function(data) {
+					if('200' == data.status){
+						$('#send_goods').form('clear');
+						$('#send_goods').window('close');
+						$.messager.alert('提示', '操作成功');
+						$('#orders_datagrid').datagrid('reload');
+					}else if('100' == data.status) {
+						$.messager.alert('提示', '操作失败');
+					}else if('170' == data.status) {
+						$.messager.alert('提示', '登录失效，请重新登录');
+						window.location.href = 'login.html';
+					}else{
+						$.messager.alert('提示', tip('400'));
+					};
+				},
+				error : function() {
+					$.messager.alert('提示', tip('500'));
+				}
+			});
+		}
+		
+	</script>
+</body>
+</html>

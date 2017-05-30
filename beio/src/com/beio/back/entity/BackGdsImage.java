@@ -1,5 +1,8 @@
 package com.beio.back.entity;
 
+import com.beio.base.util.ComUtil;
+import com.beio.base.util.PathUtil;
+
 /**
  * 后台商品图片
  * 
@@ -49,11 +52,35 @@ public class BackGdsImage {
 		return orgPath;
 	}
 
+	public String getHttpOrgPath() {
+		if (ComUtil.isNotEmpty(orgPath)) {
+			try {
+				return PathUtil.serverPath(orgPath);
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		return orgPath;
+	}
+	
 	public void setOrgPath(String orgPath) {
 		this.orgPath = orgPath;
 	}
 
 	public String getBigPath() {
+		return bigPath;
+	}
+
+	public String getHttpBigPath() {
+		if (ComUtil.isNotEmpty(bigPath)) {
+			try {
+				return PathUtil.serverPath(bigPath);
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
 		return bigPath;
 	}
 
@@ -65,11 +92,35 @@ public class BackGdsImage {
 		return midPath;
 	}
 
+	public String getHttpMidPath() {
+		if (ComUtil.isNotEmpty(midPath)) {
+			try {
+				return PathUtil.serverPath(midPath);
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		return midPath;
+	}
+
 	public void setMidPath(String midPath) {
 		this.midPath = midPath;
 	}
 
 	public String getSmaPath() {
+		return smaPath;
+	}
+
+	public String getHttpSmaPath() {
+		if (ComUtil.isNotEmpty(smaPath)) {
+			try {
+				return PathUtil.serverPath(smaPath);
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
 		return smaPath;
 	}
 
