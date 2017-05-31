@@ -77,6 +77,10 @@
 		update gds_brand set sort = sort + 3, modifier = #{modifier}, modifyTime = #{modifyTime} where id = #{id};
 	</update>
 	
+	
+	
+	
+	
 	<!-- 分类总数 -->
 	<select id="countClassify" parameterType="BCV" resultType="int">
 		select 
@@ -157,10 +161,10 @@
 	<update id="downClassify" parameterType="BCV">
 		update gds_classify set sort = sort + 3, modifier = #{modifier}, modifyTime = #{modifyTime} where id = #{id};
 	</update>
-
-
-
-
+	
+	
+	
+	
 	
 	<!-- 后台查询商品总数 -->
 	<select id="countGoods" parameterType="BGV" resultType="int">
@@ -352,6 +356,10 @@
 		update gds_image set sortNum = sortNum + 3, modifier = #{modifier}, modifyTime = #{modifyTime} where id = #{id};
 	</update>
 	
+	
+	
+	
+	
 	<select id="countOrder" parameterType="BOV" resultType="int">
 		SELECT 
 		    COUNT(1) 
@@ -406,6 +414,54 @@
 	<update id="cancelOrder" parameterType="BOV">
 		update gds_order set status = '5', modifier = #{modifier}, modifyTime = #{modifyTime} where id = #{id};
 	</update>
+	
+	
+	
+	
+	
+	<select id="queryBanner" parameterType="BGBV" resultType="BGB">
+		SELECT 
+		    b.*, u.username AS creatorName
+		FROM
+		    gds_banner b
+		        LEFT JOIN
+		    sys_user u ON b.creator = u.id
+		ORDER BY CAST(sort AS UNSIGNED INT)
+	</select>
+	
+	<insert id="addBanner" parameterType="BGBV">
+		insert into gds_banner(url, path, sort, creator, createTime, modifier, modifyTime) 
+			values (#{url}, #{path}, (select ifnull(max(cast(sort as unsigned int)), 0) + 2 from gds_banner t), #{creator}, #{createTime}, #{modifier}, #{modifyTime})
+	</insert>
+	
+	<update id="updBanner" parameterType="BGBV">
+		update gds_banner set url = #{url}, path = #{path}, modifier = #{modifier}, modifyTime = #{modifyTime} where id = #{id};
+	</update>
+	
+	<update id="delBanner" parameterType="BGBV">
+		delete from gds_banner where id = #{id};
+	</update>
+	
+	<update id="flushBanner" parameterType="BGBV">
+		UPDATE gds_banner b
+		        INNER JOIN
+		    (SELECT 
+		        @rowno:=@rowno + 2 AS rowno, r.*
+		    FROM
+		        gds_banner r, (SELECT @rowno:=0) t
+		    ORDER BY CAST(r.sort AS UNSIGNED INT) ASC) t ON b.id = t.id 
+		SET 
+		    b.sort = t.rowno;
+	</update>
+	
+	<update id="upBanner" parameterType="BGBV">
+		update gds_banner set sort = sort - 3, modifier = #{modifier}, modifyTime = #{modifyTime} where id = #{id};
+	</update>
+	
+	<update id="downBanner" parameterType="BGBV">
+		update gds_banner set sort = sort + 3, modifier = #{modifier}, modifyTime = #{modifyTime} where id = #{id};
+	</update>
+	
 	
 	
 	

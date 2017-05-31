@@ -9,6 +9,7 @@ import java.util.UUID;
 import javax.imageio.ImageIO;
 
 import com.beio.back.service.BackGdsGoodsService;
+import com.beio.back.vo.BackGdsBannerVO;
 import com.beio.back.vo.BackGdsImageVO;
 import com.beio.base.service.impl.BaseIbatisServiceImpl;
 import com.beio.base.util.ComUtil;
@@ -89,6 +90,40 @@ public class BackGdsGoodsServiceImpl extends BaseIbatisServiceImpl implements
 	
 	
 	
+	@Override
+	public int saveImage(BackGdsBannerVO bgbv) throws Exception {
+		// TODO Auto-generated method stub
+		// ……/goods/${date}
+		String imgsPath = ConfigUtil.getProperties("BANNERPATH");
+		
+		mkdirFolder(imgsPath);
+
+		bgbv.setPath(imgsPath + File.separator + getNewFileName(bgbv.getImgFileName()));
+
+		int result = 0;
+		
+		if (ComUtil.isEmpty(bgbv.getId())) {
+			if (insert("backGoods.addBanner", bgbv) > 0) {
+				result = 1;
+			}
+		}else {
+			if (update("backGoods.updBanner", bgbv) > 0) {
+				result = 2;
+			}
+		}
+		
+		if (result > 0) {
+			
+			File formerFile = new File(bgbv.getPath());
+			bgbv.getImg().renameTo(formerFile);
+		}
+		
+		return result;
+	}
+	
+	
+	
+	
 	/**
 	 * 校验文件夹
 	 * 
@@ -153,5 +188,9 @@ public class BackGdsGoodsServiceImpl extends BaseIbatisServiceImpl implements
 		encoder.encode(image); // JPEG编码
 		out.close();
 	}
+
+
+
+
 
 }

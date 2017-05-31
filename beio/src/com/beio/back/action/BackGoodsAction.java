@@ -6,6 +6,7 @@ import net.sf.json.JSONArray;
 
 import com.beio.back.service.BackGdsGoodsService;
 import com.beio.back.vo.BackComboboxVO;
+import com.beio.back.vo.BackGdsBannerVO;
 import com.beio.back.vo.BackGdsBrandVO;
 import com.beio.back.vo.BackGdsClassifyVO;
 import com.beio.back.vo.BackGdsGoodsVO;
@@ -36,6 +37,8 @@ public class BackGoodsAction extends BaseAction {
 	private BackGdsImageVO biv = new BackGdsImageVO(); // 图片
 	
 	private BackGdsOrderVO bov = new BackGdsOrderVO(); // 订单
+	
+	private BackGdsBannerVO bgbv = new BackGdsBannerVO(); // 轮播
 
 	private BackGdsGoodsService bgs;
 	
@@ -398,6 +401,64 @@ public class BackGoodsAction extends BaseAction {
 		}
 		return JSON;
 	}
+	
+	
+	
+	
+	
+	public String queryBanner() throws Exception {
+		jsonArray = JSONArray.fromObject(bgs.selectList("backGoods.queryBanner"));
+		return JSON;
+	}
+
+	public String saveBanner() throws Exception {
+		bgbv.setCreator(sessionUserID());
+		bgbv.setCreateTime(curTimeStr());
+		bgbv.setModifier(sessionUserID());
+		bgbv.setModifyTime(curTimeStr());
+		if (bgs.saveImage(bgbv) > 0) {
+			setBackRoot("200");
+		} else {
+			setBackRoot("100");
+		}
+		return JSON;
+	}
+
+	public String delBanner() throws Exception {
+		bgbv.setModifier(sessionUserID());
+		bgbv.setModifyTime(curTimeStr());
+		if (1 > bgs.update("backGoods.delBanner", bgbv)) {
+			setBackRoot("100");
+		} else {
+			baseIbaitsService.update("flushBanner");
+			setBackRoot("200");
+		}
+		return JSON;
+	}
+	
+	public String upBanner() throws Exception {
+		bgbv.setModifier(sessionUserID());
+		bgbv.setModifyTime(curTimeStr());
+		if (1 > bgs.update("backGoods.upBanner", bgbv)) {
+			setBackRoot("100");
+		} else {
+			baseIbaitsService.update("flushBanner");
+			setBackRoot("200");
+		}
+		return JSON;
+	}
+	
+	public String downBanner() throws Exception {
+		bgbv.setModifier(sessionUserID());
+		bgbv.setModifyTime(curTimeStr());
+		if (1 > bgs.update("backGoods.downBanner", bgbv)) {
+			setBackRoot("100");
+		} else {
+			baseIbaitsService.update("flushBanner");
+			setBackRoot("200");
+		}
+		return JSON;
+	}
 
 	public BackGdsGoodsService getBgs() {
 		return bgs;
@@ -453,6 +514,14 @@ public class BackGoodsAction extends BaseAction {
 
 	public void setBov(BackGdsOrderVO bov) {
 		this.bov = bov;
+	}
+
+	public BackGdsBannerVO getBgbv() {
+		return bgbv;
+	}
+
+	public void setBgbv(BackGdsBannerVO bgbv) {
+		this.bgbv = bgbv;
 	}
 
 }

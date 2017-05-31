@@ -57,6 +57,9 @@
 		<typeAlias type="com.beio.back.vo.BackGdsOrderVO" alias="BOV"/>
 		<typeAlias type="com.beio.back.entity.BackGdsOrder" alias="BO"/>
 		
+		<typeAlias type="com.beio.back.vo.BackGdsBannerVO" alias="BGBV"/>
+		<typeAlias type="com.beio.back.entity.BackGdsBanner" alias="BGB"/>
+		
 		<typeAlias type="com.beio.base.vo.User" alias="User"/>
 		<typeAlias type="com.beio.base.vo.Role" alias="Role"/>
 		<typeAlias type="com.beio.base.vo.Menu" alias="Menu"/>

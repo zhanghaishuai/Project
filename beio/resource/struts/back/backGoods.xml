@@ -46,6 +46,10 @@
 			<interceptor-ref name="backIdentityStack"/>
 		</action>
 		
+		
+		
+		
+		
 		<!-- 查询分类 -->
 		<action name="pageClassify" class="backGoodsAction" method="pageClassify">
 			<result name="json" type="json">
@@ -179,6 +183,45 @@
 		</action>
 		
 		<action name="cancelOrder" class="backGoodsAction" method="cancelOrder">
+			<result name="json" type="json">
+				<param name="root">backRoot</param>
+			</result>
+			<interceptor-ref name="backIdentityStack"/>
+		</action>
+		
+		
+		
+		
+		
+		<action name="queryBanner" class="backGoodsAction" method="queryBanner">
+			<result name="json" type="json">
+				<param name="root">jsonArray</param>
+			</result>
+			<interceptor-ref name="backIdentityStack"/>
+		</action>
+		
+		<action name="saveBanner" class="backGoodsAction" method="saveBanner">
+			<result name="json" type="json">
+				<param name="root">backRoot</param>
+			</result>
+			<interceptor-ref name="backIdentityStack"/>
+		</action>
+		
+		<action name="delBanner" class="backGoodsAction" method="delBanner">
+			<result name="json" type="json">
+				<param name="root">backRoot</param>
+			</result>
+			<interceptor-ref name="backIdentityStack"/>
+		</action>
+		
+		<action name="upBanner" class="backGoodsAction" method="upBanner">
+			<result name="json" type="json">
+				<param name="root">backRoot</param>
+			</result>
+			<interceptor-ref name="backIdentityStack"/>
+		</action>
+		
+		<action name="downBanner" class="backGoodsAction" method="downBanner">
 			<result name="json" type="json">
 				<param name="root">backRoot</param>
 			</result>
