@@ -19,12 +19,13 @@ $(function(){
  * @returns {Boolean}
  */
 function login(){
+	
 	if (new RegExp(regex('empty')).test($('#userLogin_username').val()) == false) {
-		$.messager.alert('提示信息', tip('120'));
+		$.messager.alert('提示信息', '帐号不能为空');
 		return false;
 	}
 	if (new RegExp(regex('empty')).test($('#userLogin_password').val()) == false) {
-		$.messager.alert('提示信息', tip('122'));
+		$.messager.alert('提示信息', '密码不能为空');
 		return false;
 	}
 	$.ajax({
@@ -41,7 +42,10 @@ function login(){
 		success : function(data) {
 			if (data.status == '200') {
 				window.location.href = 'main.html';
-			} else if (data.status == '120' || data.status == '122' || data.status == '124' || 
+			} else if (data.status == '120') {
+				$.messager.alert('提示信息', '帐号不能为空');
+				$('.verify-code').attr('src', '/beio/image/verifyCode?flushStr'+new Date().getTime());
+			} else if (data.status == '122' || data.status == '124' || 
 					data.status == '125' || data.status == '195' || data.status == '192' || data.status == '193') {
 				$.messager.alert('提示信息', tip(data.status));
 				$('.verify-code').attr('src', '/beio/image/verifyCode?flushStr'+new Date().getTime());
