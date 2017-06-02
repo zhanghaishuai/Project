@@ -16,6 +16,10 @@ public class SysSmsLog {
 	
 	private String status; // 状态
 	
+	private String errCode; // 错误代码
+	
+	private String errDesc; // 错误描述
+	
 	private String category; // 类型（01：验证码）
 	
 	private String creator; // 创建人
@@ -52,6 +56,22 @@ public class SysSmsLog {
 
 	public void setStatus(String status) {
 		this.status = status;
+	}
+
+	public String getErrCode() {
+		return errCode;
+	}
+
+	public void setErrCode(String errCode) {
+		this.errCode = errCode;
+	}
+
+	public String getErrDesc() {
+		return errDesc;
+	}
+
+	public void setErrDesc(String errDesc) {
+		this.errDesc = errDesc;
 	}
 
 	public String getCategory() {

@@ -272,14 +272,10 @@ public class BaseAction extends ActionSupport {
 	 * @throws Exception
 	 */
 	public boolean sendSms(String mobile, String message, String category) throws Exception{
-		SysSmsLog ssl = new SysSmsLog();
-		ssl.setMobile(mobile);
-		ssl.setMessage(message);
-		ssl.setStatus(SmsUtil.sendSms(mobile, message));
+		SysSmsLog ssl = SmsUtil.sendSms(mobile, message);
 		ssl.setCategory(category);
 		ssl.setCreator(sessionMemberID());
 		ssl.setCreateTime(curTimeStr());
-		System.out.println("SMSVerifyCode:=====:=====:=====:" + message);
 		baseIbaitsService.insert("sys.insertSmsLog", ssl);
 		return Constant.SMSSENDSUCCESS.equals(ssl.getStatus());
 	}
