@@ -68,9 +68,9 @@ var base = {
 			<div class="mod_copyright">\
 				<div class="grid_c1 mod_copyright_inner">\
 					<p class="mod_copyright_links">\
-						<a href="#" target="_blank">关于我们</a><span class="mod_copyright_split">|</span>\
-						<a href="#" target="_blank">联系我们</a><span class="mod_copyright_split">|</span>\
-						<a href="#" target="_blank">联系客服</a><span class="mod_copyright_split">|</span>\
+						<a href="aboutus.html" target="_blank">关于我们</a><span class="mod_copyright_split">|</span>\
+						<a href="distribution.html" target="_blank">配送方式</a><span class="mod_copyright_split">|</span>\
+						<a href="cooperate.html" target="_blank">申请合作</a><span class="mod_copyright_split">|</span>\
 						<a href="#" target="_blank">友情链接</a><span class="mod_copyright_split">|</span>\
 						<a href="#" target="_blank">销售联盟</a><span class="mod_copyright_split">|</span>\
 						<a href="#" target="_blank">隐私政策</a>\
